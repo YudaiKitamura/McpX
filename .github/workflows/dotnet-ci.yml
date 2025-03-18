@@ -1,0 +1,31 @@
+name: .NET CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restoring dependencies
+        run: dotnet restore
+
+      - name: Build Test project
+        run: dotnet build --configuration Release --no-restore
+        working-directory: TestMcpX
+
+      - name: Run Test
+        run: dotnet test --configuration Release --no-build --logger trx
+        working-directory: TestMcpX
