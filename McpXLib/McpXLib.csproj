@@ -11,4 +11,21 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>McpX</PackageId>
+    <Version>0.0.2</Version>
+    <Authors>Yudai Kitamura</Authors>
+    <Company></Company>
+    <Description>MC protocol communication library for Mitsubishi PLCs(日本語: 三菱PLC用MCプロトコル通信ライブラリ)</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/YudaiKitamura/McpX</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/YudaiKitamura/McpX</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 </Project>

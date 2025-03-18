@@ -18,7 +18,7 @@ McpXは、三菱電機製PLCと通信するためのMCプロトコル対応ラ�
 
 ## インストール方法
 ```sh
-dotnet add package Mcpx
+dotnet add package McpX
 ```
 
 ## 使用例

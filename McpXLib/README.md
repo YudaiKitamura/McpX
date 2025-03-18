@@ -1,18 +1,4 @@
-<h1>McpX</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.0.0-blue" />
-  <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
-  <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
-  <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
-  <img alt=".NET Core 2.0+" src="https://img.shields.io/badge/.NET_Core-2.0+-darkgreen" />
-  <img alt=".NET Framework 4.6.1+" src="https://img.shields.io/badge/.NET_Framework-4.6.1+-teal?logo=windows" />
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" />
-</p>
-
-<p>
-  <a href="README_JA.md">日本語</a> | <a href="README.md">English</a>
-</p>
-
+# McpX
 **McpX is a library for communicating with Mitsubishi Electric PLCs using the MC protocol.**  
 It features a simple and easy-to-use API, allowing you to communicate without worrying about MC protocol details.  
 It runs on various platforms, including Linux, Windows, and macOS.
