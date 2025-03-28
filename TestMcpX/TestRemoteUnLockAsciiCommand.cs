@@ -44,7 +44,7 @@ public sealed class TestRemoteUnLockAsciiCommand
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
             0x30, 0x30, 0x46, 0x46, 0x30, 0x33, 0x46, 0x46, 0x30, 0x30, // Route
-            0x30, 0x30, 0x30, 0x32,                                     // Content Length
+            0x30, 0x30, 0x30, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30                                      // Error Code
         ];
 
@@ -61,7 +61,7 @@ public sealed class TestRemoteUnLockAsciiCommand
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
             0x30, 0x30, 0x46, 0x46, 0x30, 0x33, 0x46, 0x46, 0x30, 0x30, // Route
-            0x30, 0x30, 0x30, 0x32,                                     // Content Length
+            0x30, 0x30, 0x30, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30                                      // Error Code
         ];
 
