@@ -2,6 +2,7 @@ using McpXLib.Interfaces;
 using McpXLib.Helpers;
 using McpXLib.Exceptions;
 using System.Text;
+using McpXLib.Utils;
 
 namespace McpXLib.Abstructs;
 
@@ -38,7 +39,7 @@ public abstract class BaseAsciiPacketHelper : I3EResponseFrame
             stationNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(12).Take(2).ToArray()), 16)
         );
 
-        var length = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(14).Take(4).ToArray()), 16) - 2;
+        var length = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(14).Take(4).ToArray()), 16) - 4;
 
         errCode = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(18).Take(4).ToArray()), 16);
 
@@ -47,8 +48,13 @@ public abstract class BaseAsciiPacketHelper : I3EResponseFrame
             throw new McProtocolException($"An error code was received from PLC. ({ErrCode})");
         }
 
-        content = bytes.Skip(22).ToArray();
-        if (content.Length != length) 
+        var asciiHex = Encoding.ASCII.GetString(bytes.Skip(22).Take(length).ToArray());
+        content = DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / 2)
+            .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
+            .ToArray()
+        );
+
+        if (content.Length != length / 2) 
         {
             throw new RecivePacketException("Received packet had an invalid content.");
         }

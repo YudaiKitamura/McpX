@@ -136,9 +136,8 @@ public static class DeviceConverter
 
         string prefixStr = prefix.ToString();
         prefixStr = prefixStr.Length == 1 ? prefixStr + "*" : prefixStr;
-        string addressStr = address.PadLeft('0');
+        string addressStr = address.PadLeft(6, '0');
 
-        
         return prefixStr + addressStr;
     }
 
@@ -211,6 +210,20 @@ public static class DeviceConverter
         }
 
         throw new NotSupportedException($"Type {typeof(T)} is not supported.");
+    }
+
+    public static byte[] ReverseByTwoBytes(byte[] input)
+    {
+        if (input.Length % 2 != 0)
+            throw new ArgumentException("Length of the array must be a multiple of 2.");
+
+        byte[] result = new byte[input.Length];
+        for (int i = 0; i < input.Length; i += 2)
+        {
+            result[i] = input[i + 1];
+            result[i + 1] = input[i];
+        }
+        return result;
     }
 
     private static bool ValidateAddress(Prefix prefix, string address) 
