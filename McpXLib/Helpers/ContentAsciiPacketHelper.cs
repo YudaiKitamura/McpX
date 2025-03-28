@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Helpers;
 
-public class ContentPacketHelper : IContent
+public class ContentAsciiPacketHelper : IContent
 {
     public byte[] MonitoringTimer => monitoringTimer;
     public byte[] Command => command;
@@ -15,14 +15,14 @@ public class ContentPacketHelper : IContent
     private readonly byte[] subCommand;
     private readonly byte[] commandContent;
 
-    public ContentPacketHelper(byte[] command, byte[] subCommand, byte[] commandContent , byte[] monitoringTimer)
+    public ContentAsciiPacketHelper(string command, string subCommand, string commandContent , string monitoringTimer)
     {
-        this.command = command;
-        this.subCommand = subCommand;
-        this.commandContent = commandContent;
-        this.monitoringTimer = monitoringTimer;
+        this.command = Encoding.ASCII.GetBytes(command);
+        this.subCommand = Encoding.ASCII.GetBytes(subCommand);
+        this.commandContent = Encoding.ASCII.GetBytes(commandContent);
+        this.monitoringTimer = Encoding.ASCII.GetBytes(monitoringTimer);
     }
-    
+
     public byte[] ToBytes()
     {
         var packets = new List<byte>();
@@ -31,8 +31,8 @@ public class ContentPacketHelper : IContent
         packets.AddRange(SubCommand);
         packets.AddRange(CommandContent);
 
-        packets.InsertRange(0, BitConverter.GetBytes((ushort)packets.Count));
-
+        packets.InsertRange(0, Encoding.ASCII.GetBytes(packets.Count.ToString("X").PadLeft(4, '0')));
+        
         return packets.ToArray();
     }
 }
