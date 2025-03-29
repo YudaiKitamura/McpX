@@ -58,9 +58,10 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 ## Supported Protocols
 - TCP
 - 3E frame (binary code)
+- 3E frame (ASCII code)
 
 ## Roadmap
-- 3E frame (ASCII code) support
-- 4E frame (binary code) support
-- 4E frame (ASCII code) support
-- UDP support
+- [x] ~~3E frame (ASCII code) support~~
+- [ ] 4E frame (binary code) support
+- [ ] 4E frame (ASCII code) support
+- [ ] UDP support
