@@ -35,18 +35,20 @@ public class Mcp : BasePlc, IPlc
     private bool isAscii;
     private IRoute route;
 
-    internal Mcp(string ip, int port, IRoute? route = null, bool isAscii = false) : base(ip, port)
+    internal Mcp(IPlcTransport transport, IRoute? route = null, bool isAscii = false)
+        : base(transport)
     {
         this.isAscii = isAscii;
+        this.route = route ?? (isAscii ? new RouteAsciiPacketHelper() : new RoutePacketHelper());
+    }
 
-        if (route != null) 
-        {
-            this.route = route;
-        }
-        else
-        {
-            this.route = isAscii ? new RouteAsciiPacketHelper() : new RoutePacketHelper();
-        }
+    internal Mcp(string ip, int port, bool isUdp = false, IRoute? route = null, bool isAscii = false)
+        : this(
+            isUdp ? new Transports.UdpPlcTransport(ip, port) : new Transports.TcpPlcTransport(ip, port),
+            route,
+            isAscii
+        )
+    {
     }
 
     internal async Task RemoteUnlockAsync(string password)

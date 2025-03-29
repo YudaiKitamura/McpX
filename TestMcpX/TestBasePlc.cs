@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
-using McpXLib.Abstructs;
 using Bogus;
+using McpXLib.Transports;
 
 namespace TestMcpX;
 
@@ -51,7 +51,7 @@ public class TestBasePlc
         return (port, cts);
     }
 
-    private class TestPlc : BasePlc
+    private class TestPlc : TcpPlcTransport
     {
         public TestPlc(string ip, int port) : base(ip, port) { }
     }
