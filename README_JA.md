@@ -1,6 +1,6 @@
 <h1>McpX</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -57,6 +57,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 
 ## 対応プロトコル
 - TCP
+- UDP
 - 3Eフレーム（バイナリコード）
 - 3Eフレーム（ASCIIコード）
 
@@ -64,4 +65,4 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~3Eフレーム（ASCIIコード）対応~~
 - [ ] 4Eフレーム（バイナリコード）対応
 - [ ] 4Eフレーム（ASCIIコード）対応
-- [ ] UDP対応
+- [x] ~~UDP対応~~

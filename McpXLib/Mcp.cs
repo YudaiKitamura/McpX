@@ -20,7 +20,7 @@ public class Mcp : BasePlc, IPlc
         }
     }
     
-    public RoutePacketBuilder Route
+    public IPacketBuilder Route
     {
         get
         {
@@ -33,12 +33,28 @@ public class Mcp : BasePlc, IPlc
     }
 
     private bool isAscii;
-    private RoutePacketBuilder route;
+    private IPacketBuilder route;
 
-    internal Mcp(string ip, int port, RoutePacketBuilder? route = null, bool isAscii = false) : base(ip, port)
+    internal Mcp(IPlcTransport transport, IPacketBuilder? route = null, bool isAscii = false) : base(transport)
     {
         this.isAscii = isAscii;
+        if (route != null) 
+        {
+            this.route = route;
+        }
+        else
+        {
+            this.route = new RoutePacketBuilder();
+        }
+    }
 
+    internal Mcp(string ip, int port, bool isUdp = false, IPacketBuilder? route = null, bool isAscii = false)
+        : this(
+            isUdp ? new Transports.UdpPlcTransport(ip, port) : new Transports.TcpPlcTransport(ip, port),
+            route,
+            isAscii
+        )
+    {
         if (route != null) 
         {
             this.route = route;
