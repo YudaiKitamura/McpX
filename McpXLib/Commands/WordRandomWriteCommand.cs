@@ -1,12 +1,11 @@
-using McpXLib.Abstructs;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Helpers;
-using McpXLib.Utils;
+using McpXLib.Parsers;
+using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class WordRandomWriteCommand<T1, T2> : BaseCommand, IPlcCommand<bool>
+public sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -16,34 +15,19 @@ public sealed class WordRandomWriteCommand<T1, T2> : BaseCommand, IPlcCommand<bo
     public const int DOUBLE_WORD_SIZE = 14;
     private readonly int wordLength;
     private readonly int doubleWordLength;
+        private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices) : base()
+    public WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices)
     {
         wordLength = wordDevices.Length * WORD_SIZE;
         doubleWordLength = doubleWordDevices.Length * DOUBLE_WORD_SIZE;
 
         ValidatePramater();
 
-        var commandContent = new List<byte>();
-        commandContent.Add(BitConverter.GetBytes(wordDevices.Length).First());
-        commandContent.Add(BitConverter.GetBytes(doubleWordDevices.Length).First());
-
-        foreach (var wordDevice in wordDevices)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(wordDevice.prefix, wordDevice.address));
-            commandContent.AddRange(DeviceConverter.StructToBytes(wordDevice.value));
-        }
-
-        foreach (var doubleWordDevice in doubleWordDevices)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(doubleWordDevice.prefix, doubleWordDevice.address));
-            commandContent.AddRange(DeviceConverter.StructToBytes(doubleWordDevice.value));
-        }
-
-        content = new ContentPacketHelper(
+        commandPacketBuilder = new CommandPacketBuilder(
             command: [0x02, 0x14],
             subCommand: [0x00, 0x00],
-            commandContent: commandContent.ToArray(),
+            payloadBuilder: new DeviceValueListPayloadBuilder<T1, T2>(wordDevices, doubleWordDevices),
             monitoringTimer: [0x00, 0x00]
         );
     }
@@ -57,19 +41,54 @@ public sealed class WordRandomWriteCommand<T1, T2> : BaseCommand, IPlcCommand<bo
         }
     }
 
-    public async Task<bool> ExecuteAsync(Interfaces.IPlc plc)
+    public RequestPacketBuilder GetPacketBuilder()
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            await plc.RequestAsync(ToBytes())
-        ).errCode == 0;
+        return new RequestPacketBuilder(
+            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
+            routePacketBuilder: new RoutePacketBuilder(),
+            commandPacketBuilder: commandPacketBuilder
+        );
     }
 
-    public bool Execute(Interfaces.IPlc plc)
+    public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            plc.Request(ToBytes())
-        ).errCode == 0;
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketParser(
+                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketParser(
+                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public bool Execute(IPlc plc)
+    {
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketParser(
+                plc.Request(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketParser(
+                plc.Request(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
     }
 }

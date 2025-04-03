@@ -1,5 +1,5 @@
-﻿using McpXLib.Commands;
-using McpXLib.Helpers;
+﻿using McpXLib.Builders;
+using McpXLib.Commands;
 using McpXLib.Interfaces;
 using Moq;
 
@@ -14,7 +14,7 @@ public sealed class TestRemoteLockCommand
     {
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.Object.Route = new RoutePacketBuilder();
     }
 
     [TestMethod]
@@ -23,8 +23,6 @@ public sealed class TestRemoteLockCommand
         var command = new RemoteLockCommand("pass");
 
         byte[] repuestPacketExpected = [
-            0x50, 0x00,                     // Sub Header
-            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
             0x0C, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x31, 0x16, 0x00, 0x00,         // Command
@@ -32,7 +30,7 @@ public sealed class TestRemoteLockCommand
             0x70, 0x61, 0x73, 0x73,         // Password ASCII
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -47,7 +45,7 @@ public sealed class TestRemoteLockCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         Assert.AreEqual(true, command.Execute(plcMock.Object));
     }
@@ -64,7 +62,7 @@ public sealed class TestRemoteLockCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
     }

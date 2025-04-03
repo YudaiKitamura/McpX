@@ -1,16 +1,16 @@
-using McpXLib.Abstructs;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Helpers;
-using McpXLib.Utils;
+using McpXLib.Parsers;
+using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class BitBatchWriteCommand : BaseCommand, IPlcCommand<bool>
+public sealed class BitBatchWriteCommand : IPlcCommand<bool>
 {
     public const ushort MIN_BIT_LENGTH = 1;
     public const ushort MAX_BIT_LENGTH = 7168;
     private readonly ushort bitLength;
+    private readonly CommandPacketBuilder commandPacketBuilder;
 
     public BitBatchWriteCommand(Prefix prefix, string address, bool[] values) : base()
     {
@@ -18,34 +18,20 @@ public sealed class BitBatchWriteCommand : BaseCommand, IPlcCommand<bool>
 
         ValidatePramater();
 
-        var commandContent = new List<byte>();
-        commandContent.AddRange(DeviceConverter.ToByteAddress(prefix, address));
-        commandContent.AddRange(BitConverter.GetBytes(bitLength));
-
-        var bytes = new List<byte>();
-        int i = 0;
-        foreach (var value in DeviceConverter.ConvertByteValueArray(values)) 
-        {
-            if (bytes.Count == 0 || i % 2 == 0)
-            {
-                bytes.Add((value & 0x01) != 0 ? (byte)0x10 : (byte)0x00);
-            }
-            else
-            {
-                byte mask = value == 0x01 ? (byte)0x01 : (byte)0x00;
-                bytes[bytes.Count - 1] |= mask;
-            }
-
-            i++;
-        }
-
-        commandContent.AddRange(bytes);
-
-        this.content = new ContentPacketHelper(
+        commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x14],
             subCommand: [0x01, 0x00],
-            commandContent: commandContent.ToArray(),
+            payloadBuilder: new BitDeviceValuePayloadBuilder(prefix, address, values),
             monitoringTimer: [0x00, 0x00]
+        );
+    }
+
+    public RequestPacketBuilder GetPacketBuilder()
+    {
+        return new RequestPacketBuilder(
+            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
+            routePacketBuilder: new RoutePacketBuilder(),
+            commandPacketBuilder: commandPacketBuilder
         );
     }
 
@@ -57,19 +43,45 @@ public sealed class BitBatchWriteCommand : BaseCommand, IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(Interfaces.IPlc mcp)
+    public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        Route = mcp.Route;
-        return new BitResponsePacketHelper(
-            await mcp.RequestAsync(ToBytes())
-        ).errCode == 0;
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketParser(
+                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketParser(
+                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
     }
 
-    public bool Execute(Interfaces.IPlc mcp)
+    public bool Execute(IPlc plc)
     {
-        Route = mcp.Route;
-        return new BitResponsePacketHelper(
-            mcp.Request(ToBytes())
-        ).errCode == 0;
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketParser(
+                plc.Request(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketParser(
+                plc.Request(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
     }
 }

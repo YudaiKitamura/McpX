@@ -1,53 +1,43 @@
-using McpXLib.Interfaces;
-using McpXLib.Helpers;
 using McpXLib.Exceptions;
 using System.Text;
 using McpXLib.Utils;
 
 namespace McpXLib.Abstructs;
 
-public abstract class BaseAsciiPacketHelper : I3EResponseFrame
+public abstract class BaseAsciiPacketParser
 {
-    public byte[] SubHeader => subHeader;
-    public IRoute Route => route;
     public byte[] Content => content;
     public string ErrCode => errCode.ToString("X");
-
-    internal readonly byte[] subHeader;
-    internal readonly IRoute route;
     internal byte[] content;
     internal readonly uint errCode;
 
-    public BaseAsciiPacketHelper(byte[] bytes)
+    internal const int SUBHEADER_LENGTH = 4;
+    internal const int DATA_LENGTH_INDEX = 14;
+    internal const int DATA_LENGTH_LENGTH = 4;
+    internal const int ERROR_CODE_INDEX = 18;
+    internal const int ERROR_CODE_LENGTH = 4;
+    internal const int CONTENT_INDEX = 22;
+
+    public BaseAsciiPacketParser(byte[] bytes)
     {
-        if (bytes.Length < 22) 
+        if (bytes.Length < CONTENT_INDEX - 1) 
         {
             throw new RecivePacketException("Received packet is invalid.");
         }
 
-        subHeader = bytes.Take(4).ToArray();
+        var subHeader = bytes.Take(SUBHEADER_LENGTH).ToArray();
         if (!subHeader.SequenceEqual(Encoding.ASCII.GetBytes("D000"))) 
         {
             throw new RecivePacketException("Received packet had an invalid subheader.");
         }
 
-        route = new RouteAsciiPacketHelper(
-            networkNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(4).Take(2).ToArray()), 16),
-            pcNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(6).Take(2).ToArray()), 16),
-            ioNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(8).Take(2).ToArray()), 16),
-            unitNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(10).Take(2).ToArray()), 16),
-            stationNumber: Convert.ToByte(Encoding.ASCII.GetString(bytes.Skip(12).Take(2).ToArray()), 16)
-        );
-
-        var contentLength = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(14).Take(4).ToArray()), 16) - 4;
-
-        errCode = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(18).Take(4).ToArray()), 16);
-
+        errCode = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(ERROR_CODE_INDEX).Take(ERROR_CODE_LENGTH).ToArray()), 16);
         if (errCode != 0) 
         {
             throw new McProtocolException($"An error code was received from PLC. ({ErrCode})");
         }
 
+        var contentLength = Convert.ToUInt16(Encoding.ASCII.GetString(bytes.Skip(DATA_LENGTH_INDEX).Take(DATA_LENGTH_LENGTH).ToArray()), 16) - ERROR_CODE_LENGTH;
         content = GetContent(bytes, contentLength);
         ValidateContentLength(contentLength);
     }
@@ -62,7 +52,7 @@ public abstract class BaseAsciiPacketHelper : I3EResponseFrame
 
     public virtual byte[] GetContent(byte[] bytes, int contentLength)
     {
-        var asciiHex = Encoding.ASCII.GetString(bytes.Skip(22).Take(contentLength).ToArray());
+        var asciiHex = Encoding.ASCII.GetString(bytes.Skip(CONTENT_INDEX).Take(contentLength).ToArray());
         return DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / 2)
             .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
             .ToArray()
