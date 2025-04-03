@@ -1,43 +1,30 @@
-using McpXLib.Abstructs;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
 using McpXLib.Helpers;
-using McpXLib.Utils;
+using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class MonitorRegistCommand : BaseCommand, IPlcCommand<bool>
+public sealed class MonitorRegistCommand : IPlcCommand<bool>
 {
     public const int MIN_WORD_LENGTH = 1;
     public const int MAX_WORD_LENGTH = 192;
     private readonly int wordLength;
     private readonly int doubleWordLength;
+    private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public MonitorRegistCommand((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) : base()
+
+    public MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices) : base()
     {
-        wordLength = wordAddresses.Length;
-        doubleWordLength = doubleWordAddresses.Length;
+        wordLength = wordDevices.Length;
+        doubleWordLength = doubleWordDevices.Length;
 
         ValidatePramater();
 
-        var commandContent = new List<byte>();
-        commandContent.Add(BitConverter.GetBytes(wordAddresses.Length).First());
-        commandContent.Add(BitConverter.GetBytes(doubleWordAddresses.Length).First());
-
-        foreach (var wordAddress in wordAddresses)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(wordAddress.Item1, wordAddress.Item2));
-        }
-
-        foreach (var doubleWordAddress in doubleWordAddresses)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(doubleWordAddress.Item1, doubleWordAddress.Item2));
-        }
-
-        content = new ContentPacketHelper(
+        commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x08],
             subCommand: [0x00, 0x00],
-            commandContent: commandContent.ToArray(),
+            payloadBuilder: new DeviceListPayloadBuilder(wordDevices, doubleWordDevices),
             monitoringTimer: [0x00, 0x00]
         );
     }
@@ -51,19 +38,54 @@ public sealed class MonitorRegistCommand : BaseCommand, IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(Interfaces.IPlc plc)
+    public RequestPacketBuilder GetPacketBuilder()
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            await plc.RequestAsync(ToBytes())
-        ).errCode == 0;
+        return new RequestPacketBuilder(
+            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
+            routePacketBuilder: new RoutePacketBuilder(),
+            commandPacketBuilder: commandPacketBuilder
+        );
     }
 
-    public bool Execute(Interfaces.IPlc plc)
+    public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            plc.Request(ToBytes())
-        ).errCode == 0;
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public bool Execute(IPlc plc)
+    {
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketHelper(
+                plc.Request(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketHelper(
+                plc.Request(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
     }
 }

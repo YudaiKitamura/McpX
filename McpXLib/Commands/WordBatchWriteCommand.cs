@@ -1,33 +1,29 @@
-using McpXLib.Abstructs;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
 using McpXLib.Helpers;
 using McpXLib.Utils;
+using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class WordBatchWriteCommand<T> : BaseCommand, IPlcCommand<bool>
+public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     where T : unmanaged
 {
     public const ushort MIN_WORD_LENGTH = 1;
     public const ushort MAX_WORD_LENGTH = 960;
     private readonly ushort wordLength;
+    private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordBatchWriteCommand(Prefix prefix, string address, T[] values) : base()
+    public WordBatchWriteCommand(Prefix prefix, string address, T[] values)
     {
         wordLength = (ushort)(values.Length * DeviceConverter.GetWordLength<T>());
 
         ValidatePramater();
 
-        var commandContent = new List<byte>();
-        commandContent.AddRange(DeviceConverter.ToByteAddress(prefix, address));
-        commandContent.AddRange(BitConverter.GetBytes(wordLength));
-        commandContent.AddRange(DeviceConverter.ConvertByteValueArray(values));
-
-        content = new ContentPacketHelper(
+        commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x14],
             subCommand: [0x00, 0x00],
-            commandContent: commandContent.ToArray(),
+            payloadBuilder: new DeviceValuePayloadBuilder<T>(prefix, address, values),
             monitoringTimer: [0x00, 0x00]
         );
     }
@@ -40,19 +36,54 @@ public sealed class WordBatchWriteCommand<T> : BaseCommand, IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(Interfaces.IPlc plc)
+    public RequestPacketBuilder GetPacketBuilder()
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            await plc.RequestAsync(ToBytes())
-        ).errCode == 0;
+        return new RequestPacketBuilder(
+            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
+            routePacketBuilder: new RoutePacketBuilder(),
+            commandPacketBuilder: commandPacketBuilder
+        );
     }
 
-    public bool Execute(Interfaces.IPlc plc)
+    public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        Route = plc.Route;
-        return new ResponsePacketHelper(
-            plc.Request(ToBytes())
-        ).errCode == 0;
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public bool Execute(IPlc plc)
+    {
+        if (plc.IsAscii) 
+        {
+            return new ResponseAsciiPacketHelper(
+                plc.Request(GetPacketBuilder().ToAsciiBytes())
+            ).errCode == 0;
+        }
+        else 
+        {
+            return new ResponsePacketHelper(
+                plc.Request(GetPacketBuilder().ToBinaryBytes())
+            ).errCode == 0;
+        }
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
     }
 }

@@ -1,12 +1,12 @@
-using McpXLib.Abstructs;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
 using McpXLib.Helpers;
 using McpXLib.Utils;
+using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class WordRandomReadCommand<T1, T2> : BaseCommand, IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
+public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -14,32 +14,19 @@ public sealed class WordRandomReadCommand<T1, T2> : BaseCommand, IPlcCommand<(T1
     public const ushort MAX_WORD_LENGTH = 192;
     private readonly int wordLength;
     private readonly int doubleWordLength;
+    private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordRandomReadCommand((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) : base()
+    public WordRandomReadCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices) : base()
     {
-        wordLength = wordAddresses.Length;
-        doubleWordLength = doubleWordAddresses.Length;
+        wordLength = wordDevices.Length;
+        doubleWordLength = doubleWordDevices.Length;
 
         ValidatePramater();
 
-        var commandContent = new List<byte>();
-        commandContent.Add(BitConverter.GetBytes(wordAddresses.Length).First());
-        commandContent.Add(BitConverter.GetBytes(doubleWordAddresses.Length).First());
-
-        foreach (var wordAddress in wordAddresses)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(wordAddress.Item1, wordAddress.Item2));
-        }
-
-        foreach (var doubleWordAddress in doubleWordAddresses)
-        { 
-            commandContent.AddRange(DeviceConverter.ToByteAddress(doubleWordAddress.Item1, doubleWordAddress.Item2));
-        }
-
-        content = new ContentPacketHelper(
+        commandPacketBuilder = new CommandPacketBuilder(
             command: [0x03, 0x04],
             subCommand: [0x00, 0x00],
-            commandContent: commandContent.ToArray(),
+            payloadBuilder: new DeviceListPayloadBuilder(wordDevices, doubleWordDevices),
             monitoringTimer: [0x00, 0x00]
         );
     }
@@ -53,19 +40,40 @@ public sealed class WordRandomReadCommand<T1, T2> : BaseCommand, IPlcCommand<(T1
         }
     }
 
-    public async Task<(T1[] wordValues, T2[] doubleValues)> ExecuteAsync(Interfaces.IPlc plc)
+    public RequestPacketBuilder GetPacketBuilder()
     {
-        Route = plc.Route;
-        var response = new ResponsePacketHelper(
-            await plc.RequestAsync(ToBytes())
+        return new RequestPacketBuilder(
+            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
+            routePacketBuilder: new RoutePacketBuilder(),
+            commandPacketBuilder: commandPacketBuilder
         );
+    }
+
+    public async Task<(T1[] wordValues, T2[] doubleValues)> ExecuteAsync(IPlc plc)
+    {
+        byte[] responseContent;
+
+        if (plc.IsAscii) 
+        {
+            responseContent = new RandomResponseAsciiPacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes()),
+                wordLength,
+                doubleWordLength
+            ).Content;
+        }
+        else 
+        {
+            responseContent = new ResponsePacketHelper(
+                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
+            ).Content;
+        }
 
         return (
-            wordValues: DeviceConverter.ConvertValueArray<T1>(response.Content
+            wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent
                 .Take(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
                 .ToArray()
             ),
-            doubleValues: DeviceConverter.ConvertValueArray<T2>(response.Content
+            doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent
                 .Skip(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
                 .Take(doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2)
                 .ToArray()
@@ -73,23 +81,45 @@ public sealed class WordRandomReadCommand<T1, T2> : BaseCommand, IPlcCommand<(T1
         );
     }
 
-    public (T1[] wordValues, T2[] doubleValues) Execute(Interfaces.IPlc plc)
+    public (T1[] wordValues, T2[] doubleValues) Execute(IPlc plc)
     {
-        Route = plc.Route;
-        var response = new ResponsePacketHelper(
-            plc.Request(ToBytes())
-        );
+        byte[] responseContent;
+
+        if (plc.IsAscii) 
+        {
+            responseContent = new RandomResponseAsciiPacketHelper(
+                plc.Request(GetPacketBuilder().ToAsciiBytes()),
+                wordLength,
+                doubleWordLength
+            ).Content;
+        }
+        else 
+        {
+            responseContent = new ResponsePacketHelper(
+                plc.Request(GetPacketBuilder().ToBinaryBytes())
+            ).Content;
+        }
 
         return (
-            wordValues: DeviceConverter.ConvertValueArray<T1>(response.Content
+            wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent
                 .Take(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
                 .ToArray()
             ),
-            doubleValues: DeviceConverter.ConvertValueArray<T2>(response.Content
+            doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent
                 .Skip(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
                 .Take(doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2)
                 .ToArray()
             )
         );
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
     }
 }

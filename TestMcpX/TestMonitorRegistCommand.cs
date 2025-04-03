@@ -1,9 +1,9 @@
 ﻿using McpXLib.Commands;
 using McpXLib.Enums;
-using McpXLib.Helpers;
 using McpXLib.Interfaces;
 using Moq;
 using Bogus;
+using McpXLib.Builders;
 
 namespace TestMcpX;
 
@@ -18,7 +18,7 @@ public sealed class TestMonitorRegistCommand
         faker = new Faker();
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.Object.Route = new RoutePacketBuilder();
     }
 
     [TestMethod]
@@ -27,8 +27,6 @@ public sealed class TestMonitorRegistCommand
         var command = new MonitorRegistCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] repuestPacketExpected = [
-            0x50, 0x00,                     // Sub Header
-            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
             0x18, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x01, 0x08, 0x00, 0x00,         // Command
@@ -44,7 +42,7 @@ public sealed class TestMonitorRegistCommand
             0xA8,                           // Device Prefix4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -59,7 +57,7 @@ public sealed class TestMonitorRegistCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         Assert.AreEqual(true, command.Execute(plcMock.Object));
     }
@@ -76,7 +74,7 @@ public sealed class TestMonitorRegistCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
     }

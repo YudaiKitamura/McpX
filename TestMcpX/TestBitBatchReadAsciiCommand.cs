@@ -1,9 +1,9 @@
 ﻿using McpXLib.Commands;
 using McpXLib.Enums;
-using McpXLib.Helpers;
 using McpXLib.Interfaces;
 using Moq;
 using Bogus;
+using McpXLib.Builders;
 
 namespace TestMcpX;
 
@@ -18,17 +18,17 @@ public sealed class TestBitBatchReadAsciiCommand
         faker = new Faker();
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.SetupProperty(x => x.IsAscii);
+        plcMock.Object.Route = new RoutePacketBuilder();
+        plcMock.Object.IsAscii = true;
     }
 
     [TestMethod]
     public void TestToBytes()
     {
-        var command = new BitBatchReadAsciiCommand(Prefix.M, "0", 6);
+        var command = new BitBatchReadCommand(Prefix.M, "0", 6);
 
         byte[] repuestPacketExpected = [
-            0x35, 0x30, 0x30, 0x30,                                     // Sub Header
-            0x30, 0x30, 0x46, 0x46, 0x30, 0x33, 0x46, 0x46, 0x30, 0x30, // Route
             0x30, 0x30, 0x31, 0x38,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x30, 0x34, 0x30, 0x31,                                     // Command
@@ -38,13 +38,13 @@ public sealed class TestBitBatchReadAsciiCommand
             0x30, 0x30, 0x30, 0x36                                      // Device Length
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
     public void TestExecute()
     {
-        var command = new BitBatchReadAsciiCommand(Prefix.M, "0", 6);
+        var command = new BitBatchReadCommand(Prefix.M, "0", 6);
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -59,7 +59,7 @@ public sealed class TestBitBatchReadAsciiCommand
             0x30,                                                       // Value6
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         bool[] deviceExpected = [
             false,
@@ -76,7 +76,7 @@ public sealed class TestBitBatchReadAsciiCommand
     [TestMethod]
     public async Task TestExecuteAsync()
     {
-        var command = new BitBatchReadAsciiCommand(Prefix.M, "0", 6);
+        var command = new BitBatchReadCommand(Prefix.M, "0", 6);
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -91,7 +91,7 @@ public sealed class TestBitBatchReadAsciiCommand
             0x30,                                                       // Value6
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         bool[] deviceExpected = [
             false,
@@ -109,13 +109,13 @@ public sealed class TestBitBatchReadAsciiCommand
     public void TestException()
     {
         var ex = Assert.ThrowsException<ArgumentException>(() => {
-            _ = new BitBatchReadAsciiCommand(faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), BitBatchReadCommand.MIN_BIT_LENGTH - 1);
+            _ = new BitBatchReadCommand(faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), BitBatchReadCommand.MIN_BIT_LENGTH - 1);
         });
         
         Assert.IsInstanceOfType<ArgumentException>(ex);
 
         ex = Assert.ThrowsException<ArgumentException>(() => {
-            _ = new BitBatchReadAsciiCommand(faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), BitBatchReadCommand.MAX_BIT_LENGTH + 1);
+            _ = new BitBatchReadCommand(faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), BitBatchReadCommand.MAX_BIT_LENGTH + 1);
         });
 
         Assert.IsInstanceOfType<ArgumentException>(ex);

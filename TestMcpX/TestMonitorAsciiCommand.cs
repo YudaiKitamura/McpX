@@ -4,6 +4,7 @@ using McpXLib.Helpers;
 using McpXLib.Interfaces;
 using Moq;
 using Bogus;
+using McpXLib.Builders;
 
 namespace TestMcpX;
 
@@ -18,30 +19,30 @@ public sealed class TestMonitorAsciiCommand
         faker = new Faker();
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.SetupProperty(x => x.IsAscii);
+        plcMock.Object.Route = new RoutePacketBuilder();
+        plcMock.Object.IsAscii = true;
     }
 
     [TestMethod]
     public void TestToBytes()
     {
-        var command = new MonitorAsciiCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] repuestPacketExpected = [
-            0x35, 0x30, 0x30, 0x30,                                     // Sub Header
-            0x30, 0x30, 0x46, 0x46, 0x30, 0x33, 0x46, 0x46, 0x30, 0x30, // Route
             0x30, 0x30, 0x30, 0x43,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x30, 0x38, 0x30, 0x32,                                     // Command
             0x30, 0x30, 0x30, 0x30,                                     // SubCommand
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
     public void TestExecute()
     {
-        var command = new MonitorAsciiCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -54,7 +55,7 @@ public sealed class TestMonitorAsciiCommand
             0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x34,             // Value4
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         short[] wordDeviceExpected = [
             1,
@@ -74,7 +75,7 @@ public sealed class TestMonitorAsciiCommand
     [TestMethod]
     public async Task TestExecuteAsync()
     {
-        var command = new MonitorAsciiCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -87,7 +88,7 @@ public sealed class TestMonitorAsciiCommand
             0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x34,             // Value4
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         short[] wordDeviceExpected = [
             1,

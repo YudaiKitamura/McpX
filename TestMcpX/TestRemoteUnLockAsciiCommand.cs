@@ -1,5 +1,5 @@
-﻿using McpXLib.Commands;
-using McpXLib.Helpers;
+﻿using McpXLib.Builders;
+using McpXLib.Commands;
 using McpXLib.Interfaces;
 using Moq;
 
@@ -14,17 +14,17 @@ public sealed class TestRemoteUnLockAsciiCommand
     {
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.SetupProperty(x => x.IsAscii);
+        plcMock.Object.Route = new RoutePacketBuilder();
+        plcMock.Object.IsAscii = true;
     }
 
     [TestMethod]
     public void TestToBytes()
     {
-        var command = new RemoteUnlockAsciiCommand("pass");
+        var command = new RemoteUnlockCommand("pass");
 
         byte[] repuestPacketExpected = [
-            0x35, 0x30, 0x30, 0x30,                                     // Sub Header
-            0x30, 0x30, 0x46, 0x46, 0x30, 0x33, 0x46, 0x46, 0x30, 0x30, // Route
             0x30, 0x30, 0x31, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x36, 0x33, 0x30,                                     // Command
@@ -33,13 +33,13 @@ public sealed class TestRemoteUnLockAsciiCommand
             0x70, 0x61, 0x73, 0x73,                                     // Password ASCII
         ]; 
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
     public void TestExecute()
     {
-        var command = new RemoteUnlockAsciiCommand("pass");
+        var command = new RemoteUnlockCommand("pass");
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -47,8 +47,8 @@ public sealed class TestRemoteUnLockAsciiCommand
             0x30, 0x30, 0x30, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30                                      // Error Code
         ];
-
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         Assert.AreEqual(true, command.Execute(plcMock.Object));
     }
@@ -56,7 +56,7 @@ public sealed class TestRemoteUnLockAsciiCommand
     [TestMethod]
     public async Task TestExecuteAsync()
     {
-        var command = new RemoteUnlockAsciiCommand("pass");
+        var command = new RemoteUnlockCommand("pass");
 
         byte[] recivePackets = [
             0x44, 0x30, 0x30, 0x30,                                     // Sub Header
@@ -65,7 +65,7 @@ public sealed class TestRemoteUnLockAsciiCommand
             0x30, 0x30, 0x30, 0x30                                      // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
     }

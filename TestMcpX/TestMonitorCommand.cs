@@ -1,9 +1,9 @@
 ﻿using McpXLib.Commands;
 using McpXLib.Enums;
-using McpXLib.Helpers;
 using McpXLib.Interfaces;
 using Moq;
 using Bogus;
+using McpXLib.Builders;
 
 namespace TestMcpX;
 
@@ -18,7 +18,7 @@ public sealed class TestMonitorCommand
         faker = new Faker();
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.Object.Route = new RoutePacketBuilder();
     }
 
     [TestMethod]
@@ -27,14 +27,12 @@ public sealed class TestMonitorCommand
         var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] repuestPacketExpected = [
-            0x50, 0x00,                     // Sub Header
-            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
             0x06, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x02, 0x08, 0x00, 0x00,         // Command
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -53,7 +51,7 @@ public sealed class TestMonitorCommand
             0x04, 0x00, 0x00, 0x00,         // Value4
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         short[] wordDeviceExpected = [
             1,
@@ -86,7 +84,7 @@ public sealed class TestMonitorCommand
             0x04, 0x00, 0x00, 0x00,         // Value4
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         short[] wordDeviceExpected = [
             1,
