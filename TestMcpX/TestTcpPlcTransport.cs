@@ -6,7 +6,7 @@ using McpXLib.Transports;
 namespace TestMcpX;
 
 [TestClass]
-public class TestBasePlc
+public class TestTcpPlcTransport
 {
     private Faker faker = new Faker();
 
