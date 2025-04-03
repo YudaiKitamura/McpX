@@ -17,8 +17,13 @@ McpXは、三菱電機製PLCと通信するためのMCプロトコル対応ラ�
 シンプルなAPIで扱いやすく、MCプロトコルを意識することなく利用でき、Linux、Windows、macOS など、さまざまなプラットフォームで動作します。
 
 ## インストール方法
+### .NET CLI
 ```sh
 dotnet add package McpX
+```
+### Package Manager(Visual Studio)
+```sh
+PM> NuGet\Install-Package McpX
 ```
 
 ## 使用例
@@ -39,6 +44,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
     mcpx.BatchWrite<int>(Prefix.D, "0", [1234, 5678]);
 }
 ```
+[C#、Visual Basicのサンプルはこちら](https://github.com/YudaiKitamura/McpX/tree/main/Example)
 
 ## 対応コマンド
 

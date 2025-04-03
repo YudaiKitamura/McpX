@@ -18,11 +18,16 @@ It features a simple and easy-to-use API, allowing you to communicate without wo
 It runs on various platforms, including Linux, Windows, and macOS.
 
 ## Installation
+### .NET CLI
 ```sh
 dotnet add package McpX
 ```
+### Package Manager(Visual Studio)
+```sh
+PM> NuGet\Install-Package McpX
+```
 
-## Example Usage
+## Example Usage 
 ```csharp
 using McpXLib;
 using McpXLib.Enums;
@@ -40,6 +45,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
     mcpx.BatchWrite<int>(Prefix.D, "0", [1234, 5678]);
 }
 ```
+[C# and Visual Basic samples are available here.](https://github.com/YudaiKitamura/McpX/tree/main/Example)
 
 ## Supported Commands
 
