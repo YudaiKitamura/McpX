@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpXLib", "McpXLib\McpXLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMcpX", "TestMcpX\TestMcpX.csproj", "{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleAsyncCsharp", "Example\ExampleAsyncCsharp\ExampleAsyncCsharp.csproj", "{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleSyncCsharp", "Example\ExampleSyncCsharp\ExampleSyncCsharp.csproj", "{94F97389-34DA-41C8-B944-8A5903B398EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,22 @@ Global
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F97389-34DA-41C8-B944-8A5903B398EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F97389-34DA-41C8-B944-8A5903B398EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F97389-34DA-41C8-B944-8A5903B398EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F97389-34DA-41C8-B944-8A5903B398EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6D95D7-AE99-4B9C-BAC5-E9AD95F212DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6D95D7-AE99-4B9C-BAC5-E9AD95F212DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6D95D7-AE99-4B9C-BAC5-E9AD95F212DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6D95D7-AE99-4B9C-BAC5-E9AD95F212DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2BCBF06B-D8C0-4BE9-BF16-F607B47E946A} = {5A41BA3C-72C3-4AF6-8ED3-0F3F4F33DEF6}
+		{94F97389-34DA-41C8-B944-8A5903B398EE} = {5A41BA3C-72C3-4AF6-8ED3-0F3F4F33DEF6}
+		{1E6D95D7-AE99-4B9C-BAC5-E9AD95F212DB} = {5A41BA3C-72C3-4AF6-8ED3-0F3F4F33DEF6}
 	EndGlobalSection
 EndGlobal

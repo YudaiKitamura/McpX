@@ -23,7 +23,7 @@ public sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x04],
             subCommand: [0x00, 0x00],
-            payloadBuilder: new DevicePayloadBuilder(prefix, address, wordLength),
+            payloadBuilder: new DevicePayloadBuilder(prefix, address, (ushort)(wordLength * DeviceConverter.GetWordLength<T>())),
             monitoringTimer: [0x00, 0x00]
         );
     }
