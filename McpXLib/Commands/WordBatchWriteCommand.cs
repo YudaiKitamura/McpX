@@ -1,6 +1,6 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Helpers;
+using McpXLib.Parsers;
 using McpXLib.Utils;
 using McpXLib.Builders;
 
@@ -49,13 +49,13 @@ public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     {
         if (plc.IsAscii) 
         {
-            return new ResponseAsciiPacketHelper(
+            return new ResponseAsciiPacketParser(
                 await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
             ).errCode == 0;
         }
         else 
         {
-            return new ResponsePacketHelper(
+            return new ResponsePacketParser(
                 await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
             ).errCode == 0;
         }
@@ -65,13 +65,13 @@ public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     {
         if (plc.IsAscii) 
         {
-            return new ResponseAsciiPacketHelper(
+            return new ResponseAsciiPacketParser(
                 plc.Request(GetPacketBuilder().ToAsciiBytes())
             ).errCode == 0;
         }
         else 
         {
-            return new ResponsePacketHelper(
+            return new ResponsePacketParser(
                 plc.Request(GetPacketBuilder().ToBinaryBytes())
             ).errCode == 0;
         }

@@ -1,6 +1,6 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Helpers;
+using McpXLib.Parsers;
 using McpXLib.Utils;
 using McpXLib.Builders;
 
@@ -55,7 +55,7 @@ public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues
 
         if (plc.IsAscii) 
         {
-            responseContent = new RandomResponseAsciiPacketHelper(
+            responseContent = new RandomResponseAsciiPacketParser(
                 await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes()),
                 wordLength,
                 doubleWordLength
@@ -63,7 +63,7 @@ public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues
         }
         else 
         {
-            responseContent = new ResponsePacketHelper(
+            responseContent = new ResponsePacketParser(
                 await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
             ).Content;
         }
@@ -87,7 +87,7 @@ public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues
 
         if (plc.IsAscii) 
         {
-            responseContent = new RandomResponseAsciiPacketHelper(
+            responseContent = new RandomResponseAsciiPacketParser(
                 plc.Request(GetPacketBuilder().ToAsciiBytes()),
                 wordLength,
                 doubleWordLength
@@ -95,7 +95,7 @@ public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues
         }
         else 
         {
-            responseContent = new ResponsePacketHelper(
+            responseContent = new ResponsePacketParser(
                 plc.Request(GetPacketBuilder().ToBinaryBytes())
             ).Content;
         }

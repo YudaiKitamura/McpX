@@ -1,10 +1,10 @@
 using McpXLib.Abstructs;
 
-namespace McpXLib.Helpers;
+namespace McpXLib.Parsers;
 
-public sealed class BitResponsePacketHelper : BasePacketHelper
+public sealed class BitResponsePacketParser : BasePacketParser
 {
-    public BitResponsePacketHelper(byte[] bytes) : base(bytes)
+    public BitResponsePacketParser(byte[] bytes) : base(bytes)
     {
         var valueList = new List<byte>();
         foreach (var value in content) 

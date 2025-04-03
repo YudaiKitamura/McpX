@@ -3,9 +3,9 @@ using McpXLib.Abstructs;
 using McpXLib.Exceptions;
 using McpXLib.Utils;
 
-namespace McpXLib.Helpers;
+namespace McpXLib.Parsers;
 
-public sealed class RandomResponseAsciiPacketHelper(byte[] bytes, int wordLength, int doubleWordLength) : BaseAsciiPacketHelper(bytes)
+public sealed class RandomResponseAsciiPacketParser(byte[] bytes, int wordLength, int doubleWordLength) : BaseAsciiPacketParser(bytes)
 {
     public override void ValidateContentLength(int contentLength)
     {

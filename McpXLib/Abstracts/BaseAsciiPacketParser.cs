@@ -4,7 +4,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Abstructs;
 
-public abstract class BaseAsciiPacketHelper
+public abstract class BaseAsciiPacketParser
 {
     public byte[] Content => content;
     public string ErrCode => errCode.ToString("X");
@@ -18,7 +18,7 @@ public abstract class BaseAsciiPacketHelper
     internal const int ERROR_CODE_LENGTH = 4;
     internal const int CONTENT_INDEX = 22;
 
-    public BaseAsciiPacketHelper(byte[] bytes)
+    public BaseAsciiPacketParser(byte[] bytes)
     {
         if (bytes.Length < CONTENT_INDEX - 1) 
         {

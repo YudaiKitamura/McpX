@@ -2,9 +2,9 @@ using System.Text;
 using McpXLib.Abstructs;
 using McpXLib.Exceptions;
 
-namespace McpXLib.Helpers;
+namespace McpXLib.Parsers;
 
-public sealed class BitResponseAsciiPacketHelper(byte[] bytes) : BaseAsciiPacketHelper(bytes)
+public sealed class BitResponseAsciiPacketParser(byte[] bytes) : BaseAsciiPacketParser(bytes)
 {
     public override void ValidateContentLength(int contentLength)
     {

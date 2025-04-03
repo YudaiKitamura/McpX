@@ -2,7 +2,7 @@ using McpXLib.Exceptions;
 
 namespace McpXLib.Abstructs;
 
-public abstract class BasePacketHelper
+public abstract class BasePacketParser
 {
     public byte[] Content => content;
     public string ErrCode => errCode.ToString("X");
@@ -16,7 +16,7 @@ public abstract class BasePacketHelper
     internal const int ERROR_CODE_LENGTH = 2;
     internal const int CONTENT_INDEX = 11;
 
-    public BasePacketHelper(byte[] bytes)
+    public BasePacketParser(byte[] bytes)
     {
         if (bytes.Length < CONTENT_INDEX - 1) 
         {
