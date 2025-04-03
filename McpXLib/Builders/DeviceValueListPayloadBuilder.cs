@@ -51,8 +51,8 @@ public class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addres
         }
         else
         {
-            packets.AddRange(BitConverter.GetBytes((ushort)wordDevices.Length).First());
-            packets.AddRange(BitConverter.GetBytes((ushort)doubleWordDevices.Length).First());
+            packets.Add(BitConverter.GetBytes((ushort)wordDevices.Length).First());
+            packets.Add(BitConverter.GetBytes((ushort)doubleWordDevices.Length).First());
 
             foreach (var wordDevice in wordDevices)
             { 
