@@ -1,9 +1,9 @@
 ﻿using McpXLib.Commands;
 using McpXLib.Enums;
-using McpXLib.Helpers;
 using McpXLib.Interfaces;
 using Moq;
 using Bogus;
+using McpXLib.Builders;
 
 namespace TestMcpX;
 
@@ -18,7 +18,7 @@ public sealed class TestBitBatchReadCommand
         faker = new Faker();
         plcMock = new Mock<IPlc>();
         plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketHelper();
+        plcMock.Object.Route = new RoutePacketBuilder();
     }
 
     [TestMethod]
@@ -27,8 +27,6 @@ public sealed class TestBitBatchReadCommand
         var command = new BitBatchReadCommand(Prefix.M, "0", 6);
 
         byte[] repuestPacketExpected = [
-            0x50, 0x00,                     // Sub Header
-            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
             0x0C, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x01, 0x04, 0x01, 0x00,         // Command
@@ -37,7 +35,7 @@ public sealed class TestBitBatchReadCommand
             0x06, 0x00                      // Device Length
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBytes());
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -53,7 +51,7 @@ public sealed class TestBitBatchReadCommand
             0x01, 0x11, 0x10                // Value
         ];
 
-        plcMock.Setup(x => x.Request(command.ToBytes())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
 
         bool[] deviceExpected = [
             false,
@@ -80,7 +78,7 @@ public sealed class TestBitBatchReadCommand
             0x01, 0x11, 0x10                // Value
         ];
 
-        plcMock.Setup(x => x.RequestAsync(command.ToBytes())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
 
         bool[] deviceExpected = [
             false,
