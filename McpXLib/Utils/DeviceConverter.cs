@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 using McpXLib.Enums;
 using McpXLib.Exceptions;
@@ -9,6 +10,7 @@ public static class DeviceConverter
     private static readonly Dictionary<Type, int> wordLengths = new()
     {
         { typeof(bool), 1 },
+        { typeof(byte), 1 },
         { typeof(short), 1 },
         { typeof(ushort), 1 },
         { typeof(int), 2 },
@@ -18,6 +20,16 @@ public static class DeviceConverter
         { typeof(long), 4 },
         { typeof(ulong), 4 }
     };
+
+    private static readonly Encoding sjisEncoding;
+
+    static DeviceConverter()
+    {
+#if !NETSTANDARD2_0
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
+        sjisEncoding = Encoding.GetEncoding("shift_jis");
+    }
 
     public static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
@@ -71,10 +83,30 @@ public static class DeviceConverter
             else if (typeof(T) == typeof(byte)) 
             {
                 return (T[])(object)bytes;
-            }   
+            }
         }
 
         return values;
+    }
+
+    public static string ConvertString(byte[] bytes)
+    {
+        int length = Array.IndexOf(bytes, (byte)0x00);
+        if (length == -1) 
+        {
+            length = bytes.Length;
+        }
+
+        return sjisEncoding.GetString(
+            bytes.Take(length).ToArray()
+        );
+    }
+
+    public static byte[] ConvertBytes(string value)
+    {
+        return sjisEncoding.GetBytes(
+            value
+        );
     }
 
     public static int GetWordLength<T>() where T : unmanaged
@@ -89,14 +121,44 @@ public static class DeviceConverter
 
     public static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
-        var bytes = new List<byte>();
-        foreach (var value in values) 
+        if (typeof(T) == typeof(byte))
         {
-            bytes.AddRange(StructToBytes(value));
+            return (byte[])(object)values;
+        }
+        else 
+        {
+            var bytes = new List<byte>();
+            foreach (var value in values) 
+            {
+                bytes.AddRange(StructToBytes(value));
+            }
+
+            return bytes.ToArray();
+        }
+    }
+
+    public static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
+    {
+        List<byte> bytes = sjisEncoding.GetBytes(value).ToList();
+        if (includeNullTerminator)
+        {
+            bytes.Add(0x00);
         }
 
-        return bytes.ToArray();
+        if (bytes.Count % 2 != 0)
+        {
+            bytes.Add(0x00);
+        }
+
+        ushort[] result = new ushort[bytes.Count / 2];
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = (ushort)(bytes[i * 2] | (bytes[i * 2 + 1] << 8));
+        }
+
+        return result;
     }
+
 
     public static byte[] ToByteAddress(Prefix prefix, string address)
     {
