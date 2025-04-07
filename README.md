@@ -1,6 +1,6 @@
 <h1>McpX</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.3.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
