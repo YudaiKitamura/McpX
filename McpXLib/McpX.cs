@@ -444,6 +444,30 @@ public class McpX : Mcp
         }
     }
 
+    public string ReadString(Prefix prefix, string address, ushort length)
+    {
+        return DeviceConverter.ConvertString(
+            BatchRead<byte>(prefix, address, length)
+        );
+    }
+
+    public async Task<string> ReadStringAsync(Prefix prefix, string address, ushort length)
+    {
+        return DeviceConverter.ConvertString(
+            await BatchReadAsync<byte>(prefix, address, length)
+        );
+    }
+
+    public void WriteString(Prefix prefix, string address, string value)
+    {
+        BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
+    }
+
+    public async Task WriteStringAsync(Prefix prefix, string address, string value)
+    {
+        await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
+    }
+
     public override void Dispose()
     {
         if (password != null) 
