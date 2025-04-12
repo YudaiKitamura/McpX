@@ -1,6 +1,5 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Parsers;
 using McpXLib.Utils;
 using McpXLib.Builders;
 
@@ -34,15 +33,6 @@ public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
         {
             throw new ArgumentException($"Word length can be from {MIN_WORD_LENGTH} to {MAX_WORD_LENGTH}.");
         }
-    }
-
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
-        );
     }
 
     public async Task<bool> ExecuteAsync(IPlc plc)
