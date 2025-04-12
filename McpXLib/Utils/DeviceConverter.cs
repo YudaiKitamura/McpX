@@ -5,7 +5,7 @@ using McpXLib.Exceptions;
 
 
 namespace McpXLib.Utils;
-public static class DeviceConverter
+internal static class DeviceConverter
 {
     private static readonly Dictionary<Type, int> wordLengths = new()
     {
@@ -31,7 +31,7 @@ public static class DeviceConverter
         sjisEncoding = Encoding.GetEncoding("shift_jis");
     }
 
-    public static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
+    internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
         int byteLength = typeof(T) != typeof(bool) && typeof(T) != typeof(byte) ? GetWordLength<T>() * 2 : 1;
         if (bytes.Length % byteLength != 0)
@@ -89,7 +89,7 @@ public static class DeviceConverter
         return values;
     }
 
-    public static string ConvertString(byte[] bytes)
+    internal static string ConvertString(byte[] bytes)
     {
         int length = Array.IndexOf(bytes, (byte)0x00);
         if (length == -1) 
@@ -102,14 +102,14 @@ public static class DeviceConverter
         );
     }
 
-    public static byte[] ConvertBytes(string value)
+    internal static byte[] ConvertBytes(string value)
     {
         return sjisEncoding.GetBytes(
             value
         );
     }
 
-    public static int GetWordLength<T>() where T : unmanaged
+    internal static int GetWordLength<T>() where T : unmanaged
     {
         if (wordLengths.TryGetValue(typeof(T), out int length))
         {
@@ -119,7 +119,7 @@ public static class DeviceConverter
         throw new NotSupportedException("Type {typeof(T)} is not supported.");
     }
 
-    public static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
+    internal static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
         if (typeof(T) == typeof(byte))
         {
@@ -137,7 +137,7 @@ public static class DeviceConverter
         }
     }
 
-    public static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
+    internal static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
     {
         List<byte> bytes = sjisEncoding.GetBytes(value).ToList();
         if (includeNullTerminator)
@@ -160,7 +160,7 @@ public static class DeviceConverter
     }
 
 
-    public static byte[] ToByteAddress(Prefix prefix, string address)
+    internal static byte[] ToByteAddress(Prefix prefix, string address)
     {
         if (!ValidateAddress(prefix, address)) 
         {
@@ -189,7 +189,7 @@ public static class DeviceConverter
         return bytes;
     }
 
-    public static string ToASCIIAddress(Prefix prefix, string address)
+    internal static string ToASCIIAddress(Prefix prefix, string address)
     {
         if (!ValidateAddress(prefix, address)) 
         {
@@ -203,7 +203,7 @@ public static class DeviceConverter
         return prefixStr + addressStr;
     }
 
-    public static string GetOffsetAddress(Prefix prefix, string address, int offset)
+    internal static string GetOffsetAddress(Prefix prefix, string address, int offset)
     {
         if (!ValidateAddress(prefix, address))
         {
@@ -232,7 +232,7 @@ public static class DeviceConverter
         }
     }
 
-    public static byte[] StructToBytes<T>(T value) where T : unmanaged
+    internal static byte[] StructToBytes<T>(T value) where T : unmanaged
     {
         if (typeof(T) == typeof(bool))
         {
@@ -274,7 +274,7 @@ public static class DeviceConverter
         throw new NotSupportedException($"Type {typeof(T)} is not supported.");
     }
 
-    public static byte[] ReverseByTwoBytes(byte[] input)
+    internal static byte[] ReverseByTwoBytes(byte[] input)
     {
         if (input.Length % 2 != 0)
             throw new ArgumentException("Length of the array must be a multiple of 2.");

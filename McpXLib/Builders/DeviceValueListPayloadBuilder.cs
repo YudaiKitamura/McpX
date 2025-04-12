@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-public class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices) : IPayloadBuilder
+internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices) : IPayloadBuilder
     where T1 : unmanaged
     where T2 : unmanaged
 {

@@ -3,9 +3,9 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class WordContentPacketParser : BaseContentPacketParser
+internal class WordContentPacketParser : BaseContentPacketParser
 {
-    public WordContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    internal WordContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: true

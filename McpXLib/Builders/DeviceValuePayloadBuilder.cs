@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-public class DeviceValuePayloadBuilder<T>(Prefix prefix, string address, T[] values) : IPayloadBuilder
+internal class DeviceValuePayloadBuilder<T>(Prefix prefix, string address, T[] values) : IPayloadBuilder
     where T : unmanaged
 {
     public void AppendPayload(List<byte> packets, bool isAscii)

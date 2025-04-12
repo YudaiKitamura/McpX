@@ -4,7 +4,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Abstructs;
 
-public abstract class BasePacketParser : IPacketParser
+internal abstract class BasePacketParser : IPacketParser
 {
     internal bool IsAscii;
     internal IPacketParser? PrevPacketParser;
@@ -12,7 +12,7 @@ public abstract class BasePacketParser : IPacketParser
     internal abstract int BinaryLength { get; }
     internal abstract int AsciiLength { get; }
 
-    public BasePacketParser(bool isAscii = false, IPacketParser? prevPacketParser = null, bool? isReverse = null)
+    internal BasePacketParser(bool isAscii = false, IPacketParser? prevPacketParser = null, bool? isReverse = null)
     {
         IsAscii = isAscii;
         PrevPacketParser = prevPacketParser;

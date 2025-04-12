@@ -4,12 +4,12 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Transports;
 
-public class UdpPlcTransport : IPlcTransport
+internal class UdpPlcTransport : IPlcTransport
 {
     private readonly UdpClient udp;
     private readonly IPEndPoint remoteEndPoint;
 
-    public UdpPlcTransport(string ip, int port)
+    internal UdpPlcTransport(string ip, int port)
     {
         udp = new UdpClient();
         remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);

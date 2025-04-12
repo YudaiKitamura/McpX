@@ -6,12 +6,12 @@ using McpXLib.Utils;
 
 namespace McpXLib.Parsers;
 
-public class RandomContentPacketParser : BaseContentPacketParser
+internal class RandomContentPacketParser : BaseContentPacketParser
 {
     private int wordLength;
     private int doubleWordLength;
 
-    public RandomContentPacketParser(IPacketParser prevPacketParser, int wordLength, int doubleWordLength, bool isAscii = false) : base (
+    internal RandomContentPacketParser(IPacketParser prevPacketParser, int wordLength, int doubleWordLength, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser
     )

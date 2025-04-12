@@ -5,19 +5,19 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-public sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
+internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
     where T1 : unmanaged
     where T2 : unmanaged
 {
-    public const int MIN_WORD_LENGTH = 1;
-    public const int MAX_WORD_LENGTH = 1920;
-    public const int WORD_SIZE = 12;
-    public const int DOUBLE_WORD_SIZE = 14;
+    internal const int MIN_WORD_LENGTH = 1;
+    internal const int MAX_WORD_LENGTH = 1920;
+    internal const int WORD_SIZE = 12;
+    internal const int DOUBLE_WORD_SIZE = 14;
     private readonly int wordLength;
     private readonly int doubleWordLength;
         private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices)
+    internal WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices)
     {
         wordLength = wordDevices.Length * WORD_SIZE;
         doubleWordLength = doubleWordDevices.Length * DOUBLE_WORD_SIZE;
@@ -32,7 +32,7 @@ public sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         var totalLength = wordLength + doubleWordLength;
         if (totalLength < MIN_WORD_LENGTH || totalLength > MAX_WORD_LENGTH)

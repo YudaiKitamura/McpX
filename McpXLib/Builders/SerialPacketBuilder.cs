@@ -3,11 +3,11 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class SerialPacketBuilder : IPacketBuilder
+internal class SerialPacketBuilder : IPacketBuilder
 {
     private readonly byte[] serialNumber;
 
-    public SerialPacketBuilder(ushort serialNumber)
+    internal SerialPacketBuilder(ushort serialNumber)
     {
         List<byte> bytes = new List<byte>();
         bytes.AddRange(BitConverter.GetBytes(serialNumber));

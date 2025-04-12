@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-public class DeviceListPayloadBuilder((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices) : IPayloadBuilder
+internal class DeviceListPayloadBuilder((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices) : IPayloadBuilder
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {

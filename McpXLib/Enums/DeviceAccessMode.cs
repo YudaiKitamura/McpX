@@ -1,6 +1,6 @@
 namespace McpXLib.Enums;
 
-public enum DeviceAccessMode
+internal enum DeviceAccessMode
 {
     Bit,
     Word,

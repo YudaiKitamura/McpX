@@ -5,13 +5,13 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class SubHeaderPacketParser : BasePacketParser
+internal class SubHeaderPacketParser : BasePacketParser
 {    
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;
     private RequestFrame requestFrame;
 
-    public SubHeaderPacketParser(RequestFrame requestFrame = RequestFrame.E3, bool isAscii = false, IPacketParser? prevPacketParser = null) : base(
+    internal SubHeaderPacketParser(RequestFrame requestFrame = RequestFrame.E3, bool isAscii = false, IPacketParser? prevPacketParser = null) : base(
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: false

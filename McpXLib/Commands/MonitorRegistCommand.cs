@@ -5,15 +5,15 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-public sealed class MonitorRegistCommand : IPlcCommand<bool>
+internal sealed class MonitorRegistCommand : IPlcCommand<bool>
 {
-    public const int MIN_WORD_LENGTH = 1;
-    public const int MAX_WORD_LENGTH = 192;
+    internal const int MIN_WORD_LENGTH = 1;
+    internal const int MAX_WORD_LENGTH = 192;
     private readonly int wordLength;
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices) : base()
+    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
@@ -28,7 +28,7 @@ public sealed class MonitorRegistCommand : IPlcCommand<bool>
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         var totalLength = wordLength + doubleWordLength;
         if (totalLength < MIN_WORD_LENGTH || totalLength > MAX_WORD_LENGTH)

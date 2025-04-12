@@ -5,17 +5,17 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
+internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
     where T1 : unmanaged
     where T2 : unmanaged
 {
-    public const ushort MIN_WORD_LENGTH = 1;
-    public const ushort MAX_WORD_LENGTH = 192;
+    internal const ushort MIN_WORD_LENGTH = 1;
+    internal const ushort MAX_WORD_LENGTH = 192;
     private readonly int wordLength;
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordRandomReadCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices) : base()
+    internal WordRandomReadCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
@@ -30,7 +30,7 @@ public sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         var totalLength = wordLength + doubleWordLength;
         if (totalLength < MIN_WORD_LENGTH || totalLength > MAX_WORD_LENGTH)

@@ -4,11 +4,11 @@ using McpXLib.Parsers;
 
 namespace McpXLib.Utils;
 
-public class ResponseFrameSelector
+internal class ResponseFrameSelector
 {
     private readonly IPacketParser packetParser;
 
-    public ResponseFrameSelector(IPlc plc, ushort serialNumber)
+    internal ResponseFrameSelector(IPlc plc, ushort serialNumber)
     {
         if (plc.RequestFrame == RequestFrame.E3) 
         {
@@ -25,7 +25,7 @@ public class ResponseFrameSelector
         }
     }
 
-    public ResponseFrameSelector(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode)
+    internal ResponseFrameSelector(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode)
     {
         if (plc.RequestFrame == RequestFrame.E3) 
         {
@@ -44,7 +44,7 @@ public class ResponseFrameSelector
         }
     }
 
-    public ResponseFrameSelector(IPlc plc, ushort serialNumber, int wordLength, int doubleWordLength)
+    internal ResponseFrameSelector(IPlc plc, ushort serialNumber, int wordLength, int doubleWordLength)
     {
         if (plc.RequestFrame == RequestFrame.E3) 
         {
@@ -65,7 +65,7 @@ public class ResponseFrameSelector
         }
     }
 
-    public byte[] ParsePacket(byte[] bytes)
+    internal byte[] ParsePacket(byte[] bytes)
     {
         return packetParser.ParsePacket(bytes);
     }

@@ -3,14 +3,14 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Abstructs;
 
-public class BaseContentPacketParser : BasePacketParser
+internal class BaseContentPacketParser : BasePacketParser
 {
     internal override int BinaryLength => binaryLength;
     internal override int AsciiLength => asciiLength;
     private int binaryLength;
     private int asciiLength;
 
-    public int Length
+    internal int Length
     {
         get 
         {
@@ -22,7 +22,7 @@ public class BaseContentPacketParser : BasePacketParser
         }
     }
 
-    public BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
+    internal BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: isReverse

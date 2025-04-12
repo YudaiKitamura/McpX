@@ -4,13 +4,13 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Transports;
 
-public class TcpPlcTransport : IPlcTransport
+internal class TcpPlcTransport : IPlcTransport
 {
     private readonly TcpClient client;
     private readonly NetworkStream stream;
     private readonly object syncLock = new();
 
-    public TcpPlcTransport(string ip, int port)
+    internal TcpPlcTransport(string ip, int port)
     {
         client = new TcpClient();
         client.Connect(ip, port);
