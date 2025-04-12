@@ -13,7 +13,7 @@ public class E4FramePacketParser : IPacketParser
     private ErrorCodePacketParser errorCodePacketParser;
     private BaseContentPacketParser? contentPacketParser;
 
-    private E4FramePacketParser(IPlc plc, ushort serialNumber)
+    public E4FramePacketParser(IPlc plc, ushort serialNumber)
     {
         subHeaderPacketParser = new SubHeaderPacketParser(
             requestFrame: plc.RequestFrame,

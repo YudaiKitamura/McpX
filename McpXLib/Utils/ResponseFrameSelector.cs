@@ -8,6 +8,23 @@ public class ResponseFrameSelector
 {
     private readonly IPacketParser packetParser;
 
+    public ResponseFrameSelector(IPlc plc, ushort serialNumber)
+    {
+        if (plc.RequestFrame == RequestFrame.E3) 
+        {
+            packetParser = new E3FramePacketParser(
+                plc: plc
+            );
+        }
+        else
+        {
+            packetParser = new E4FramePacketParser(
+                plc: plc,
+                serialNumber: serialNumber
+            );
+        }
+    }
+
     public ResponseFrameSelector(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode)
     {
         if (plc.RequestFrame == RequestFrame.E3) 

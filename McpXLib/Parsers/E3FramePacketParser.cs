@@ -12,7 +12,7 @@ public class E3FramePacketParser : IPacketParser
     private ErrorCodePacketParser errorCodePacketParser;
     private BaseContentPacketParser? contentPacketParser;
 
-    private E3FramePacketParser(IPlc plc)
+    public E3FramePacketParser(IPlc plc)
     {
         subHeaderPacketParser = new SubHeaderPacketParser(
             requestFrame: plc.RequestFrame,
