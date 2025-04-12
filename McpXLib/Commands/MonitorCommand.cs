@@ -32,33 +32,19 @@ public sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] 
     {
     }
 
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
-        );
-    }
-
     public async Task<(T1[] wordValues, T2[] doubleValues)> ExecuteAsync(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            wordLength: wordLength,
+            doubleWordLength: doubleWordLength
+        );
 
-        if (plc.IsAscii) 
-        {
-            responseContent = new RandomResponseAsciiPacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes()),
-                wordLength,
-                doubleWordLength
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new ResponsePacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
-        }
+        var responseContent = responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+        );
 
         return (
             wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent
@@ -75,22 +61,17 @@ public sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] 
 
     public (T1[] wordValues, T2[] doubleValues) Execute(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            wordLength: wordLength,
+            doubleWordLength: doubleWordLength
+        );
 
-        if (plc.IsAscii) 
-        {
-            responseContent = new RandomResponseAsciiPacketParser(
-                plc.Request(GetPacketBuilder().ToAsciiBytes()),
-                wordLength,
-                doubleWordLength
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new ResponsePacketParser(
-                plc.Request(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
-        }
+        var responseContent = responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket())
+        );
 
         return (
             wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent

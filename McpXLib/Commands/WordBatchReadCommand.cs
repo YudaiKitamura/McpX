@@ -1,6 +1,5 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Parsers;
 using McpXLib.Utils;
 using McpXLib.Builders;
 
@@ -36,51 +35,34 @@ public sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
         }
     }
 
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
-        );
-    }
-
     public async Task<T[]> ExecuteAsync(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Word
+        );
 
-        if (plc.IsAscii) 
-        {
-            responseContent = new ResponseAsciiPacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new ResponsePacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
-        }
+        var responseContent = responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+        );
 
         return DeviceConverter.ConvertValueArray<T>(responseContent);
     }
 
     public T[] Execute(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Word
+        );
 
-        if (plc.IsAscii) 
-        {
-            responseContent = new ResponseAsciiPacketParser(
-                plc.Request(GetPacketBuilder().ToAsciiBytes())
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new ResponsePacketParser(
-                plc.Request(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
-        }
+        var responseContent = responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket())
+        );
 
         return DeviceConverter.ConvertValueArray<T>(responseContent);
     }

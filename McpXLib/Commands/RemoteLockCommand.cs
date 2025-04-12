@@ -1,6 +1,6 @@
 using McpXLib.Interfaces;
-using McpXLib.Parsers;
 using McpXLib.Builders;
+using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
@@ -18,10 +18,6 @@ public sealed class RemoteLockCommand : IPlcCommand<bool>
         );
     }
 
-    public void ValidatePramater()
-    {
-    }
-
     public RequestPacketBuilder GetPacketBuilder()
     {
         return new RequestPacketBuilder(
@@ -33,34 +29,32 @@ public sealed class RemoteLockCommand : IPlcCommand<bool>
 
     public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        if (plc.IsAscii) 
-        {
-            return new ResponseAsciiPacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
-            ).errCode == 0;
-        }
-        else 
-        {
-            return new ResponsePacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
-            ).errCode == 0;
-        }
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber()
+        );
+        
+        responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+        );
+
+        return true;
     }
 
     public bool Execute(IPlc plc)
     {
-        if (plc.IsAscii) 
-        {
-            return new ResponseAsciiPacketParser(
-                plc.Request(GetPacketBuilder().ToAsciiBytes())
-            ).errCode == 0;
-        }
-        else 
-        {
-            return new ResponsePacketParser(
-                plc.Request(GetPacketBuilder().ToBinaryBytes())
-            ).errCode == 0;
-        }
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber()
+        );
+        
+        responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket())
+        );
+
+        return true;
     }
 
     public byte[] ToBinaryBytes()
