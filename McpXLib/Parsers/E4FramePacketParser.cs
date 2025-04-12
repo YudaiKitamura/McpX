@@ -94,9 +94,9 @@ public class E4FramePacketParser : IPacketParser
         serialPacketParser.ParsePacket(bytes);
         errorCodePacketParser.ParsePacket(bytes);
         
-        if (contentLengthPacketParser != null) 
+        if (contentPacketParser != null) 
         {
-            contentPacketParser!.Length = BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes)) - (ushort)errorCodePacketParser.GetLength();
+            contentPacketParser.Length = BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes)) - (ushort)errorCodePacketParser.GetLength();
             return contentPacketParser.ParsePacket(bytes);
         }
 
