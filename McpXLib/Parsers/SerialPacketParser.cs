@@ -21,7 +21,7 @@ public class SerialPacketParser : BasePacketParser, IPacketParser
 
     internal override void Validation(byte[] bytes)
     {
-        if (BitConverter.ToUInt16(bytes) != serialNumber) 
+        if (BitConverter.ToUInt16(bytes, 0) != serialNumber) 
         {
             throw new RecivePacketException("Received packet had an invalid serial number.");
         }

@@ -96,7 +96,7 @@ public class E4FramePacketParser : IPacketParser
         
         if (contentPacketParser != null) 
         {
-            contentPacketParser.Length = BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes)) - (ushort)errorCodePacketParser.GetLength();
+            contentPacketParser.Length = BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes), 0) - (ushort)errorCodePacketParser.GetLength();
             return contentPacketParser.ParsePacket(bytes);
         }
 
