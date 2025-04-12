@@ -22,16 +22,17 @@ public class BaseContentPacketParser : BasePacketParser2
         }
     }
 
-    public BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    public BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
         isAscii: isAscii,
-        prevPacketParser: prevPacketParser
+        prevPacketParser: prevPacketParser,
+        isReverse: isReverse
     )
     {
     }
 
     internal override void Validation(byte[] bytes)
     {
-        if (bytes.Length != Length) 
+        if (bytes.Length != (IsAscii ? Length / 2 : Length)) 
         {
             throw new RecivePacketException("Received packet had an invalid content.");
         }

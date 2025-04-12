@@ -18,7 +18,13 @@ public class BitContentPacketParser : BaseContentPacketParser
     {
         // MEMO:
         //  ASCIIの場合は、一度、バイナリに変換して処理を行う為、半分のパケット数になる
-        if (bytes.Length != (!IsAscii ? Length : Length / 2)) 
+        var length = Length;
+        if (IsAscii) 
+        {
+            length = length % 2 == 0 ? length / 2 : length / 2 + 1; 
+        }
+
+        if (bytes.Length != length) 
         {
             throw new RecivePacketException("Received packet had an invalid content.");
         }

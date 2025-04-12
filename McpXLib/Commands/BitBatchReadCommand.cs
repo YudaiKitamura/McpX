@@ -1,6 +1,5 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Parsers;
 using McpXLib.Utils;
 using McpXLib.Builders;
 
@@ -35,30 +34,26 @@ public sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         }
     }
 
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
-        );
-    }
-
     public async Task<bool[]> ExecuteAsync(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Bit
+        );
 
-        if (plc.IsAscii) 
+        var responseContent = responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+        );
+
+        // MEMO:
+        //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
+        if (bitLength % 2 != 0) 
         {
-            responseContent = new BitResponseAsciiPacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new BitResponsePacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
+            var responseContentList = responseContent.ToList();
+            responseContentList.RemoveAt(responseContent.Count() - 1);
+            responseContent = responseContentList.ToArray();
         }
 
         return DeviceConverter.ConvertValueArray<bool>(responseContent);
@@ -66,19 +61,24 @@ public sealed class BitBatchReadCommand : IPlcCommand<bool[]>
 
     public bool[] Execute(IPlc plc)
     {
-        byte[] responseContent;
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Bit
+        );
 
-        if (plc.IsAscii) 
+        var responseContent = responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket())
+        );
+
+        // MEMO:
+        //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
+        if (bitLength % 2 != 0) 
         {
-            responseContent = new BitResponseAsciiPacketParser(
-                plc.Request(GetPacketBuilder().ToAsciiBytes())
-            ).Content;
-        }
-        else 
-        {
-            responseContent = new BitResponsePacketParser(
-                plc.Request(GetPacketBuilder().ToBinaryBytes())
-            ).Content;
+            var responseContentList = responseContent.ToList();
+            responseContentList.RemoveAt(responseContent.Count() - 1);
+            responseContent = responseContentList.ToArray();
         }
 
         return DeviceConverter.ConvertValueArray<bool>(responseContent);

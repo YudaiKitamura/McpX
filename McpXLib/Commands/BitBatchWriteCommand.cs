@@ -1,7 +1,7 @@
 using McpXLib.Enums;
 using McpXLib.Interfaces;
-using McpXLib.Parsers;
 using McpXLib.Builders;
+using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
@@ -26,15 +26,6 @@ public sealed class BitBatchWriteCommand : IPlcCommand<bool>
         );
     }
 
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
-        );
-    }
-
     public void ValidatePramater()
     {
         if (bitLength < MIN_BIT_LENGTH || bitLength > MAX_BIT_LENGTH)
@@ -45,34 +36,34 @@ public sealed class BitBatchWriteCommand : IPlcCommand<bool>
 
     public async Task<bool> ExecuteAsync(IPlc plc)
     {
-        if (plc.IsAscii) 
-        {
-            return new ResponseAsciiPacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToAsciiBytes())
-            ).errCode == 0;
-        }
-        else 
-        {
-            return new ResponsePacketParser(
-                await plc.RequestAsync(GetPacketBuilder().ToBinaryBytes())
-            ).errCode == 0;
-        }
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Bit
+        );
+
+        responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+        );
+
+        return true;
     }
 
     public bool Execute(IPlc plc)
     {
-        if (plc.IsAscii) 
-        {
-            return new ResponseAsciiPacketParser(
-                plc.Request(GetPacketBuilder().ToAsciiBytes())
-            ).errCode == 0;
-        }
-        else 
-        {
-            return new ResponsePacketParser(
-                plc.Request(GetPacketBuilder().ToBinaryBytes())
-            ).errCode == 0;
-        }
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = new ResponseFrameSelector(
+            plc,
+            requestFrameSelector.GetSerialNumber(),
+            DeviceAccessMode.Bit
+        );
+
+        responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket())
+        );
+
+        return true;
     }
 
     public byte[] ToBinaryBytes()
