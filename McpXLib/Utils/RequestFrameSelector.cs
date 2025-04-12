@@ -7,7 +7,7 @@ namespace McpXLib.Utils;
 public class RequestFrameSelector 
 {
     private readonly RequestPacketBuilder requestPacketBuilder;
-    private static ushort uniqSerialNumber;
+    private static int uniqSerialNumber;
     private ushort serialNumber;
     private IPlc plc;
 
@@ -15,21 +15,18 @@ public class RequestFrameSelector
     {
         this.plc = plc;
 
-        serialNumber = uniqSerialNumber;
+        serialNumber = (ushort)uniqSerialNumber;
 
         requestPacketBuilder = new RequestPacketBuilder(
-            subHeaderPacketBuilder: this.plc.RequestFrame == RequestFrame.E3 ? new SubHeaderPacketBuilder() : new SubHeader4EPacketBuilder(uniqSerialNumber),
+            subHeaderPacketBuilder: this.plc.RequestFrame == RequestFrame.E3 ? new SubHeaderPacketBuilder() : new SubHeader4EPacketBuilder(serialNumber),
             routePacketBuilder: this.plc.Route,
             commandPacketBuilder: commandPacketBuilder
         );
 
-        if (uniqSerialNumber == ushort.MaxValue) 
+        var current = Interlocked.Increment(ref uniqSerialNumber);
+        if (current > ushort.MaxValue)
         {
-            uniqSerialNumber = ushort.MinValue;
-        }
-        else
-        {
-            uniqSerialNumber++;
+            Interlocked.Exchange(ref uniqSerialNumber, ushort.MinValue);
         }
     }
 
