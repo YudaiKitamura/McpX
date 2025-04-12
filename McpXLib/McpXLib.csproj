@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>McpX</PackageId>
-    <Version>0.4.0</Version>
+    <Version>0.4.1</Version>
     <Authors>Yudai Kitamura</Authors>
     <Company></Company>
     <Description>MC protocol communication library for Mitsubishi PLC(三菱PLC用MCプロトコル通信ライブラリ)</Description>

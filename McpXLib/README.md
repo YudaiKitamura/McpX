@@ -60,3 +60,6 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~4E frame (binary code) support~~
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
+
+## Changelog
+- [CHANGELOG.md](https://github.com/YudaiKitamura/McpX/blob/main/CHANGELOG.md)
