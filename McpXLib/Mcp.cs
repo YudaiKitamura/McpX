@@ -32,12 +32,34 @@ public class Mcp : BasePlc, IPlc
         }
     }
 
+    public RequestFrame RequestFrame
+    { 
+        get 
+        {
+            return requestFrame;
+        }
+        set 
+        {
+            requestFrame = value; 
+        }
+    }
+
     private bool isAscii;
     private IPacketBuilder route;
+    private RequestFrame requestFrame;
 
-    internal Mcp(IPlcTransport transport, IPacketBuilder? route = null, bool isAscii = false) : base(transport)
+    internal Mcp(
+        IPlcTransport transport, 
+        IPacketBuilder? route = null, 
+        bool isAscii = false, 
+        RequestFrame requestFrame = RequestFrame.E3
+    ) : base(
+        transport
+    )
     {
         this.isAscii = isAscii;
+        this.requestFrame = requestFrame;
+
         if (route != null) 
         {
             this.route = route;
@@ -48,12 +70,19 @@ public class Mcp : BasePlc, IPlc
         }
     }
 
-    internal Mcp(string ip, int port, bool isUdp = false, IPacketBuilder? route = null, bool isAscii = false)
-        : this(
-            isUdp ? new Transports.UdpPlcTransport(ip, port) : new Transports.TcpPlcTransport(ip, port),
-            route,
-            isAscii
-        )
+    internal Mcp(
+        string ip, 
+        int port,
+        bool isUdp = false,
+        IPacketBuilder? route = null,
+        bool isAscii = false,
+        RequestFrame requestFrame = RequestFrame.E3
+    ) : this (
+        transport: isUdp ? new Transports.UdpPlcTransport(ip, port) : new Transports.TcpPlcTransport(ip, port),
+        route: route,
+        isAscii: isAscii,
+        requestFrame: requestFrame
+    )
     {
         if (route != null) 
         {

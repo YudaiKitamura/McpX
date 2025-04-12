@@ -8,7 +8,20 @@ public class McpX : Mcp
 {
     private readonly string? password;
 
-    public McpX(string ip, int port, string? password = null, bool isAscii = false, bool isUdp = false) : base(ip, port, isAscii: isAscii, isUdp: isUdp)
+    public McpX(
+        string ip, 
+        int port, 
+        string? password = null, 
+        bool isAscii = false, 
+        bool isUdp = false, 
+        RequestFrame requestFrame = RequestFrame.E3
+    ) : base (
+        ip: ip, 
+        port: port,
+        isAscii: isAscii, 
+        isUdp: isUdp, 
+        requestFrame: requestFrame
+    )
     {
         this.password = password;
 
