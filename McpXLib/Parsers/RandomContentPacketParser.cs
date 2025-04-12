@@ -32,7 +32,7 @@ public class RandomContentPacketParser : BaseContentPacketParser
 
     internal override byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
     {
-        var asciiHex = Encoding.ASCII.GetString(bytes);
+        var asciiHex = Encoding.ASCII.GetString(bytes.Take(wordLength * 4).ToArray());
         var wordDeviceBytes = DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / wordLength)
             .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
             .ToArray()
