@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class RoutePacketParser : BasePacketParser2
+public class RoutePacketParser : BasePacketParser
 {
     internal override int BinaryLength => 5;
     internal override int AsciiLength => 10;

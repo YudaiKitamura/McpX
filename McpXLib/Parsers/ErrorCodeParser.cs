@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class ErrorCodePacketParser : BasePacketParser2
+public class ErrorCodePacketParser : BasePacketParser
 {
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;

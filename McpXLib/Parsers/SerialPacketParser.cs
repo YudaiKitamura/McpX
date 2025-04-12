@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class SerialPacketParser : BasePacketParser2, IPacketParser
+public class SerialPacketParser : BasePacketParser, IPacketParser
 {
     internal override int BinaryLength => 4;
     internal override int AsciiLength => 8;
@@ -13,7 +13,7 @@ public class SerialPacketParser : BasePacketParser2, IPacketParser
     public SerialPacketParser(ushort serialNumber, IPacketParser? prevPacketParser = null, bool isAscii = false) : base(
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
-        isReverse: true
+        isReverse: false
     )
     {
         this.serialNumber = serialNumber;

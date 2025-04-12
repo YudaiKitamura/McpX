@@ -5,7 +5,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class SubHeaderPacketParser : BasePacketParser2
+public class SubHeaderPacketParser : BasePacketParser
 {    
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;

@@ -1,45 +1,77 @@
-using McpXLib.Exceptions;
+using System.Text;
+using McpXLib.Interfaces;
+using McpXLib.Utils;
 
 namespace McpXLib.Abstructs;
 
-public abstract class BasePacketParser
+public abstract class BasePacketParser : IPacketParser
 {
-    public byte[] Content => content;
-    public string ErrCode => errCode.ToString("X");
-    internal byte[] content;
-    internal readonly uint errCode;
+    internal bool IsAscii;
+    internal IPacketParser? PrevPacketParser;
+    internal bool? IsReverse;
+    internal abstract int BinaryLength { get; }
+    internal abstract int AsciiLength { get; }
 
-    internal const int SUBHEADER_LENGTH = 2;
-    internal const int DATA_LENGTH_INDEX = 7;
-    internal const int DATA_LENGTH_LENGTH = 2;
-    internal const int ERROR_CODE_INDEX = 9;
-    internal const int ERROR_CODE_LENGTH = 2;
-    internal const int CONTENT_INDEX = 11;
-
-    public BasePacketParser(byte[] bytes)
+    public BasePacketParser(bool isAscii = false, IPacketParser? prevPacketParser = null, bool? isReverse = null)
     {
-        if (bytes.Length < CONTENT_INDEX - 1) 
+        IsAscii = isAscii;
+        PrevPacketParser = prevPacketParser;
+        IsReverse = isReverse;
+    }
+
+    public virtual byte[] ParsePacket(byte[] bytes)
+    {
+        byte[] parseBytes = GetBinaryBytes(bytes);
+        if (IsAscii)
         {
-            throw new RecivePacketException("Received packet is invalid.");
+            parseBytes = ConvertAsciiBytesToBinalyBytes(parseBytes);
         }
 
-        var subHeader = bytes.Take(SUBHEADER_LENGTH).ToArray();
-        if (!subHeader.SequenceEqual(new byte[] { 0xD0, 0x00 })) 
+        Validation(parseBytes);
+
+        return parseBytes;
+    }
+
+    internal virtual void Validation(byte[] bytes)
+    {
+    }
+
+    public virtual int GetIndex()
+    {
+        if (PrevPacketParser == null) 
         {
-            throw new RecivePacketException("Received packet had an invalid subheader.");
+            return 0;
         }
 
-        errCode = BitConverter.ToUInt16(bytes.Skip(ERROR_CODE_INDEX).Take(ERROR_CODE_LENGTH).ToArray(), 0);
-        if (errCode != 0) 
-        {
-            throw new McProtocolException($"An error code was received from PLC. ({ErrCode})");
-        }
+        return PrevPacketParser.GetIndex() + PrevPacketParser.GetLength();
+    }
 
-        var length = BitConverter.ToUInt16(bytes.Skip(DATA_LENGTH_INDEX).Take(DATA_LENGTH_LENGTH).ToArray(), 0) - ERROR_CODE_LENGTH;
-        content = bytes.Skip(CONTENT_INDEX).ToArray();
-        if (content.Length != length) 
+    public virtual int GetLength()
+    {
+        return IsAscii ? AsciiLength : BinaryLength;
+    }
+
+    internal virtual byte[] GetBinaryBytes(byte[] bytes)
+    {
+        return bytes.Skip(GetIndex()).Take(GetLength()).ToArray();
+    }
+
+    internal virtual byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    {
+        var asciiHex = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
+        
+        if (IsReverse != null && IsReverse == true) 
         {
-            throw new RecivePacketException("Received packet had an invalid content.");
+            return DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / 2)
+                .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
+                .ToArray()
+            );
+        }
+        else 
+        {
+            return Enumerable.Range(0, asciiHex.Length / 2)
+                .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
+                .ToArray();
         }
     }
 }

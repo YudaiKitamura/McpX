@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class ContentLengthPacketParser : BasePacketParser2
+public class ContentLengthPacketParser : BasePacketParser
 {
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;
