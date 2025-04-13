@@ -4,11 +4,11 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-public sealed class RemoteUnlockCommand : IPlcCommand<bool>
+internal sealed class RemoteUnlockCommand : IPlcCommand<bool>
 {
     private readonly CommandPacketBuilder commandPacketBuilder;
     
-    public RemoteUnlockCommand(string password)
+    internal RemoteUnlockCommand(string password)
     {
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x30, 0x16],

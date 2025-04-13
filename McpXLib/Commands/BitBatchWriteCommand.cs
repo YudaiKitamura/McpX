@@ -5,14 +5,14 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-public sealed class BitBatchWriteCommand : IPlcCommand<bool>
+internal sealed class BitBatchWriteCommand : IPlcCommand<bool>
 {
-    public const ushort MIN_BIT_LENGTH = 1;
-    public const ushort MAX_BIT_LENGTH = 7168;
+    internal const ushort MIN_BIT_LENGTH = 1;
+    internal const ushort MAX_BIT_LENGTH = 7168;
     private readonly ushort bitLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public BitBatchWriteCommand(Prefix prefix, string address, bool[] values) : base()
+    internal BitBatchWriteCommand(Prefix prefix, string address, bool[] values) : base()
     {
         bitLength = (ushort)values.Length;
 
@@ -26,7 +26,7 @@ public sealed class BitBatchWriteCommand : IPlcCommand<bool>
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         if (bitLength < MIN_BIT_LENGTH || bitLength > MAX_BIT_LENGTH)
         {

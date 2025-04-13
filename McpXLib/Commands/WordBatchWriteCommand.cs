@@ -5,15 +5,15 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
+internal sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     where T : unmanaged
 {
-    public const ushort MIN_WORD_LENGTH = 1;
-    public const ushort MAX_WORD_LENGTH = 960;
+    internal const ushort MIN_WORD_LENGTH = 1;
+    internal const ushort MAX_WORD_LENGTH = 960;
     private readonly ushort wordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public WordBatchWriteCommand(Prefix prefix, string address, T[] values)
+    internal WordBatchWriteCommand(Prefix prefix, string address, T[] values)
     {
         wordLength = (ushort)(values.Length * DeviceConverter.GetWordLength<T>());
 
@@ -27,7 +27,7 @@ public sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         if (wordLength < MIN_WORD_LENGTH || wordLength > MAX_WORD_LENGTH)
         {

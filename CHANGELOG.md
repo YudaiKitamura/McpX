@@ -1,3 +1,7 @@
+## [0.4.2] - 2024-04-13
+### Changed
+- Changed unnecessary `public` modifiers to `internal`
+
 ## [0.4.1] - 2024-04-12
 ### Fixed
 - Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two.

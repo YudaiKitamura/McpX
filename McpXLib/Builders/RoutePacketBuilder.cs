@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class RoutePacketBuilder : IPacketBuilder
+internal class RoutePacketBuilder : IPacketBuilder
 {
     private readonly byte networkNumber;
     private readonly byte pcNumber;
@@ -11,7 +11,7 @@ public class RoutePacketBuilder : IPacketBuilder
     private readonly byte ioNumber;
     private readonly byte stationNumber;
 
-    public RoutePacketBuilder(
+    internal RoutePacketBuilder(
         byte networkNumber = 0x00,
         byte pcNumber = 0xFF,
         byte unitNumber = 0xFF,

@@ -5,9 +5,9 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class BitContentPacketParser : BaseContentPacketParser
+internal class BitContentPacketParser : BaseContentPacketParser
 {
-    public BitContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    internal BitContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser
     )

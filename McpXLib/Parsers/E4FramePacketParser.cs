@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class E4FramePacketParser : IPacketParser
+internal class E4FramePacketParser : IPacketParser
 {
     private SubHeaderPacketParser subHeaderPacketParser;
     private SerialPacketParser serialPacketParser;
@@ -13,7 +13,7 @@ public class E4FramePacketParser : IPacketParser
     private ErrorCodePacketParser errorCodePacketParser;
     private BaseContentPacketParser? contentPacketParser;
 
-    public E4FramePacketParser(IPlc plc, ushort serialNumber)
+    internal E4FramePacketParser(IPlc plc, ushort serialNumber)
     {
         subHeaderPacketParser = new SubHeaderPacketParser(
             requestFrame: plc.RequestFrame,
@@ -42,7 +42,7 @@ public class E4FramePacketParser : IPacketParser
         );
     }
 
-    public E4FramePacketParser(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode = DeviceAccessMode.Word) : this (
+    internal E4FramePacketParser(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode = DeviceAccessMode.Word) : this (
         plc: plc,
         serialNumber: serialNumber
     )
@@ -65,7 +65,7 @@ public class E4FramePacketParser : IPacketParser
         }
     }
 
-    public E4FramePacketParser(IPlc plc, ushort serialNumber, int wordLength, int doubleWordLength) : this (
+    internal E4FramePacketParser(IPlc plc, ushort serialNumber, int wordLength, int doubleWordLength) : this (
         plc: plc,
         serialNumber: serialNumber
     )

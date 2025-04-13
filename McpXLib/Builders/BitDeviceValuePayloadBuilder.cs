@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-public class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[] values) : IPayloadBuilder
+internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[] values) : IPayloadBuilder
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {

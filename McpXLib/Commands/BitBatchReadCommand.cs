@@ -5,14 +5,14 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class BitBatchReadCommand : IPlcCommand<bool[]>
+internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
 {
-    public const ushort MIN_BIT_LENGTH = 1;
-    public const ushort MAX_BIT_LENGTH = 7168;
+    internal const ushort MIN_BIT_LENGTH = 1;
+    internal const ushort MAX_BIT_LENGTH = 7168;
     private readonly ushort bitLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public BitBatchReadCommand(Prefix prefix, string address, ushort bitLength) : base()
+    internal BitBatchReadCommand(Prefix prefix, string address, ushort bitLength) : base()
     {
         this.bitLength = bitLength;
 
@@ -26,7 +26,7 @@ public sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
         if (bitLength < MIN_BIT_LENGTH || bitLength > MAX_BIT_LENGTH)
         {

@@ -4,12 +4,12 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class ErrorCodePacketParser : BasePacketParser
+internal class ErrorCodePacketParser : BasePacketParser
 {
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;
 
-    public ErrorCodePacketParser(IPacketParser? prevPacketParser = null, bool isAscii = false) : base(
+    internal ErrorCodePacketParser(IPacketParser? prevPacketParser = null, bool isAscii = false) : base(
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: true

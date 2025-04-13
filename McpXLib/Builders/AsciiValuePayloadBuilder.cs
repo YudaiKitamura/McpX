@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class AsciiPayloadBuilder(string value) : IPayloadBuilder
+internal class AsciiPayloadBuilder(string value) : IPayloadBuilder
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {

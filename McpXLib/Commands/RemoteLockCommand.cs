@@ -4,26 +4,17 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-public sealed class RemoteLockCommand : IPlcCommand<bool>
+internal sealed class RemoteLockCommand : IPlcCommand<bool>
 {
     private readonly CommandPacketBuilder commandPacketBuilder;
     
-    public RemoteLockCommand(string password)
+    internal RemoteLockCommand(string password)
     {
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x31, 0x16],
             subCommand: [0x00, 0x00],
             payloadBuilder: new AsciiPayloadBuilder(password),
             monitoringTimer: [0x00, 0x00]
-        );
-    }
-
-    public RequestPacketBuilder GetPacketBuilder()
-    {
-        return new RequestPacketBuilder(
-            subHeaderPacketBuilder: new SubHeaderPacketBuilder(),
-            routePacketBuilder: new RoutePacketBuilder(),
-            commandPacketBuilder: commandPacketBuilder
         );
     }
 

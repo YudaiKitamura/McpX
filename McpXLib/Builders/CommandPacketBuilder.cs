@@ -3,14 +3,14 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class CommandPacketBuilder : IPacketBuilder
+internal class CommandPacketBuilder : IPacketBuilder
 {
     private readonly byte[] command;
     private readonly byte[] subCommand;
     private readonly IPayloadBuilder? payloadBuilder;
     private readonly byte[] monitoringTimer;
 
-    public CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, byte[] monitoringTimer)
+    internal CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, byte[] monitoringTimer)
     {   
         this.command = command;
         this.subCommand = subCommand;
@@ -18,7 +18,7 @@ public class CommandPacketBuilder : IPacketBuilder
         this.monitoringTimer = monitoringTimer;
     }
 
-    public CommandPacketBuilder(byte[] command, byte[] subCommand, byte[] monitoringTimer)
+    internal CommandPacketBuilder(byte[] command, byte[] subCommand, byte[] monitoringTimer)
     {   
         this.command = command;
         this.subCommand = subCommand;
@@ -61,7 +61,7 @@ public class CommandPacketBuilder : IPacketBuilder
         return packets.ToArray();
     }
 
-    public static byte[] BinaryBytesToAsciiBytes(byte[] binaryBytes, bool isReverse)
+    internal static byte[] BinaryBytesToAsciiBytes(byte[] binaryBytes, bool isReverse)
     {
         return Encoding.ASCII.GetBytes(
             string.Concat(
@@ -70,7 +70,7 @@ public class CommandPacketBuilder : IPacketBuilder
         );
     }
 
-    public static byte[] BinaryBytesToAsciiByte(byte[] binaryBytes, bool isReverse)
+    internal static byte[] BinaryBytesToAsciiByte(byte[] binaryBytes, bool isReverse)
     {
         return Encoding.ASCII.GetBytes(
             string.Concat(

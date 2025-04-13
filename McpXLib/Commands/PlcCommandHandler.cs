@@ -2,7 +2,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Commands;
 
-public class PlcCommandHandler<T>
+internal class PlcCommandHandler<T>
 {
     public async Task<T> ExecuteAsync(IPlcCommand<T> command, IPlc plc)
     {

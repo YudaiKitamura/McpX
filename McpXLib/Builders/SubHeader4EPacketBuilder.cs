@@ -3,12 +3,12 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class SubHeader4EPacketBuilder : IPacketBuilder
+internal class SubHeader4EPacketBuilder : IPacketBuilder
 {
     private readonly byte[] subHeader;
     private readonly SerialPacketBuilder serial;
 
-    public SubHeader4EPacketBuilder(ushort serialNumber)
+    internal SubHeader4EPacketBuilder(ushort serialNumber)
     {
         subHeader = [ 0x54, 0x00 ];
         this.serial = new SerialPacketBuilder(serialNumber);

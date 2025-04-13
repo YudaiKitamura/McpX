@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-public class E3FramePacketParser : IPacketParser
+internal class E3FramePacketParser : IPacketParser
 {
     private SubHeaderPacketParser subHeaderPacketParser;
     private RoutePacketParser routePacketParser;
@@ -12,7 +12,7 @@ public class E3FramePacketParser : IPacketParser
     private ErrorCodePacketParser errorCodePacketParser;
     private BaseContentPacketParser? contentPacketParser;
 
-    public E3FramePacketParser(IPlc plc)
+    internal E3FramePacketParser(IPlc plc)
     {
         subHeaderPacketParser = new SubHeaderPacketParser(
             requestFrame: plc.RequestFrame,
@@ -35,7 +35,7 @@ public class E3FramePacketParser : IPacketParser
         );
     }
 
-    public E3FramePacketParser(IPlc plc, DeviceAccessMode deviceAccessMode = DeviceAccessMode.Word) : this (
+    internal E3FramePacketParser(IPlc plc, DeviceAccessMode deviceAccessMode = DeviceAccessMode.Word) : this (
         plc: plc
     )
     {
@@ -57,7 +57,7 @@ public class E3FramePacketParser : IPacketParser
         }
     }
 
-    public E3FramePacketParser(IPlc plc, int wordLength, int doubleWordLength) : this (
+    internal E3FramePacketParser(IPlc plc, int wordLength, int doubleWordLength) : this (
         plc: plc
     )
     {

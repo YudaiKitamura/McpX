@@ -4,14 +4,14 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Utils;
 
-public class RequestFrameSelector 
+internal class RequestFrameSelector 
 {
     private readonly RequestPacketBuilder requestPacketBuilder;
     private static int uniqSerialNumber;
     private ushort serialNumber;
     private IPlc plc;
 
-    public RequestFrameSelector(IPlc plc, CommandPacketBuilder commandPacketBuilder)
+    internal RequestFrameSelector(IPlc plc, CommandPacketBuilder commandPacketBuilder)
     {
         this.plc = plc;
 
@@ -30,12 +30,12 @@ public class RequestFrameSelector
         }
     }
 
-    public byte[] GetRequestPacket()
+    internal byte[] GetRequestPacket()
     {
         return plc.IsAscii ? requestPacketBuilder.ToAsciiBytes() : requestPacketBuilder.ToBinaryBytes();
     }
 
-    public ushort GetSerialNumber()
+    internal ushort GetSerialNumber()
     {
         return serialNumber;
     }

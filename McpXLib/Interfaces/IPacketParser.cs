@@ -2,9 +2,9 @@ namespace McpXLib.Interfaces;
 
 public interface IPacketParser
 {
-    public byte[] ParsePacket(byte[] bytes);
+    byte[] ParsePacket(byte[] bytes);
 
-    public int GetIndex();
+    int GetIndex();
 
-    public int GetLength();    
+    int GetLength();    
 }

@@ -2,7 +2,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class RequestPacketBuilder(IPacketBuilder subHeaderPacketBuilder, IPacketBuilder routePacketBuilder, IPacketBuilder commandPacketBuilder) : IRequestPacketBuilder
+internal class RequestPacketBuilder(IPacketBuilder subHeaderPacketBuilder, IPacketBuilder routePacketBuilder, IPacketBuilder commandPacketBuilder) : IRequestPacketBuilder
 {
     public IPacketBuilder SubHeaderPacketBuilder => subHeaderPacketBuilder;
     public IPacketBuilder RoutePacketBuilder => routePacketBuilder;

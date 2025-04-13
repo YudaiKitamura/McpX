@@ -6,7 +6,7 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-public sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
+internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -14,7 +14,7 @@ public sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] 
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    public MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices)
+    internal MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices)
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
@@ -28,7 +28,7 @@ public sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] 
         );
     }
 
-    public void ValidatePramater()
+    internal void ValidatePramater()
     {
     }
 

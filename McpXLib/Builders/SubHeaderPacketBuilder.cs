@@ -3,11 +3,11 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-public class SubHeaderPacketBuilder : IPacketBuilder
+internal class SubHeaderPacketBuilder : IPacketBuilder
 {
     private readonly byte[] subHeader;
 
-    public SubHeaderPacketBuilder()
+    internal SubHeaderPacketBuilder()
     {
         subHeader = [ 0x50, 0x00 ];
     }
