@@ -1,0 +1,144 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  id: IPacketBuilder
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  - McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  langs:
+  - csharp
+  - vb
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPacketBuilder
+    path: ../McpXLib/Interfaces/IPacketBuilder.cs
+    startLine: 2
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: public interface IPacketBuilder
+    content.vb: Public Interface IPacketBuilder
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  id: ToBinaryBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: ToBinaryBytes()
+  nameWithType: IPacketBuilder.ToBinaryBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes()
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: ToBinaryBytes
+    path: ../McpXLib/Interfaces/IPacketBuilder.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: byte[] ToBinaryBytes()
+    return:
+      type: System.Byte[]
+    content.vb: Function ToBinaryBytes() As Byte()
+  overload: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes*
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  id: ToAsciiBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: ToAsciiBytes()
+  nameWithType: IPacketBuilder.ToAsciiBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes()
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: ToAsciiBytes
+    path: ../McpXLib/Interfaces/IPacketBuilder.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: byte[] ToAsciiBytes()
+    return:
+      type: System.Byte[]
+    content.vb: Function ToAsciiBytes() As Byte()
+  overload: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes*
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes*
+  commentId: Overload:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  name: ToBinaryBytes
+  nameWithType: IPacketBuilder.ToBinaryBytes
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes*
+  commentId: Overload:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  name: ToAsciiBytes
+  nameWithType: IPacketBuilder.ToAsciiBytes
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes

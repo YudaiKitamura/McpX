@@ -1,3 +1,7 @@
+## [0.5.0] - 2024-04-14
+### Added
+- Added documentation comments
+
 ## [0.4.2] - 2024-04-13
 ### Changed
 - Changed unnecessary `public` modifiers to `internal`

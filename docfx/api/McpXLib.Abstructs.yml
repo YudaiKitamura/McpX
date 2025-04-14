@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Abstructs
+  commentId: N:McpXLib.Abstructs
+  id: McpXLib.Abstructs
+  children:
+  - McpXLib.Abstructs.BasePlc
+  langs:
+  - csharp
+  - vb
+  name: McpXLib.Abstructs
+  nameWithType: McpXLib.Abstructs
+  fullName: McpXLib.Abstructs
+  type: Namespace
+  assemblies:
+  - McpXLib
+references:
+- uid: McpXLib.Abstructs.BasePlc
+  commentId: T:McpXLib.Abstructs.BasePlc
+  parent: McpXLib.Abstructs
+  href: McpXLib.Abstructs.BasePlc.html
+  name: BasePlc
+  nameWithType: BasePlc
+  fullName: McpXLib.Abstructs.BasePlc
+- uid: McpXLib.Abstructs
+  commentId: N:McpXLib.Abstructs
+  href: McpXLib.html
+  name: McpXLib.Abstructs
+  nameWithType: McpXLib.Abstructs
+  fullName: McpXLib.Abstructs
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Abstructs
+    name: Abstructs
+    href: McpXLib.Abstructs.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Abstructs
+    name: Abstructs
+    href: McpXLib.Abstructs.html

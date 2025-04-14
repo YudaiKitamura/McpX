@@ -1,0 +1,203 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPacketParser
+  commentId: T:McpXLib.Interfaces.IPacketParser
+  id: IPacketParser
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPacketParser.GetIndex
+  - McpXLib.Interfaces.IPacketParser.GetLength
+  - McpXLib.Interfaces.IPacketParser.ParsePacket(System.Byte[])
+  langs:
+  - csharp
+  - vb
+  name: IPacketParser
+  nameWithType: IPacketParser
+  fullName: McpXLib.Interfaces.IPacketParser
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketParser.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPacketParser
+    path: ../McpXLib/Interfaces/IPacketParser.cs
+    startLine: 2
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: public interface IPacketParser
+    content.vb: Public Interface IPacketParser
+- uid: McpXLib.Interfaces.IPacketParser.ParsePacket(System.Byte[])
+  commentId: M:McpXLib.Interfaces.IPacketParser.ParsePacket(System.Byte[])
+  id: ParsePacket(System.Byte[])
+  parent: McpXLib.Interfaces.IPacketParser
+  langs:
+  - csharp
+  - vb
+  name: ParsePacket(byte[])
+  nameWithType: IPacketParser.ParsePacket(byte[])
+  fullName: McpXLib.Interfaces.IPacketParser.ParsePacket(byte[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketParser.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: ParsePacket
+    path: ../McpXLib/Interfaces/IPacketParser.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: byte[] ParsePacket(byte[] bytes)
+    parameters:
+    - id: bytes
+      type: System.Byte[]
+    return:
+      type: System.Byte[]
+    content.vb: Function ParsePacket(bytes As Byte()) As Byte()
+  overload: McpXLib.Interfaces.IPacketParser.ParsePacket*
+  nameWithType.vb: IPacketParser.ParsePacket(Byte())
+  fullName.vb: McpXLib.Interfaces.IPacketParser.ParsePacket(Byte())
+  name.vb: ParsePacket(Byte())
+- uid: McpXLib.Interfaces.IPacketParser.GetIndex
+  commentId: M:McpXLib.Interfaces.IPacketParser.GetIndex
+  id: GetIndex
+  parent: McpXLib.Interfaces.IPacketParser
+  langs:
+  - csharp
+  - vb
+  name: GetIndex()
+  nameWithType: IPacketParser.GetIndex()
+  fullName: McpXLib.Interfaces.IPacketParser.GetIndex()
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketParser.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: GetIndex
+    path: ../McpXLib/Interfaces/IPacketParser.cs
+    startLine: 6
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: int GetIndex()
+    return:
+      type: System.Int32
+    content.vb: Function GetIndex() As Integer
+  overload: McpXLib.Interfaces.IPacketParser.GetIndex*
+- uid: McpXLib.Interfaces.IPacketParser.GetLength
+  commentId: M:McpXLib.Interfaces.IPacketParser.GetLength
+  id: GetLength
+  parent: McpXLib.Interfaces.IPacketParser
+  langs:
+  - csharp
+  - vb
+  name: GetLength()
+  nameWithType: IPacketParser.GetLength()
+  fullName: McpXLib.Interfaces.IPacketParser.GetLength()
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPacketParser.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: GetLength
+    path: ../McpXLib/Interfaces/IPacketParser.cs
+    startLine: 8
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: int GetLength()
+    return:
+      type: System.Int32
+    content.vb: Function GetLength() As Integer
+  overload: McpXLib.Interfaces.IPacketParser.GetLength*
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPacketParser.ParsePacket*
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.ParsePacket
+  href: McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_ParsePacket_System_Byte___
+  name: ParsePacket
+  nameWithType: IPacketParser.ParsePacket
+  fullName: McpXLib.Interfaces.IPacketParser.ParsePacket
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketParser.GetIndex*
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.GetIndex
+  href: McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetIndex
+  name: GetIndex
+  nameWithType: IPacketParser.GetIndex
+  fullName: McpXLib.Interfaces.IPacketParser.GetIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: McpXLib.Interfaces.IPacketParser.GetLength*
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.GetLength
+  href: McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetLength
+  name: GetLength
+  nameWithType: IPacketParser.GetLength
+  fullName: McpXLib.Interfaces.IPacketParser.GetLength

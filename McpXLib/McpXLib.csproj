@@ -12,8 +12,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <PackageId>McpX</PackageId>
-    <Version>0.4.2</Version>
+    <Version>0.5.0</Version>
     <Authors>Yudai Kitamura</Authors>
     <Company></Company>
     <Description>MC protocol communication library for Mitsubishi PLC(三菱PLC用MCプロトコル通信ライブラリ)</Description>

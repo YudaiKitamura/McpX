@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Exceptions
+  commentId: N:McpXLib.Exceptions
+  id: McpXLib.Exceptions
+  children:
+  - McpXLib.Exceptions.DeviceAddressException
+  - McpXLib.Exceptions.McProtocolException
+  - McpXLib.Exceptions.PlcDuplicationException
+  - McpXLib.Exceptions.RecivePacketException
+  langs:
+  - csharp
+  - vb
+  name: McpXLib.Exceptions
+  nameWithType: McpXLib.Exceptions
+  fullName: McpXLib.Exceptions
+  type: Namespace
+  assemblies:
+  - McpXLib
+references:
+- uid: McpXLib.Exceptions.DeviceAddressException
+  commentId: T:McpXLib.Exceptions.DeviceAddressException
+  href: McpXLib.Exceptions.DeviceAddressException.html
+  name: DeviceAddressException
+  nameWithType: DeviceAddressException
+  fullName: McpXLib.Exceptions.DeviceAddressException
+- uid: McpXLib.Exceptions.McProtocolException
+  commentId: T:McpXLib.Exceptions.McProtocolException
+  href: McpXLib.Exceptions.McProtocolException.html
+  name: McProtocolException
+  nameWithType: McProtocolException
+  fullName: McpXLib.Exceptions.McProtocolException
+- uid: McpXLib.Exceptions.PlcDuplicationException
+  commentId: T:McpXLib.Exceptions.PlcDuplicationException
+  href: McpXLib.Exceptions.PlcDuplicationException.html
+  name: PlcDuplicationException
+  nameWithType: PlcDuplicationException
+  fullName: McpXLib.Exceptions.PlcDuplicationException
+- uid: McpXLib.Exceptions.RecivePacketException
+  commentId: T:McpXLib.Exceptions.RecivePacketException
+  href: McpXLib.Exceptions.RecivePacketException.html
+  name: RecivePacketException
+  nameWithType: RecivePacketException
+  fullName: McpXLib.Exceptions.RecivePacketException

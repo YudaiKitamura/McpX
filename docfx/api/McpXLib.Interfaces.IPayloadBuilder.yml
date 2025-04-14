@@ -1,0 +1,210 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPayloadBuilder
+  commentId: T:McpXLib.Interfaces.IPayloadBuilder
+  id: IPayloadBuilder
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: IPayloadBuilder
+  nameWithType: IPayloadBuilder
+  fullName: McpXLib.Interfaces.IPayloadBuilder
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPayloadBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPayloadBuilder
+    path: ../McpXLib/Interfaces/IPayloadBuilder.cs
+    startLine: 2
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: public interface IPayloadBuilder
+    content.vb: Public Interface IPayloadBuilder
+- uid: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  commentId: M:McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  id: AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  parent: McpXLib.Interfaces.IPayloadBuilder
+  langs:
+  - csharp
+  - vb
+  name: AppendPayload(List<byte>, bool)
+  nameWithType: IPayloadBuilder.AppendPayload(List<byte>, bool)
+  fullName: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List<byte>, bool)
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPayloadBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: AppendPayload
+    path: ../McpXLib/Interfaces/IPayloadBuilder.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: void AppendPayload(List<byte> packets, bool isAscii)
+    parameters:
+    - id: packets
+      type: System.Collections.Generic.List{System.Byte}
+    - id: isAscii
+      type: System.Boolean
+    content.vb: Sub AppendPayload(packets As List(Of Byte), isAscii As Boolean)
+  overload: McpXLib.Interfaces.IPayloadBuilder.AppendPayload*
+  nameWithType.vb: IPayloadBuilder.AppendPayload(List(Of Byte), Boolean)
+  fullName.vb: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List(Of Byte), Boolean)
+  name.vb: AppendPayload(List(Of Byte), Boolean)
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPayloadBuilder.AppendPayload*
+  commentId: Overload:McpXLib.Interfaces.IPayloadBuilder.AppendPayload
+  href: McpXLib.Interfaces.IPayloadBuilder.html#McpXLib_Interfaces_IPayloadBuilder_AppendPayload_System_Collections_Generic_List_System_Byte__System_Boolean_
+  name: AppendPayload
+  nameWithType: IPayloadBuilder.AppendPayload
+  fullName: McpXLib.Interfaces.IPayloadBuilder.AppendPayload
+- uid: System.Collections.Generic.List{System.Byte}
+  commentId: T:System.Collections.Generic.List{System.Byte}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<byte>
+  nameWithType: List<byte>
+  fullName: System.Collections.Generic.List<byte>
+  nameWithType.vb: List(Of Byte)
+  fullName.vb: System.Collections.Generic.List(Of Byte)
+  name.vb: List(Of Byte)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

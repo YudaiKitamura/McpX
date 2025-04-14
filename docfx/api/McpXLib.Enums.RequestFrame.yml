@@ -1,0 +1,118 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Enums.RequestFrame
+  commentId: T:McpXLib.Enums.RequestFrame
+  id: RequestFrame
+  parent: McpXLib.Enums
+  children:
+  - McpXLib.Enums.RequestFrame.E3
+  - McpXLib.Enums.RequestFrame.E4
+  langs:
+  - csharp
+  - vb
+  name: RequestFrame
+  nameWithType: RequestFrame
+  fullName: McpXLib.Enums.RequestFrame
+  type: Enum
+  source:
+    remote:
+      path: McpXLib/Enums/RequestFrame.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RequestFrame
+    path: ../McpXLib/Enums/RequestFrame.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: リクエストフレーム（データ交信電文）
+  example: []
+  syntax:
+    content: public enum RequestFrame
+    content.vb: Public Enum RequestFrame
+- uid: McpXLib.Enums.RequestFrame.E3
+  commentId: F:McpXLib.Enums.RequestFrame.E3
+  id: E3
+  parent: McpXLib.Enums.RequestFrame
+  langs:
+  - csharp
+  - vb
+  name: E3
+  nameWithType: RequestFrame.E3
+  fullName: McpXLib.Enums.RequestFrame.E3
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/RequestFrame.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: E3
+    path: ../McpXLib/Enums/RequestFrame.cs
+    startLine: 10
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 3Eフレーム
+  example: []
+  syntax:
+    content: E3 = 0
+    return:
+      type: McpXLib.Enums.RequestFrame
+- uid: McpXLib.Enums.RequestFrame.E4
+  commentId: F:McpXLib.Enums.RequestFrame.E4
+  id: E4
+  parent: McpXLib.Enums.RequestFrame
+  langs:
+  - csharp
+  - vb
+  name: E4
+  nameWithType: RequestFrame.E4
+  fullName: McpXLib.Enums.RequestFrame.E4
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/RequestFrame.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: E4
+    path: ../McpXLib/Enums/RequestFrame.cs
+    startLine: 15
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 4Eフレーム
+  example: []
+  syntax:
+    content: E4 = 1
+    return:
+      type: McpXLib.Enums.RequestFrame
+references:
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  href: McpXLib.html
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+- uid: McpXLib.Enums.RequestFrame
+  commentId: T:McpXLib.Enums.RequestFrame
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.RequestFrame.html
+  name: RequestFrame
+  nameWithType: RequestFrame
+  fullName: McpXLib.Enums.RequestFrame

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib
+  commentId: N:McpXLib
+  id: McpXLib
+  children:
+  - McpXLib.Mcp
+  - McpXLib.McpX
+  langs:
+  - csharp
+  - vb
+  name: McpXLib
+  nameWithType: McpXLib
+  fullName: McpXLib
+  type: Namespace
+  assemblies:
+  - McpXLib
+references:
+- uid: McpXLib.Mcp
+  commentId: T:McpXLib.Mcp
+  parent: McpXLib
+  href: McpXLib.Mcp.html
+  name: Mcp
+  nameWithType: Mcp
+  fullName: McpXLib.Mcp
+- uid: McpXLib.McpX
+  commentId: T:McpXLib.McpX
+  href: McpXLib.McpX.html
+  name: McpX
+  nameWithType: McpX
+  fullName: McpXLib.McpX
+- uid: McpXLib
+  commentId: N:McpXLib
+  href: McpXLib.html
+  name: McpXLib
+  nameWithType: McpXLib
+  fullName: McpXLib
