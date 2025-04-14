@@ -389,10 +389,30 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/license.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/license.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/plc_parameter_setting.md",
       "output": {
         ".html": {
           "relative_path": "docs/plc_parameter_setting.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/supported_protocols_and_commands.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/supported_protocols_and_commands.html"
         }
       },
       "version": ""
