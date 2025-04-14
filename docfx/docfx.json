@@ -50,6 +50,7 @@
       "_appFaviconPath": "images/mcpx_favicon.ico",
       "_enableSearch": true,
       "pdf": false
-    }
+    },
+    "basePath": "/McpX"
   }
 }
