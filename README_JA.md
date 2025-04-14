@@ -1,4 +1,5 @@
-<h1>McpX</h1>
+<img src="docfx/images/logo.svg" alt="logo" />
+<br>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.5.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
