@@ -1,8 +1,12 @@
 - name: インストール方法
   href: introduction.md
+- name: 対応プロトコル・コマンド
+  href: supported_protocols_and_commands.md
 - name: PLCパラメータ設定
   href: plc_parameter_setting.md
 - name: 使用例
   href: example.md
 - name: 変更履歴
   href: CHANGELOG_JA
+- name: ライセンス
+  href: license.md

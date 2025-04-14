@@ -97,6 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
   <div style="margin: 2em auto; text-align: left;">
     <ul>
       <li><a href="docs/introduction.html">インストール方法</a></li>
+      <li><a href="docs/supported_protocols_and_commands.html">対応プロトコル・コマンド</a></li>
       <li><a href="docs/plc_parameter_setting.html">PLCパラメータ設定</a></li>
       <li><a href="api/McpXLib.McpX.html">APIドキュメント</a></li>
       <li><a href="https://github.com/YudaiKitamura/McpX">GitHub</a></li>
