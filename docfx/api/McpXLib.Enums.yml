@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  id: McpXLib.Enums
+  children:
+  - McpXLib.Enums.Prefix
+  - McpXLib.Enums.RequestFrame
+  langs:
+  - csharp
+  - vb
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  type: Namespace
+  assemblies:
+  - McpXLib
+references:
+- uid: McpXLib.Enums.Prefix
+  commentId: T:McpXLib.Enums.Prefix
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.Prefix.html
+  name: Prefix
+  nameWithType: Prefix
+  fullName: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.RequestFrame
+  commentId: T:McpXLib.Enums.RequestFrame
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.RequestFrame.html
+  name: RequestFrame
+  nameWithType: RequestFrame
+  fullName: McpXLib.Enums.RequestFrame
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  href: McpXLib.html
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html

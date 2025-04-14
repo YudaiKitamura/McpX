@@ -1,0 +1,299 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPlcCommand`1
+  commentId: T:McpXLib.Interfaces.IPlcCommand`1
+  id: IPlcCommand`1
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPlcCommand`1.Execute(McpXLib.Interfaces.IPlc)
+  - McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  langs:
+  - csharp
+  - vb
+  name: IPlcCommand<T>
+  nameWithType: IPlcCommand<T>
+  fullName: McpXLib.Interfaces.IPlcCommand<T>
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcCommand.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPlcCommand
+    path: ../McpXLib/Interfaces/IPlcCommand.cs
+    startLine: 3
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: 'public interface IPlcCommand<T> : IPacketBuilder'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IPlcCommand(Of T) Inherits IPacketBuilder
+  inheritedMembers:
+  - McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  - McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  nameWithType.vb: IPlcCommand(Of T)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T)
+  name.vb: IPlcCommand(Of T)
+- uid: McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  commentId: M:McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  id: ExecuteAsync(McpXLib.Interfaces.IPlc)
+  parent: McpXLib.Interfaces.IPlcCommand`1
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(IPlc)
+  nameWithType: IPlcCommand<T>.ExecuteAsync(IPlc)
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcCommand.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: ExecuteAsync
+    path: ../McpXLib/Interfaces/IPlcCommand.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: Task<T> ExecuteAsync(IPlc plc)
+    parameters:
+    - id: plc
+      type: McpXLib.Interfaces.IPlc
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function ExecuteAsync(plc As IPlc) As Task(Of T)
+  overload: McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync*
+  nameWithType.vb: IPlcCommand(Of T).ExecuteAsync(IPlc)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).ExecuteAsync(McpXLib.Interfaces.IPlc)
+- uid: McpXLib.Interfaces.IPlcCommand`1.Execute(McpXLib.Interfaces.IPlc)
+  commentId: M:McpXLib.Interfaces.IPlcCommand`1.Execute(McpXLib.Interfaces.IPlc)
+  id: Execute(McpXLib.Interfaces.IPlc)
+  parent: McpXLib.Interfaces.IPlcCommand`1
+  langs:
+  - csharp
+  - vb
+  name: Execute(IPlc)
+  nameWithType: IPlcCommand<T>.Execute(IPlc)
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.Execute(McpXLib.Interfaces.IPlc)
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcCommand.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Execute
+    path: ../McpXLib/Interfaces/IPlcCommand.cs
+    startLine: 6
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: T Execute(IPlc plc)
+    parameters:
+    - id: plc
+      type: McpXLib.Interfaces.IPlc
+    return:
+      type: '{T}'
+    content.vb: Function Execute(plc As IPlc) As T
+  overload: McpXLib.Interfaces.IPlcCommand`1.Execute*
+  nameWithType.vb: IPlcCommand(Of T).Execute(IPlc)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).Execute(McpXLib.Interfaces.IPlc)
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  name: ToBinaryBytes()
+  nameWithType: IPacketBuilder.ToBinaryBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes()
+  spec.csharp:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+    name: ToBinaryBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+    name: ToBinaryBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  name: ToAsciiBytes()
+  nameWithType: IPacketBuilder.ToAsciiBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes()
+  spec.csharp:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+    name: ToAsciiBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+    name: ToAsciiBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPacketBuilder.html
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+- uid: McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync*
+  commentId: Overload:McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync
+  href: McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_ExecuteAsync_McpXLib_Interfaces_IPlc_
+  name: ExecuteAsync
+  nameWithType: IPlcCommand<T>.ExecuteAsync
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.ExecuteAsync
+  nameWithType.vb: IPlcCommand(Of T).ExecuteAsync
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).ExecuteAsync
+- uid: McpXLib.Interfaces.IPlc
+  commentId: T:McpXLib.Interfaces.IPlc
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPlc.html
+  name: IPlc
+  nameWithType: IPlc
+  fullName: McpXLib.Interfaces.IPlc
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: McpXLib.Interfaces.IPlcCommand`1.Execute*
+  commentId: Overload:McpXLib.Interfaces.IPlcCommand`1.Execute
+  href: McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_Execute_McpXLib_Interfaces_IPlc_
+  name: Execute
+  nameWithType: IPlcCommand<T>.Execute
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.Execute
+  nameWithType.vb: IPlcCommand(Of T).Execute
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).Execute
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

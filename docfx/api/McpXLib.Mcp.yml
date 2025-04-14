@@ -1,0 +1,1232 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Mcp
+  commentId: T:McpXLib.Mcp
+  id: Mcp
+  parent: McpXLib
+  children:
+  - McpXLib.Mcp.IsAscii
+  - McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  - McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  - McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  - McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  - McpXLib.Mcp.RequestFrame
+  - McpXLib.Mcp.Route
+  langs:
+  - csharp
+  - vb
+  name: Mcp
+  nameWithType: Mcp
+  fullName: McpXLib.Mcp
+  type: Class
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Mcp
+    path: ../McpXLib/Mcp.cs
+    startLine: 12
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: MCプロトコル実装クラス（コマンド追加以外は、<xref href="McpXLib.McpX" data-throw-if-not-resolved="false"></xref>クラスを使用してください。）
+  example: []
+  syntax:
+    content: 'public class Mcp : BasePlc, IDisposable, IPlc'
+    content.vb: Public Class Mcp Inherits BasePlc Implements IDisposable, IPlc
+  inheritance:
+  - System.Object
+  - McpXLib.Abstructs.BasePlc
+  derivedClasses:
+  - McpXLib.McpX
+  implements:
+  - System.IDisposable
+  - McpXLib.Interfaces.IPlc
+  inheritedMembers:
+  - McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+  - McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+  - McpXLib.Abstructs.BasePlc.Dispose
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: McpXLib.Mcp.IsAscii
+  commentId: P:McpXLib.Mcp.IsAscii
+  id: IsAscii
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: IsAscii
+  nameWithType: Mcp.IsAscii
+  fullName: McpXLib.Mcp.IsAscii
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IsAscii
+    path: ../McpXLib/Mcp.cs
+    startLine: 17
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: ASCIIコードによる交信を行う場合に<code>true</code>を指定します。
+  example: []
+  syntax:
+    content: public bool IsAscii { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsAscii As Boolean
+  overload: McpXLib.Mcp.IsAscii*
+  implements:
+  - McpXLib.Interfaces.IPlc.IsAscii
+- uid: McpXLib.Mcp.Route
+  commentId: P:McpXLib.Mcp.Route
+  id: Route
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: Route
+  nameWithType: Mcp.Route
+  fullName: McpXLib.Mcp.Route
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Route
+    path: ../McpXLib/Mcp.cs
+    startLine: 32
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: アクセス経路を指定します。
+  example: []
+  syntax:
+    content: public IPacketBuilder Route { get; set; }
+    parameters: []
+    return:
+      type: McpXLib.Interfaces.IPacketBuilder
+    content.vb: Public Property Route As IPacketBuilder
+  overload: McpXLib.Mcp.Route*
+  implements:
+  - McpXLib.Interfaces.IPlc.Route
+- uid: McpXLib.Mcp.RequestFrame
+  commentId: P:McpXLib.Mcp.RequestFrame
+  id: RequestFrame
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: RequestFrame
+  nameWithType: Mcp.RequestFrame
+  fullName: McpXLib.Mcp.RequestFrame
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RequestFrame
+    path: ../McpXLib/Mcp.cs
+    startLine: 47
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: フレーム（データ交信電文）の種類を指定します。
+  example: []
+  syntax:
+    content: public RequestFrame RequestFrame { get; set; }
+    parameters: []
+    return:
+      type: McpXLib.Enums.RequestFrame
+    content.vb: Public Property RequestFrame As RequestFrame
+  overload: McpXLib.Mcp.RequestFrame*
+  implements:
+  - McpXLib.Interfaces.IPlc.RequestFrame
+- uid: McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  commentId: M:McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  id: MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])
+  nameWithType: Mcp.MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])
+  fullName: McpXLib.Mcp.MonitorRegistAsync((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: MonitorRegistAsync
+    path: ../McpXLib/Mcp.cs
+    startLine: 265
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: デバイスモニター登録（非同期）
+  remarks: モニターするデバイスを非同期でPLCに登録します。
+  example: []
+  syntax:
+    content: public Task MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    parameters:
+    - id: wordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    - id: doubleWordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        32ビット単位でモニターするデバイスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function MonitorRegistAsync(wordAddresses As (Prefix, String)(), doubleWordAddresses As (Prefix, String)()) As Task
+  overload: McpXLib.Mcp.MonitorRegistAsync*
+  exceptions:
+  - type: McpXLib.Exceptions.DeviceAddressException
+    commentId: T:McpXLib.Exceptions.DeviceAddressException
+    description: 指定したアドレスが不正の場合に例外をスローします。
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: モニター登録のデバイス範囲を超過した場合に例外をスローします。
+  - type: McpXLib.Exceptions.RecivePacketException
+    commentId: T:McpXLib.Exceptions.RecivePacketException
+    description: 受信したパケットの内容が不正な値の場合に例外をスローします。
+  - type: McpXLib.Exceptions.McProtocolException
+    commentId: T:McpXLib.Exceptions.McProtocolException
+    description: PLCからエラーコードを受信した場合に例外をスローします。
+  nameWithType.vb: Mcp.MonitorRegistAsync((Prefix, String)(), (Prefix, String)())
+  fullName.vb: McpXLib.Mcp.MonitorRegistAsync((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  name.vb: MonitorRegistAsync((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  commentId: M:McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  id: MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: MonitorRegist((Prefix, string)[], (Prefix, string)[])
+  nameWithType: Mcp.MonitorRegist((Prefix, string)[], (Prefix, string)[])
+  fullName: McpXLib.Mcp.MonitorRegist((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: MonitorRegist
+    path: ../McpXLib/Mcp.cs
+    startLine: 293
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: デバイスモニター登録
+  remarks: モニターするデバイスをPLCに登録します。
+  example: []
+  syntax:
+    content: public void MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    parameters:
+    - id: wordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    - id: doubleWordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        32ビット単位でモニターするデバイスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    content.vb: Public Sub MonitorRegist(wordAddresses As (Prefix, String)(), doubleWordAddresses As (Prefix, String)())
+  overload: McpXLib.Mcp.MonitorRegist*
+  exceptions:
+  - type: McpXLib.Exceptions.DeviceAddressException
+    commentId: T:McpXLib.Exceptions.DeviceAddressException
+    description: 指定したアドレスが不正の場合に例外をスローします。
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: モニター登録のデバイス範囲を超過した場合に例外をスローします。
+  - type: McpXLib.Exceptions.RecivePacketException
+    commentId: T:McpXLib.Exceptions.RecivePacketException
+    description: 受信したパケットの内容が不正な値の場合に例外をスローします。
+  - type: McpXLib.Exceptions.McProtocolException
+    commentId: T:McpXLib.Exceptions.McProtocolException
+    description: PLCからエラーコードを受信した場合に例外をスローします。
+  nameWithType.vb: Mcp.MonitorRegist((Prefix, String)(), (Prefix, String)())
+  fullName.vb: McpXLib.Mcp.MonitorRegist((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  name.vb: MonitorRegist((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  commentId: M:McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  id: MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: MonitorAsync<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  nameWithType: Mcp.MonitorAsync<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  fullName: McpXLib.Mcp.MonitorAsync<T1, T2>((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: MonitorAsync
+    path: ../McpXLib/Mcp.cs
+    startLine: 334
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: デバイスモニター（非同期）
+  remarks: >-
+    モニター登録したデバイスの値を非同期でPLCから読み込みます。<br />
+
+    指定された型<code>T1</code>、<code>T2</code>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
+  example: []
+  syntax:
+    content: 'public Task<(T1[] wordValues, T2[] doubleValues)> MonitorAsync<T1, T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) where T1 : unmanaged where T2 : unmanaged'
+    parameters:
+    - id: wordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    - id: doubleWordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        32ビット単位でモニターするデバイスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    typeParameters:
+    - id: T1
+      description: >-
+        16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+
+        `unmanaged` 制約があるため、参照型は使用できません。
+    - id: T2
+      description: >-
+        32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+
+        `unmanaged` 制約があるため、参照型は使用できません。
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{{T1}[],{T2}[]}}
+      description: >-
+        PLCから読み込んだ値を指定した型<code>T1</code>、<code>T2</code>に変換して返します。<br />
+
+        ・<code>wordValues</code>: 16ビット単位で読み込まれた <code>T1</code>型の値の配列<br />
+
+        ・<code>doubleValues</code>: 32ビット単位で読み込まれた <code>T2</code>型の値の配列
+    content.vb: Public Function MonitorAsync(Of T1 As Structure, T2 As Structure)(wordAddresses As (Prefix, String)(), doubleWordAddresses As (Prefix, String)()) As Task(Of (wordValues As T1(), doubleValues As T2()))
+  overload: McpXLib.Mcp.MonitorAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: モニター登録のデバイス範囲を超過した場合に例外をスローします。
+  - type: McpXLib.Exceptions.RecivePacketException
+    commentId: T:McpXLib.Exceptions.RecivePacketException
+    description: 受信したパケットの内容が不正な値の場合に例外をスローします。
+  - type: McpXLib.Exceptions.McProtocolException
+    commentId: T:McpXLib.Exceptions.McProtocolException
+    description: PLCからエラーコードを受信した場合に例外をスローします。
+  nameWithType.vb: Mcp.MonitorAsync(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+  fullName.vb: McpXLib.Mcp.MonitorAsync(Of T1, T2)((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  name.vb: MonitorAsync(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  commentId: M:McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  id: Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  parent: McpXLib.Mcp
+  langs:
+  - csharp
+  - vb
+  name: Monitor<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  nameWithType: Mcp.Monitor<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  fullName: McpXLib.Mcp.Monitor<T1, T2>((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Mcp.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Monitor
+    path: ../McpXLib/Mcp.cs
+    startLine: 377
+  assemblies:
+  - McpXLib
+  namespace: McpXLib
+  summary: デバイスモニター
+  remarks: >-
+    モニター登録したデバイスの値をPLCから読み込みます。<br />
+
+    指定された型<code>T1</code>、<code>T2</code>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
+  example: []
+  syntax:
+    content: 'public (T1[] wordValues, T2[] doubleValues) Monitor<T1, T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) where T1 : unmanaged where T2 : unmanaged'
+    parameters:
+    - id: wordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    - id: doubleWordAddresses
+      type: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+      description: >-
+        32ビット単位でモニターするデバイスの配列を指定します。<br />
+
+        ・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br />
+
+        ・<code>address</code>:モニター対象のアドレスを指定します。
+    typeParameters:
+    - id: T1
+      description: >-
+        16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+
+        `unmanaged` 制約があるため、参照型は使用できません。
+    - id: T2
+      description: >-
+        32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+
+        `unmanaged` 制約があるため、参照型は使用できません。
+    return:
+      type: System.ValueTuple{{T1}[],{T2}[]}
+      description: >-
+        PLCから読み込んだ値を指定した型<code>T1</code>、<code>T2</code>に変換して返します。<br />
+
+        ・<code>wordValues</code>: 16ビット単位で読み込まれた <code>T1</code>型の値の配列<br />
+
+        ・<code>doubleValues</code>: 32ビット単位で読み込まれた <code>T2</code>型の値の配列
+    content.vb: Public Function Monitor(Of T1 As Structure, T2 As Structure)(wordAddresses As (Prefix, String)(), doubleWordAddresses As (Prefix, String)()) As (wordValues As T1(), doubleValues As T2())
+  overload: McpXLib.Mcp.Monitor*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: モニター登録のデバイス範囲を超過した場合に例外をスローします。
+  - type: McpXLib.Exceptions.RecivePacketException
+    commentId: T:McpXLib.Exceptions.RecivePacketException
+    description: 受信したパケットの内容が不正な値の場合に例外をスローします。
+  - type: McpXLib.Exceptions.McProtocolException
+    commentId: T:McpXLib.Exceptions.McProtocolException
+    description: PLCからエラーコードを受信した場合に例外をスローします。
+  nameWithType.vb: Mcp.Monitor(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+  fullName.vb: McpXLib.Mcp.Monitor(Of T1, T2)((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  name.vb: Monitor(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+references:
+- uid: McpXLib.McpX
+  commentId: T:McpXLib.McpX
+  href: McpXLib.McpX.html
+  name: McpX
+  nameWithType: McpX
+  fullName: McpXLib.McpX
+- uid: McpXLib
+  commentId: N:McpXLib
+  href: McpXLib.html
+  name: McpXLib
+  nameWithType: McpXLib
+  fullName: McpXLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: McpXLib.Abstructs.BasePlc
+  commentId: T:McpXLib.Abstructs.BasePlc
+  parent: McpXLib.Abstructs
+  href: McpXLib.Abstructs.BasePlc.html
+  name: BasePlc
+  nameWithType: BasePlc
+  fullName: McpXLib.Abstructs.BasePlc
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: McpXLib.Interfaces.IPlc
+  commentId: T:McpXLib.Interfaces.IPlc
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPlc.html
+  name: IPlc
+  nameWithType: IPlc
+  fullName: McpXLib.Interfaces.IPlc
+- uid: McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+  commentId: M:McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+  parent: McpXLib.Abstructs.BasePlc
+  isExternal: true
+  href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___
+  name: RequestAsync(byte[])
+  nameWithType: BasePlc.RequestAsync(byte[])
+  fullName: McpXLib.Abstructs.BasePlc.RequestAsync(byte[])
+  nameWithType.vb: BasePlc.RequestAsync(Byte())
+  fullName.vb: McpXLib.Abstructs.BasePlc.RequestAsync(Byte())
+  name.vb: RequestAsync(Byte())
+  spec.csharp:
+  - uid: McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+    name: RequestAsync
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+    name: RequestAsync
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___
+  - name: (
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+  commentId: M:McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+  parent: McpXLib.Abstructs.BasePlc
+  isExternal: true
+  href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___
+  name: Request(byte[])
+  nameWithType: BasePlc.Request(byte[])
+  fullName: McpXLib.Abstructs.BasePlc.Request(byte[])
+  nameWithType.vb: BasePlc.Request(Byte())
+  fullName.vb: McpXLib.Abstructs.BasePlc.Request(Byte())
+  name.vb: Request(Byte())
+  spec.csharp:
+  - uid: McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+    name: Request
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+    name: Request
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___
+  - name: (
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: McpXLib.Abstructs.BasePlc.Dispose
+  commentId: M:McpXLib.Abstructs.BasePlc.Dispose
+  parent: McpXLib.Abstructs.BasePlc
+  href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose
+  name: Dispose()
+  nameWithType: BasePlc.Dispose()
+  fullName: McpXLib.Abstructs.BasePlc.Dispose()
+  spec.csharp:
+  - uid: McpXLib.Abstructs.BasePlc.Dispose
+    name: Dispose
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Abstructs.BasePlc.Dispose
+    name: Dispose
+    href: McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: McpXLib.Abstructs
+  commentId: N:McpXLib.Abstructs
+  href: McpXLib.html
+  name: McpXLib.Abstructs
+  nameWithType: McpXLib.Abstructs
+  fullName: McpXLib.Abstructs
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Abstructs
+    name: Abstructs
+    href: McpXLib.Abstructs.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Abstructs
+    name: Abstructs
+    href: McpXLib.Abstructs.html
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Mcp.IsAscii*
+  commentId: Overload:McpXLib.Mcp.IsAscii
+  href: McpXLib.Mcp.html#McpXLib_Mcp_IsAscii
+  name: IsAscii
+  nameWithType: Mcp.IsAscii
+  fullName: McpXLib.Mcp.IsAscii
+- uid: McpXLib.Interfaces.IPlc.IsAscii
+  commentId: P:McpXLib.Interfaces.IPlc.IsAscii
+  parent: McpXLib.Interfaces.IPlc
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_IsAscii
+  name: IsAscii
+  nameWithType: IPlc.IsAscii
+  fullName: McpXLib.Interfaces.IPlc.IsAscii
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: McpXLib.Mcp.Route*
+  commentId: Overload:McpXLib.Mcp.Route
+  href: McpXLib.Mcp.html#McpXLib_Mcp_Route
+  name: Route
+  nameWithType: Mcp.Route
+  fullName: McpXLib.Mcp.Route
+- uid: McpXLib.Interfaces.IPlc.Route
+  commentId: P:McpXLib.Interfaces.IPlc.Route
+  parent: McpXLib.Interfaces.IPlc
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Route
+  name: Route
+  nameWithType: IPlc.Route
+  fullName: McpXLib.Interfaces.IPlc.Route
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPacketBuilder.html
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+- uid: McpXLib.Mcp.RequestFrame*
+  commentId: Overload:McpXLib.Mcp.RequestFrame
+  href: McpXLib.Mcp.html#McpXLib_Mcp_RequestFrame
+  name: RequestFrame
+  nameWithType: Mcp.RequestFrame
+  fullName: McpXLib.Mcp.RequestFrame
+- uid: McpXLib.Interfaces.IPlc.RequestFrame
+  commentId: P:McpXLib.Interfaces.IPlc.RequestFrame
+  parent: McpXLib.Interfaces.IPlc
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestFrame
+  name: RequestFrame
+  nameWithType: IPlc.RequestFrame
+  fullName: McpXLib.Interfaces.IPlc.RequestFrame
+- uid: McpXLib.Enums.RequestFrame
+  commentId: T:McpXLib.Enums.RequestFrame
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.RequestFrame.html
+  name: RequestFrame
+  nameWithType: RequestFrame
+  fullName: McpXLib.Enums.RequestFrame
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  href: McpXLib.html
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+- uid: McpXLib.Exceptions.DeviceAddressException
+  commentId: T:McpXLib.Exceptions.DeviceAddressException
+  href: McpXLib.Exceptions.DeviceAddressException.html
+  name: DeviceAddressException
+  nameWithType: DeviceAddressException
+  fullName: McpXLib.Exceptions.DeviceAddressException
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: McpXLib.Exceptions.RecivePacketException
+  commentId: T:McpXLib.Exceptions.RecivePacketException
+  href: McpXLib.Exceptions.RecivePacketException.html
+  name: RecivePacketException
+  nameWithType: RecivePacketException
+  fullName: McpXLib.Exceptions.RecivePacketException
+- uid: McpXLib.Exceptions.McProtocolException
+  commentId: T:McpXLib.Exceptions.McProtocolException
+  href: McpXLib.Exceptions.McProtocolException.html
+  name: McProtocolException
+  nameWithType: McProtocolException
+  fullName: McpXLib.Exceptions.McProtocolException
+- uid: McpXLib.Mcp.MonitorRegistAsync*
+  commentId: Overload:McpXLib.Mcp.MonitorRegistAsync
+  href: McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegistAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  name: MonitorRegistAsync
+  nameWithType: Mcp.MonitorRegistAsync
+  fullName: McpXLib.Mcp.MonitorRegistAsync
+- uid: System.ValueTuple{McpXLib.Enums.Prefix,System.String}[]
+  isExternal: true
+  href: McpXLib.Enums.Prefix.html
+  name: (Prefix, string)[]
+  nameWithType: (Prefix, string)[]
+  fullName: (McpXLib.Enums.Prefix, string)[]
+  nameWithType.vb: (Prefix, String)()
+  fullName.vb: (McpXLib.Enums.Prefix, String)()
+  name.vb: (Prefix, String)()
+  spec.csharp:
+  - name: (
+  - uid: McpXLib.Enums.Prefix
+    name: Prefix
+    href: McpXLib.Enums.Prefix.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: (
+  - uid: McpXLib.Enums.Prefix
+    name: Prefix
+    href: McpXLib.Enums.Prefix.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: McpXLib.Mcp.MonitorRegist*
+  commentId: Overload:McpXLib.Mcp.MonitorRegist
+  href: McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegist_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  name: MonitorRegist
+  nameWithType: Mcp.MonitorRegist
+  fullName: McpXLib.Mcp.MonitorRegist
+- uid: McpXLib.Mcp.MonitorAsync*
+  commentId: Overload:McpXLib.Mcp.MonitorAsync
+  href: McpXLib.Mcp.html#McpXLib_Mcp_MonitorAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  name: MonitorAsync
+  nameWithType: Mcp.MonitorAsync
+  fullName: McpXLib.Mcp.MonitorAsync
+- uid: System.Threading.Tasks.Task{System.ValueTuple{{T1}[],{T2}[]}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{``0[],``1[]}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(T1[] wordValues, T2[] doubleValues)>
+  nameWithType: Task<(T1[] wordValues, T2[] doubleValues)>
+  fullName: System.Threading.Tasks.Task<(T1[] wordValues, T2[] doubleValues)>
+  nameWithType.vb: Task(Of (wordValues As T1(), doubleValues As T2()))
+  fullName.vb: System.Threading.Tasks.Task(Of (wordValues As T1(), doubleValues As T2()))
+  name.vb: Task(Of (wordValues As T1(), doubleValues As T2()))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - name: T1
+  - name: '['
+  - name: ']'
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.wordValues
+    name: wordValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '['
+  - name: ']'
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.doubleValues
+    name: doubleValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{``0[],``1[]}.wordValues
+    name: wordValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues
+  - name: " "
+  - name: As
+  - name: " "
+  - name: T1
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.doubleValues
+    name: doubleValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues
+  - name: " "
+  - name: As
+  - name: " "
+  - name: T2
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: McpXLib.Mcp.Monitor*
+  commentId: Overload:McpXLib.Mcp.Monitor
+  href: McpXLib.Mcp.html#McpXLib_Mcp_Monitor__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  name: Monitor
+  nameWithType: Mcp.Monitor
+  fullName: McpXLib.Mcp.Monitor
+- uid: System.ValueTuple{{T1}[],{T2}[]}
+  commentId: T:System.ValueTuple{``0[],``1[]}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues
+  name: (T1[] wordValues, T2[] doubleValues)
+  nameWithType: (T1[] wordValues, T2[] doubleValues)
+  fullName: (T1[] wordValues, T2[] doubleValues)
+  nameWithType.vb: (wordValues As T1(), doubleValues As T2())
+  fullName.vb: (wordValues As T1(), doubleValues As T2())
+  name.vb: (wordValues As T1(), doubleValues As T2())
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: '['
+  - name: ']'
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.wordValues
+    name: wordValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '['
+  - name: ']'
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.doubleValues
+    name: doubleValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{``0[],``1[]}.wordValues
+    name: wordValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues
+  - name: " "
+  - name: As
+  - name: " "
+  - name: T1
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{``0[],``1[]}.doubleValues
+    name: doubleValues
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues
+  - name: " "
+  - name: As
+  - name: " "
+  - name: T2
+  - name: (
+  - name: )
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )

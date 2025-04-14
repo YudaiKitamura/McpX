@@ -1,0 +1,207 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IRequestPacketBuilder
+  commentId: T:McpXLib.Interfaces.IRequestPacketBuilder
+  id: IRequestPacketBuilder
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  - McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  - McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: IRequestPacketBuilder
+  nameWithType: IRequestPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IRequestPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IRequestPacketBuilder
+    path: ../McpXLib/Interfaces/IRequestPacketBuilder.cs
+    startLine: 2
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: 'public interface IRequestPacketBuilder : IPacketBuilder'
+    content.vb: Public Interface IRequestPacketBuilder Inherits IPacketBuilder
+  inheritedMembers:
+  - McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  - McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  id: SubHeaderPacketBuilder
+  parent: McpXLib.Interfaces.IRequestPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: SubHeaderPacketBuilder
+  nameWithType: IRequestPacketBuilder.SubHeaderPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IRequestPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SubHeaderPacketBuilder
+    path: ../McpXLib/Interfaces/IRequestPacketBuilder.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: IPacketBuilder SubHeaderPacketBuilder { get; }
+    parameters: []
+    return:
+      type: McpXLib.Interfaces.IPacketBuilder
+    content.vb: ReadOnly Property SubHeaderPacketBuilder As IPacketBuilder
+  overload: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder*
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  id: RoutePacketBuilder
+  parent: McpXLib.Interfaces.IRequestPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: RoutePacketBuilder
+  nameWithType: IRequestPacketBuilder.RoutePacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IRequestPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RoutePacketBuilder
+    path: ../McpXLib/Interfaces/IRequestPacketBuilder.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: IPacketBuilder RoutePacketBuilder { get; }
+    parameters: []
+    return:
+      type: McpXLib.Interfaces.IPacketBuilder
+    content.vb: ReadOnly Property RoutePacketBuilder As IPacketBuilder
+  overload: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder*
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  id: CommandPacketBuilder
+  parent: McpXLib.Interfaces.IRequestPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: CommandPacketBuilder
+  nameWithType: IRequestPacketBuilder.CommandPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IRequestPacketBuilder.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: CommandPacketBuilder
+    path: ../McpXLib/Interfaces/IRequestPacketBuilder.cs
+    startLine: 6
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: IPacketBuilder CommandPacketBuilder { get; }
+    parameters: []
+    return:
+      type: McpXLib.Interfaces.IPacketBuilder
+    content.vb: ReadOnly Property CommandPacketBuilder As IPacketBuilder
+  overload: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder*
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  name: ToBinaryBytes()
+  nameWithType: IPacketBuilder.ToBinaryBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes()
+  spec.csharp:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+    name: ToBinaryBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+    name: ToBinaryBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  parent: McpXLib.Interfaces.IPacketBuilder
+  href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  name: ToAsciiBytes()
+  nameWithType: IPacketBuilder.ToAsciiBytes()
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes()
+  spec.csharp:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+    name: ToAsciiBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+    name: ToAsciiBytes
+    href: McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  - name: (
+  - name: )
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPacketBuilder.html
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder*
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  href: McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_SubHeaderPacketBuilder
+  name: SubHeaderPacketBuilder
+  nameWithType: IRequestPacketBuilder.SubHeaderPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder*
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  href: McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_RoutePacketBuilder
+  name: RoutePacketBuilder
+  nameWithType: IRequestPacketBuilder.RoutePacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder*
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  href: McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_CommandPacketBuilder
+  name: CommandPacketBuilder
+  nameWithType: IRequestPacketBuilder.CommandPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder

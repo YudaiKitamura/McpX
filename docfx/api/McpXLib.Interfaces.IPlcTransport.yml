@@ -1,0 +1,299 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPlcTransport
+  commentId: T:McpXLib.Interfaces.IPlcTransport
+  id: IPlcTransport
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPlcTransport.Request(System.Byte[])
+  - McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[])
+  langs:
+  - csharp
+  - vb
+  name: IPlcTransport
+  nameWithType: IPlcTransport
+  fullName: McpXLib.Interfaces.IPlcTransport
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcTransport.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPlcTransport
+    path: ../McpXLib/Interfaces/IPlcTransport.cs
+    startLine: 2
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: 'public interface IPlcTransport : IDisposable'
+    content.vb: Public Interface IPlcTransport Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[])
+  commentId: M:McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[])
+  id: RequestAsync(System.Byte[])
+  parent: McpXLib.Interfaces.IPlcTransport
+  langs:
+  - csharp
+  - vb
+  name: RequestAsync(byte[])
+  nameWithType: IPlcTransport.RequestAsync(byte[])
+  fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync(byte[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcTransport.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RequestAsync
+    path: ../McpXLib/Interfaces/IPlcTransport.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: Task<byte[]> RequestAsync(byte[] packet)
+    parameters:
+    - id: packet
+      type: System.Byte[]
+    return:
+      type: System.Threading.Tasks.Task{System.Byte[]}
+    content.vb: Function RequestAsync(packet As Byte()) As Task(Of Byte())
+  overload: McpXLib.Interfaces.IPlcTransport.RequestAsync*
+  nameWithType.vb: IPlcTransport.RequestAsync(Byte())
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.RequestAsync(Byte())
+  name.vb: RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlcTransport.Request(System.Byte[])
+  commentId: M:McpXLib.Interfaces.IPlcTransport.Request(System.Byte[])
+  id: Request(System.Byte[])
+  parent: McpXLib.Interfaces.IPlcTransport
+  langs:
+  - csharp
+  - vb
+  name: Request(byte[])
+  nameWithType: IPlcTransport.Request(byte[])
+  fullName: McpXLib.Interfaces.IPlcTransport.Request(byte[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlcTransport.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Request
+    path: ../McpXLib/Interfaces/IPlcTransport.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: byte[] Request(byte[] packet)
+    parameters:
+    - id: packet
+      type: System.Byte[]
+    return:
+      type: System.Byte[]
+    content.vb: Function Request(packet As Byte()) As Byte()
+  overload: McpXLib.Interfaces.IPlcTransport.Request*
+  nameWithType.vb: IPlcTransport.Request(Byte())
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.Request(Byte())
+  name.vb: Request(Byte())
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: McpXLib.Interfaces.IPlcTransport.RequestAsync*
+  commentId: Overload:McpXLib.Interfaces.IPlcTransport.RequestAsync
+  href: McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_RequestAsync_System_Byte___
+  name: RequestAsync
+  nameWithType: IPlcTransport.RequestAsync
+  fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Byte[]}
+  commentId: T:System.Threading.Tasks.Task{System.Byte[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<byte[]>
+  nameWithType: Task<byte[]>
+  fullName: System.Threading.Tasks.Task<byte[]>
+  nameWithType.vb: Task(Of Byte())
+  fullName.vb: System.Threading.Tasks.Task(Of Byte())
+  name.vb: Task(Of Byte())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: McpXLib.Interfaces.IPlcTransport.Request*
+  commentId: Overload:McpXLib.Interfaces.IPlcTransport.Request
+  href: McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_Request_System_Byte___
+  name: Request
+  nameWithType: IPlcTransport.Request
+  fullName: McpXLib.Interfaces.IPlcTransport.Request

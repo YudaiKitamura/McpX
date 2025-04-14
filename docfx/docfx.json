@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../McpXLib",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      },
+      {
+        "src": "..",
+        "files": [
+          "*.md"
+        ],
+        "dest": "docs"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "McpX",
+      "_appTitle": "McpX",
+      "_appLogoPath": "images/icon.svg",
+      "_appFaviconPath": "images/mcpx_favicon.ico",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

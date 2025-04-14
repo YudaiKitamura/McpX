@@ -1,0 +1,422 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces.IPlc
+  commentId: T:McpXLib.Interfaces.IPlc
+  id: IPlc
+  parent: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPlc.IsAscii
+  - McpXLib.Interfaces.IPlc.Request(System.Byte[])
+  - McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[])
+  - McpXLib.Interfaces.IPlc.RequestFrame
+  - McpXLib.Interfaces.IPlc.Route
+  langs:
+  - csharp
+  - vb
+  name: IPlc
+  nameWithType: IPlc
+  fullName: McpXLib.Interfaces.IPlc
+  type: Interface
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IPlc
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 4
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: public interface IPlc
+    content.vb: Public Interface IPlc
+- uid: McpXLib.Interfaces.IPlc.IsAscii
+  commentId: P:McpXLib.Interfaces.IPlc.IsAscii
+  id: IsAscii
+  parent: McpXLib.Interfaces.IPlc
+  langs:
+  - csharp
+  - vb
+  name: IsAscii
+  nameWithType: IPlc.IsAscii
+  fullName: McpXLib.Interfaces.IPlc.IsAscii
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: IsAscii
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 6
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: bool IsAscii { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsAscii As Boolean
+  overload: McpXLib.Interfaces.IPlc.IsAscii*
+- uid: McpXLib.Interfaces.IPlc.Route
+  commentId: P:McpXLib.Interfaces.IPlc.Route
+  id: Route
+  parent: McpXLib.Interfaces.IPlc
+  langs:
+  - csharp
+  - vb
+  name: Route
+  nameWithType: IPlc.Route
+  fullName: McpXLib.Interfaces.IPlc.Route
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Route
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 7
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: IPacketBuilder Route { get; set; }
+    parameters: []
+    return:
+      type: McpXLib.Interfaces.IPacketBuilder
+    content.vb: Property Route As IPacketBuilder
+  overload: McpXLib.Interfaces.IPlc.Route*
+- uid: McpXLib.Interfaces.IPlc.RequestFrame
+  commentId: P:McpXLib.Interfaces.IPlc.RequestFrame
+  id: RequestFrame
+  parent: McpXLib.Interfaces.IPlc
+  langs:
+  - csharp
+  - vb
+  name: RequestFrame
+  nameWithType: IPlc.RequestFrame
+  fullName: McpXLib.Interfaces.IPlc.RequestFrame
+  type: Property
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RequestFrame
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 8
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: RequestFrame RequestFrame { get; set; }
+    parameters: []
+    return:
+      type: McpXLib.Enums.RequestFrame
+    content.vb: Property RequestFrame As RequestFrame
+  overload: McpXLib.Interfaces.IPlc.RequestFrame*
+- uid: McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[])
+  commentId: M:McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[])
+  id: RequestAsync(System.Byte[])
+  parent: McpXLib.Interfaces.IPlc
+  langs:
+  - csharp
+  - vb
+  name: RequestAsync(byte[])
+  nameWithType: IPlc.RequestAsync(byte[])
+  fullName: McpXLib.Interfaces.IPlc.RequestAsync(byte[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: RequestAsync
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 9
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: Task<byte[]> RequestAsync(byte[] packet)
+    parameters:
+    - id: packet
+      type: System.Byte[]
+    return:
+      type: System.Threading.Tasks.Task{System.Byte[]}
+    content.vb: Function RequestAsync(packet As Byte()) As Task(Of Byte())
+  overload: McpXLib.Interfaces.IPlc.RequestAsync*
+  nameWithType.vb: IPlc.RequestAsync(Byte())
+  fullName.vb: McpXLib.Interfaces.IPlc.RequestAsync(Byte())
+  name.vb: RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlc.Request(System.Byte[])
+  commentId: M:McpXLib.Interfaces.IPlc.Request(System.Byte[])
+  id: Request(System.Byte[])
+  parent: McpXLib.Interfaces.IPlc
+  langs:
+  - csharp
+  - vb
+  name: Request(byte[])
+  nameWithType: IPlc.Request(byte[])
+  fullName: McpXLib.Interfaces.IPlc.Request(byte[])
+  type: Method
+  source:
+    remote:
+      path: McpXLib/Interfaces/IPlc.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Request
+    path: ../McpXLib/Interfaces/IPlc.cs
+    startLine: 10
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Interfaces
+  syntax:
+    content: byte[] Request(byte[] packet)
+    parameters:
+    - id: packet
+      type: System.Byte[]
+    return:
+      type: System.Byte[]
+    content.vb: Function Request(packet As Byte()) As Byte()
+  overload: McpXLib.Interfaces.IPlc.Request*
+  nameWithType.vb: IPlc.Request(Byte())
+  fullName.vb: McpXLib.Interfaces.IPlc.Request(Byte())
+  name.vb: Request(Byte())
+references:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+- uid: McpXLib.Interfaces.IPlc.IsAscii*
+  commentId: Overload:McpXLib.Interfaces.IPlc.IsAscii
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_IsAscii
+  name: IsAscii
+  nameWithType: IPlc.IsAscii
+  fullName: McpXLib.Interfaces.IPlc.IsAscii
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: McpXLib.Interfaces.IPlc.Route*
+  commentId: Overload:McpXLib.Interfaces.IPlc.Route
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Route
+  name: Route
+  nameWithType: IPlc.Route
+  fullName: McpXLib.Interfaces.IPlc.Route
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPacketBuilder.html
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+- uid: McpXLib.Interfaces.IPlc.RequestFrame*
+  commentId: Overload:McpXLib.Interfaces.IPlc.RequestFrame
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestFrame
+  name: RequestFrame
+  nameWithType: IPlc.RequestFrame
+  fullName: McpXLib.Interfaces.IPlc.RequestFrame
+- uid: McpXLib.Enums.RequestFrame
+  commentId: T:McpXLib.Enums.RequestFrame
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.RequestFrame.html
+  name: RequestFrame
+  nameWithType: RequestFrame
+  fullName: McpXLib.Enums.RequestFrame
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  href: McpXLib.html
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+- uid: McpXLib.Interfaces.IPlc.RequestAsync*
+  commentId: Overload:McpXLib.Interfaces.IPlc.RequestAsync
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestAsync_System_Byte___
+  name: RequestAsync
+  nameWithType: IPlc.RequestAsync
+  fullName: McpXLib.Interfaces.IPlc.RequestAsync
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Byte[]}
+  commentId: T:System.Threading.Tasks.Task{System.Byte[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<byte[]>
+  nameWithType: Task<byte[]>
+  fullName: System.Threading.Tasks.Task<byte[]>
+  nameWithType.vb: Task(Of Byte())
+  fullName.vb: System.Threading.Tasks.Task(Of Byte())
+  name.vb: Task(Of Byte())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: McpXLib.Interfaces.IPlc.Request*
+  commentId: Overload:McpXLib.Interfaces.IPlc.Request
+  href: McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Request_System_Byte___
+  name: Request
+  nameWithType: IPlc.Request
+  fullName: McpXLib.Interfaces.IPlc.Request

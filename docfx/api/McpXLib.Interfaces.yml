@@ -1,0 +1,109 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  id: McpXLib.Interfaces
+  children:
+  - McpXLib.Interfaces.IPacketBuilder
+  - McpXLib.Interfaces.IPacketParser
+  - McpXLib.Interfaces.IPayloadBuilder
+  - McpXLib.Interfaces.IPlc
+  - McpXLib.Interfaces.IPlcCommand`1
+  - McpXLib.Interfaces.IPlcTransport
+  - McpXLib.Interfaces.IRequestPacketBuilder
+  langs:
+  - csharp
+  - vb
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  type: Namespace
+  assemblies:
+  - McpXLib
+references:
+- uid: McpXLib.Interfaces.IPacketBuilder
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPacketBuilder.html
+  name: IPacketBuilder
+  nameWithType: IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+- uid: McpXLib.Interfaces.IPacketParser
+  commentId: T:McpXLib.Interfaces.IPacketParser
+  href: McpXLib.Interfaces.IPacketParser.html
+  name: IPacketParser
+  nameWithType: IPacketParser
+  fullName: McpXLib.Interfaces.IPacketParser
+- uid: McpXLib.Interfaces.IPayloadBuilder
+  commentId: T:McpXLib.Interfaces.IPayloadBuilder
+  href: McpXLib.Interfaces.IPayloadBuilder.html
+  name: IPayloadBuilder
+  nameWithType: IPayloadBuilder
+  fullName: McpXLib.Interfaces.IPayloadBuilder
+- uid: McpXLib.Interfaces.IPlc
+  commentId: T:McpXLib.Interfaces.IPlc
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPlc.html
+  name: IPlc
+  nameWithType: IPlc
+  fullName: McpXLib.Interfaces.IPlc
+- uid: McpXLib.Interfaces.IPlcCommand`1
+  commentId: T:McpXLib.Interfaces.IPlcCommand`1
+  href: McpXLib.Interfaces.IPlcCommand-1.html
+  name: IPlcCommand<T>
+  nameWithType: IPlcCommand<T>
+  fullName: McpXLib.Interfaces.IPlcCommand<T>
+  nameWithType.vb: IPlcCommand(Of T)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T)
+  name.vb: IPlcCommand(Of T)
+  spec.csharp:
+  - uid: McpXLib.Interfaces.IPlcCommand`1
+    name: IPlcCommand
+    href: McpXLib.Interfaces.IPlcCommand-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: McpXLib.Interfaces.IPlcCommand`1
+    name: IPlcCommand
+    href: McpXLib.Interfaces.IPlcCommand-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: McpXLib.Interfaces.IPlcTransport
+  commentId: T:McpXLib.Interfaces.IPlcTransport
+  parent: McpXLib.Interfaces
+  href: McpXLib.Interfaces.IPlcTransport.html
+  name: IPlcTransport
+  nameWithType: IPlcTransport
+  fullName: McpXLib.Interfaces.IPlcTransport
+- uid: McpXLib.Interfaces.IRequestPacketBuilder
+  commentId: T:McpXLib.Interfaces.IRequestPacketBuilder
+  href: McpXLib.Interfaces.IRequestPacketBuilder.html
+  name: IRequestPacketBuilder
+  nameWithType: IRequestPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder
+- uid: McpXLib.Interfaces
+  commentId: N:McpXLib.Interfaces
+  href: McpXLib.html
+  name: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Interfaces
+    name: Interfaces
+    href: McpXLib.Interfaces.html

@@ -1,0 +1,872 @@
+### YamlMime:ManagedReference
+items:
+- uid: McpXLib.Enums.Prefix
+  commentId: T:McpXLib.Enums.Prefix
+  id: Prefix
+  parent: McpXLib.Enums
+  children:
+  - McpXLib.Enums.Prefix.B
+  - McpXLib.Enums.Prefix.CC
+  - McpXLib.Enums.Prefix.CN
+  - McpXLib.Enums.Prefix.CS
+  - McpXLib.Enums.Prefix.D
+  - McpXLib.Enums.Prefix.DX
+  - McpXLib.Enums.Prefix.DY
+  - McpXLib.Enums.Prefix.F
+  - McpXLib.Enums.Prefix.L
+  - McpXLib.Enums.Prefix.M
+  - McpXLib.Enums.Prefix.R
+  - McpXLib.Enums.Prefix.S
+  - McpXLib.Enums.Prefix.SB
+  - McpXLib.Enums.Prefix.SC
+  - McpXLib.Enums.Prefix.SD
+  - McpXLib.Enums.Prefix.SM
+  - McpXLib.Enums.Prefix.SN
+  - McpXLib.Enums.Prefix.SS
+  - McpXLib.Enums.Prefix.SW
+  - McpXLib.Enums.Prefix.TC
+  - McpXLib.Enums.Prefix.TN
+  - McpXLib.Enums.Prefix.TS
+  - McpXLib.Enums.Prefix.V
+  - McpXLib.Enums.Prefix.W
+  - McpXLib.Enums.Prefix.X
+  - McpXLib.Enums.Prefix.Y
+  - McpXLib.Enums.Prefix.Z
+  - McpXLib.Enums.Prefix.ZR
+  langs:
+  - csharp
+  - vb
+  name: Prefix
+  nameWithType: Prefix
+  fullName: McpXLib.Enums.Prefix
+  type: Enum
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Prefix
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 5
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: デバイスの接頭辞
+  example: []
+  syntax:
+    content: 'public enum Prefix : byte'
+    content.vb: Public Enum Prefix As Byte
+- uid: McpXLib.Enums.Prefix.X
+  commentId: F:McpXLib.Enums.Prefix.X
+  id: X
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: Prefix.X
+  fullName: McpXLib.Enums.Prefix.X
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: X
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 10
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 入力
+  example: []
+  syntax:
+    content: X = 156
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.Y
+  commentId: F:McpXLib.Enums.Prefix.Y
+  id: Y
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: Prefix.Y
+  fullName: McpXLib.Enums.Prefix.Y
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Y
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 15
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 出力
+  example: []
+  syntax:
+    content: Y = 157
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.M
+  commentId: F:McpXLib.Enums.Prefix.M
+  id: M
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: M
+  nameWithType: Prefix.M
+  fullName: McpXLib.Enums.Prefix.M
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: M
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 20
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 内部リレー
+  example: []
+  syntax:
+    content: M = 144
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.L
+  commentId: F:McpXLib.Enums.Prefix.L
+  id: L
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: L
+  nameWithType: Prefix.L
+  fullName: McpXLib.Enums.Prefix.L
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: L
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 25
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ラッチリレー
+  example: []
+  syntax:
+    content: L = 146
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.F
+  commentId: F:McpXLib.Enums.Prefix.F
+  id: F
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: F
+  nameWithType: Prefix.F
+  fullName: McpXLib.Enums.Prefix.F
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: F
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 30
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: アナンシェータ
+  example: []
+  syntax:
+    content: F = 147
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.V
+  commentId: F:McpXLib.Enums.Prefix.V
+  id: V
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: V
+  nameWithType: Prefix.V
+  fullName: McpXLib.Enums.Prefix.V
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: V
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 35
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: エッジリレー
+  example: []
+  syntax:
+    content: V = 148
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.B
+  commentId: F:McpXLib.Enums.Prefix.B
+  id: B
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: B
+  nameWithType: Prefix.B
+  fullName: McpXLib.Enums.Prefix.B
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: B
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 40
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: リンクリレー
+  example: []
+  syntax:
+    content: B = 160
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.D
+  commentId: F:McpXLib.Enums.Prefix.D
+  id: D
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: D
+  nameWithType: Prefix.D
+  fullName: McpXLib.Enums.Prefix.D
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: D
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 45
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: データレジスタ
+  example: []
+  syntax:
+    content: D = 168
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.W
+  commentId: F:McpXLib.Enums.Prefix.W
+  id: W
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: W
+  nameWithType: Prefix.W
+  fullName: McpXLib.Enums.Prefix.W
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: W
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 50
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: リンクレジスタ
+  example: []
+  syntax:
+    content: W = 180
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.TS
+  commentId: F:McpXLib.Enums.Prefix.TS
+  id: TS
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: TS
+  nameWithType: Prefix.TS
+  fullName: McpXLib.Enums.Prefix.TS
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: TS
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 55
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: タイマ接点
+  example: []
+  syntax:
+    content: TS = 193
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.TC
+  commentId: F:McpXLib.Enums.Prefix.TC
+  id: TC
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: TC
+  nameWithType: Prefix.TC
+  fullName: McpXLib.Enums.Prefix.TC
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: TC
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 60
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: タイマコイル
+  example: []
+  syntax:
+    content: TC = 192
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.TN
+  commentId: F:McpXLib.Enums.Prefix.TN
+  id: TN
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: TN
+  nameWithType: Prefix.TN
+  fullName: McpXLib.Enums.Prefix.TN
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: TN
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 65
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: タイマ現在値
+  example: []
+  syntax:
+    content: TN = 194
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SS
+  commentId: F:McpXLib.Enums.Prefix.SS
+  id: SS
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SS
+  nameWithType: Prefix.SS
+  fullName: McpXLib.Enums.Prefix.SS
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SS
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 70
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 積算タイマ接点
+  example: []
+  syntax:
+    content: SS = 199
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SC
+  commentId: F:McpXLib.Enums.Prefix.SC
+  id: SC
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SC
+  nameWithType: Prefix.SC
+  fullName: McpXLib.Enums.Prefix.SC
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SC
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 75
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 積算タイマコイル
+  example: []
+  syntax:
+    content: SC = 198
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SN
+  commentId: F:McpXLib.Enums.Prefix.SN
+  id: SN
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SN
+  nameWithType: Prefix.SN
+  fullName: McpXLib.Enums.Prefix.SN
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SN
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 80
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 積算タイマ現在値
+  example: []
+  syntax:
+    content: SN = 200
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.CS
+  commentId: F:McpXLib.Enums.Prefix.CS
+  id: CS
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: CS
+  nameWithType: Prefix.CS
+  fullName: McpXLib.Enums.Prefix.CS
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: CS
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 85
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: カウンタ接点
+  example: []
+  syntax:
+    content: CS = 196
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.CC
+  commentId: F:McpXLib.Enums.Prefix.CC
+  id: CC
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: CC
+  nameWithType: Prefix.CC
+  fullName: McpXLib.Enums.Prefix.CC
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: CC
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 90
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: カウンタコイル
+  example: []
+  syntax:
+    content: CC = 195
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.CN
+  commentId: F:McpXLib.Enums.Prefix.CN
+  id: CN
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: CN
+  nameWithType: Prefix.CN
+  fullName: McpXLib.Enums.Prefix.CN
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: CN
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 95
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: カウンタ現在値
+  example: []
+  syntax:
+    content: CN = 197
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SB
+  commentId: F:McpXLib.Enums.Prefix.SB
+  id: SB
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SB
+  nameWithType: Prefix.SB
+  fullName: McpXLib.Enums.Prefix.SB
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SB
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 100
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: リンク特殊リレー
+  example: []
+  syntax:
+    content: SB = 161
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SW
+  commentId: F:McpXLib.Enums.Prefix.SW
+  id: SW
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SW
+  nameWithType: Prefix.SW
+  fullName: McpXLib.Enums.Prefix.SW
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SW
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 105
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: リンク特殊レジスタ
+  example: []
+  syntax:
+    content: SW = 181
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.S
+  commentId: F:McpXLib.Enums.Prefix.S
+  id: S
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: S
+  nameWithType: Prefix.S
+  fullName: McpXLib.Enums.Prefix.S
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: S
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 110
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ステップリレー
+  example: []
+  syntax:
+    content: S = 152
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.DX
+  commentId: F:McpXLib.Enums.Prefix.DX
+  id: DX
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: DX
+  nameWithType: Prefix.DX
+  fullName: McpXLib.Enums.Prefix.DX
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: DX
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 115
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ダイレクトアクセス入力
+  example: []
+  syntax:
+    content: DX = 162
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.DY
+  commentId: F:McpXLib.Enums.Prefix.DY
+  id: DY
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: DY
+  nameWithType: Prefix.DY
+  fullName: McpXLib.Enums.Prefix.DY
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: DY
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 120
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ダイレクトアクセス出力
+  example: []
+  syntax:
+    content: DY = 163
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SM
+  commentId: F:McpXLib.Enums.Prefix.SM
+  id: SM
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SM
+  nameWithType: Prefix.SM
+  fullName: McpXLib.Enums.Prefix.SM
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SM
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 125
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 特殊リレー
+  example: []
+  syntax:
+    content: SM = 145
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.SD
+  commentId: F:McpXLib.Enums.Prefix.SD
+  id: SD
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: SD
+  nameWithType: Prefix.SD
+  fullName: McpXLib.Enums.Prefix.SD
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: SD
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 130
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: 特殊レジスタ
+  example: []
+  syntax:
+    content: SD = 169
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.Z
+  commentId: F:McpXLib.Enums.Prefix.Z
+  id: Z
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: Z
+  nameWithType: Prefix.Z
+  fullName: McpXLib.Enums.Prefix.Z
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: Z
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 135
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: インデックスレジスタ
+  example: []
+  syntax:
+    content: Z = 204
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.R
+  commentId: F:McpXLib.Enums.Prefix.R
+  id: R
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: R
+  nameWithType: Prefix.R
+  fullName: McpXLib.Enums.Prefix.R
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: R
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 140
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ファイルレジスタ（ブロック切換え方式）
+  example: []
+  syntax:
+    content: R = 175
+    return:
+      type: McpXLib.Enums.Prefix
+- uid: McpXLib.Enums.Prefix.ZR
+  commentId: F:McpXLib.Enums.Prefix.ZR
+  id: ZR
+  parent: McpXLib.Enums.Prefix
+  langs:
+  - csharp
+  - vb
+  name: ZR
+  nameWithType: Prefix.ZR
+  fullName: McpXLib.Enums.Prefix.ZR
+  type: Field
+  source:
+    remote:
+      path: McpXLib/Enums/Prefix.cs
+      branch: main
+      repo: git@github.com:YudaiKitamura/McpX.git
+    id: ZR
+    path: ../McpXLib/Enums/Prefix.cs
+    startLine: 145
+  assemblies:
+  - McpXLib
+  namespace: McpXLib.Enums
+  summary: ファイルレジスタ（連番アクセス方式）
+  example: []
+  syntax:
+    content: ZR = 176
+    return:
+      type: McpXLib.Enums.Prefix
+references:
+- uid: McpXLib.Enums
+  commentId: N:McpXLib.Enums
+  href: McpXLib.html
+  name: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+  fullName: McpXLib.Enums
+  spec.csharp:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+  spec.vb:
+  - uid: McpXLib
+    name: McpXLib
+    href: McpXLib.html
+  - name: .
+  - uid: McpXLib.Enums
+    name: Enums
+    href: McpXLib.Enums.html
+- uid: McpXLib.Enums.Prefix
+  commentId: T:McpXLib.Enums.Prefix
+  parent: McpXLib.Enums
+  href: McpXLib.Enums.Prefix.html
+  name: Prefix
+  nameWithType: Prefix
+  fullName: McpXLib.Enums.Prefix

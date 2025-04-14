@@ -1,0 +1,71 @@
+### YamlMime:TableOfContent
+items:
+- uid: McpXLib
+  name: McpXLib
+  type: Namespace
+  items:
+  - uid: McpXLib.Mcp
+    name: Mcp
+    type: Class
+  - uid: McpXLib.McpX
+    name: McpX
+    type: Class
+- uid: McpXLib.Abstructs
+  name: McpXLib.Abstructs
+  type: Namespace
+  items:
+  - uid: McpXLib.Abstructs.BasePlc
+    name: BasePlc
+    type: Class
+- uid: McpXLib.Enums
+  name: McpXLib.Enums
+  type: Namespace
+  items:
+  - uid: McpXLib.Enums.Prefix
+    name: Prefix
+    type: Enum
+  - uid: McpXLib.Enums.RequestFrame
+    name: RequestFrame
+    type: Enum
+- uid: McpXLib.Exceptions
+  name: McpXLib.Exceptions
+  type: Namespace
+  items:
+  - uid: McpXLib.Exceptions.DeviceAddressException
+    name: DeviceAddressException
+    type: Class
+  - uid: McpXLib.Exceptions.McProtocolException
+    name: McProtocolException
+    type: Class
+  - uid: McpXLib.Exceptions.PlcDuplicationException
+    name: PlcDuplicationException
+    type: Class
+  - uid: McpXLib.Exceptions.RecivePacketException
+    name: RecivePacketException
+    type: Class
+- uid: McpXLib.Interfaces
+  name: McpXLib.Interfaces
+  type: Namespace
+  items:
+  - uid: McpXLib.Interfaces.IPacketBuilder
+    name: IPacketBuilder
+    type: Interface
+  - uid: McpXLib.Interfaces.IPacketParser
+    name: IPacketParser
+    type: Interface
+  - uid: McpXLib.Interfaces.IPayloadBuilder
+    name: IPayloadBuilder
+    type: Interface
+  - uid: McpXLib.Interfaces.IPlc
+    name: IPlc
+    type: Interface
+  - uid: McpXLib.Interfaces.IPlcCommand`1
+    name: IPlcCommand<T>
+    type: Interface
+  - uid: McpXLib.Interfaces.IPlcTransport
+    name: IPlcTransport
+    type: Interface
+  - uid: McpXLib.Interfaces.IRequestPacketBuilder
+    name: IRequestPacketBuilder
+    type: Interface
+memberLayout: SamePage
