@@ -136,7 +136,7 @@
   },
   "docs/introduction.html": {
     "href": "docs/introduction.html",
-    "title": "| McpX",
+    "title": "インストール方法 | McpX",
     "summary": "インストール方法 .NET CLI dotnet add package McpX Package Manager(Visual Studio) PM> NuGet\\Install-Package McpX"
   },
   "docs/plc_parameter_setting.html": {
