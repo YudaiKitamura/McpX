@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>McpX | McpX </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="McpX | McpX ">
+      
+      
+      <link rel="icon" href="../images/mcpx_favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/blob/main/README_JA.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.svg" alt="McpX">
+            McpX
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1>McpX</h1>
+
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.5.0-blue">
+  <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
+  <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
+  <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
+  <img alt=".NET Core 2.0+" src="https://img.shields.io/badge/.NET_Core-2.0+-darkgreen">
+  <img alt=".NET Framework 4.6.1+" src="https://img.shields.io/badge/.NET_Framework-4.6.1+-teal?logo=windows">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg">
+</p>
+<p>
+  <a href="README_JA.html">日本語</a> | <a href="README.html">English</a>
+</p>
+<p>McpXは、三菱電機製PLCと通信するためのMCプロトコル対応ライブラリです。<br>
+シンプルなAPIで扱いやすく、MCプロトコルを意識することなく利用でき、Linux、Windows、macOS など、さまざまなプラットフォームで動作します。</p>
+<h2 id="インストール方法">インストール方法</h2>
+<h3 id="net-cli">.NET CLI</h3>
+<pre><code class="lang-sh">dotnet add package McpX
+</code></pre>
+<h3 id="package-managervisual-studio">Package Manager(Visual Studio)</h3>
+<pre><code class="lang-sh">PM&gt; NuGet\Install-Package McpX
+</code></pre>
+<h2 id="使用例">使用例</h2>
+<pre><code class="lang-csharp">using McpXLib;
+using McpXLib.Enums;
+
+// IP、Portを指定してPLCに接続
+using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
+{
+    // M0から7000点取得
+    bool[] mArr = mcpx.BatchRead&lt;bool&gt;(Prefix.M, &quot;0&quot;, 7000);
+    
+    // D1000から7000ワード取得
+    short[] dArr = mcpx.BatchRead&lt;short&gt;(Prefix.D, &quot;1000&quot;, 7000);
+
+    // D0に1234、D1に5678を符号あり32ビットで書込み 
+    mcpx.BatchWrite&lt;int&gt;(Prefix.D, &quot;0&quot;, [1234, 5678]);
+}
+</code></pre>
+<p><a href="https://github.com/YudaiKitamura/McpX/tree/main/Example">C#、Visual Basicのサンプルはこちら</a></p>
+<h2 id="対応コマンド">対応コマンド</h2>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>説明</th>
+<th>同期メソッド</th>
+<th>非同期メソッド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>単一読出し</strong></td>
+<td>デバイスの単一値を取得します。</td>
+<td><code>Read&lt;T&gt;(Prefix prefix, string address)</code></td>
+<td><code>ReadAsync&lt;T&gt;(Prefix prefix, string address)</code></td>
+</tr>
+<tr>
+<td><strong>単一書込み</strong></td>
+<td>デバイスに単一値を書き込みます。</td>
+<td><code>Write&lt;T&gt;(Prefix prefix, string address, T value)</code></td>
+<td><code>WriteAsync&lt;T&gt;(Prefix prefix, string address, T value)</code></td>
+</tr>
+<tr>
+<td><strong>一括読出し</strong></td>
+<td>連続したデバイスから、指定数のデータを一括で読み出します。</td>
+<td><code>BatchRead&lt;T&gt;(Prefix prefix, string address, ushort length)</code></td>
+<td><code>BatchReadAsync&lt;T&gt;(Prefix prefix, string address, ushort length)</code></td>
+</tr>
+<tr>
+<td><strong>一括書込み</strong></td>
+<td>複数のデバイスに配列で指定した値を一括書き込みします。</td>
+<td><code>BatchWrite&lt;T&gt;(Prefix prefix, string address, T[] values)</code></td>
+<td><code>BatchWriteAsync&lt;T&gt;(Prefix prefix, string address, T[] values)</code></td>
+</tr>
+<tr>
+<td><strong>ランダム読出し</strong></td>
+<td>非連続アドレスからワード・ダブルワード単位で読み出します。</td>
+<td><code>RandomRead&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td><code>RandomReadAsync&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+</tr>
+<tr>
+<td><strong>ランダム書込み</strong></td>
+<td>非連続アドレスにワード・ダブルワード単位で書き込みます。</td>
+<td><code>RandomWrite&lt;T1, T2&gt;(...)</code></td>
+<td><code>RandomWriteAsync&lt;T1, T2&gt;(...)</code></td>
+</tr>
+<tr>
+<td><strong>モニタ登録</strong></td>
+<td>モニタ対象デバイスを登録します。</td>
+<td><code>MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td><code>MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+</tr>
+<tr>
+<td><strong>モニタ読み取り</strong></td>
+<td>登録済みモニタデバイスの最新値を読み出します。</td>
+<td><code>Monitor&lt;T1, T2&gt;(...)</code></td>
+<td><code>MonitorAsync&lt;T1, T2&gt;(...)</code></td>
+</tr>
+<tr>
+<td><strong>リモートパスワード ロック/アンロック</strong></td>
+<td>リモートパスワード指定時、インスタンス生成時にロック、破棄時に自動アンロックします。</td>
+<td><code>McpX(string ip, int port, string? password = null)</code></td>
+<td>－</td>
+</tr>
+</tbody>
+</table>
+<h2 id="対応プロトコル">対応プロトコル</h2>
+<ul>
+<li>TCP</li>
+<li>UDP</li>
+<li>3Eフレーム（バイナリコード）</li>
+<li>3Eフレーム（ASCIIコード）</li>
+<li>4Eフレーム（バイナリコード）</li>
+<li>4Eフレーム（ASCIIコード）</li>
+</ul>
+<h2 id="今後の予定">今後の予定</h2>
+<ul>
+<li>[x] <del>3Eフレーム（ASCIIコード）対応</del></li>
+<li>[x] <del>4Eフレーム（バイナリコード）対応</del></li>
+<li>[x] <del>4Eフレーム（ASCIIコード）対応</del></li>
+<li>[x] <del>UDP対応</del></li>
+</ul>
+<h2 id="変更履歴">変更履歴</h2>
+<ul>
+<li><a href="CHANGELOG_JA.html">CHANGELOG_JA.md</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/README_JA.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

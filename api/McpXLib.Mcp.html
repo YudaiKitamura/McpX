@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Mcp | McpX </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Mcp | McpX ">
+      
+      <meta name="description" content="MCプロトコル実装クラス（コマンド追加以外は、クラスを使用してください。）">
+      <link rel="icon" href="../images/mcpx_favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_Mcp.md&amp;value=---%0Auid%3A%20McpXLib.Mcp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.svg" alt="McpX">
+            McpX
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="McpXLib.Mcp">
+
+
+
+  <h1 id="McpXLib_Mcp" data-uid="McpXLib.Mcp" class="text-break">
+Class Mcp  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="McpXLib.html">McpXLib</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>McpXLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>MCプロトコル実装クラス（コマンド追加以外は、<a class="xref" href="McpXLib.McpX.html">McpX</a>クラスを使用してください。）</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Mcp : BasePlc, IDisposable, IPlc</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="McpXLib.Abstructs.BasePlc.html">BasePlc</a></div>
+      <div><span class="xref">Mcp</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="McpXLib.Interfaces.IPlc.html">IPlc</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="McpXLib.McpX.html">McpX</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___">BasePlc.RequestAsync(byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___">BasePlc.Request(byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose">BasePlc.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="McpXLib_Mcp_IsAscii_" data-uid="McpXLib.Mcp.IsAscii*"></a>
+
+  <h3 id="McpXLib_Mcp_IsAscii" data-uid="McpXLib.Mcp.IsAscii">
+  IsAscii
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>ASCIIコードによる交信を行う場合に<code>true</code>を指定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAscii { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="McpXLib_Mcp_RequestFrame_" data-uid="McpXLib.Mcp.RequestFrame*"></a>
+
+  <h3 id="McpXLib_Mcp_RequestFrame" data-uid="McpXLib.Mcp.RequestFrame">
+  RequestFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>フレーム（データ交信電文）の種類を指定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RequestFrame RequestFrame { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Enums.RequestFrame.html">RequestFrame</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="McpXLib_Mcp_Route_" data-uid="McpXLib.Mcp.Route*"></a>
+
+  <h3 id="McpXLib_Mcp_Route" data-uid="McpXLib.Mcp.Route">
+  Route
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>アクセス経路を指定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPacketBuilder Route { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Interfaces.IPacketBuilder.html">IPacketBuilder</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="McpXLib_Mcp_MonitorAsync_" data-uid="McpXLib.Mcp.MonitorAsync*"></a>
+
+  <h3 id="McpXLib_Mcp_MonitorAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____" data-uid="McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])">
+  MonitorAsync&lt;T1, T2&gt;((Prefix, string)[], (Prefix, string)[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L335"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>デバイスモニター（非同期）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;(T1[] wordValues, T2[] doubleValues)&gt; MonitorAsync&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) where T1 : unmanaged where T2 : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>wordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>16ビット単位でモニターするデバイスアドレスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+    <dt><code>doubleWordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>32ビット単位でモニターするデバイスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;(T1[] <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues">wordValues</a>, T2[] <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues">doubleValues</a>)&gt;</dt>
+    <dd><p>PLCから読み込んだ値を指定した型<code>T1</code>、<code>T2</code>に変換して返します。<br>
+・<code>wordValues</code>: 16ビット単位で読み込まれた <code>T1</code>型の値の配列<br>
+・<code>doubleValues</code>: 32ビット単位で読み込まれた <code>T2</code>型の値の配列</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+<code>unmanaged</code> 制約があるため、参照型は使用できません。</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+<code>unmanaged</code> 制約があるため、参照型は使用できません。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_Mcp_MonitorAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>モニター登録したデバイスの値を非同期でPLCから読み込みます。<br>
+指定された型<code>T1</code>、<code>T2</code>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>モニター登録のデバイス範囲を超過した場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_Mcp_MonitorRegist_" data-uid="McpXLib.Mcp.MonitorRegist*"></a>
+
+  <h3 id="McpXLib_Mcp_MonitorRegist_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____" data-uid="McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])">
+  MonitorRegist((Prefix, string)[], (Prefix, string)[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>デバイスモニター登録</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>wordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>16ビット単位でモニターするデバイスアドレスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+    <dt><code>doubleWordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>32ビット単位でモニターするデバイスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_Mcp_MonitorRegist_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>モニターするデバイスをPLCに登録します。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>モニター登録のデバイス範囲を超過した場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_Mcp_MonitorRegistAsync_" data-uid="McpXLib.Mcp.MonitorRegistAsync*"></a>
+
+  <h3 id="McpXLib_Mcp_MonitorRegistAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____" data-uid="McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])">
+  MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L266"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>デバイスモニター登録（非同期）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>wordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>16ビット単位でモニターするデバイスアドレスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+    <dt><code>doubleWordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>32ビット単位でモニターするデバイスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_Mcp_MonitorRegistAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>モニターするデバイスを非同期でPLCに登録します。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>モニター登録のデバイス範囲を超過した場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_Mcp_Monitor_" data-uid="McpXLib.Mcp.Monitor*"></a>
+
+  <h3 id="McpXLib_Mcp_Monitor__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____" data-uid="McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])">
+  Monitor&lt;T1, T2&gt;((Prefix, string)[], (Prefix, string)[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L378"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>デバイスモニター</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (T1[] wordValues, T2[] doubleValues) Monitor&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) where T1 : unmanaged where T2 : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>wordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>16ビット単位でモニターするデバイスアドレスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+    <dt><code>doubleWordAddresses</code> (<a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>)[]</dt>
+    <dd><p>32ビット単位でモニターするデバイスの配列を指定します。<br>
+・<code>prefix</code>:モニター対象のデバイスコードを指定します。<br>
+・<code>address</code>:モニター対象のアドレスを指定します。</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>(T1[] <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.wordvalues">wordValues</a>, T2[] <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple---0[],--1[]-.doublevalues">doubleValues</a>)</dt>
+    <dd><p>PLCから読み込んだ値を指定した型<code>T1</code>、<code>T2</code>に変換して返します。<br>
+・<code>wordValues</code>: 16ビット単位で読み込まれた <code>T1</code>型の値の配列<br>
+・<code>doubleValues</code>: 32ビット単位で読み込まれた <code>T2</code>型の値の配列</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+<code>unmanaged</code> 制約があるため、参照型は使用できません。</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
+<code>unmanaged</code> 制約があるため、参照型は使用できません。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_Mcp_Monitor__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>モニター登録したデバイスの値をPLCから読み込みます。<br>
+指定された型<code>T1</code>、<code>T2</code>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>モニター登録のデバイス範囲を超過した場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Mcp.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>使用例 | McpX </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="使用例 | McpX ">
+      
+      
+      <link rel="icon" href="../images/mcpx_favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/blob/main/docfx/docs/example.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.svg" alt="McpX">
+            McpX
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="使用例">使用例</h1>
+
+<h2 id="c-非同期処理の例">C# 非同期処理の例</h2>
+<pre><code class="lang-csharp">using McpXLib;
+using McpXLib.Enums;
+
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        // McpX 通信インスタンスを生成
+        // - IPアドレス: 192.168.12.88
+        // - ポート番号: 10000
+        // - ASCII形式通信: true
+        // - UDP使用: false（TCP通信）
+        using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000, isAscii: true, isUdp: false))
+        {
+            // ビットデバイス M0 に bool 型で true を書き込む
+            await mcpx.WriteAsync&lt;bool&gt;(Prefix.M, &quot;0&quot;, true);
+
+            // ビットデバイス M0 の値を bool 型で読み取る
+            bool m0 = await mcpx.ReadAsync&lt;bool&gt;(Prefix.M, &quot;0&quot;);
+
+            Console.WriteLine($&quot;M0: {m0}&quot;);
+
+
+            // ワードデバイス D0 に short 型で 32767 を書き込む
+            await mcpx.WriteAsync&lt;short&gt;(Prefix.D, &quot;0&quot;, 32767);
+
+            // ワードデバイス D0 の値を short 型で読み取る
+            short d0 = await mcpx.ReadAsync&lt;short&gt;(Prefix.D, &quot;0&quot;);
+
+            Console.WriteLine($&quot;D0: {d0}&quot;);
+
+
+            // ダブルワードデバイス D2 に int 型で 2147483647 を書き込む
+            await mcpx.WriteAsync&lt;int&gt;(Prefix.D, &quot;2&quot;, 2147483647);
+
+            // ダブルワードデバイス D2 の値を int 型で読み取る
+            int d2 = await mcpx.ReadAsync&lt;int&gt;(Prefix.D, &quot;2&quot;);
+
+            Console.WriteLine($&quot;D2: {d2}&quot;);
+
+
+            // ダブルワードデバイス D4 に float 型で最大値を設定して書き込む
+            await mcpx.WriteAsync&lt;float&gt;(Prefix.D, &quot;4&quot;, (float)3.4028235E+38);
+
+            // D4 の値を float 型で読み取る
+            float d4 = await mcpx.ReadAsync&lt;float&gt;(Prefix.D, &quot;4&quot;);
+
+            Console.WriteLine($&quot;D4: {d4}&quot;);
+
+
+            // ダブルワードデバイス D6 に double 型で最大値を設定して書き込む
+            await mcpx.WriteAsync&lt;double&gt;(Prefix.D, &quot;6&quot;, (double)1.7976931348623157E+308);
+
+            // D6 の値を double 型で読み取る
+            double d6 = await mcpx.ReadAsync&lt;double&gt;(Prefix.D, &quot;6&quot;);
+
+            Console.WriteLine($&quot;D6: {d6}&quot;);
+
+
+            // 7000 ワード分の short 配列を D10 から一括書き込み
+            short[] dbwArr = new short[7000];
+            for (int i = 0; i &lt; dbwArr.Length; i++)
+            {
+                dbwArr[i] = (short)i;
+            }
+            await mcpx.BatchWriteAsync&lt;short&gt;(Prefix.D, &quot;10&quot;, dbwArr);
+
+            // D10 から 7000 ワード分を一括で short 型として読み取る
+            short[] dbrArr = await mcpx.BatchReadAsync&lt;short&gt;(Prefix.D, &quot;10&quot;, 7000);
+
+            int l = 0;
+            foreach (var dr in dbrArr) 
+            {
+                Console.WriteLine($&quot;D{ 10 + l }: { dr }&quot;);
+                l++;
+            }
+
+
+            // ランダムなワード/ダブルワードDeviceに short/int 型で書き込み
+            await mcpx.RandomWriteAsync&lt;short, int&gt;(
+                wordDevices: [ 
+                    (Prefix.D, &quot;8000&quot;, 32766),
+                    (Prefix.D, &quot;8010&quot;, 32767)
+                ],
+                doubleWordDevices: [
+                    (Prefix.D, &quot;8020&quot;, 2147483646),
+                    (Prefix.D, &quot;8030&quot;, 2147483647) 
+                ]
+            );
+
+            // ランダムなワード/ダブルワードアドレスから short/int 型で読み取り
+            var drrArr = await mcpx.RandomReadAsync&lt;short, int&gt;(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            Console.WriteLine($&quot;D8000: { drrArr.wordValues[0] }&quot;);
+            Console.WriteLine($&quot;D8010: { drrArr.wordValues[1] }&quot;);
+
+            Console.WriteLine($&quot;D8020: { drrArr.doubleValues[0] }&quot;);
+            Console.WriteLine($&quot;D8030: { drrArr.doubleValues[1] }&quot;);
+
+            
+            // ワード・ダブルワードデバイスをモニタ登録する（初回のみ必要）
+            await mcpx.MonitorRegistAsync(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            // モニタ登録したデバイスの値を取得する（ワード: short 型、ダブルワード: int 型）
+            var dmArr = await mcpx.MonitorAsync&lt;short, int&gt;(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            Console.WriteLine($&quot;D8000: { dmArr.wordValues[0] }&quot;);
+            Console.WriteLine($&quot;D8010: { dmArr.wordValues[1] }&quot;);
+
+            Console.WriteLine($&quot;D8020: { dmArr.doubleValues[0] }&quot;);
+            Console.WriteLine($&quot;D8030: { dmArr.doubleValues[1] }&quot;);
+        }
+    }
+}
+</code></pre>
+<h2 id="c-同期処理の例">C# 同期処理の例</h2>
+<pre><code class="lang-csharp">using McpXLib;
+using McpXLib.Enums;
+
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // McpX 通信インスタンスを生成
+        // - IPアドレス: 192.168.12.88
+        // - ポート番号: 10000
+        // - ASCII形式通信: true
+        // - UDP使用: false（TCP通信）
+        using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000, isAscii: true, isUdp: false))
+        {
+            // ビットデバイス M0 に bool 型で true を書き込む
+            mcpx.Write&lt;bool&gt;(Prefix.M, &quot;0&quot;, true);
+
+            // ビットデバイス M0 の値を bool 型で読み取る
+            bool m0 = mcpx.Read&lt;bool&gt;(Prefix.M, &quot;0&quot;);
+
+            Console.WriteLine($&quot;M0: {m0}&quot;);
+
+
+            // ワードデバイス D0 に short 型で 32767 を書き込む
+            mcpx.Write&lt;short&gt;(Prefix.D, &quot;0&quot;, 32767);
+
+            // ワードデバイス D0 の値を short 型で読み取る
+            short d0 = mcpx.Read&lt;short&gt;(Prefix.D, &quot;0&quot;);
+
+            Console.WriteLine($&quot;D0: {d0}&quot;);
+
+
+            // ダブルワードデバイス D2 に int 型で 2147483647 を書き込む
+            mcpx.Write&lt;int&gt;(Prefix.D, &quot;2&quot;, 2147483647);
+
+            // ダブルワードデバイス D2 の値を int 型で読み取る
+            int d2 = mcpx.Read&lt;int&gt;(Prefix.D, &quot;2&quot;);
+
+            Console.WriteLine($&quot;D2: {d2}&quot;);
+
+
+            // ダブルワードデバイス D4 に float 型で最大値を設定して書き込む
+            mcpx.Write&lt;float&gt;(Prefix.D, &quot;4&quot;, (float)3.4028235E+38);
+
+            // D4 の値を float 型で読み取る
+            float d4 = mcpx.Read&lt;float&gt;(Prefix.D, &quot;4&quot;);
+
+            Console.WriteLine($&quot;D4: {d4}&quot;);
+
+
+            // ダブルワードデバイス D6 に double 型で最大値を設定して書き込む
+            mcpx.Write&lt;double&gt;(Prefix.D, &quot;6&quot;, (double)1.7976931348623157E+308);
+
+            // D6 の値を double 型で読み取る
+            double d6 = mcpx.Read&lt;double&gt;(Prefix.D, &quot;6&quot;);
+
+            Console.WriteLine($&quot;D6: {d6}&quot;);
+
+
+            // 7000 ワード分の short 配列を D10 から一括書き込み
+            short[] dbwArr = new short[7000];
+            for (int i = 0; i &lt; dbwArr.Length; i++)
+            {
+                dbwArr[i] = (short)i;
+            }
+            mcpx.BatchWrite&lt;short&gt;(Prefix.D, &quot;10&quot;, dbwArr);
+
+            // D10 から 7000 ワード分を一括で short 型として読み取る
+            short[] dbrArr = mcpx.BatchRead&lt;short&gt;(Prefix.D, &quot;10&quot;, 7000);
+
+            int l = 0;
+            foreach (var dr in dbrArr) 
+            {
+                Console.WriteLine($&quot;D{ 10 + l }: { dr }&quot;);
+                l++;
+            }
+
+
+            // ランダムなワード/ダブルワードDeviceに short/int 型で書き込み
+            mcpx.RandomWrite&lt;short, int&gt;(
+                wordDevices: [ 
+                    (Prefix.D, &quot;8000&quot;, 32766),
+                    (Prefix.D, &quot;8010&quot;, 32767)
+                ],
+                doubleWordDevices: [
+                    (Prefix.D, &quot;8020&quot;, 2147483646),
+                    (Prefix.D, &quot;8030&quot;, 2147483647) 
+                ]
+            );
+
+            // ランダムなワード/ダブルワードアドレスから short/int 型で読み取り
+            var drrArr = mcpx.RandomRead&lt;short, int&gt;(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            Console.WriteLine($&quot;D8000: { drrArr.wordValues[0] }&quot;);
+            Console.WriteLine($&quot;D8010: { drrArr.wordValues[1] }&quot;);
+
+            Console.WriteLine($&quot;D8020: { drrArr.doubleValues[0] }&quot;);
+            Console.WriteLine($&quot;D8030: { drrArr.doubleValues[1] }&quot;);
+
+            
+            // ワード・ダブルワードデバイスをモニタ登録する（初回のみ必要）
+            mcpx.MonitorRegist(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            // モニタ登録したデバイスの値を取得する（ワード: short 型、ダブルワード: int 型）
+            var dmArr = mcpx.Monitor&lt;short, int&gt;(
+                wordAddresses: [ 
+                    (Prefix.D, &quot;8000&quot;),
+                    (Prefix.D, &quot;8010&quot;)
+                ],
+                doubleWordAddresses: [
+                    (Prefix.D, &quot;8020&quot;),
+                    (Prefix.D, &quot;8030&quot;) 
+                ]
+            );
+
+            Console.WriteLine($&quot;D8000: { dmArr.wordValues[0] }&quot;);
+            Console.WriteLine($&quot;D8010: { dmArr.wordValues[1] }&quot;);
+
+            Console.WriteLine($&quot;D8020: { dmArr.doubleValues[0] }&quot;);
+            Console.WriteLine($&quot;D8030: { dmArr.doubleValues[1] }&quot;);
+        }
+    }
+}
+</code></pre>
+<h2 id="visualbasic-非同期処理の例">VisualBasic 非同期処理の例</h2>
+<pre><code class="lang-vb">Imports System
+Imports System.Threading.Tasks
+Imports McpXLib
+Imports McpXLib.Enums
+
+Module Program
+    Sub Main()
+        RunAsync().Wait()
+    End Sub
+    Async Function RunAsync() As Task
+        ' McpX 通信インスタンスを生成
+        ' - IPアドレス: 192.168.12.88
+        ' - ポート番号: 10000
+        ' - ASCII形式通信: true
+        ' - UDP使用: false（TCP通信）
+        Using mcpx As New McpX(&quot;192.168.12.88&quot;, 10000, isAscii:=True, isUdp:=False)
+
+            ' ビットデバイス M0 に bool 型で true を書き込む
+            Await mcpx.WriteAsync(Of Boolean)(Prefix.M, &quot;0&quot;, True)
+
+            ' ビットデバイス M0 の値を bool 型で読み取る
+            Dim m0 As Boolean = Await mcpx.ReadAsync(Of Boolean)(Prefix.M, &quot;0&quot;)
+            Console.WriteLine($&quot;M0: {m0}&quot;)
+
+            ' ワードデバイス D0 に short 型で 32767 を書き込む
+            Await mcpx.WriteAsync(Of Short)(Prefix.D, &quot;0&quot;, CShort(32767))
+
+            ' ワードデバイス D0 の値を short 型で読み取る
+            Dim d0 As Short = Await mcpx.ReadAsync(Of Short)(Prefix.D, &quot;0&quot;)
+            Console.WriteLine($&quot;D0: {d0}&quot;)
+
+            ' ダブルワードデバイス D2 に int 型で 2147483647 を書き込む
+            Await mcpx.WriteAsync(Of Integer)(Prefix.D, &quot;2&quot;, 2147483647)
+
+            ' ダブルワードデバイス D2 の値を int 型で読み取る
+            Dim d2 As Integer = Await mcpx.ReadAsync(Of Integer)(Prefix.D, &quot;2&quot;)
+            Console.WriteLine($&quot;D2: {d2}&quot;)
+
+            ' ダブルワードデバイス D4 に float 型で最大値を設定して書き込む
+            Await mcpx.WriteAsync(Of Single)(Prefix.D, &quot;4&quot;, CSng(3.4028235E+38))
+
+            ' D4 の値を float 型で読み取る
+            Dim d4 As Single = Await mcpx.ReadAsync(Of Single)(Prefix.D, &quot;4&quot;)
+            Console.WriteLine($&quot;D4: {d4}&quot;)
+
+            ' ダブルワードデバイス D6 に double 型で最大値を設定して書き込む
+            Await mcpx.WriteAsync(Of Double)(Prefix.D, &quot;6&quot;, 1.7976931348623157E+308)
+
+            ' D6 の値を double 型で読み取る
+            Dim d6 As Double = Await mcpx.ReadAsync(Of Double)(Prefix.D, &quot;6&quot;)
+            Console.WriteLine($&quot;D6: {d6}&quot;)
+
+            ' 7000 ワード分の short 配列を D10 から一括書き込み
+            Dim dbwArr(6999) As Short
+            For i As Integer = 0 To dbwArr.Length - 1
+                dbwArr(i) = CShort(i)
+            Next
+            Await mcpx.BatchWriteAsync(Of Short)(Prefix.D, &quot;10&quot;, dbwArr)
+
+            ' D10 から 7000 ワード分を一括で short 型として読み取る
+            Dim dbrArr As Short() = Await mcpx.BatchReadAsync(Of Short)(Prefix.D, &quot;10&quot;, 7000)
+
+            Dim l As Integer = 0
+            For Each dr In dbrArr
+                Console.WriteLine($&quot;D{10 + l}: {dr}&quot;)
+                l += 1
+            Next
+
+            ' ランダムなワード/ダブルワードDeviceに short/int 型で書き込み
+            Await mcpx.RandomWriteAsync(Of Short, Integer)(
+                wordDevices:={
+                    New ValueTuple(Of Prefix, String, Short)(Prefix.D, &quot;8000&quot;, 32766),
+                    New ValueTuple(Of Prefix, String, Short)(Prefix.D, &quot;8010&quot;, 32767)
+                },
+                doubleWordDevices:={
+                    New ValueTuple(Of Prefix, String, Integer)(Prefix.D, &quot;8020&quot;, 2147483646),
+                    New ValueTuple(Of Prefix, String, Integer)(Prefix.D, &quot;8030&quot;, 2147483647)
+                }
+            )
+
+            ' ランダムなワード/ダブルワードアドレスから short/int 型で読み取り
+            Dim drrArr = Await mcpx.RandomReadAsync(Of Short, Integer)(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            Console.WriteLine($&quot;D8000: {drrArr.wordValues(0)}&quot;)
+            Console.WriteLine($&quot;D8010: {drrArr.wordValues(1)}&quot;)
+            Console.WriteLine($&quot;D8020: {drrArr.doubleValues(0)}&quot;)
+            Console.WriteLine($&quot;D8030: {drrArr.doubleValues(1)}&quot;)
+
+            ' ワード・ダブルワードデバイスをモニタ登録する（初回のみ必要）
+            Await mcpx.MonitorRegistAsync(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            ' モニタ登録したデバイスの値を取得する（ワード: short 型、ダブルワード: int 型）
+            Dim dmArr = Await mcpx.MonitorAsync(Of Short, Integer)(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            Console.WriteLine($&quot;D8000: {dmArr.wordValues(0)}&quot;)
+            Console.WriteLine($&quot;D8010: {dmArr.wordValues(1)}&quot;)
+            Console.WriteLine($&quot;D8020: {dmArr.doubleValues(0)}&quot;)
+            Console.WriteLine($&quot;D8030: {dmArr.doubleValues(1)}&quot;)
+
+        End Using
+    End Function
+End Module
+</code></pre>
+<h2 id="visualbasic-同期処理の例">VisualBasic 同期処理の例</h2>
+<pre><code class="lang-vb">Imports McpXLib
+Imports McpXLib.Enums
+
+Module Program
+    Sub Main()
+        ' McpX 通信インスタンスを生成
+        ' - IPアドレス: 192.168.12.88
+        ' - ポート番号: 10000
+        ' - ASCII形式通信: true
+        ' - UDP使用: false（TCP通信）
+        Using mcpx As New McpX(&quot;192.168.12.88&quot;, 10000, isAscii:=True, isUdp:=False)
+
+            ' ビットデバイス M0 に bool 型で true を書き込む
+            mcpx.Write(Of Boolean)(Prefix.M, &quot;0&quot;, True)
+
+            ' ビットデバイス M0 の値を bool 型で読み取る
+            Dim m0 As Boolean = mcpx.Read(Of Boolean)(Prefix.M, &quot;0&quot;)
+            Console.WriteLine($&quot;M0: {m0}&quot;)
+
+            ' ワードデバイス D0 に short 型で 32767 を書き込む
+            mcpx.Write(Of Short)(Prefix.D, &quot;0&quot;, 32767)
+
+            ' ワードデバイス D0 の値を short 型で読み取る
+            Dim d0 As Short = mcpx.Read(Of Short)(Prefix.D, &quot;0&quot;)
+            Console.WriteLine($&quot;D0: {d0}&quot;)
+
+            ' ダブルワードデバイス D2 に int 型で 2147483647 を書き込む
+            mcpx.Write(Of Integer)(Prefix.D, &quot;2&quot;, 2147483647)
+
+            ' ダブルワードデバイス D2 の値を int 型で読み取る
+            Dim d2 As Integer = mcpx.Read(Of Integer)(Prefix.D, &quot;2&quot;)
+            Console.WriteLine($&quot;D2: {d2}&quot;)
+
+            ' ダブルワードデバイス D4 に float 型で最大値を設定して書き込む
+            mcpx.Write(Of Single)(Prefix.D, &quot;4&quot;, CSng(3.4028235E+38))
+
+            ' D4 の値を float 型で読み取る
+            Dim d4 As Single = mcpx.Read(Of Single)(Prefix.D, &quot;4&quot;)
+            Console.WriteLine($&quot;D4: {d4}&quot;)
+
+            ' ダブルワードデバイス D6 に double 型で最大値を設定して書き込む
+            mcpx.Write(Of Double)(Prefix.D, &quot;6&quot;, 1.7976931348623157E+308)
+
+            ' D6 の値を double 型で読み取る
+            Dim d6 As Double = mcpx.Read(Of Double)(Prefix.D, &quot;6&quot;)
+            Console.WriteLine($&quot;D6: {d6}&quot;)
+
+            ' 7000 ワード分の short 配列を D10 から一括書き込み
+            Dim dbwArr(6999) As Short
+            For i As Integer = 0 To dbwArr.Length - 1
+                dbwArr(i) = CShort(i)
+            Next
+            mcpx.BatchWrite(Of Short)(Prefix.D, &quot;10&quot;, dbwArr)
+
+            ' D10 から 7000 ワード分を一括で short 型として読み取る
+            Dim dbrArr As Short() = mcpx.BatchRead(Of Short)(Prefix.D, &quot;10&quot;, 7000)
+
+            Dim l As Integer = 0
+            For Each dr In dbrArr
+                Console.WriteLine($&quot;D{10 + l}: {dr}&quot;)
+                l += 1
+            Next
+
+            ' ランダムなワード/ダブルワードDeviceに short/int 型で書き込み
+            mcpx.RandomWrite(Of Short, Integer)(
+                wordDevices:={
+                    New ValueTuple(Of Prefix, String, Short)(Prefix.D, &quot;8000&quot;, 32766),
+                    New ValueTuple(Of Prefix, String, Short)(Prefix.D, &quot;8010&quot;, 32767)
+                },
+                doubleWordDevices:={
+                    New ValueTuple(Of Prefix, String, Integer)(Prefix.D, &quot;8020&quot;, 2147483646),
+                    New ValueTuple(Of Prefix, String, Integer)(Prefix.D, &quot;8030&quot;, 2147483647)
+                }
+            )
+
+            ' ランダムなワード/ダブルワードアドレスから short/int 型で読み取り
+            Dim drrArr = mcpx.RandomRead(Of Short, Integer)(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            Console.WriteLine($&quot;D8000: {drrArr.wordValues(0)}&quot;)
+            Console.WriteLine($&quot;D8010: {drrArr.wordValues(1)}&quot;)
+            Console.WriteLine($&quot;D8020: {drrArr.doubleValues(0)}&quot;)
+            Console.WriteLine($&quot;D8030: {drrArr.doubleValues(1)}&quot;)
+
+            ' ワード・ダブルワードデバイスをモニタ登録する（初回のみ必要）
+            mcpx.MonitorRegist(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            ' モニタ登録したデバイスの値を取得する（ワード: short 型、ダブルワード: int 型）
+            Dim dmArr = mcpx.Monitor(Of Short, Integer)(
+                wordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8000&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8010&quot;)
+                },
+                doubleWordAddresses:={
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8020&quot;),
+                    New ValueTuple(Of Prefix, String)(Prefix.D, &quot;8030&quot;)
+                }
+            )
+
+            Console.WriteLine($&quot;D8000: {dmArr.wordValues(0)}&quot;)
+            Console.WriteLine($&quot;D8010: {dmArr.wordValues(1)}&quot;)
+            Console.WriteLine($&quot;D8020: {dmArr.doubleValues(0)}&quot;)
+            Console.WriteLine($&quot;D8030: {dmArr.doubleValues(1)}&quot;)
+
+        End Using
+    End Sub
+End Module
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/docfx/docs/example.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

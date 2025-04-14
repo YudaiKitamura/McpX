@@ -1,0 +1,492 @@
+{
+  "source_base_path": "/home/runner/work/McpX/McpX/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/CHANGELOG.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../CHANGELOG_JA.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/CHANGELOG_JA.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../README_JA.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/README_JA.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Abstructs.BasePlc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Abstructs.BasePlc.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Abstructs.BasePlc",
+      "Summary": "<p sourcefile=\"api/McpXLib.Abstructs.BasePlc.yml\" sourcestartlinenumber=\"1\">PLC通信抽象クラス</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Abstructs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Abstructs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Abstructs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Enums.Prefix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Enums.Prefix.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Enums.Prefix",
+      "Summary": "<p sourcefile=\"api/McpXLib.Enums.Prefix.yml\" sourcestartlinenumber=\"1\">デバイスの接頭辞</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Enums.RequestFrame.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Enums.RequestFrame.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Enums.RequestFrame",
+      "Summary": "<p sourcefile=\"api/McpXLib.Enums.RequestFrame.yml\" sourcestartlinenumber=\"1\">リクエストフレーム（データ交信電文）</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Enums.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Enums",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Exceptions.DeviceAddressException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Exceptions.DeviceAddressException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Exceptions.DeviceAddressException",
+      "Summary": "<p sourcefile=\"api/McpXLib.Exceptions.DeviceAddressException.yml\" sourcestartlinenumber=\"1\">デバイスアドレスの例外</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Exceptions.McProtocolException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Exceptions.McProtocolException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Exceptions.McProtocolException",
+      "Summary": "<p sourcefile=\"api/McpXLib.Exceptions.McProtocolException.yml\" sourcestartlinenumber=\"1\">MCプロトコルの交信例外</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Exceptions.PlcDuplicationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Exceptions.PlcDuplicationException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Exceptions.PlcDuplicationException",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Exceptions.RecivePacketException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Exceptions.RecivePacketException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Exceptions.RecivePacketException",
+      "Summary": "<p sourcefile=\"api/McpXLib.Exceptions.RecivePacketException.yml\" sourcestartlinenumber=\"1\">受信パケットの例外</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Exceptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Exceptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPacketBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPacketBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPacketBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPacketParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPacketParser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPacketParser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPayloadBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPayloadBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPayloadBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPlc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPlc.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPlc",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPlcCommand-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPlcCommand-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPlcCommand<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IPlcTransport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IPlcTransport.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IPlcTransport",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IRequestPacketBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IRequestPacketBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IRequestPacketBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Mcp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Mcp.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Mcp",
+      "Summary": "<p sourcefile=\"api/McpXLib.Mcp.yml\" sourcestartlinenumber=\"1\">MCプロトコル実装クラス（コマンド追加以外は、<xref href=\"McpXLib.McpX\" data-throw-if-not-resolved=\"false\"></xref>クラスを使用してください。）</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.McpX.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.McpX.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.McpX",
+      "Summary": "<p sourcefile=\"api/McpXLib.McpX.yml\" sourcestartlinenumber=\"1\">MCプロトコル拡張クラス</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "api/toc.json"
+        },
+        ".html": {
+          "relative_path": "api/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/example.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/example.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/plc_parameter_setting.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/plc_parameter_setting.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "docs/toc.json"
+        },
+        ".html": {
+          "relative_path": "docs/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icon.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/icon.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/logo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/logo.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/mcpx_favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/mcpx_favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/plc_parameter_1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/plc_parameter_1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/plc_parameter_2.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/plc_parameter_2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "toc.json"
+        },
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

@@ -1,0 +1,1084 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: McpXLib
+  name: McpXLib
+  href: api/McpXLib.html
+  commentId: N:McpXLib
+  fullName: McpXLib
+  nameWithType: McpXLib
+- uid: McpXLib.Abstructs
+  name: McpXLib.Abstructs
+  href: api/McpXLib.Abstructs.html
+  commentId: N:McpXLib.Abstructs
+  fullName: McpXLib.Abstructs
+  nameWithType: McpXLib.Abstructs
+- uid: McpXLib.Abstructs.BasePlc
+  name: BasePlc
+  href: api/McpXLib.Abstructs.BasePlc.html
+  commentId: T:McpXLib.Abstructs.BasePlc
+  fullName: McpXLib.Abstructs.BasePlc
+  nameWithType: BasePlc
+- uid: McpXLib.Abstructs.BasePlc.#ctor(McpXLib.Interfaces.IPlcTransport)
+  name: BasePlc(IPlcTransport)
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc__ctor_McpXLib_Interfaces_IPlcTransport_
+  commentId: M:McpXLib.Abstructs.BasePlc.#ctor(McpXLib.Interfaces.IPlcTransport)
+  name.vb: New(IPlcTransport)
+  fullName: McpXLib.Abstructs.BasePlc.BasePlc(McpXLib.Interfaces.IPlcTransport)
+  fullName.vb: McpXLib.Abstructs.BasePlc.New(McpXLib.Interfaces.IPlcTransport)
+  nameWithType: BasePlc.BasePlc(IPlcTransport)
+  nameWithType.vb: BasePlc.New(IPlcTransport)
+- uid: McpXLib.Abstructs.BasePlc.#ctor*
+  name: BasePlc
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc__ctor_
+  commentId: Overload:McpXLib.Abstructs.BasePlc.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.Abstructs.BasePlc.BasePlc
+  fullName.vb: McpXLib.Abstructs.BasePlc.New
+  nameWithType: BasePlc.BasePlc
+  nameWithType.vb: BasePlc.New
+- uid: McpXLib.Abstructs.BasePlc.Dispose
+  name: Dispose()
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose
+  commentId: M:McpXLib.Abstructs.BasePlc.Dispose
+  fullName: McpXLib.Abstructs.BasePlc.Dispose()
+  nameWithType: BasePlc.Dispose()
+- uid: McpXLib.Abstructs.BasePlc.Dispose*
+  name: Dispose
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Dispose_
+  commentId: Overload:McpXLib.Abstructs.BasePlc.Dispose
+  isSpec: "True"
+  fullName: McpXLib.Abstructs.BasePlc.Dispose
+  nameWithType: BasePlc.Dispose
+- uid: McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+  name: Request(byte[])
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___
+  commentId: M:McpXLib.Abstructs.BasePlc.Request(System.Byte[])
+  name.vb: Request(Byte())
+  fullName: McpXLib.Abstructs.BasePlc.Request(byte[])
+  fullName.vb: McpXLib.Abstructs.BasePlc.Request(Byte())
+  nameWithType: BasePlc.Request(byte[])
+  nameWithType.vb: BasePlc.Request(Byte())
+- uid: McpXLib.Abstructs.BasePlc.Request*
+  name: Request
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_
+  commentId: Overload:McpXLib.Abstructs.BasePlc.Request
+  isSpec: "True"
+  fullName: McpXLib.Abstructs.BasePlc.Request
+  nameWithType: BasePlc.Request
+- uid: McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+  name: RequestAsync(byte[])
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___
+  commentId: M:McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[])
+  name.vb: RequestAsync(Byte())
+  fullName: McpXLib.Abstructs.BasePlc.RequestAsync(byte[])
+  fullName.vb: McpXLib.Abstructs.BasePlc.RequestAsync(Byte())
+  nameWithType: BasePlc.RequestAsync(byte[])
+  nameWithType.vb: BasePlc.RequestAsync(Byte())
+- uid: McpXLib.Abstructs.BasePlc.RequestAsync*
+  name: RequestAsync
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_
+  commentId: Overload:McpXLib.Abstructs.BasePlc.RequestAsync
+  isSpec: "True"
+  fullName: McpXLib.Abstructs.BasePlc.RequestAsync
+  nameWithType: BasePlc.RequestAsync
+- uid: McpXLib.Enums
+  name: McpXLib.Enums
+  href: api/McpXLib.Enums.html
+  commentId: N:McpXLib.Enums
+  fullName: McpXLib.Enums
+  nameWithType: McpXLib.Enums
+- uid: McpXLib.Enums.Prefix
+  name: Prefix
+  href: api/McpXLib.Enums.Prefix.html
+  commentId: T:McpXLib.Enums.Prefix
+  fullName: McpXLib.Enums.Prefix
+  nameWithType: Prefix
+- uid: McpXLib.Enums.Prefix.B
+  name: B
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_B
+  commentId: F:McpXLib.Enums.Prefix.B
+  fullName: McpXLib.Enums.Prefix.B
+  nameWithType: Prefix.B
+- uid: McpXLib.Enums.Prefix.CC
+  name: CC
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_CC
+  commentId: F:McpXLib.Enums.Prefix.CC
+  fullName: McpXLib.Enums.Prefix.CC
+  nameWithType: Prefix.CC
+- uid: McpXLib.Enums.Prefix.CN
+  name: CN
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_CN
+  commentId: F:McpXLib.Enums.Prefix.CN
+  fullName: McpXLib.Enums.Prefix.CN
+  nameWithType: Prefix.CN
+- uid: McpXLib.Enums.Prefix.CS
+  name: CS
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_CS
+  commentId: F:McpXLib.Enums.Prefix.CS
+  fullName: McpXLib.Enums.Prefix.CS
+  nameWithType: Prefix.CS
+- uid: McpXLib.Enums.Prefix.D
+  name: D
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_D
+  commentId: F:McpXLib.Enums.Prefix.D
+  fullName: McpXLib.Enums.Prefix.D
+  nameWithType: Prefix.D
+- uid: McpXLib.Enums.Prefix.DX
+  name: DX
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_DX
+  commentId: F:McpXLib.Enums.Prefix.DX
+  fullName: McpXLib.Enums.Prefix.DX
+  nameWithType: Prefix.DX
+- uid: McpXLib.Enums.Prefix.DY
+  name: DY
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_DY
+  commentId: F:McpXLib.Enums.Prefix.DY
+  fullName: McpXLib.Enums.Prefix.DY
+  nameWithType: Prefix.DY
+- uid: McpXLib.Enums.Prefix.F
+  name: F
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_F
+  commentId: F:McpXLib.Enums.Prefix.F
+  fullName: McpXLib.Enums.Prefix.F
+  nameWithType: Prefix.F
+- uid: McpXLib.Enums.Prefix.L
+  name: L
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_L
+  commentId: F:McpXLib.Enums.Prefix.L
+  fullName: McpXLib.Enums.Prefix.L
+  nameWithType: Prefix.L
+- uid: McpXLib.Enums.Prefix.M
+  name: M
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_M
+  commentId: F:McpXLib.Enums.Prefix.M
+  fullName: McpXLib.Enums.Prefix.M
+  nameWithType: Prefix.M
+- uid: McpXLib.Enums.Prefix.R
+  name: R
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_R
+  commentId: F:McpXLib.Enums.Prefix.R
+  fullName: McpXLib.Enums.Prefix.R
+  nameWithType: Prefix.R
+- uid: McpXLib.Enums.Prefix.S
+  name: S
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_S
+  commentId: F:McpXLib.Enums.Prefix.S
+  fullName: McpXLib.Enums.Prefix.S
+  nameWithType: Prefix.S
+- uid: McpXLib.Enums.Prefix.SB
+  name: SB
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SB
+  commentId: F:McpXLib.Enums.Prefix.SB
+  fullName: McpXLib.Enums.Prefix.SB
+  nameWithType: Prefix.SB
+- uid: McpXLib.Enums.Prefix.SC
+  name: SC
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SC
+  commentId: F:McpXLib.Enums.Prefix.SC
+  fullName: McpXLib.Enums.Prefix.SC
+  nameWithType: Prefix.SC
+- uid: McpXLib.Enums.Prefix.SD
+  name: SD
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SD
+  commentId: F:McpXLib.Enums.Prefix.SD
+  fullName: McpXLib.Enums.Prefix.SD
+  nameWithType: Prefix.SD
+- uid: McpXLib.Enums.Prefix.SM
+  name: SM
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SM
+  commentId: F:McpXLib.Enums.Prefix.SM
+  fullName: McpXLib.Enums.Prefix.SM
+  nameWithType: Prefix.SM
+- uid: McpXLib.Enums.Prefix.SN
+  name: SN
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SN
+  commentId: F:McpXLib.Enums.Prefix.SN
+  fullName: McpXLib.Enums.Prefix.SN
+  nameWithType: Prefix.SN
+- uid: McpXLib.Enums.Prefix.SS
+  name: SS
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SS
+  commentId: F:McpXLib.Enums.Prefix.SS
+  fullName: McpXLib.Enums.Prefix.SS
+  nameWithType: Prefix.SS
+- uid: McpXLib.Enums.Prefix.SW
+  name: SW
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_SW
+  commentId: F:McpXLib.Enums.Prefix.SW
+  fullName: McpXLib.Enums.Prefix.SW
+  nameWithType: Prefix.SW
+- uid: McpXLib.Enums.Prefix.TC
+  name: TC
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_TC
+  commentId: F:McpXLib.Enums.Prefix.TC
+  fullName: McpXLib.Enums.Prefix.TC
+  nameWithType: Prefix.TC
+- uid: McpXLib.Enums.Prefix.TN
+  name: TN
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_TN
+  commentId: F:McpXLib.Enums.Prefix.TN
+  fullName: McpXLib.Enums.Prefix.TN
+  nameWithType: Prefix.TN
+- uid: McpXLib.Enums.Prefix.TS
+  name: TS
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_TS
+  commentId: F:McpXLib.Enums.Prefix.TS
+  fullName: McpXLib.Enums.Prefix.TS
+  nameWithType: Prefix.TS
+- uid: McpXLib.Enums.Prefix.V
+  name: V
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_V
+  commentId: F:McpXLib.Enums.Prefix.V
+  fullName: McpXLib.Enums.Prefix.V
+  nameWithType: Prefix.V
+- uid: McpXLib.Enums.Prefix.W
+  name: W
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_W
+  commentId: F:McpXLib.Enums.Prefix.W
+  fullName: McpXLib.Enums.Prefix.W
+  nameWithType: Prefix.W
+- uid: McpXLib.Enums.Prefix.X
+  name: X
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_X
+  commentId: F:McpXLib.Enums.Prefix.X
+  fullName: McpXLib.Enums.Prefix.X
+  nameWithType: Prefix.X
+- uid: McpXLib.Enums.Prefix.Y
+  name: Y
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_Y
+  commentId: F:McpXLib.Enums.Prefix.Y
+  fullName: McpXLib.Enums.Prefix.Y
+  nameWithType: Prefix.Y
+- uid: McpXLib.Enums.Prefix.Z
+  name: Z
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_Z
+  commentId: F:McpXLib.Enums.Prefix.Z
+  fullName: McpXLib.Enums.Prefix.Z
+  nameWithType: Prefix.Z
+- uid: McpXLib.Enums.Prefix.ZR
+  name: ZR
+  href: api/McpXLib.Enums.Prefix.html#McpXLib_Enums_Prefix_ZR
+  commentId: F:McpXLib.Enums.Prefix.ZR
+  fullName: McpXLib.Enums.Prefix.ZR
+  nameWithType: Prefix.ZR
+- uid: McpXLib.Enums.RequestFrame
+  name: RequestFrame
+  href: api/McpXLib.Enums.RequestFrame.html
+  commentId: T:McpXLib.Enums.RequestFrame
+  fullName: McpXLib.Enums.RequestFrame
+  nameWithType: RequestFrame
+- uid: McpXLib.Enums.RequestFrame.E3
+  name: E3
+  href: api/McpXLib.Enums.RequestFrame.html#McpXLib_Enums_RequestFrame_E3
+  commentId: F:McpXLib.Enums.RequestFrame.E3
+  fullName: McpXLib.Enums.RequestFrame.E3
+  nameWithType: RequestFrame.E3
+- uid: McpXLib.Enums.RequestFrame.E4
+  name: E4
+  href: api/McpXLib.Enums.RequestFrame.html#McpXLib_Enums_RequestFrame_E4
+  commentId: F:McpXLib.Enums.RequestFrame.E4
+  fullName: McpXLib.Enums.RequestFrame.E4
+  nameWithType: RequestFrame.E4
+- uid: McpXLib.Exceptions
+  name: McpXLib.Exceptions
+  href: api/McpXLib.Exceptions.html
+  commentId: N:McpXLib.Exceptions
+  fullName: McpXLib.Exceptions
+  nameWithType: McpXLib.Exceptions
+- uid: McpXLib.Exceptions.DeviceAddressException
+  name: DeviceAddressException
+  href: api/McpXLib.Exceptions.DeviceAddressException.html
+  commentId: T:McpXLib.Exceptions.DeviceAddressException
+  fullName: McpXLib.Exceptions.DeviceAddressException
+  nameWithType: DeviceAddressException
+- uid: McpXLib.Exceptions.DeviceAddressException.#ctor(System.String)
+  name: DeviceAddressException(string)
+  href: api/McpXLib.Exceptions.DeviceAddressException.html#McpXLib_Exceptions_DeviceAddressException__ctor_System_String_
+  commentId: M:McpXLib.Exceptions.DeviceAddressException.#ctor(System.String)
+  name.vb: New(String)
+  fullName: McpXLib.Exceptions.DeviceAddressException.DeviceAddressException(string)
+  fullName.vb: McpXLib.Exceptions.DeviceAddressException.New(String)
+  nameWithType: DeviceAddressException.DeviceAddressException(string)
+  nameWithType.vb: DeviceAddressException.New(String)
+- uid: McpXLib.Exceptions.DeviceAddressException.#ctor*
+  name: DeviceAddressException
+  href: api/McpXLib.Exceptions.DeviceAddressException.html#McpXLib_Exceptions_DeviceAddressException__ctor_
+  commentId: Overload:McpXLib.Exceptions.DeviceAddressException.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.Exceptions.DeviceAddressException.DeviceAddressException
+  fullName.vb: McpXLib.Exceptions.DeviceAddressException.New
+  nameWithType: DeviceAddressException.DeviceAddressException
+  nameWithType.vb: DeviceAddressException.New
+- uid: McpXLib.Exceptions.McProtocolException
+  name: McProtocolException
+  href: api/McpXLib.Exceptions.McProtocolException.html
+  commentId: T:McpXLib.Exceptions.McProtocolException
+  fullName: McpXLib.Exceptions.McProtocolException
+  nameWithType: McProtocolException
+- uid: McpXLib.Exceptions.McProtocolException.#ctor(System.String)
+  name: McProtocolException(string)
+  href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException__ctor_System_String_
+  commentId: M:McpXLib.Exceptions.McProtocolException.#ctor(System.String)
+  name.vb: New(String)
+  fullName: McpXLib.Exceptions.McProtocolException.McProtocolException(string)
+  fullName.vb: McpXLib.Exceptions.McProtocolException.New(String)
+  nameWithType: McProtocolException.McProtocolException(string)
+  nameWithType.vb: McProtocolException.New(String)
+- uid: McpXLib.Exceptions.McProtocolException.#ctor*
+  name: McProtocolException
+  href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException__ctor_
+  commentId: Overload:McpXLib.Exceptions.McProtocolException.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.Exceptions.McProtocolException.McProtocolException
+  fullName.vb: McpXLib.Exceptions.McProtocolException.New
+  nameWithType: McProtocolException.McProtocolException
+  nameWithType.vb: McProtocolException.New
+- uid: McpXLib.Exceptions.PlcDuplicationException
+  name: PlcDuplicationException
+  href: api/McpXLib.Exceptions.PlcDuplicationException.html
+  commentId: T:McpXLib.Exceptions.PlcDuplicationException
+  fullName: McpXLib.Exceptions.PlcDuplicationException
+  nameWithType: PlcDuplicationException
+- uid: McpXLib.Exceptions.RecivePacketException
+  name: RecivePacketException
+  href: api/McpXLib.Exceptions.RecivePacketException.html
+  commentId: T:McpXLib.Exceptions.RecivePacketException
+  fullName: McpXLib.Exceptions.RecivePacketException
+  nameWithType: RecivePacketException
+- uid: McpXLib.Exceptions.RecivePacketException.#ctor(System.String)
+  name: RecivePacketException(string)
+  href: api/McpXLib.Exceptions.RecivePacketException.html#McpXLib_Exceptions_RecivePacketException__ctor_System_String_
+  commentId: M:McpXLib.Exceptions.RecivePacketException.#ctor(System.String)
+  name.vb: New(String)
+  fullName: McpXLib.Exceptions.RecivePacketException.RecivePacketException(string)
+  fullName.vb: McpXLib.Exceptions.RecivePacketException.New(String)
+  nameWithType: RecivePacketException.RecivePacketException(string)
+  nameWithType.vb: RecivePacketException.New(String)
+- uid: McpXLib.Exceptions.RecivePacketException.#ctor*
+  name: RecivePacketException
+  href: api/McpXLib.Exceptions.RecivePacketException.html#McpXLib_Exceptions_RecivePacketException__ctor_
+  commentId: Overload:McpXLib.Exceptions.RecivePacketException.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.Exceptions.RecivePacketException.RecivePacketException
+  fullName.vb: McpXLib.Exceptions.RecivePacketException.New
+  nameWithType: RecivePacketException.RecivePacketException
+  nameWithType.vb: RecivePacketException.New
+- uid: McpXLib.Interfaces
+  name: McpXLib.Interfaces
+  href: api/McpXLib.Interfaces.html
+  commentId: N:McpXLib.Interfaces
+  fullName: McpXLib.Interfaces
+  nameWithType: McpXLib.Interfaces
+- uid: McpXLib.Interfaces.IPacketBuilder
+  name: IPacketBuilder
+  href: api/McpXLib.Interfaces.IPacketBuilder.html
+  commentId: T:McpXLib.Interfaces.IPacketBuilder
+  fullName: McpXLib.Interfaces.IPacketBuilder
+  nameWithType: IPacketBuilder
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  name: ToAsciiBytes()
+  href: api/McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes()
+  nameWithType: IPacketBuilder.ToAsciiBytes()
+- uid: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes*
+  name: ToAsciiBytes
+  href: api/McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToAsciiBytes_
+  commentId: Overload:McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToAsciiBytes
+  nameWithType: IPacketBuilder.ToAsciiBytes
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  name: ToBinaryBytes()
+  href: api/McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes
+  commentId: M:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes()
+  nameWithType: IPacketBuilder.ToBinaryBytes()
+- uid: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes*
+  name: ToBinaryBytes
+  href: api/McpXLib.Interfaces.IPacketBuilder.html#McpXLib_Interfaces_IPacketBuilder_ToBinaryBytes_
+  commentId: Overload:McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPacketBuilder.ToBinaryBytes
+  nameWithType: IPacketBuilder.ToBinaryBytes
+- uid: McpXLib.Interfaces.IPacketParser
+  name: IPacketParser
+  href: api/McpXLib.Interfaces.IPacketParser.html
+  commentId: T:McpXLib.Interfaces.IPacketParser
+  fullName: McpXLib.Interfaces.IPacketParser
+  nameWithType: IPacketParser
+- uid: McpXLib.Interfaces.IPacketParser.GetIndex
+  name: GetIndex()
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetIndex
+  commentId: M:McpXLib.Interfaces.IPacketParser.GetIndex
+  fullName: McpXLib.Interfaces.IPacketParser.GetIndex()
+  nameWithType: IPacketParser.GetIndex()
+- uid: McpXLib.Interfaces.IPacketParser.GetIndex*
+  name: GetIndex
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetIndex_
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.GetIndex
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPacketParser.GetIndex
+  nameWithType: IPacketParser.GetIndex
+- uid: McpXLib.Interfaces.IPacketParser.GetLength
+  name: GetLength()
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetLength
+  commentId: M:McpXLib.Interfaces.IPacketParser.GetLength
+  fullName: McpXLib.Interfaces.IPacketParser.GetLength()
+  nameWithType: IPacketParser.GetLength()
+- uid: McpXLib.Interfaces.IPacketParser.GetLength*
+  name: GetLength
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_GetLength_
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.GetLength
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPacketParser.GetLength
+  nameWithType: IPacketParser.GetLength
+- uid: McpXLib.Interfaces.IPacketParser.ParsePacket(System.Byte[])
+  name: ParsePacket(byte[])
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_ParsePacket_System_Byte___
+  commentId: M:McpXLib.Interfaces.IPacketParser.ParsePacket(System.Byte[])
+  name.vb: ParsePacket(Byte())
+  fullName: McpXLib.Interfaces.IPacketParser.ParsePacket(byte[])
+  fullName.vb: McpXLib.Interfaces.IPacketParser.ParsePacket(Byte())
+  nameWithType: IPacketParser.ParsePacket(byte[])
+  nameWithType.vb: IPacketParser.ParsePacket(Byte())
+- uid: McpXLib.Interfaces.IPacketParser.ParsePacket*
+  name: ParsePacket
+  href: api/McpXLib.Interfaces.IPacketParser.html#McpXLib_Interfaces_IPacketParser_ParsePacket_
+  commentId: Overload:McpXLib.Interfaces.IPacketParser.ParsePacket
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPacketParser.ParsePacket
+  nameWithType: IPacketParser.ParsePacket
+- uid: McpXLib.Interfaces.IPayloadBuilder
+  name: IPayloadBuilder
+  href: api/McpXLib.Interfaces.IPayloadBuilder.html
+  commentId: T:McpXLib.Interfaces.IPayloadBuilder
+  fullName: McpXLib.Interfaces.IPayloadBuilder
+  nameWithType: IPayloadBuilder
+- uid: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  name: AppendPayload(List<byte>, bool)
+  href: api/McpXLib.Interfaces.IPayloadBuilder.html#McpXLib_Interfaces_IPayloadBuilder_AppendPayload_System_Collections_Generic_List_System_Byte__System_Boolean_
+  commentId: M:McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List{System.Byte},System.Boolean)
+  name.vb: AppendPayload(List(Of Byte), Boolean)
+  fullName: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List<byte>, bool)
+  fullName.vb: McpXLib.Interfaces.IPayloadBuilder.AppendPayload(System.Collections.Generic.List(Of Byte), Boolean)
+  nameWithType: IPayloadBuilder.AppendPayload(List<byte>, bool)
+  nameWithType.vb: IPayloadBuilder.AppendPayload(List(Of Byte), Boolean)
+- uid: McpXLib.Interfaces.IPayloadBuilder.AppendPayload*
+  name: AppendPayload
+  href: api/McpXLib.Interfaces.IPayloadBuilder.html#McpXLib_Interfaces_IPayloadBuilder_AppendPayload_
+  commentId: Overload:McpXLib.Interfaces.IPayloadBuilder.AppendPayload
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPayloadBuilder.AppendPayload
+  nameWithType: IPayloadBuilder.AppendPayload
+- uid: McpXLib.Interfaces.IPlc
+  name: IPlc
+  href: api/McpXLib.Interfaces.IPlc.html
+  commentId: T:McpXLib.Interfaces.IPlc
+  fullName: McpXLib.Interfaces.IPlc
+  nameWithType: IPlc
+- uid: McpXLib.Interfaces.IPlc.IsAscii
+  name: IsAscii
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_IsAscii
+  commentId: P:McpXLib.Interfaces.IPlc.IsAscii
+  fullName: McpXLib.Interfaces.IPlc.IsAscii
+  nameWithType: IPlc.IsAscii
+- uid: McpXLib.Interfaces.IPlc.IsAscii*
+  name: IsAscii
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_IsAscii_
+  commentId: Overload:McpXLib.Interfaces.IPlc.IsAscii
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlc.IsAscii
+  nameWithType: IPlc.IsAscii
+- uid: McpXLib.Interfaces.IPlc.Request(System.Byte[])
+  name: Request(byte[])
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Request_System_Byte___
+  commentId: M:McpXLib.Interfaces.IPlc.Request(System.Byte[])
+  name.vb: Request(Byte())
+  fullName: McpXLib.Interfaces.IPlc.Request(byte[])
+  fullName.vb: McpXLib.Interfaces.IPlc.Request(Byte())
+  nameWithType: IPlc.Request(byte[])
+  nameWithType.vb: IPlc.Request(Byte())
+- uid: McpXLib.Interfaces.IPlc.Request*
+  name: Request
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Request_
+  commentId: Overload:McpXLib.Interfaces.IPlc.Request
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlc.Request
+  nameWithType: IPlc.Request
+- uid: McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[])
+  name: RequestAsync(byte[])
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestAsync_System_Byte___
+  commentId: M:McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[])
+  name.vb: RequestAsync(Byte())
+  fullName: McpXLib.Interfaces.IPlc.RequestAsync(byte[])
+  fullName.vb: McpXLib.Interfaces.IPlc.RequestAsync(Byte())
+  nameWithType: IPlc.RequestAsync(byte[])
+  nameWithType.vb: IPlc.RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlc.RequestAsync*
+  name: RequestAsync
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestAsync_
+  commentId: Overload:McpXLib.Interfaces.IPlc.RequestAsync
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlc.RequestAsync
+  nameWithType: IPlc.RequestAsync
+- uid: McpXLib.Interfaces.IPlc.RequestFrame
+  name: RequestFrame
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestFrame
+  commentId: P:McpXLib.Interfaces.IPlc.RequestFrame
+  fullName: McpXLib.Interfaces.IPlc.RequestFrame
+  nameWithType: IPlc.RequestFrame
+- uid: McpXLib.Interfaces.IPlc.RequestFrame*
+  name: RequestFrame
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestFrame_
+  commentId: Overload:McpXLib.Interfaces.IPlc.RequestFrame
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlc.RequestFrame
+  nameWithType: IPlc.RequestFrame
+- uid: McpXLib.Interfaces.IPlc.Route
+  name: Route
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Route
+  commentId: P:McpXLib.Interfaces.IPlc.Route
+  fullName: McpXLib.Interfaces.IPlc.Route
+  nameWithType: IPlc.Route
+- uid: McpXLib.Interfaces.IPlc.Route*
+  name: Route
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Route_
+  commentId: Overload:McpXLib.Interfaces.IPlc.Route
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlc.Route
+  nameWithType: IPlc.Route
+- uid: McpXLib.Interfaces.IPlcCommand`1
+  name: IPlcCommand<T>
+  href: api/McpXLib.Interfaces.IPlcCommand-1.html
+  commentId: T:McpXLib.Interfaces.IPlcCommand`1
+  name.vb: IPlcCommand(Of T)
+  fullName: McpXLib.Interfaces.IPlcCommand<T>
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T)
+  nameWithType: IPlcCommand<T>
+  nameWithType.vb: IPlcCommand(Of T)
+- uid: McpXLib.Interfaces.IPlcCommand`1.Execute(McpXLib.Interfaces.IPlc)
+  name: Execute(IPlc)
+  href: api/McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_Execute_McpXLib_Interfaces_IPlc_
+  commentId: M:McpXLib.Interfaces.IPlcCommand`1.Execute(McpXLib.Interfaces.IPlc)
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.Execute(McpXLib.Interfaces.IPlc)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).Execute(McpXLib.Interfaces.IPlc)
+  nameWithType: IPlcCommand<T>.Execute(IPlc)
+  nameWithType.vb: IPlcCommand(Of T).Execute(IPlc)
+- uid: McpXLib.Interfaces.IPlcCommand`1.Execute*
+  name: Execute
+  href: api/McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_Execute_
+  commentId: Overload:McpXLib.Interfaces.IPlcCommand`1.Execute
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.Execute
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).Execute
+  nameWithType: IPlcCommand<T>.Execute
+  nameWithType.vb: IPlcCommand(Of T).Execute
+- uid: McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  name: ExecuteAsync(IPlc)
+  href: api/McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_ExecuteAsync_McpXLib_Interfaces_IPlc_
+  commentId: M:McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.ExecuteAsync(McpXLib.Interfaces.IPlc)
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).ExecuteAsync(McpXLib.Interfaces.IPlc)
+  nameWithType: IPlcCommand<T>.ExecuteAsync(IPlc)
+  nameWithType.vb: IPlcCommand(Of T).ExecuteAsync(IPlc)
+- uid: McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync*
+  name: ExecuteAsync
+  href: api/McpXLib.Interfaces.IPlcCommand-1.html#McpXLib_Interfaces_IPlcCommand_1_ExecuteAsync_
+  commentId: Overload:McpXLib.Interfaces.IPlcCommand`1.ExecuteAsync
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlcCommand<T>.ExecuteAsync
+  fullName.vb: McpXLib.Interfaces.IPlcCommand(Of T).ExecuteAsync
+  nameWithType: IPlcCommand<T>.ExecuteAsync
+  nameWithType.vb: IPlcCommand(Of T).ExecuteAsync
+- uid: McpXLib.Interfaces.IPlcTransport
+  name: IPlcTransport
+  href: api/McpXLib.Interfaces.IPlcTransport.html
+  commentId: T:McpXLib.Interfaces.IPlcTransport
+  fullName: McpXLib.Interfaces.IPlcTransport
+  nameWithType: IPlcTransport
+- uid: McpXLib.Interfaces.IPlcTransport.Request(System.Byte[])
+  name: Request(byte[])
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_Request_System_Byte___
+  commentId: M:McpXLib.Interfaces.IPlcTransport.Request(System.Byte[])
+  name.vb: Request(Byte())
+  fullName: McpXLib.Interfaces.IPlcTransport.Request(byte[])
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.Request(Byte())
+  nameWithType: IPlcTransport.Request(byte[])
+  nameWithType.vb: IPlcTransport.Request(Byte())
+- uid: McpXLib.Interfaces.IPlcTransport.Request*
+  name: Request
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_Request_
+  commentId: Overload:McpXLib.Interfaces.IPlcTransport.Request
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlcTransport.Request
+  nameWithType: IPlcTransport.Request
+- uid: McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[])
+  name: RequestAsync(byte[])
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_RequestAsync_System_Byte___
+  commentId: M:McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[])
+  name.vb: RequestAsync(Byte())
+  fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync(byte[])
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.RequestAsync(Byte())
+  nameWithType: IPlcTransport.RequestAsync(byte[])
+  nameWithType.vb: IPlcTransport.RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlcTransport.RequestAsync*
+  name: RequestAsync
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_RequestAsync_
+  commentId: Overload:McpXLib.Interfaces.IPlcTransport.RequestAsync
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync
+  nameWithType: IPlcTransport.RequestAsync
+- uid: McpXLib.Interfaces.IRequestPacketBuilder
+  name: IRequestPacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html
+  commentId: T:McpXLib.Interfaces.IRequestPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder
+  nameWithType: IRequestPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  name: CommandPacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_CommandPacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  nameWithType: IRequestPacketBuilder.CommandPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder*
+  name: CommandPacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_CommandPacketBuilder_
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.CommandPacketBuilder
+  nameWithType: IRequestPacketBuilder.CommandPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  name: RoutePacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_RoutePacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  nameWithType: IRequestPacketBuilder.RoutePacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder*
+  name: RoutePacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_RoutePacketBuilder_
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.RoutePacketBuilder
+  nameWithType: IRequestPacketBuilder.RoutePacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  name: SubHeaderPacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_SubHeaderPacketBuilder
+  commentId: P:McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  nameWithType: IRequestPacketBuilder.SubHeaderPacketBuilder
+- uid: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder*
+  name: SubHeaderPacketBuilder
+  href: api/McpXLib.Interfaces.IRequestPacketBuilder.html#McpXLib_Interfaces_IRequestPacketBuilder_SubHeaderPacketBuilder_
+  commentId: Overload:McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IRequestPacketBuilder.SubHeaderPacketBuilder
+  nameWithType: IRequestPacketBuilder.SubHeaderPacketBuilder
+- uid: McpXLib.Mcp
+  name: Mcp
+  href: api/McpXLib.Mcp.html
+  commentId: T:McpXLib.Mcp
+  fullName: McpXLib.Mcp
+  nameWithType: Mcp
+- uid: McpXLib.Mcp.IsAscii
+  name: IsAscii
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_IsAscii
+  commentId: P:McpXLib.Mcp.IsAscii
+  fullName: McpXLib.Mcp.IsAscii
+  nameWithType: Mcp.IsAscii
+- uid: McpXLib.Mcp.IsAscii*
+  name: IsAscii
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_IsAscii_
+  commentId: Overload:McpXLib.Mcp.IsAscii
+  isSpec: "True"
+  fullName: McpXLib.Mcp.IsAscii
+  nameWithType: Mcp.IsAscii
+- uid: McpXLib.Mcp.Monitor*
+  name: Monitor
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Monitor_
+  commentId: Overload:McpXLib.Mcp.Monitor
+  isSpec: "True"
+  fullName: McpXLib.Mcp.Monitor
+  nameWithType: Mcp.Monitor
+- uid: McpXLib.Mcp.MonitorAsync*
+  name: MonitorAsync
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorAsync_
+  commentId: Overload:McpXLib.Mcp.MonitorAsync
+  isSpec: "True"
+  fullName: McpXLib.Mcp.MonitorAsync
+  nameWithType: Mcp.MonitorAsync
+- uid: McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: MonitorAsync<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.Mcp.MonitorAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: MonitorAsync(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+  fullName: McpXLib.Mcp.MonitorAsync<T1, T2>((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  fullName.vb: McpXLib.Mcp.MonitorAsync(Of T1, T2)((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  nameWithType: Mcp.MonitorAsync<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  nameWithType.vb: Mcp.MonitorAsync(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: MonitorRegist((Prefix, string)[], (Prefix, string)[])
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegist_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.Mcp.MonitorRegist(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: MonitorRegist((Prefix, String)(), (Prefix, String)())
+  fullName: McpXLib.Mcp.MonitorRegist((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  fullName.vb: McpXLib.Mcp.MonitorRegist((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  nameWithType: Mcp.MonitorRegist((Prefix, string)[], (Prefix, string)[])
+  nameWithType.vb: Mcp.MonitorRegist((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.MonitorRegist*
+  name: MonitorRegist
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegist_
+  commentId: Overload:McpXLib.Mcp.MonitorRegist
+  isSpec: "True"
+  fullName: McpXLib.Mcp.MonitorRegist
+  nameWithType: Mcp.MonitorRegist
+- uid: McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegistAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.Mcp.MonitorRegistAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: MonitorRegistAsync((Prefix, String)(), (Prefix, String)())
+  fullName: McpXLib.Mcp.MonitorRegistAsync((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  fullName.vb: McpXLib.Mcp.MonitorRegistAsync((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  nameWithType: Mcp.MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])
+  nameWithType.vb: Mcp.MonitorRegistAsync((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.MonitorRegistAsync*
+  name: MonitorRegistAsync
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegistAsync_
+  commentId: Overload:McpXLib.Mcp.MonitorRegistAsync
+  isSpec: "True"
+  fullName: McpXLib.Mcp.MonitorRegistAsync
+  nameWithType: Mcp.MonitorRegistAsync
+- uid: McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: Monitor<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Monitor__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.Mcp.Monitor``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: Monitor(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+  fullName: McpXLib.Mcp.Monitor<T1, T2>((McpXLib.Enums.Prefix, string)[], (McpXLib.Enums.Prefix, string)[])
+  fullName.vb: McpXLib.Mcp.Monitor(Of T1, T2)((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
+  nameWithType: Mcp.Monitor<T1, T2>((Prefix, string)[], (Prefix, string)[])
+  nameWithType.vb: Mcp.Monitor(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.RequestFrame
+  name: RequestFrame
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_RequestFrame
+  commentId: P:McpXLib.Mcp.RequestFrame
+  fullName: McpXLib.Mcp.RequestFrame
+  nameWithType: Mcp.RequestFrame
+- uid: McpXLib.Mcp.RequestFrame*
+  name: RequestFrame
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_RequestFrame_
+  commentId: Overload:McpXLib.Mcp.RequestFrame
+  isSpec: "True"
+  fullName: McpXLib.Mcp.RequestFrame
+  nameWithType: Mcp.RequestFrame
+- uid: McpXLib.Mcp.Route
+  name: Route
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Route
+  commentId: P:McpXLib.Mcp.Route
+  fullName: McpXLib.Mcp.Route
+  nameWithType: Mcp.Route
+- uid: McpXLib.Mcp.Route*
+  name: Route
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Route_
+  commentId: Overload:McpXLib.Mcp.Route
+  isSpec: "True"
+  fullName: McpXLib.Mcp.Route
+  nameWithType: Mcp.Route
+- uid: McpXLib.McpX
+  name: McpX
+  href: api/McpXLib.McpX.html
+  commentId: T:McpXLib.McpX
+  fullName: McpXLib.McpX
+  nameWithType: McpX
+- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame)
+  name: McpX(string, int, string?, bool, bool, RequestFrame)
+  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_
+  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame)
+  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame)
+  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame)
+  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame)
+  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame)
+  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame)
+- uid: McpXLib.McpX.#ctor*
+  name: McpX
+  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_
+  commentId: Overload:McpXLib.McpX.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.McpX.McpX
+  fullName.vb: McpXLib.McpX.New
+  nameWithType: McpX.McpX
+  nameWithType.vb: McpX.New
+- uid: McpXLib.McpX.BatchRead*
+  name: BatchRead
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchRead_
+  commentId: Overload:McpXLib.McpX.BatchRead
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchRead
+  nameWithType: McpX.BatchRead
+- uid: McpXLib.McpX.BatchReadAsync*
+  name: BatchReadAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadAsync
+  nameWithType: McpX.BatchReadAsync
+- uid: McpXLib.McpX.BatchReadAsync``1(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadAsync<T>(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadAsync__1_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadAsync``1(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadAsync(Of T)(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadAsync<T>(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadAsync(Of T)(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadAsync<T>(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadAsync(Of T)(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchRead``1(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchRead<T>(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchRead__1_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchRead``1(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchRead(Of T)(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchRead<T>(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchRead(Of T)(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchRead<T>(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchRead(Of T)(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchWrite*
+  name: BatchWrite
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWrite_
+  commentId: Overload:McpXLib.McpX.BatchWrite
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWrite
+  nameWithType: McpX.BatchWrite
+- uid: McpXLib.McpX.BatchWriteAsync*
+  name: BatchWriteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteAsync
+  nameWithType: McpX.BatchWriteAsync
+- uid: McpXLib.McpX.BatchWriteAsync``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name: BatchWriteAsync<T>(Prefix, string, T[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteAsync__1_McpXLib_Enums_Prefix_System_String___0___
+  commentId: M:McpXLib.McpX.BatchWriteAsync``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name.vb: BatchWriteAsync(Of T)(Prefix, String, T())
+  fullName: McpXLib.McpX.BatchWriteAsync<T>(McpXLib.Enums.Prefix, string, T[])
+  fullName.vb: McpXLib.McpX.BatchWriteAsync(Of T)(McpXLib.Enums.Prefix, String, T())
+  nameWithType: McpX.BatchWriteAsync<T>(Prefix, string, T[])
+  nameWithType.vb: McpX.BatchWriteAsync(Of T)(Prefix, String, T())
+- uid: McpXLib.McpX.BatchWrite``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name: BatchWrite<T>(Prefix, string, T[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWrite__1_McpXLib_Enums_Prefix_System_String___0___
+  commentId: M:McpXLib.McpX.BatchWrite``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name.vb: BatchWrite(Of T)(Prefix, String, T())
+  fullName: McpXLib.McpX.BatchWrite<T>(McpXLib.Enums.Prefix, string, T[])
+  fullName.vb: McpXLib.McpX.BatchWrite(Of T)(McpXLib.Enums.Prefix, String, T())
+  nameWithType: McpX.BatchWrite<T>(Prefix, string, T[])
+  nameWithType.vb: McpX.BatchWrite(Of T)(Prefix, String, T())
+- uid: McpXLib.McpX.Dispose
+  name: Dispose()
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Dispose
+  commentId: M:McpXLib.McpX.Dispose
+  fullName: McpXLib.McpX.Dispose()
+  nameWithType: McpX.Dispose()
+- uid: McpXLib.McpX.Dispose*
+  name: Dispose
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Dispose_
+  commentId: Overload:McpXLib.McpX.Dispose
+  isSpec: "True"
+  fullName: McpXLib.McpX.Dispose
+  nameWithType: McpX.Dispose
+- uid: McpXLib.McpX.RandomRead*
+  name: RandomRead
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomRead_
+  commentId: Overload:McpXLib.McpX.RandomRead
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomRead
+  nameWithType: McpX.RandomRead
+- uid: McpXLib.McpX.RandomReadAsync*
+  name: RandomReadAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync_
+  commentId: Overload:McpXLib.McpX.RandomReadAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadAsync
+  nameWithType: McpX.RandomReadAsync
+- uid: McpXLib.McpX.RandomReadAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadAsync<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadAsync(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadAsync<T1, T2>((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadAsync<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadAsync(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomRead``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomRead<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomRead__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomRead``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomRead(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomRead<T1, T2>((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomRead(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomRead<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomRead(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomWrite*
+  name: RandomWrite
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWrite_
+  commentId: Overload:McpXLib.McpX.RandomWrite
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWrite
+  nameWithType: McpX.RandomWrite
+- uid: McpXLib.McpX.RandomWriteAsync*
+  name: RandomWriteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync_
+  commentId: Overload:McpXLib.McpX.RandomWriteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteAsync
+  nameWithType: McpX.RandomWriteAsync
+- uid: McpXLib.McpX.RandomWriteAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String,``0}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,``1}[])
+  name: RandomWriteAsync<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String___0____System_ValueTuple_McpXLib_Enums_Prefix_System_String___1____
+  commentId: M:McpXLib.McpX.RandomWriteAsync``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String,``0}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,``1}[])
+  name.vb: RandomWriteAsync(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+  fullName: McpXLib.McpX.RandomWriteAsync<T1, T2>((McpXLib.Enums.Prefix prefix, string address, T1 value)[], (McpXLib.Enums.Prefix prefix, string address, T2 value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String, value As T1)(), (prefix As McpXLib.Enums.Prefix, address As String, value As T2)())
+  nameWithType: McpX.RandomWriteAsync<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
+  nameWithType.vb: McpX.RandomWriteAsync(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+- uid: McpXLib.McpX.RandomWrite``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String,``0}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,``1}[])
+  name: RandomWrite<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWrite__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String___0____System_ValueTuple_McpXLib_Enums_Prefix_System_String___1____
+  commentId: M:McpXLib.McpX.RandomWrite``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String,``0}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,``1}[])
+  name.vb: RandomWrite(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+  fullName: McpXLib.McpX.RandomWrite<T1, T2>((McpXLib.Enums.Prefix prefix, string address, T1 value)[], (McpXLib.Enums.Prefix prefix, string address, T2 value)[])
+  fullName.vb: McpXLib.McpX.RandomWrite(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String, value As T1)(), (prefix As McpXLib.Enums.Prefix, address As String, value As T2)())
+  nameWithType: McpX.RandomWrite<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
+  nameWithType.vb: McpX.RandomWrite(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+- uid: McpXLib.McpX.Read*
+  name: Read
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Read_
+  commentId: Overload:McpXLib.McpX.Read
+  isSpec: "True"
+  fullName: McpXLib.McpX.Read
+  nameWithType: McpX.Read
+- uid: McpXLib.McpX.ReadAsync*
+  name: ReadAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadAsync_
+  commentId: Overload:McpXLib.McpX.ReadAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadAsync
+  nameWithType: McpX.ReadAsync
+- uid: McpXLib.McpX.ReadAsync``1(McpXLib.Enums.Prefix,System.String)
+  name: ReadAsync<T>(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadAsync__1_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadAsync``1(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadAsync(Of T)(Prefix, String)
+  fullName: McpXLib.McpX.ReadAsync<T>(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadAsync(Of T)(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadAsync<T>(Prefix, string)
+  nameWithType.vb: McpX.ReadAsync(Of T)(Prefix, String)
+- uid: McpXLib.McpX.ReadString(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: ReadString(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadString_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.ReadString(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: ReadString(Prefix, String, UShort)
+  fullName: McpXLib.McpX.ReadString(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.ReadString(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.ReadString(Prefix, string, ushort)
+  nameWithType.vb: McpX.ReadString(Prefix, String, UShort)
+- uid: McpXLib.McpX.ReadString*
+  name: ReadString
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadString_
+  commentId: Overload:McpXLib.McpX.ReadString
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadString
+  nameWithType: McpX.ReadString
+- uid: McpXLib.McpX.ReadStringAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: ReadStringAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadStringAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.ReadStringAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: ReadStringAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.ReadStringAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.ReadStringAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.ReadStringAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.ReadStringAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.ReadStringAsync*
+  name: ReadStringAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadStringAsync_
+  commentId: Overload:McpXLib.McpX.ReadStringAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadStringAsync
+  nameWithType: McpX.ReadStringAsync
+- uid: McpXLib.McpX.Read``1(McpXLib.Enums.Prefix,System.String)
+  name: Read<T>(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Read__1_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.Read``1(McpXLib.Enums.Prefix,System.String)
+  name.vb: Read(Of T)(Prefix, String)
+  fullName: McpXLib.McpX.Read<T>(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.Read(Of T)(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.Read<T>(Prefix, string)
+  nameWithType.vb: McpX.Read(Of T)(Prefix, String)
+- uid: McpXLib.McpX.Write*
+  name: Write
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Write_
+  commentId: Overload:McpXLib.McpX.Write
+  isSpec: "True"
+  fullName: McpXLib.McpX.Write
+  nameWithType: McpX.Write
+- uid: McpXLib.McpX.WriteAsync*
+  name: WriteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteAsync_
+  commentId: Overload:McpXLib.McpX.WriteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteAsync
+  nameWithType: McpX.WriteAsync
+- uid: McpXLib.McpX.WriteAsync``1(McpXLib.Enums.Prefix,System.String,``0)
+  name: WriteAsync<T>(Prefix, string, T)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteAsync__1_McpXLib_Enums_Prefix_System_String___0_
+  commentId: M:McpXLib.McpX.WriteAsync``1(McpXLib.Enums.Prefix,System.String,``0)
+  name.vb: WriteAsync(Of T)(Prefix, String, T)
+  fullName: McpXLib.McpX.WriteAsync<T>(McpXLib.Enums.Prefix, string, T)
+  fullName.vb: McpXLib.McpX.WriteAsync(Of T)(McpXLib.Enums.Prefix, String, T)
+  nameWithType: McpX.WriteAsync<T>(Prefix, string, T)
+  nameWithType.vb: McpX.WriteAsync(Of T)(Prefix, String, T)
+- uid: McpXLib.McpX.WriteString(McpXLib.Enums.Prefix,System.String,System.String)
+  name: WriteString(Prefix, string, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteString_McpXLib_Enums_Prefix_System_String_System_String_
+  commentId: M:McpXLib.McpX.WriteString(McpXLib.Enums.Prefix,System.String,System.String)
+  name.vb: WriteString(Prefix, String, String)
+  fullName: McpXLib.McpX.WriteString(McpXLib.Enums.Prefix, string, string)
+  fullName.vb: McpXLib.McpX.WriteString(McpXLib.Enums.Prefix, String, String)
+  nameWithType: McpX.WriteString(Prefix, string, string)
+  nameWithType.vb: McpX.WriteString(Prefix, String, String)
+- uid: McpXLib.McpX.WriteString*
+  name: WriteString
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteString_
+  commentId: Overload:McpXLib.McpX.WriteString
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteString
+  nameWithType: McpX.WriteString
+- uid: McpXLib.McpX.WriteStringAsync(McpXLib.Enums.Prefix,System.String,System.String)
+  name: WriteStringAsync(Prefix, string, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteStringAsync_McpXLib_Enums_Prefix_System_String_System_String_
+  commentId: M:McpXLib.McpX.WriteStringAsync(McpXLib.Enums.Prefix,System.String,System.String)
+  name.vb: WriteStringAsync(Prefix, String, String)
+  fullName: McpXLib.McpX.WriteStringAsync(McpXLib.Enums.Prefix, string, string)
+  fullName.vb: McpXLib.McpX.WriteStringAsync(McpXLib.Enums.Prefix, String, String)
+  nameWithType: McpX.WriteStringAsync(Prefix, string, string)
+  nameWithType.vb: McpX.WriteStringAsync(Prefix, String, String)
+- uid: McpXLib.McpX.WriteStringAsync*
+  name: WriteStringAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteStringAsync_
+  commentId: Overload:McpXLib.McpX.WriteStringAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteStringAsync
+  nameWithType: McpX.WriteStringAsync
+- uid: McpXLib.McpX.Write``1(McpXLib.Enums.Prefix,System.String,``0)
+  name: Write<T>(Prefix, string, T)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Write__1_McpXLib_Enums_Prefix_System_String___0_
+  commentId: M:McpXLib.McpX.Write``1(McpXLib.Enums.Prefix,System.String,``0)
+  name.vb: Write(Of T)(Prefix, String, T)
+  fullName: McpXLib.McpX.Write<T>(McpXLib.Enums.Prefix, string, T)
+  fullName.vb: McpXLib.McpX.Write(Of T)(McpXLib.Enums.Prefix, String, T)
+  nameWithType: McpX.Write<T>(Prefix, string, T)
+  nameWithType.vb: McpX.Write(Of T)(Prefix, String, T)
