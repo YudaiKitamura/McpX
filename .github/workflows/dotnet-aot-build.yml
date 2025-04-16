@@ -1,0 +1,77 @@
+name: .NET CI + AOT Build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          body: "Auto-generated native AOT binaries are included."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-aot-linux:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Publish AOT Linux
+        run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -f net9.0 -r linux-x64 /p:PublishAot=true
+
+      - name: Rename Linux binary
+        run: |
+          mv McpXInterop/bin/Release/net9.0/linux-x64/native/McpXInterop.so McpXInterop-linux-x64.so
+
+      - name: Upload AOT Linux Binary
+        uses: softprops/action-gh-release@v1
+        with:
+          files: McpXInterop-linux-x64.so
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-aot-windows:
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Publish AOT Windows
+        run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -f net9.0 -r win-x64 /p:PublishAot=true
+
+      - name: Rename Windows binary
+        run: Rename-Item -Path "McpXInterop.dll" -NewName "McpXInterop-win-x64.dll"
+        working-directory: McpXInterop\bin\Release\net9.0\win-x64\native
+        shell: pwsh
+
+      - name: Upload AOT Windows Binary
+        uses: softprops/action-gh-release@v1
+        with:
+          files: McpXInterop/bin/Release/net9.0/win-x64/native/McpXInterop-win-x64.dll
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

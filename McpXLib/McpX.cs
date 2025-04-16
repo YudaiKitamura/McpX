@@ -751,6 +751,7 @@ public class McpX : Mcp
         }
     }
 
+#if !AOT
     /// <summary>
     /// 文字列読み込み
     /// </summary>
@@ -824,6 +825,7 @@ public class McpX : Mcp
     {
         await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
     }
+#endif
 
     /// <summary>
     /// インスタンス破棄

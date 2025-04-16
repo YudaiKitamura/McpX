@@ -21,6 +21,7 @@ internal static class DeviceConverter
         { typeof(ulong), 4 }
     };
 
+#if !AOT
     private static readonly Encoding sjisEncoding;
 
     static DeviceConverter()
@@ -30,6 +31,7 @@ internal static class DeviceConverter
 #endif
         sjisEncoding = Encoding.GetEncoding("shift_jis");
     }
+#endif
 
     internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
@@ -89,6 +91,7 @@ internal static class DeviceConverter
         return values;
     }
 
+#if !AOT
     internal static string ConvertString(byte[] bytes)
     {
         int length = Array.IndexOf(bytes, (byte)0x00);
@@ -108,6 +111,7 @@ internal static class DeviceConverter
             value
         );
     }
+#endif
 
     internal static int GetWordLength<T>() where T : unmanaged
     {
@@ -137,6 +141,7 @@ internal static class DeviceConverter
         }
     }
 
+#if !AOT
     internal static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
     {
         List<byte> bytes = sjisEncoding.GetBytes(value).ToList();
@@ -158,7 +163,7 @@ internal static class DeviceConverter
 
         return result;
     }
-
+#endif
 
     internal static byte[] ToByteAddress(Prefix prefix, string address)
     {

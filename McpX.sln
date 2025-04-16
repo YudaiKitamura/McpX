@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleAsyncCsharp", "Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleSyncCsharp", "Example\ExampleSyncCsharp\ExampleSyncCsharp.csproj", "{94F97389-34DA-41C8-B944-8A5903B398EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpXInterop", "McpXInterop\McpXInterop.csproj", "{EA7F074F-CD9F-4B1B-9A97-D3E1D70474C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +30,9 @@ Global
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1F9D09-A9DE-4C6F-91AA-9C45EA64810E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA7F074F-CD9F-4B1B-9A97-D3E1D70474C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7F074F-CD9F-4B1B-9A97-D3E1D70474C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7F074F-CD9F-4B1B-9A97-D3E1D70474C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7F074F-CD9F-4B1B-9A97-D3E1D70474C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
