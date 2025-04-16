@@ -1,7 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
+    <ConditionalFrameworks>net9.0</ConditionalFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishAot)' != 'true'">
+    <ConditionalFrameworks>net7.0;net8.0;net9.0;netstandard2.0</ConditionalFrameworks>
+  </PropertyGroup>
+
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net8.0;net9.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>$(ConditionalFrameworks)</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -9,6 +17,10 @@
 
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
+    <DefineConstants>$(DefineConstants);AOT</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
