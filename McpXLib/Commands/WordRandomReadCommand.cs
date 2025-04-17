@@ -50,7 +50,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return (
@@ -77,7 +77,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket())
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return (

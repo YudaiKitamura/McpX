@@ -1,3 +1,7 @@
+## [0.5.1] - 2024-04-17
+### Changed
+- Optimized TCP transport performance.
+
 ## [0.5.0] - 2024-04-14
 ### Added
 - Added documentation comments

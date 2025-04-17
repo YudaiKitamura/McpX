@@ -44,7 +44,7 @@ internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         // MEMO:
@@ -69,7 +69,7 @@ internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket())
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         // MEMO:

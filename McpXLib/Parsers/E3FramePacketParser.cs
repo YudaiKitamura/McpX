@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-internal class E3FramePacketParser : IPacketParser
+internal class E3FramePacketParser : IPacketParser, IReceiveLengthParser
 {
     private SubHeaderPacketParser subHeaderPacketParser;
     private RoutePacketParser routePacketParser;
@@ -92,4 +92,14 @@ internal class E3FramePacketParser : IPacketParser
 
         return [];
     }
+
+    public ushort GetHeaderLength()
+    {
+        return (ushort)(subHeaderPacketParser.GetLength() + routePacketParser.GetLength() + contentLengthPacketParser.GetLength());
+    } 
+
+    public ushort ParseContentLength(byte[] bytes)
+    {
+        return BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes), 0);
+    } 
 }

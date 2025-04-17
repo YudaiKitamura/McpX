@@ -26,6 +26,7 @@ public abstract class BasePlc : IDisposable
     /// </remarks>
     /// <param name="packet">PLCに送信するリクエストパケットを指定します。</param>
     /// <returns>PLCから受信したレスポンスパケットを返します。</returns>
+    [Obsolete]
     public async Task<byte[]> RequestAsync(byte[] packet)
     {
         return await transport.RequestAsync(packet);
@@ -39,9 +40,38 @@ public abstract class BasePlc : IDisposable
     /// </remarks>
     /// <param name="packet">PLCに送信するリクエストパケットを指定します。</param>
     /// <returns>PLCから受信したレスポンスパケットを返します。</returns>
+    [Obsolete]
     public byte[] Request(byte[] packet)
     {
         return transport.Request(packet);
+    }
+
+    /// <summary>
+    /// リクエスト送信
+    /// </summary>
+    /// <remarks>
+    /// 指定されたパケットをPLCに送信します。
+    /// </remarks>
+    /// <param name="packet">PLCに送信するリクエストパケットを指定します。</param>
+    /// <param name="receiveLengthParser">受信パケット数のパーサークラスを指定します。</param>
+    /// <returns>PLCから受信したレスポンスパケットを返します。</returns>
+    public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    {
+        return transport.Request(packet, receiveLengthParser);
+    }
+
+    /// <summary>
+    /// リクエスト送信（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 指定されたパケットを非同期でPLCに送信します。
+    /// </remarks>
+    /// <param name="packet">PLCに送信するリクエストパケットを指定します。</param>
+    /// <param name="receiveLengthParser">受信パケット数のパーサークラスを指定します。</param>
+    /// <returns>PLCから受信したレスポンスパケットを返します。</returns>
+    public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    {
+        return await transport.RequestAsync(packet, receiveLengthParser);
     }
 
     /// <summary>

@@ -4,7 +4,7 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
-internal class E4FramePacketParser : IPacketParser
+internal class E4FramePacketParser : IPacketParser, IReceiveLengthParser
 {
     private SubHeaderPacketParser subHeaderPacketParser;
     private SerialPacketParser serialPacketParser;
@@ -102,4 +102,14 @@ internal class E4FramePacketParser : IPacketParser
 
         return [];
     }
+
+    public ushort GetHeaderLength()
+    {
+        return (ushort)(subHeaderPacketParser.GetLength() + serialPacketParser.GetLength() + routePacketParser.GetLength() + contentLengthPacketParser.GetLength());
+    } 
+
+    public ushort ParseContentLength(byte[] bytes)
+    {
+        return BitConverter.ToUInt16(contentLengthPacketParser.ParsePacket(bytes), 0);
+    } 
 }

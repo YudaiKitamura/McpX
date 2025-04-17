@@ -4,7 +4,7 @@ using McpXLib.Parsers;
 
 namespace McpXLib.Utils;
 
-internal class ResponseFrameSelector
+internal class ResponseFrameSelector : IReceiveLengthParser
 {
     private readonly IPacketParser packetParser;
 
@@ -63,6 +63,16 @@ internal class ResponseFrameSelector
                 doubleWordLength: doubleWordLength
             );
         }
+    }
+
+    public ushort ParseContentLength(byte[] bytes)
+    {
+        return ((IReceiveLengthParser)packetParser).ParseContentLength(bytes);
+    }
+
+    public ushort GetHeaderLength()
+    {
+        return ((IReceiveLengthParser)packetParser).GetHeaderLength();
     }
 
     internal byte[] ParsePacket(byte[] bytes)

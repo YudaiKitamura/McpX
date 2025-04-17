@@ -59,7 +59,7 @@ public sealed class TestWordBatchReadAsciiCommand
             0x30, 0x30, 0x30, 0x36,                                     // Value6
         ];
 
-        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(recivePackets);
 
         short[] deviceExpected = [
             1,
@@ -91,7 +91,7 @@ public sealed class TestWordBatchReadAsciiCommand
             0x30, 0x30, 0x30, 0x36,                                     // Value6
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
 
         short[] deviceExpected = [
             1,
