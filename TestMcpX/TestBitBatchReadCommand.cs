@@ -51,7 +51,7 @@ public sealed class TestBitBatchReadCommand
             0x01, 0x11, 0x10                // Value
         ];
 
-        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(recivePackets);
 
         bool[] deviceExpected = [
             false,
@@ -78,7 +78,7 @@ public sealed class TestBitBatchReadCommand
             0x01, 0x11, 0x10                // Value
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
 
         bool[] deviceExpected = [
             false,

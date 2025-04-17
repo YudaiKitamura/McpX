@@ -57,7 +57,7 @@ public sealed class TestMonitorRegistCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.Request(It.IsAny<byte[]>())).Returns(recivePackets);
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(recivePackets);
 
         Assert.AreEqual(true, command.Execute(plcMock.Object));
     }
@@ -74,7 +74,7 @@ public sealed class TestMonitorRegistCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
 
         Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
     }
