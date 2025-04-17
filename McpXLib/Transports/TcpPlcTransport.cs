@@ -6,6 +6,7 @@ namespace McpXLib.Transports;
 
 internal class TcpPlcTransport : IPlcTransport
 {
+    private const int RECIVE_TIMEOUT_MS = 1000; 
     private readonly TcpClient client;
     private readonly NetworkStream stream;
     private readonly object syncLock = new();
@@ -17,6 +18,7 @@ internal class TcpPlcTransport : IPlcTransport
         stream = client.GetStream();
     }
 
+    [Obsolete]
     public byte[] Request(byte[] packet)
     {
         lock (syncLock)
@@ -63,7 +65,7 @@ internal class TcpPlcTransport : IPlcTransport
         }
     }
 
-
+    [Obsolete]
     public async Task<byte[]> RequestAsync(byte[] packet)
     {
         await stream.WriteAsync(packet, 0, packet.Length);
@@ -85,5 +87,89 @@ internal class TcpPlcTransport : IPlcTransport
     {
         stream.Dispose();
         client.Dispose();
+    }
+
+    public byte[] Request(byte[] packet, IReceiveLengthParser contentLength)
+    {
+        lock (syncLock)
+        {
+            stream.Write(packet, 0, packet.Length);
+
+            var headerBytes = GetReceivePacket(contentLength.GetHeaderLength());
+
+            var length = contentLength.ParseContentLength(headerBytes);
+
+            return headerBytes.Concat(GetReceivePacket(length)).ToArray();
+
+        }
+    }
+
+    public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser contentLength)
+    {
+        await stream.WriteAsync(packet, 0, packet.Length);
+
+        var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength());
+
+        var length = contentLength.ParseContentLength(headerBytes);
+
+        return headerBytes.Concat(await GetReceivePacketAsync(length)).ToArray();
+    }
+
+    private byte[] GetReceivePacket(int expectedLength)
+    {
+        var memoryStream = new MemoryStream();
+        var buffer = new byte[1024];
+        int totalRead = 0;
+        var stopwatch = Stopwatch.StartNew();
+
+        while (totalRead < expectedLength)
+        {
+            if (stopwatch.ElapsedMilliseconds > RECIVE_TIMEOUT_MS)
+            {
+                throw new TimeoutException("Recive Timeout");
+            }
+
+            if (stream.DataAvailable) 
+            {
+                int bytesRead = stream.Read(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
+                if (bytesRead == 0)
+                {
+                    throw new IOException("Connection closed unexpectedly");
+                }
+                memoryStream.Write(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+            }
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    private async Task<byte[]> GetReceivePacketAsync(int expectedLength)
+    {
+        var memoryStream = new MemoryStream();
+        var buffer = new byte[1024];
+        int totalRead = 0;
+        var stopwatch = Stopwatch.StartNew();
+
+        while (totalRead < expectedLength)
+        {
+            if (stopwatch.ElapsedMilliseconds > RECIVE_TIMEOUT_MS)
+            {
+                throw new TimeoutException("Recive Timeout");
+            }
+
+            if (stream.DataAvailable) 
+            {
+                int bytesRead = await stream.ReadAsync(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
+                if (bytesRead == 0)
+                {
+                    throw new IOException("Connection closed unexpectedly");
+                }
+                await memoryStream.WriteAsync(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+            }
+        }
+
+        return memoryStream.ToArray();
     }
 }

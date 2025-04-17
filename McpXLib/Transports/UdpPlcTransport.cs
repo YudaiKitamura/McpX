@@ -35,4 +35,14 @@ internal class UdpPlcTransport : IPlcTransport
     {
         udp.Dispose();
     }
+
+    public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    {
+        return Request(packet);
+    }
+
+    public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    {
+        return await RequestAsync(packet);
+    }
 }
