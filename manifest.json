@@ -276,6 +276,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.Interfaces.IReceiveLengthParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.Interfaces.IReceiveLengthParser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.Interfaces.IReceiveLengthParser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/McpXLib.Interfaces.IRequestPacketBuilder.yml",
       "output": {
         ".html": {

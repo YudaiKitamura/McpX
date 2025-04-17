@@ -60,6 +60,15 @@ references:
   fullName.vb: McpXLib.Abstructs.BasePlc.Request(Byte())
   nameWithType: BasePlc.Request(byte[])
   nameWithType.vb: BasePlc.Request(Byte())
+- uid: McpXLib.Abstructs.BasePlc.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: Request(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Abstructs.BasePlc.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: Request(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Abstructs.BasePlc.Request(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Abstructs.BasePlc.Request(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: BasePlc.Request(byte[], IReceiveLengthParser)
+  nameWithType.vb: BasePlc.Request(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Abstructs.BasePlc.Request*
   name: Request
   href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_
@@ -76,6 +85,15 @@ references:
   fullName.vb: McpXLib.Abstructs.BasePlc.RequestAsync(Byte())
   nameWithType: BasePlc.RequestAsync(byte[])
   nameWithType.vb: BasePlc.RequestAsync(Byte())
+- uid: McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: RequestAsync(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Abstructs.BasePlc.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: RequestAsync(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Abstructs.BasePlc.RequestAsync(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Abstructs.BasePlc.RequestAsync(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: BasePlc.RequestAsync(byte[], IReceiveLengthParser)
+  nameWithType.vb: BasePlc.RequestAsync(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Abstructs.BasePlc.RequestAsync*
   name: RequestAsync
   href: api/McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_
@@ -504,6 +522,15 @@ references:
   fullName.vb: McpXLib.Interfaces.IPlc.Request(Byte())
   nameWithType: IPlc.Request(byte[])
   nameWithType.vb: IPlc.Request(Byte())
+- uid: McpXLib.Interfaces.IPlc.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: Request(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Request_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Interfaces.IPlc.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: Request(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Interfaces.IPlc.Request(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Interfaces.IPlc.Request(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: IPlc.Request(byte[], IReceiveLengthParser)
+  nameWithType.vb: IPlc.Request(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Interfaces.IPlc.Request*
   name: Request
   href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_Request_
@@ -520,6 +547,15 @@ references:
   fullName.vb: McpXLib.Interfaces.IPlc.RequestAsync(Byte())
   nameWithType: IPlc.RequestAsync(byte[])
   nameWithType.vb: IPlc.RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: RequestAsync(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestAsync_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Interfaces.IPlc.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: RequestAsync(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Interfaces.IPlc.RequestAsync(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Interfaces.IPlc.RequestAsync(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: IPlc.RequestAsync(byte[], IReceiveLengthParser)
+  nameWithType.vb: IPlc.RequestAsync(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Interfaces.IPlc.RequestAsync*
   name: RequestAsync
   href: api/McpXLib.Interfaces.IPlc.html#McpXLib_Interfaces_IPlc_RequestAsync_
@@ -611,6 +647,15 @@ references:
   fullName.vb: McpXLib.Interfaces.IPlcTransport.Request(Byte())
   nameWithType: IPlcTransport.Request(byte[])
   nameWithType.vb: IPlcTransport.Request(Byte())
+- uid: McpXLib.Interfaces.IPlcTransport.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: Request(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_Request_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Interfaces.IPlcTransport.Request(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: Request(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Interfaces.IPlcTransport.Request(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.Request(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: IPlcTransport.Request(byte[], IReceiveLengthParser)
+  nameWithType.vb: IPlcTransport.Request(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Interfaces.IPlcTransport.Request*
   name: Request
   href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_Request_
@@ -627,6 +672,15 @@ references:
   fullName.vb: McpXLib.Interfaces.IPlcTransport.RequestAsync(Byte())
   nameWithType: IPlcTransport.RequestAsync(byte[])
   nameWithType.vb: IPlcTransport.RequestAsync(Byte())
+- uid: McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name: RequestAsync(byte[], IReceiveLengthParser)
+  href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_RequestAsync_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_
+  commentId: M:McpXLib.Interfaces.IPlcTransport.RequestAsync(System.Byte[],McpXLib.Interfaces.IReceiveLengthParser)
+  name.vb: RequestAsync(Byte(), IReceiveLengthParser)
+  fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync(byte[], McpXLib.Interfaces.IReceiveLengthParser)
+  fullName.vb: McpXLib.Interfaces.IPlcTransport.RequestAsync(Byte(), McpXLib.Interfaces.IReceiveLengthParser)
+  nameWithType: IPlcTransport.RequestAsync(byte[], IReceiveLengthParser)
+  nameWithType.vb: IPlcTransport.RequestAsync(Byte(), IReceiveLengthParser)
 - uid: McpXLib.Interfaces.IPlcTransport.RequestAsync*
   name: RequestAsync
   href: api/McpXLib.Interfaces.IPlcTransport.html#McpXLib_Interfaces_IPlcTransport_RequestAsync_
@@ -634,6 +688,41 @@ references:
   isSpec: "True"
   fullName: McpXLib.Interfaces.IPlcTransport.RequestAsync
   nameWithType: IPlcTransport.RequestAsync
+- uid: McpXLib.Interfaces.IReceiveLengthParser
+  name: IReceiveLengthParser
+  href: api/McpXLib.Interfaces.IReceiveLengthParser.html
+  commentId: T:McpXLib.Interfaces.IReceiveLengthParser
+  fullName: McpXLib.Interfaces.IReceiveLengthParser
+  nameWithType: IReceiveLengthParser
+- uid: McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength
+  name: GetHeaderLength()
+  href: api/McpXLib.Interfaces.IReceiveLengthParser.html#McpXLib_Interfaces_IReceiveLengthParser_GetHeaderLength
+  commentId: M:McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength
+  fullName: McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength()
+  nameWithType: IReceiveLengthParser.GetHeaderLength()
+- uid: McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength*
+  name: GetHeaderLength
+  href: api/McpXLib.Interfaces.IReceiveLengthParser.html#McpXLib_Interfaces_IReceiveLengthParser_GetHeaderLength_
+  commentId: Overload:McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength
+  nameWithType: IReceiveLengthParser.GetHeaderLength
+- uid: McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength(System.Byte[])
+  name: ParseContentLength(byte[])
+  href: api/McpXLib.Interfaces.IReceiveLengthParser.html#McpXLib_Interfaces_IReceiveLengthParser_ParseContentLength_System_Byte___
+  commentId: M:McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength(System.Byte[])
+  name.vb: ParseContentLength(Byte())
+  fullName: McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength(byte[])
+  fullName.vb: McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength(Byte())
+  nameWithType: IReceiveLengthParser.ParseContentLength(byte[])
+  nameWithType.vb: IReceiveLengthParser.ParseContentLength(Byte())
+- uid: McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength*
+  name: ParseContentLength
+  href: api/McpXLib.Interfaces.IReceiveLengthParser.html#McpXLib_Interfaces_IReceiveLengthParser_ParseContentLength_
+  commentId: Overload:McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength
+  isSpec: "True"
+  fullName: McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength
+  nameWithType: IReceiveLengthParser.ParseContentLength
 - uid: McpXLib.Interfaces.IRequestPacketBuilder
   name: IRequestPacketBuilder
   href: api/McpXLib.Interfaces.IRequestPacketBuilder.html

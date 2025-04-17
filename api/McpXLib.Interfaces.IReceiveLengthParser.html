@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title> | McpX </title>
+      <title>Interface IReceiveLengthParser | McpX </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content=" | McpX ">
+      <meta name="title" content="Interface IReceiveLengthParser | McpX ">
       
       
       <link rel="icon" href="../images/mcpx_favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/blob/main/CHANGELOG_JA.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_Interfaces_IReceiveLengthParser.md&amp;value=---%0Auid%3A%20McpXLib.Interfaces.IReceiveLengthParser%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -39,7 +39,7 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -84,62 +84,116 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
+        <article data-uid="McpXLib.Interfaces.IReceiveLengthParser">
 
-<h2 id="051---2024-04-17">[0.5.1] - 2024-04-17</h2>
-<h3 id="changed">Changed</h3>
-<ul>
-<li>TCP通信処理のパフォーマンスを最適化</li>
-</ul>
-<h2 id="050---2024-04-14">[0.5.0] - 2024-04-14</h2>
-<h3 id="added">Added</h3>
-<ul>
-<li>ドキュメントコメントを追加</li>
-</ul>
-<h2 id="042---2024-04-13">[0.4.2] - 2024-04-13</h2>
-<h3 id="changed-1">Changed</h3>
-<ul>
-<li>不要な<code>public</code>修飾子を<code>internal</code>に変更</li>
-</ul>
-<h2 id="041---2024-04-12">[0.4.1] - 2024-04-12</h2>
-<h3 id="fixed">Fixed</h3>
-<ul>
-<li>ランダムリード／モニターコマンドにおいて、ワードデバイスの指定数が2点以外の場合にエラーが発生する不具合を修正</li>
-</ul>
-<h2 id="040---2024-04-12">[0.4.0] - 2024-04-12</h2>
-<h3 id="added-1">Added</h3>
-<ul>
-<li>4Eフレーム（バイナリ、ASCII）に対応</li>
-</ul>
-<h3 id="changed-2">Changed</h3>
-<ul>
-<li>パケット生成処理を改善</li>
-<li>パケット解析処理を改善</li>
-</ul>
-<h2 id="030---2024-04-07">[0.3.0] - 2024-04-07</h2>
-<h3 id="added-2">Added</h3>
-<ul>
-<li>文字列読み込み機能を追加</li>
-<li>文字列書き込み機能を追加</li>
-</ul>
-<h2 id="020---2024-04-03">[0.2.0] - 2024-04-03</h2>
-<h3 id="added-3">Added</h3>
-<ul>
-<li>UDPに対応</li>
-</ul>
-<h2 id="010---2024-03-29">[0.1.0] - 2024-03-29</h2>
-<h3 id="added-4">Added</h3>
-<ul>
-<li>3Eフレーム（ASCII）に対応</li>
-</ul>
+
+
+  <h1 id="McpXLib_Interfaces_IReceiveLengthParser" data-uid="McpXLib.Interfaces.IReceiveLengthParser" class="text-break">
+Interface IReceiveLengthParser  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Interfaces/IReceiveLengthParser.cs/#L3"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="McpXLib.html">McpXLib</a>.<a class="xref" href="McpXLib.Interfaces.html">Interfaces</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>McpXLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IReceiveLengthParser</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="McpXLib_Interfaces_IReceiveLengthParser_GetHeaderLength_" data-uid="McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength*"></a>
+
+  <h3 id="McpXLib_Interfaces_IReceiveLengthParser_GetHeaderLength" data-uid="McpXLib.Interfaces.IReceiveLengthParser.GetHeaderLength">
+  GetHeaderLength()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Interfaces/IReceiveLengthParser.cs/#L5"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ushort GetHeaderLength()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="McpXLib_Interfaces_IReceiveLengthParser_ParseContentLength_" data-uid="McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength*"></a>
+
+  <h3 id="McpXLib_Interfaces_IReceiveLengthParser_ParseContentLength_System_Byte___" data-uid="McpXLib.Interfaces.IReceiveLengthParser.ParseContentLength(System.Byte[])">
+  ParseContentLength(byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Interfaces/IReceiveLengthParser.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ushort ParseContentLength(byte[] bytes)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bytes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/YudaiKitamura/McpX/blob/main/CHANGELOG_JA.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Interfaces/IReceiveLengthParser.cs/#L3" class="edit-link">Edit this page</a>
         </div>
 
-        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 
