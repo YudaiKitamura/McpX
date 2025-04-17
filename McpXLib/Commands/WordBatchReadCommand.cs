@@ -45,7 +45,7 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return DeviceConverter.ConvertValueArray<T>(responseContent);
@@ -61,7 +61,7 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket())
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return DeviceConverter.ConvertValueArray<T>(responseContent);

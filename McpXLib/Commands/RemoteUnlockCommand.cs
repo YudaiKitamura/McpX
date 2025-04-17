@@ -27,7 +27,7 @@ internal sealed class RemoteUnlockCommand : IPlcCommand<bool>
         );
         
         responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return true;
@@ -42,7 +42,7 @@ internal sealed class RemoteUnlockCommand : IPlcCommand<bool>
         );
         
         responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket())
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return true;

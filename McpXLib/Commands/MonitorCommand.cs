@@ -43,7 +43,7 @@ internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket())
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return (
@@ -70,7 +70,7 @@ internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[
         );
 
         var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket())
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
         );
 
         return (
