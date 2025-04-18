@@ -505,6 +505,16 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "sitemap.xml",
+      "output": {
+        "resource": {
+          "relative_path": "sitemap.xml"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
