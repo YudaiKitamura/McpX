@@ -40,6 +40,10 @@
       {
         "files": [ "sitemap.xml" ],
         "dest": "."
+      },
+      {
+        "files": [ "robots.txt" ],
+        "dest": "."
       }
     ],
     "output": "_site",

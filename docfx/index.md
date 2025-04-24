@@ -49,8 +49,8 @@ window.addEventListener('DOMContentLoaded', () => {
   .type("using McpXLib;\n")
   .type("using McpXLib.Enums;\n\n")
   .type('using (var mcpx = new McpX("192.168.12.88", 10000)){\n')
-  .type('   mcpx.Write(Prefix.D, "0", 1234);\n')
-  .type('   var value = mcpx.Read(Prefix.D, "0");\n')
+  .type('   mcpx.Write<short>(Prefix.D, "0", 1234);\n')
+  .type('   var value = mcpx.Read<short>(Prefix.D, "0");\n')
   .type('}')
   .go();
 });
@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
   <div style="text-align: left;">
     <p style="margin: 2em 0 1em 0;">
-      McpXは、三菱電機製PLCと通信するためのMCプロトコル対応ライブラリです。<br>
+      McpXは、三菱電機製PLCと通信するためのMCプロトコル（MCProtocol）対応ライブラリです。<br>
       シンプルなAPIで扱いやすく、MCプロトコルを意識することなく利用でき、Linux、Windows、macOS など、さまざまなプラットフォームで動作します。
     </p>
     <p style="margin: 2em 0 1em 0;">
