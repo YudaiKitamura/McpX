@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://yudaikitamura.github.io/McpX/sitemap.xml
