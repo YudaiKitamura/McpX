@@ -112,12 +112,12 @@
   "docs/CHANGELOG.html": {
     "href": "docs/CHANGELOG.html",
     "title": "| McpX",
-    "summary": "[0.5.1] - 2024-04-17 Changed Optimized TCP transport performance. [0.5.0] - 2024-04-14 Added Added documentation comments [0.4.2] - 2024-04-13 Changed Changed unnecessary public modifiers to internal [0.4.1] - 2024-04-12 Fixed Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two. [0.4.0] - 2024-04-12 Added Support for 4E frames (binary and ASCII) Changed Improved packet generation process Improved packet parsing process [0.3.0] - 2024-04-07 Added Added string read functionality Added string write functionality [0.2.0] - 2024-04-03 Added Support for UDP [0.1.0] - 2024-03-29 Added Support for 3E frames (ASCII)"
+    "summary": "[0.5.2] - 2024-07-16 Changed Fix bug in hex address conversion. [0.5.1] - 2024-04-17 Changed Optimized TCP transport performance. [0.5.0] - 2024-04-14 Added Added documentation comments [0.4.2] - 2024-04-13 Changed Changed unnecessary public modifiers to internal [0.4.1] - 2024-04-12 Fixed Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two. [0.4.0] - 2024-04-12 Added Support for 4E frames (binary and ASCII) Changed Improved packet generation process Improved packet parsing process [0.3.0] - 2024-04-07 Added Added string read functionality Added string write functionality [0.2.0] - 2024-04-03 Added Support for UDP [0.1.0] - 2024-03-29 Added Support for 3E frames (ASCII)"
   },
   "docs/CHANGELOG_JA.html": {
     "href": "docs/CHANGELOG_JA.html",
     "title": "| McpX",
-    "summary": "[0.5.1] - 2024-04-17 Changed TCP通信処理のパフォーマンスを最適化 [0.5.0] - 2024-04-14 Added ドキュメントコメントを追加 [0.4.2] - 2024-04-13 Changed 不要なpublic修飾子をinternalに変更 [0.4.1] - 2024-04-12 Fixed ランダムリード／モニターコマンドにおいて、ワードデバイスの指定数が2点以外の場合にエラーが発生する不具合を修正 [0.4.0] - 2024-04-12 Added 4Eフレーム（バイナリ、ASCII）に対応 Changed パケット生成処理を改善 パケット解析処理を改善 [0.3.0] - 2024-04-07 Added 文字列読み込み機能を追加 文字列書き込み機能を追加 [0.2.0] - 2024-04-03 Added UDPに対応 [0.1.0] - 2024-03-29 Added 3Eフレーム（ASCII）に対応"
+    "summary": "[0.5.2] - 2024-07-16 Changed 16進アドレス変換の不具合を修正 [0.5.1] - 2024-04-17 Changed TCP通信処理のパフォーマンスを最適化 [0.5.0] - 2024-04-14 Added ドキュメントコメントを追加 [0.4.2] - 2024-04-13 Changed 不要なpublic修飾子をinternalに変更 [0.4.1] - 2024-04-12 Fixed ランダムリード／モニターコマンドにおいて、ワードデバイスの指定数が2点以外の場合にエラーが発生する不具合を修正 [0.4.0] - 2024-04-12 Added 4Eフレーム（バイナリ、ASCII）に対応 Changed パケット生成処理を改善 パケット解析処理を改善 [0.3.0] - 2024-04-07 Added 文字列読み込み機能を追加 文字列書き込み機能を追加 [0.2.0] - 2024-04-03 Added UDPに対応 [0.1.0] - 2024-03-29 Added 3Eフレーム（ASCII）に対応"
   },
   "docs/README.html": {
     "href": "docs/README.html",
