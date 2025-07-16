@@ -283,10 +283,50 @@ public sealed class TestDeviceConverter
         );
 
         ushort address = faker.Random.UShort();
-        byte[] expected = BitConverter.GetBytes(address).Reverse().ToArray();
+        byte[] expected = BitConverter.GetBytes(address).ToArray();
         expected = expected.Concat([(byte)0x00, (byte)hexPrefix]).ToArray();
 
         byte[] actual = DeviceConverter.ToByteAddress(hexPrefix, address.ToString("X"));
+
+        CollectionAssert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void ToByteAddress_ShuldConvertHexDeviceToByte2()
+    {
+        Prefix hexPrefix = faker.PickRandom(
+            Prefix.X,
+            Prefix.Y,
+            Prefix.B,
+            Prefix.W,
+            Prefix.SB,
+            Prefix.DX,
+            Prefix.DY
+        );
+
+        ushort address = Convert.ToUInt16("0", 16);
+        byte[] expected = BitConverter.GetBytes(address).ToArray();
+        expected = expected.Concat([(byte)0x00, (byte)hexPrefix]).ToArray();
+
+        byte[] actual = DeviceConverter.ToByteAddress(hexPrefix, address.ToString("X"));
+
+        CollectionAssert.AreEqual(expected, actual);
+
+
+        address = Convert.ToUInt16("F", 16);
+        expected = BitConverter.GetBytes(address).ToArray();
+        expected = expected.Concat([(byte)0x00, (byte)hexPrefix]).ToArray();
+
+        actual = DeviceConverter.ToByteAddress(hexPrefix, address.ToString("X"));
+
+        CollectionAssert.AreEqual(expected, actual);
+        
+
+        address = Convert.ToUInt16("100", 16);
+        expected = BitConverter.GetBytes(address).ToArray();
+        expected = expected.Concat([(byte)0x00, (byte)hexPrefix]).ToArray();
+
+        actual = DeviceConverter.ToByteAddress(hexPrefix, address.ToString("X"));
 
         CollectionAssert.AreEqual(expected, actual);
     }

@@ -1,3 +1,7 @@
+## [0.5.2] - 2024-07-16
+### Changed
+- Fix bug in hex address conversion.
+
 ## [0.5.1] - 2024-04-17
 ### Changed
 - Optimized TCP transport performance.

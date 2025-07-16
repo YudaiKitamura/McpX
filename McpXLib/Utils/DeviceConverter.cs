@@ -181,16 +181,10 @@ internal static class DeviceConverter
             return bytes;
         }
 
-        string hex = address.Length == 1 ? address.PadLeft(2, '0') : address;
-        hex = hex.PadRight(6, '0');
-
-        bytes = Enumerable.Range(0, hex.Length / 2)
-            .Select(i => Convert.ToByte(hex.Substring(i * 2, 2), 16))
-            .ToArray();
-
-        Array.Resize(ref bytes, bytes.Length + 1);
-        bytes[bytes.Length - 1] = (byte)prefix;
-
+        uint decAddress = Convert.ToUInt32(address, 16);
+        bytes = BitConverter.GetBytes(decAddress);
+        Array.Resize(ref bytes, 4);
+        bytes[3] = (byte)prefix;
         return bytes;
     }
 
