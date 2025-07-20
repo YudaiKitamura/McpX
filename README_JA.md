@@ -1,4 +1,4 @@
-<img src="docfx/images/logo.svg" alt="logo" />
+<img src="docfx/images/mcpx_ogp.png" alt="logo" />
 <br>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.5.2-blue" />
