@@ -11,7 +11,7 @@ namespace McpXLib;
 /// <remarks>
 /// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。
 /// </remarks> 
-public class McpX : Mcp
+public partial class McpX : Mcp
 {
     private readonly string? password;
 
