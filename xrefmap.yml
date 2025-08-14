@@ -925,6 +925,358 @@ references:
   fullName.vb: McpXLib.McpX.BatchReadAsync(Of T)(McpXLib.Enums.Prefix, String, UShort)
   nameWithType: McpX.BatchReadAsync<T>(Prefix, string, ushort)
   nameWithType.vb: McpX.BatchReadAsync(Of T)(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadBool(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadBool(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadBool_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadBool(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadBool(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadBool(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadBool(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadBool(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadBool(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadBool*
+  name: BatchReadBool
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadBool_
+  commentId: Overload:McpXLib.McpX.BatchReadBool
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadBool
+  nameWithType: McpX.BatchReadBool
+- uid: McpXLib.McpX.BatchReadBoolAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadBoolAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadBoolAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadBoolAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadBoolAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadBoolAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadBoolAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadBoolAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadBoolAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadBoolAsync*
+  name: BatchReadBoolAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadBoolAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadBoolAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadBoolAsync
+  nameWithType: McpX.BatchReadBoolAsync
+- uid: McpXLib.McpX.BatchReadByte(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadByte(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadByte_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadByte(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadByte(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadByte(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadByte(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadByte(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadByte(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadByte*
+  name: BatchReadByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadByte_
+  commentId: Overload:McpXLib.McpX.BatchReadByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadByte
+  nameWithType: McpX.BatchReadByte
+- uid: McpXLib.McpX.BatchReadByteAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadByteAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadByteAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadByteAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadByteAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadByteAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadByteAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadByteAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadByteAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadByteAsync*
+  name: BatchReadByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadByteAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadByteAsync
+  nameWithType: McpX.BatchReadByteAsync
+- uid: McpXLib.McpX.BatchReadDouble(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadDouble(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadDouble_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadDouble(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadDouble(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadDouble(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadDouble(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadDouble(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadDouble(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadDouble*
+  name: BatchReadDouble
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadDouble_
+  commentId: Overload:McpXLib.McpX.BatchReadDouble
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadDouble
+  nameWithType: McpX.BatchReadDouble
+- uid: McpXLib.McpX.BatchReadDoubleAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadDoubleAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadDoubleAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadDoubleAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadDoubleAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadDoubleAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadDoubleAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadDoubleAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadDoubleAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadDoubleAsync*
+  name: BatchReadDoubleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadDoubleAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadDoubleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadDoubleAsync
+  nameWithType: McpX.BatchReadDoubleAsync
+- uid: McpXLib.McpX.BatchReadInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt16(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt16(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt16(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt16(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt16(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt16(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt16*
+  name: BatchReadInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16_
+  commentId: Overload:McpXLib.McpX.BatchReadInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt16
+  nameWithType: McpX.BatchReadInt16
+- uid: McpXLib.McpX.BatchReadInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt16Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt16Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt16Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt16Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt16Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt16Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt16Async*
+  name: BatchReadInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16Async_
+  commentId: Overload:McpXLib.McpX.BatchReadInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt16Async
+  nameWithType: McpX.BatchReadInt16Async
+- uid: McpXLib.McpX.BatchReadInt32(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt32(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt32(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt32(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt32(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt32(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt32(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt32(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt32*
+  name: BatchReadInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32_
+  commentId: Overload:McpXLib.McpX.BatchReadInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt32
+  nameWithType: McpX.BatchReadInt32
+- uid: McpXLib.McpX.BatchReadInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt32Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt32Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt32Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt32Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt32Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt32Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt32Async*
+  name: BatchReadInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32Async_
+  commentId: Overload:McpXLib.McpX.BatchReadInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt32Async
+  nameWithType: McpX.BatchReadInt32Async
+- uid: McpXLib.McpX.BatchReadInt64(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt64(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt64(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt64(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt64(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt64(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt64(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt64(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt64*
+  name: BatchReadInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64_
+  commentId: Overload:McpXLib.McpX.BatchReadInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt64
+  nameWithType: McpX.BatchReadInt64
+- uid: McpXLib.McpX.BatchReadInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadInt64Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadInt64Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadInt64Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadInt64Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadInt64Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadInt64Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadInt64Async*
+  name: BatchReadInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64Async_
+  commentId: Overload:McpXLib.McpX.BatchReadInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadInt64Async
+  nameWithType: McpX.BatchReadInt64Async
+- uid: McpXLib.McpX.BatchReadSByte(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadSByte(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSByte_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadSByte(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadSByte(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadSByte(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadSByte(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadSByte(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadSByte(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadSByte*
+  name: BatchReadSByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSByte_
+  commentId: Overload:McpXLib.McpX.BatchReadSByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadSByte
+  nameWithType: McpX.BatchReadSByte
+- uid: McpXLib.McpX.BatchReadSByteAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadSByteAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSByteAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadSByteAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadSByteAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadSByteAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadSByteAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadSByteAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadSByteAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadSByteAsync*
+  name: BatchReadSByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSByteAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadSByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadSByteAsync
+  nameWithType: McpX.BatchReadSByteAsync
+- uid: McpXLib.McpX.BatchReadSingle(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadSingle(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSingle_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadSingle(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadSingle(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadSingle(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadSingle(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadSingle(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadSingle(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadSingle*
+  name: BatchReadSingle
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSingle_
+  commentId: Overload:McpXLib.McpX.BatchReadSingle
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadSingle
+  nameWithType: McpX.BatchReadSingle
+- uid: McpXLib.McpX.BatchReadSingleAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadSingleAsync(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSingleAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadSingleAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadSingleAsync(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadSingleAsync(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadSingleAsync(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadSingleAsync(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadSingleAsync(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadSingleAsync*
+  name: BatchReadSingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadSingleAsync_
+  commentId: Overload:McpXLib.McpX.BatchReadSingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadSingleAsync
+  nameWithType: McpX.BatchReadSingleAsync
+- uid: McpXLib.McpX.BatchReadUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt16(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt16(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt16(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt16(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt16(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt16(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt16*
+  name: BatchReadUInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt16
+  nameWithType: McpX.BatchReadUInt16
+- uid: McpXLib.McpX.BatchReadUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt16Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt16Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt16Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt16Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt16Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt16Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt16Async*
+  name: BatchReadUInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16Async_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt16Async
+  nameWithType: McpX.BatchReadUInt16Async
+- uid: McpXLib.McpX.BatchReadUInt32(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt32(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt32(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt32(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt32(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt32(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt32(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt32(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt32*
+  name: BatchReadUInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt32
+  nameWithType: McpX.BatchReadUInt32
+- uid: McpXLib.McpX.BatchReadUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt32Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt32Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt32Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt32Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt32Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt32Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt32Async*
+  name: BatchReadUInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32Async_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt32Async
+  nameWithType: McpX.BatchReadUInt32Async
+- uid: McpXLib.McpX.BatchReadUInt64(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt64(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt64(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt64(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt64(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt64(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt64(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt64(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt64*
+  name: BatchReadUInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt64
+  nameWithType: McpX.BatchReadUInt64
+- uid: McpXLib.McpX.BatchReadUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: BatchReadUInt64Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.BatchReadUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: BatchReadUInt64Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.BatchReadUInt64Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.BatchReadUInt64Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.BatchReadUInt64Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.BatchReadUInt64Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.BatchReadUInt64Async*
+  name: BatchReadUInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64Async_
+  commentId: Overload:McpXLib.McpX.BatchReadUInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchReadUInt64Async
+  nameWithType: McpX.BatchReadUInt64Async
 - uid: McpXLib.McpX.BatchRead``1(McpXLib.Enums.Prefix,System.String,System.UInt16)
   name: BatchRead<T>(Prefix, string, ushort)
   href: api/McpXLib.McpX.html#McpXLib_McpX_BatchRead__1_McpXLib_Enums_Prefix_System_String_System_UInt16_
@@ -957,6 +1309,358 @@ references:
   fullName.vb: McpXLib.McpX.BatchWriteAsync(Of T)(McpXLib.Enums.Prefix, String, T())
   nameWithType: McpX.BatchWriteAsync<T>(Prefix, string, T[])
   nameWithType.vb: McpX.BatchWriteAsync(Of T)(Prefix, String, T())
+- uid: McpXLib.McpX.BatchWriteBool(McpXLib.Enums.Prefix,System.String,System.Boolean[])
+  name: BatchWriteBool(Prefix, string, bool[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteBool_McpXLib_Enums_Prefix_System_String_System_Boolean___
+  commentId: M:McpXLib.McpX.BatchWriteBool(McpXLib.Enums.Prefix,System.String,System.Boolean[])
+  name.vb: BatchWriteBool(Prefix, String, Boolean())
+  fullName: McpXLib.McpX.BatchWriteBool(McpXLib.Enums.Prefix, string, bool[])
+  fullName.vb: McpXLib.McpX.BatchWriteBool(McpXLib.Enums.Prefix, String, Boolean())
+  nameWithType: McpX.BatchWriteBool(Prefix, string, bool[])
+  nameWithType.vb: McpX.BatchWriteBool(Prefix, String, Boolean())
+- uid: McpXLib.McpX.BatchWriteBool*
+  name: BatchWriteBool
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteBool_
+  commentId: Overload:McpXLib.McpX.BatchWriteBool
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteBool
+  nameWithType: McpX.BatchWriteBool
+- uid: McpXLib.McpX.BatchWriteBoolAsync(McpXLib.Enums.Prefix,System.String,System.Boolean[])
+  name: BatchWriteBoolAsync(Prefix, string, bool[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteBoolAsync_McpXLib_Enums_Prefix_System_String_System_Boolean___
+  commentId: M:McpXLib.McpX.BatchWriteBoolAsync(McpXLib.Enums.Prefix,System.String,System.Boolean[])
+  name.vb: BatchWriteBoolAsync(Prefix, String, Boolean())
+  fullName: McpXLib.McpX.BatchWriteBoolAsync(McpXLib.Enums.Prefix, string, bool[])
+  fullName.vb: McpXLib.McpX.BatchWriteBoolAsync(McpXLib.Enums.Prefix, String, Boolean())
+  nameWithType: McpX.BatchWriteBoolAsync(Prefix, string, bool[])
+  nameWithType.vb: McpX.BatchWriteBoolAsync(Prefix, String, Boolean())
+- uid: McpXLib.McpX.BatchWriteBoolAsync*
+  name: BatchWriteBoolAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteBoolAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteBoolAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteBoolAsync
+  nameWithType: McpX.BatchWriteBoolAsync
+- uid: McpXLib.McpX.BatchWriteByte(McpXLib.Enums.Prefix,System.String,System.Byte[])
+  name: BatchWriteByte(Prefix, string, byte[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteByte_McpXLib_Enums_Prefix_System_String_System_Byte___
+  commentId: M:McpXLib.McpX.BatchWriteByte(McpXLib.Enums.Prefix,System.String,System.Byte[])
+  name.vb: BatchWriteByte(Prefix, String, Byte())
+  fullName: McpXLib.McpX.BatchWriteByte(McpXLib.Enums.Prefix, string, byte[])
+  fullName.vb: McpXLib.McpX.BatchWriteByte(McpXLib.Enums.Prefix, String, Byte())
+  nameWithType: McpX.BatchWriteByte(Prefix, string, byte[])
+  nameWithType.vb: McpX.BatchWriteByte(Prefix, String, Byte())
+- uid: McpXLib.McpX.BatchWriteByte*
+  name: BatchWriteByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteByte_
+  commentId: Overload:McpXLib.McpX.BatchWriteByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteByte
+  nameWithType: McpX.BatchWriteByte
+- uid: McpXLib.McpX.BatchWriteByteAsync(McpXLib.Enums.Prefix,System.String,System.Byte[])
+  name: BatchWriteByteAsync(Prefix, string, byte[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteByteAsync_McpXLib_Enums_Prefix_System_String_System_Byte___
+  commentId: M:McpXLib.McpX.BatchWriteByteAsync(McpXLib.Enums.Prefix,System.String,System.Byte[])
+  name.vb: BatchWriteByteAsync(Prefix, String, Byte())
+  fullName: McpXLib.McpX.BatchWriteByteAsync(McpXLib.Enums.Prefix, string, byte[])
+  fullName.vb: McpXLib.McpX.BatchWriteByteAsync(McpXLib.Enums.Prefix, String, Byte())
+  nameWithType: McpX.BatchWriteByteAsync(Prefix, string, byte[])
+  nameWithType.vb: McpX.BatchWriteByteAsync(Prefix, String, Byte())
+- uid: McpXLib.McpX.BatchWriteByteAsync*
+  name: BatchWriteByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteByteAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteByteAsync
+  nameWithType: McpX.BatchWriteByteAsync
+- uid: McpXLib.McpX.BatchWriteDouble(McpXLib.Enums.Prefix,System.String,System.Double[])
+  name: BatchWriteDouble(Prefix, string, double[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteDouble_McpXLib_Enums_Prefix_System_String_System_Double___
+  commentId: M:McpXLib.McpX.BatchWriteDouble(McpXLib.Enums.Prefix,System.String,System.Double[])
+  name.vb: BatchWriteDouble(Prefix, String, Double())
+  fullName: McpXLib.McpX.BatchWriteDouble(McpXLib.Enums.Prefix, string, double[])
+  fullName.vb: McpXLib.McpX.BatchWriteDouble(McpXLib.Enums.Prefix, String, Double())
+  nameWithType: McpX.BatchWriteDouble(Prefix, string, double[])
+  nameWithType.vb: McpX.BatchWriteDouble(Prefix, String, Double())
+- uid: McpXLib.McpX.BatchWriteDouble*
+  name: BatchWriteDouble
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteDouble_
+  commentId: Overload:McpXLib.McpX.BatchWriteDouble
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteDouble
+  nameWithType: McpX.BatchWriteDouble
+- uid: McpXLib.McpX.BatchWriteDoubleAsync(McpXLib.Enums.Prefix,System.String,System.Double[])
+  name: BatchWriteDoubleAsync(Prefix, string, double[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteDoubleAsync_McpXLib_Enums_Prefix_System_String_System_Double___
+  commentId: M:McpXLib.McpX.BatchWriteDoubleAsync(McpXLib.Enums.Prefix,System.String,System.Double[])
+  name.vb: BatchWriteDoubleAsync(Prefix, String, Double())
+  fullName: McpXLib.McpX.BatchWriteDoubleAsync(McpXLib.Enums.Prefix, string, double[])
+  fullName.vb: McpXLib.McpX.BatchWriteDoubleAsync(McpXLib.Enums.Prefix, String, Double())
+  nameWithType: McpX.BatchWriteDoubleAsync(Prefix, string, double[])
+  nameWithType.vb: McpX.BatchWriteDoubleAsync(Prefix, String, Double())
+- uid: McpXLib.McpX.BatchWriteDoubleAsync*
+  name: BatchWriteDoubleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteDoubleAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteDoubleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteDoubleAsync
+  nameWithType: McpX.BatchWriteDoubleAsync
+- uid: McpXLib.McpX.BatchWriteInt16(McpXLib.Enums.Prefix,System.String,System.Int16[])
+  name: BatchWriteInt16(Prefix, string, short[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16_McpXLib_Enums_Prefix_System_String_System_Int16___
+  commentId: M:McpXLib.McpX.BatchWriteInt16(McpXLib.Enums.Prefix,System.String,System.Int16[])
+  name.vb: BatchWriteInt16(Prefix, String, Short())
+  fullName: McpXLib.McpX.BatchWriteInt16(McpXLib.Enums.Prefix, string, short[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt16(McpXLib.Enums.Prefix, String, Short())
+  nameWithType: McpX.BatchWriteInt16(Prefix, string, short[])
+  nameWithType.vb: McpX.BatchWriteInt16(Prefix, String, Short())
+- uid: McpXLib.McpX.BatchWriteInt16*
+  name: BatchWriteInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt16
+  nameWithType: McpX.BatchWriteInt16
+- uid: McpXLib.McpX.BatchWriteInt16Async(McpXLib.Enums.Prefix,System.String,System.Int16[])
+  name: BatchWriteInt16Async(Prefix, string, short[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16Async_McpXLib_Enums_Prefix_System_String_System_Int16___
+  commentId: M:McpXLib.McpX.BatchWriteInt16Async(McpXLib.Enums.Prefix,System.String,System.Int16[])
+  name.vb: BatchWriteInt16Async(Prefix, String, Short())
+  fullName: McpXLib.McpX.BatchWriteInt16Async(McpXLib.Enums.Prefix, string, short[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt16Async(McpXLib.Enums.Prefix, String, Short())
+  nameWithType: McpX.BatchWriteInt16Async(Prefix, string, short[])
+  nameWithType.vb: McpX.BatchWriteInt16Async(Prefix, String, Short())
+- uid: McpXLib.McpX.BatchWriteInt16Async*
+  name: BatchWriteInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt16Async
+  nameWithType: McpX.BatchWriteInt16Async
+- uid: McpXLib.McpX.BatchWriteInt32(McpXLib.Enums.Prefix,System.String,System.Int32[])
+  name: BatchWriteInt32(Prefix, string, int[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32_McpXLib_Enums_Prefix_System_String_System_Int32___
+  commentId: M:McpXLib.McpX.BatchWriteInt32(McpXLib.Enums.Prefix,System.String,System.Int32[])
+  name.vb: BatchWriteInt32(Prefix, String, Integer())
+  fullName: McpXLib.McpX.BatchWriteInt32(McpXLib.Enums.Prefix, string, int[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt32(McpXLib.Enums.Prefix, String, Integer())
+  nameWithType: McpX.BatchWriteInt32(Prefix, string, int[])
+  nameWithType.vb: McpX.BatchWriteInt32(Prefix, String, Integer())
+- uid: McpXLib.McpX.BatchWriteInt32*
+  name: BatchWriteInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt32
+  nameWithType: McpX.BatchWriteInt32
+- uid: McpXLib.McpX.BatchWriteInt32Async(McpXLib.Enums.Prefix,System.String,System.Int32[])
+  name: BatchWriteInt32Async(Prefix, string, int[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32Async_McpXLib_Enums_Prefix_System_String_System_Int32___
+  commentId: M:McpXLib.McpX.BatchWriteInt32Async(McpXLib.Enums.Prefix,System.String,System.Int32[])
+  name.vb: BatchWriteInt32Async(Prefix, String, Integer())
+  fullName: McpXLib.McpX.BatchWriteInt32Async(McpXLib.Enums.Prefix, string, int[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt32Async(McpXLib.Enums.Prefix, String, Integer())
+  nameWithType: McpX.BatchWriteInt32Async(Prefix, string, int[])
+  nameWithType.vb: McpX.BatchWriteInt32Async(Prefix, String, Integer())
+- uid: McpXLib.McpX.BatchWriteInt32Async*
+  name: BatchWriteInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt32Async
+  nameWithType: McpX.BatchWriteInt32Async
+- uid: McpXLib.McpX.BatchWriteInt64(McpXLib.Enums.Prefix,System.String,System.Int64[])
+  name: BatchWriteInt64(Prefix, string, long[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64_McpXLib_Enums_Prefix_System_String_System_Int64___
+  commentId: M:McpXLib.McpX.BatchWriteInt64(McpXLib.Enums.Prefix,System.String,System.Int64[])
+  name.vb: BatchWriteInt64(Prefix, String, Long())
+  fullName: McpXLib.McpX.BatchWriteInt64(McpXLib.Enums.Prefix, string, long[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt64(McpXLib.Enums.Prefix, String, Long())
+  nameWithType: McpX.BatchWriteInt64(Prefix, string, long[])
+  nameWithType.vb: McpX.BatchWriteInt64(Prefix, String, Long())
+- uid: McpXLib.McpX.BatchWriteInt64*
+  name: BatchWriteInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt64
+  nameWithType: McpX.BatchWriteInt64
+- uid: McpXLib.McpX.BatchWriteInt64Async(McpXLib.Enums.Prefix,System.String,System.Int64[])
+  name: BatchWriteInt64Async(Prefix, string, long[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64Async_McpXLib_Enums_Prefix_System_String_System_Int64___
+  commentId: M:McpXLib.McpX.BatchWriteInt64Async(McpXLib.Enums.Prefix,System.String,System.Int64[])
+  name.vb: BatchWriteInt64Async(Prefix, String, Long())
+  fullName: McpXLib.McpX.BatchWriteInt64Async(McpXLib.Enums.Prefix, string, long[])
+  fullName.vb: McpXLib.McpX.BatchWriteInt64Async(McpXLib.Enums.Prefix, String, Long())
+  nameWithType: McpX.BatchWriteInt64Async(Prefix, string, long[])
+  nameWithType.vb: McpX.BatchWriteInt64Async(Prefix, String, Long())
+- uid: McpXLib.McpX.BatchWriteInt64Async*
+  name: BatchWriteInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteInt64Async
+  nameWithType: McpX.BatchWriteInt64Async
+- uid: McpXLib.McpX.BatchWriteSByte(McpXLib.Enums.Prefix,System.String,System.SByte[])
+  name: BatchWriteSByte(Prefix, string, sbyte[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByte_McpXLib_Enums_Prefix_System_String_System_SByte___
+  commentId: M:McpXLib.McpX.BatchWriteSByte(McpXLib.Enums.Prefix,System.String,System.SByte[])
+  name.vb: BatchWriteSByte(Prefix, String, SByte())
+  fullName: McpXLib.McpX.BatchWriteSByte(McpXLib.Enums.Prefix, string, sbyte[])
+  fullName.vb: McpXLib.McpX.BatchWriteSByte(McpXLib.Enums.Prefix, String, SByte())
+  nameWithType: McpX.BatchWriteSByte(Prefix, string, sbyte[])
+  nameWithType.vb: McpX.BatchWriteSByte(Prefix, String, SByte())
+- uid: McpXLib.McpX.BatchWriteSByte*
+  name: BatchWriteSByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByte_
+  commentId: Overload:McpXLib.McpX.BatchWriteSByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteSByte
+  nameWithType: McpX.BatchWriteSByte
+- uid: McpXLib.McpX.BatchWriteSByteAsync(McpXLib.Enums.Prefix,System.String,System.SByte[])
+  name: BatchWriteSByteAsync(Prefix, string, sbyte[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByteAsync_McpXLib_Enums_Prefix_System_String_System_SByte___
+  commentId: M:McpXLib.McpX.BatchWriteSByteAsync(McpXLib.Enums.Prefix,System.String,System.SByte[])
+  name.vb: BatchWriteSByteAsync(Prefix, String, SByte())
+  fullName: McpXLib.McpX.BatchWriteSByteAsync(McpXLib.Enums.Prefix, string, sbyte[])
+  fullName.vb: McpXLib.McpX.BatchWriteSByteAsync(McpXLib.Enums.Prefix, String, SByte())
+  nameWithType: McpX.BatchWriteSByteAsync(Prefix, string, sbyte[])
+  nameWithType.vb: McpX.BatchWriteSByteAsync(Prefix, String, SByte())
+- uid: McpXLib.McpX.BatchWriteSByteAsync*
+  name: BatchWriteSByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByteAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteSByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteSByteAsync
+  nameWithType: McpX.BatchWriteSByteAsync
+- uid: McpXLib.McpX.BatchWriteSingle(McpXLib.Enums.Prefix,System.String,System.Single[])
+  name: BatchWriteSingle(Prefix, string, float[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingle_McpXLib_Enums_Prefix_System_String_System_Single___
+  commentId: M:McpXLib.McpX.BatchWriteSingle(McpXLib.Enums.Prefix,System.String,System.Single[])
+  name.vb: BatchWriteSingle(Prefix, String, Single())
+  fullName: McpXLib.McpX.BatchWriteSingle(McpXLib.Enums.Prefix, string, float[])
+  fullName.vb: McpXLib.McpX.BatchWriteSingle(McpXLib.Enums.Prefix, String, Single())
+  nameWithType: McpX.BatchWriteSingle(Prefix, string, float[])
+  nameWithType.vb: McpX.BatchWriteSingle(Prefix, String, Single())
+- uid: McpXLib.McpX.BatchWriteSingle*
+  name: BatchWriteSingle
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingle_
+  commentId: Overload:McpXLib.McpX.BatchWriteSingle
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteSingle
+  nameWithType: McpX.BatchWriteSingle
+- uid: McpXLib.McpX.BatchWriteSingleAsync(McpXLib.Enums.Prefix,System.String,System.Single[])
+  name: BatchWriteSingleAsync(Prefix, string, float[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingleAsync_McpXLib_Enums_Prefix_System_String_System_Single___
+  commentId: M:McpXLib.McpX.BatchWriteSingleAsync(McpXLib.Enums.Prefix,System.String,System.Single[])
+  name.vb: BatchWriteSingleAsync(Prefix, String, Single())
+  fullName: McpXLib.McpX.BatchWriteSingleAsync(McpXLib.Enums.Prefix, string, float[])
+  fullName.vb: McpXLib.McpX.BatchWriteSingleAsync(McpXLib.Enums.Prefix, String, Single())
+  nameWithType: McpX.BatchWriteSingleAsync(Prefix, string, float[])
+  nameWithType.vb: McpX.BatchWriteSingleAsync(Prefix, String, Single())
+- uid: McpXLib.McpX.BatchWriteSingleAsync*
+  name: BatchWriteSingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingleAsync_
+  commentId: Overload:McpXLib.McpX.BatchWriteSingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteSingleAsync
+  nameWithType: McpX.BatchWriteSingleAsync
+- uid: McpXLib.McpX.BatchWriteUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16[])
+  name: BatchWriteUInt16(Prefix, string, ushort[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16___
+  commentId: M:McpXLib.McpX.BatchWriteUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16[])
+  name.vb: BatchWriteUInt16(Prefix, String, UShort())
+  fullName: McpXLib.McpX.BatchWriteUInt16(McpXLib.Enums.Prefix, string, ushort[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt16(McpXLib.Enums.Prefix, String, UShort())
+  nameWithType: McpX.BatchWriteUInt16(Prefix, string, ushort[])
+  nameWithType.vb: McpX.BatchWriteUInt16(Prefix, String, UShort())
+- uid: McpXLib.McpX.BatchWriteUInt16*
+  name: BatchWriteUInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt16
+  nameWithType: McpX.BatchWriteUInt16
+- uid: McpXLib.McpX.BatchWriteUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16[])
+  name: BatchWriteUInt16Async(Prefix, string, ushort[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16___
+  commentId: M:McpXLib.McpX.BatchWriteUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16[])
+  name.vb: BatchWriteUInt16Async(Prefix, String, UShort())
+  fullName: McpXLib.McpX.BatchWriteUInt16Async(McpXLib.Enums.Prefix, string, ushort[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt16Async(McpXLib.Enums.Prefix, String, UShort())
+  nameWithType: McpX.BatchWriteUInt16Async(Prefix, string, ushort[])
+  nameWithType.vb: McpX.BatchWriteUInt16Async(Prefix, String, UShort())
+- uid: McpXLib.McpX.BatchWriteUInt16Async*
+  name: BatchWriteUInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt16Async
+  nameWithType: McpX.BatchWriteUInt16Async
+- uid: McpXLib.McpX.BatchWriteUInt32(McpXLib.Enums.Prefix,System.String,System.UInt32[])
+  name: BatchWriteUInt32(Prefix, string, uint[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32_McpXLib_Enums_Prefix_System_String_System_UInt32___
+  commentId: M:McpXLib.McpX.BatchWriteUInt32(McpXLib.Enums.Prefix,System.String,System.UInt32[])
+  name.vb: BatchWriteUInt32(Prefix, String, UInteger())
+  fullName: McpXLib.McpX.BatchWriteUInt32(McpXLib.Enums.Prefix, string, uint[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt32(McpXLib.Enums.Prefix, String, UInteger())
+  nameWithType: McpX.BatchWriteUInt32(Prefix, string, uint[])
+  nameWithType.vb: McpX.BatchWriteUInt32(Prefix, String, UInteger())
+- uid: McpXLib.McpX.BatchWriteUInt32*
+  name: BatchWriteUInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt32
+  nameWithType: McpX.BatchWriteUInt32
+- uid: McpXLib.McpX.BatchWriteUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt32[])
+  name: BatchWriteUInt32Async(Prefix, string, uint[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt32___
+  commentId: M:McpXLib.McpX.BatchWriteUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt32[])
+  name.vb: BatchWriteUInt32Async(Prefix, String, UInteger())
+  fullName: McpXLib.McpX.BatchWriteUInt32Async(McpXLib.Enums.Prefix, string, uint[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt32Async(McpXLib.Enums.Prefix, String, UInteger())
+  nameWithType: McpX.BatchWriteUInt32Async(Prefix, string, uint[])
+  nameWithType.vb: McpX.BatchWriteUInt32Async(Prefix, String, UInteger())
+- uid: McpXLib.McpX.BatchWriteUInt32Async*
+  name: BatchWriteUInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt32Async
+  nameWithType: McpX.BatchWriteUInt32Async
+- uid: McpXLib.McpX.BatchWriteUInt64(McpXLib.Enums.Prefix,System.String,System.UInt64[])
+  name: BatchWriteUInt64(Prefix, string, ulong[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64_McpXLib_Enums_Prefix_System_String_System_UInt64___
+  commentId: M:McpXLib.McpX.BatchWriteUInt64(McpXLib.Enums.Prefix,System.String,System.UInt64[])
+  name.vb: BatchWriteUInt64(Prefix, String, ULong())
+  fullName: McpXLib.McpX.BatchWriteUInt64(McpXLib.Enums.Prefix, string, ulong[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt64(McpXLib.Enums.Prefix, String, ULong())
+  nameWithType: McpX.BatchWriteUInt64(Prefix, string, ulong[])
+  nameWithType.vb: McpX.BatchWriteUInt64(Prefix, String, ULong())
+- uid: McpXLib.McpX.BatchWriteUInt64*
+  name: BatchWriteUInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt64
+  nameWithType: McpX.BatchWriteUInt64
+- uid: McpXLib.McpX.BatchWriteUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt64[])
+  name: BatchWriteUInt64Async(Prefix, string, ulong[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt64___
+  commentId: M:McpXLib.McpX.BatchWriteUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt64[])
+  name.vb: BatchWriteUInt64Async(Prefix, String, ULong())
+  fullName: McpXLib.McpX.BatchWriteUInt64Async(McpXLib.Enums.Prefix, string, ulong[])
+  fullName.vb: McpXLib.McpX.BatchWriteUInt64Async(McpXLib.Enums.Prefix, String, ULong())
+  nameWithType: McpX.BatchWriteUInt64Async(Prefix, string, ulong[])
+  nameWithType.vb: McpX.BatchWriteUInt64Async(Prefix, String, ULong())
+- uid: McpXLib.McpX.BatchWriteUInt64Async*
+  name: BatchWriteUInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64Async_
+  commentId: Overload:McpXLib.McpX.BatchWriteUInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.BatchWriteUInt64Async
+  nameWithType: McpX.BatchWriteUInt64Async
 - uid: McpXLib.McpX.BatchWrite``1(McpXLib.Enums.Prefix,System.String,``0[])
   name: BatchWrite<T>(Prefix, string, T[])
   href: api/McpXLib.McpX.html#McpXLib_McpX_BatchWrite__1_McpXLib_Enums_Prefix_System_String___0___
@@ -1002,6 +1706,198 @@ references:
   fullName.vb: McpXLib.McpX.RandomReadAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
   nameWithType: McpX.RandomReadAsync<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
   nameWithType.vb: McpX.RandomReadAsync(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16Int32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16Int32((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16Int32((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16Int32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16Int32*
+  name: RandomReadInt16Int32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16Int32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16Int32
+  nameWithType: McpX.RandomReadInt16Int32
+- uid: McpXLib.McpX.RandomReadInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16Int32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16Int32Async((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16Int32Async((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16Int32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16Int32Async*
+  name: RandomReadInt16Int32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32Async_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16Int32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16Int32Async
+  nameWithType: McpX.RandomReadInt16Int32Async
+- uid: McpXLib.McpX.RandomReadInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16Single((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16Single((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16Single((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16Single((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16Single*
+  name: RandomReadInt16Single
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Single_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16Single
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16Single
+  nameWithType: McpX.RandomReadInt16Single
+- uid: McpXLib.McpX.RandomReadInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16SingleAsync((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16SingleAsync((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16SingleAsync((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16SingleAsync((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16SingleAsync*
+  name: RandomReadInt16SingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16SingleAsync_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16SingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16SingleAsync
+  nameWithType: McpX.RandomReadInt16SingleAsync
+- uid: McpXLib.McpX.RandomReadInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16UInt32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16UInt32((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16UInt32((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16UInt32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16UInt32*
+  name: RandomReadInt16UInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16UInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16UInt32
+  nameWithType: McpX.RandomReadInt16UInt32
+- uid: McpXLib.McpX.RandomReadInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadInt16UInt32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadInt16UInt32Async((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadInt16UInt32Async((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadInt16UInt32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadInt16UInt32Async*
+  name: RandomReadInt16UInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32Async_
+  commentId: Overload:McpXLib.McpX.RandomReadInt16UInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadInt16UInt32Async
+  nameWithType: McpX.RandomReadInt16UInt32Async
+- uid: McpXLib.McpX.RandomReadUInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16Int32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16Int32((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16Int32((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16Int32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16Int32*
+  name: RandomReadUInt16Int32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16Int32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16Int32
+  nameWithType: McpX.RandomReadUInt16Int32
+- uid: McpXLib.McpX.RandomReadUInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16Int32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16Int32Async((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16Int32Async((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16Int32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16Int32Async*
+  name: RandomReadUInt16Int32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32Async_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16Int32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16Int32Async
+  nameWithType: McpX.RandomReadUInt16Int32Async
+- uid: McpXLib.McpX.RandomReadUInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16Single((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16Single((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16Single((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16Single((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16Single*
+  name: RandomReadUInt16Single
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Single_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16Single
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16Single
+  nameWithType: McpX.RandomReadUInt16Single
+- uid: McpXLib.McpX.RandomReadUInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16SingleAsync((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16SingleAsync((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16SingleAsync((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16SingleAsync((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16SingleAsync*
+  name: RandomReadUInt16SingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16SingleAsync_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16SingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16SingleAsync
+  nameWithType: McpX.RandomReadUInt16SingleAsync
+- uid: McpXLib.McpX.RandomReadUInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16UInt32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16UInt32((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16UInt32((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16UInt32((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16UInt32*
+  name: RandomReadUInt16UInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16UInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16UInt32
+  nameWithType: McpX.RandomReadUInt16UInt32
+- uid: McpXLib.McpX.RandomReadUInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadUInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadUInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadUInt16UInt32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadUInt16UInt32Async((McpXLib.Enums.Prefix prefix, string address)[], (McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadUInt16UInt32Async((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadUInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadUInt16UInt32Async((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadUInt16UInt32Async*
+  name: RandomReadUInt16UInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32Async_
+  commentId: Overload:McpXLib.McpX.RandomReadUInt16UInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadUInt16UInt32Async
+  nameWithType: McpX.RandomReadUInt16UInt32Async
 - uid: McpXLib.McpX.RandomRead``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
   name: RandomRead<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomRead__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
@@ -1034,6 +1930,198 @@ references:
   fullName.vb: McpXLib.McpX.RandomWriteAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String, value As T1)(), (prefix As McpXLib.Enums.Prefix, address As String, value As T2)())
   nameWithType: McpX.RandomWriteAsync<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
   nameWithType.vb: McpX.RandomWriteAsync(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+- uid: McpXLib.McpX.RandomWriteInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name: RandomWriteInt16Int32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____
+  commentId: M:McpXLib.McpX.RandomWriteInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name.vb: RandomWriteInt16Int32((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Integer)())
+  fullName: McpXLib.McpX.RandomWriteInt16Int32((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, int value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16Int32((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Integer)())
+  nameWithType: McpX.RandomWriteInt16Int32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])
+  nameWithType.vb: McpX.RandomWriteInt16Int32((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Integer)())
+- uid: McpXLib.McpX.RandomWriteInt16Int32*
+  name: RandomWriteInt16Int32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16Int32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16Int32
+  nameWithType: McpX.RandomWriteInt16Int32
+- uid: McpXLib.McpX.RandomWriteInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name: RandomWriteInt16Int32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____
+  commentId: M:McpXLib.McpX.RandomWriteInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name.vb: RandomWriteInt16Int32Async((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Integer)())
+  fullName: McpXLib.McpX.RandomWriteInt16Int32Async((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, int value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16Int32Async((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Integer)())
+  nameWithType: McpX.RandomWriteInt16Int32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])
+  nameWithType.vb: McpX.RandomWriteInt16Int32Async((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Integer)())
+- uid: McpXLib.McpX.RandomWriteInt16Int32Async*
+  name: RandomWriteInt16Int32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32Async_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16Int32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16Int32Async
+  nameWithType: McpX.RandomWriteInt16Int32Async
+- uid: McpXLib.McpX.RandomWriteInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name: RandomWriteInt16Single((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____
+  commentId: M:McpXLib.McpX.RandomWriteInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name.vb: RandomWriteInt16Single((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Single)())
+  fullName: McpXLib.McpX.RandomWriteInt16Single((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, float value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16Single((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Single)())
+  nameWithType: McpX.RandomWriteInt16Single((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])
+  nameWithType.vb: McpX.RandomWriteInt16Single((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Single)())
+- uid: McpXLib.McpX.RandomWriteInt16Single*
+  name: RandomWriteInt16Single
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Single_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16Single
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16Single
+  nameWithType: McpX.RandomWriteInt16Single
+- uid: McpXLib.McpX.RandomWriteInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name: RandomWriteInt16SingleAsync((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____
+  commentId: M:McpXLib.McpX.RandomWriteInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name.vb: RandomWriteInt16SingleAsync((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Single)())
+  fullName: McpXLib.McpX.RandomWriteInt16SingleAsync((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, float value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16SingleAsync((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Single)())
+  nameWithType: McpX.RandomWriteInt16SingleAsync((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])
+  nameWithType.vb: McpX.RandomWriteInt16SingleAsync((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As Single)())
+- uid: McpXLib.McpX.RandomWriteInt16SingleAsync*
+  name: RandomWriteInt16SingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16SingleAsync_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16SingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16SingleAsync
+  nameWithType: McpX.RandomWriteInt16SingleAsync
+- uid: McpXLib.McpX.RandomWriteInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name: RandomWriteInt16UInt32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____
+  commentId: M:McpXLib.McpX.RandomWriteInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name.vb: RandomWriteInt16UInt32((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As UInteger)())
+  fullName: McpXLib.McpX.RandomWriteInt16UInt32((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, uint value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16UInt32((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As UInteger)())
+  nameWithType: McpX.RandomWriteInt16UInt32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])
+  nameWithType.vb: McpX.RandomWriteInt16UInt32((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As UInteger)())
+- uid: McpXLib.McpX.RandomWriteInt16UInt32*
+  name: RandomWriteInt16UInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16UInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16UInt32
+  nameWithType: McpX.RandomWriteInt16UInt32
+- uid: McpXLib.McpX.RandomWriteInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name: RandomWriteInt16UInt32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____
+  commentId: M:McpXLib.McpX.RandomWriteInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name.vb: RandomWriteInt16UInt32Async((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As UInteger)())
+  fullName: McpXLib.McpX.RandomWriteInt16UInt32Async((McpXLib.Enums.Prefix prefix, string address, short value)[], (McpXLib.Enums.Prefix prefix, string address, uint value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteInt16UInt32Async((prefix As McpXLib.Enums.Prefix, address As String, value As Short)(), (prefix As McpXLib.Enums.Prefix, address As String, value As UInteger)())
+  nameWithType: McpX.RandomWriteInt16UInt32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])
+  nameWithType.vb: McpX.RandomWriteInt16UInt32Async((prefix As Prefix, address As String, value As Short)(), (prefix As Prefix, address As String, value As UInteger)())
+- uid: McpXLib.McpX.RandomWriteInt16UInt32Async*
+  name: RandomWriteInt16UInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32Async_
+  commentId: Overload:McpXLib.McpX.RandomWriteInt16UInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteInt16UInt32Async
+  nameWithType: McpX.RandomWriteInt16UInt32Async
+- uid: McpXLib.McpX.RandomWriteUInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name: RandomWriteUInt16Int32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name.vb: RandomWriteUInt16Int32((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Integer)())
+  fullName: McpXLib.McpX.RandomWriteUInt16Int32((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, int value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16Int32((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Integer)())
+  nameWithType: McpX.RandomWriteUInt16Int32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16Int32((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Integer)())
+- uid: McpXLib.McpX.RandomWriteUInt16Int32*
+  name: RandomWriteUInt16Int32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16Int32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16Int32
+  nameWithType: McpX.RandomWriteUInt16Int32
+- uid: McpXLib.McpX.RandomWriteUInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name: RandomWriteUInt16Int32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16Int32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
+  name.vb: RandomWriteUInt16Int32Async((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Integer)())
+  fullName: McpXLib.McpX.RandomWriteUInt16Int32Async((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, int value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16Int32Async((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Integer)())
+  nameWithType: McpX.RandomWriteUInt16Int32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16Int32Async((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Integer)())
+- uid: McpXLib.McpX.RandomWriteUInt16Int32Async*
+  name: RandomWriteUInt16Int32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32Async_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16Int32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16Int32Async
+  nameWithType: McpX.RandomWriteUInt16Int32Async
+- uid: McpXLib.McpX.RandomWriteUInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name: RandomWriteUInt16Single((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16Single(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name.vb: RandomWriteUInt16Single((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Single)())
+  fullName: McpXLib.McpX.RandomWriteUInt16Single((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, float value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16Single((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Single)())
+  nameWithType: McpX.RandomWriteUInt16Single((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16Single((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Single)())
+- uid: McpXLib.McpX.RandomWriteUInt16Single*
+  name: RandomWriteUInt16Single
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Single_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16Single
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16Single
+  nameWithType: McpX.RandomWriteUInt16Single
+- uid: McpXLib.McpX.RandomWriteUInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name: RandomWriteUInt16SingleAsync((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16SingleAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Single}[])
+  name.vb: RandomWriteUInt16SingleAsync((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Single)())
+  fullName: McpXLib.McpX.RandomWriteUInt16SingleAsync((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, float value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16SingleAsync((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As Single)())
+  nameWithType: McpX.RandomWriteUInt16SingleAsync((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16SingleAsync((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As Single)())
+- uid: McpXLib.McpX.RandomWriteUInt16SingleAsync*
+  name: RandomWriteUInt16SingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16SingleAsync_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16SingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16SingleAsync
+  nameWithType: McpX.RandomWriteUInt16SingleAsync
+- uid: McpXLib.McpX.RandomWriteUInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name: RandomWriteUInt16UInt32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16UInt32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name.vb: RandomWriteUInt16UInt32((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As UInteger)())
+  fullName: McpXLib.McpX.RandomWriteUInt16UInt32((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, uint value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16UInt32((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As UInteger)())
+  nameWithType: McpX.RandomWriteUInt16UInt32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16UInt32((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As UInteger)())
+- uid: McpXLib.McpX.RandomWriteUInt16UInt32*
+  name: RandomWriteUInt16UInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16UInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16UInt32
+  nameWithType: McpX.RandomWriteUInt16UInt32
+- uid: McpXLib.McpX.RandomWriteUInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name: RandomWriteUInt16UInt32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____
+  commentId: M:McpXLib.McpX.RandomWriteUInt16UInt32Async(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.UInt32}[])
+  name.vb: RandomWriteUInt16UInt32Async((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As UInteger)())
+  fullName: McpXLib.McpX.RandomWriteUInt16UInt32Async((McpXLib.Enums.Prefix prefix, string address, ushort value)[], (McpXLib.Enums.Prefix prefix, string address, uint value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteUInt16UInt32Async((prefix As McpXLib.Enums.Prefix, address As String, value As UShort)(), (prefix As McpXLib.Enums.Prefix, address As String, value As UInteger)())
+  nameWithType: McpX.RandomWriteUInt16UInt32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])
+  nameWithType.vb: McpX.RandomWriteUInt16UInt32Async((prefix As Prefix, address As String, value As UShort)(), (prefix As Prefix, address As String, value As UInteger)())
+- uid: McpXLib.McpX.RandomWriteUInt16UInt32Async*
+  name: RandomWriteUInt16UInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32Async_
+  commentId: Overload:McpXLib.McpX.RandomWriteUInt16UInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteUInt16UInt32Async
+  nameWithType: McpX.RandomWriteUInt16UInt32Async
 - uid: McpXLib.McpX.RandomWrite``2(System.ValueTuple{McpXLib.Enums.Prefix,System.String,``0}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,``1}[])
   name: RandomWrite<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWrite__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String___0____System_ValueTuple_McpXLib_Enums_Prefix_System_String___1____
@@ -1066,6 +2154,262 @@ references:
   fullName.vb: McpXLib.McpX.ReadAsync(Of T)(McpXLib.Enums.Prefix, String)
   nameWithType: McpX.ReadAsync<T>(Prefix, string)
   nameWithType.vb: McpX.ReadAsync(Of T)(Prefix, String)
+- uid: McpXLib.McpX.ReadBool(McpXLib.Enums.Prefix,System.String)
+  name: ReadBool(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadBool_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadBool(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadBool(Prefix, String)
+  fullName: McpXLib.McpX.ReadBool(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadBool(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadBool(Prefix, string)
+  nameWithType.vb: McpX.ReadBool(Prefix, String)
+- uid: McpXLib.McpX.ReadBool*
+  name: ReadBool
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadBool_
+  commentId: Overload:McpXLib.McpX.ReadBool
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadBool
+  nameWithType: McpX.ReadBool
+- uid: McpXLib.McpX.ReadBoolAsync(McpXLib.Enums.Prefix,System.String)
+  name: ReadBoolAsync(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadBoolAsync_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadBoolAsync(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadBoolAsync(Prefix, String)
+  fullName: McpXLib.McpX.ReadBoolAsync(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadBoolAsync(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadBoolAsync(Prefix, string)
+  nameWithType.vb: McpX.ReadBoolAsync(Prefix, String)
+- uid: McpXLib.McpX.ReadBoolAsync*
+  name: ReadBoolAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadBoolAsync_
+  commentId: Overload:McpXLib.McpX.ReadBoolAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadBoolAsync
+  nameWithType: McpX.ReadBoolAsync
+- uid: McpXLib.McpX.ReadByte(McpXLib.Enums.Prefix,System.String)
+  name: ReadByte(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadByte_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadByte(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadByte(Prefix, String)
+  fullName: McpXLib.McpX.ReadByte(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadByte(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadByte(Prefix, string)
+  nameWithType.vb: McpX.ReadByte(Prefix, String)
+- uid: McpXLib.McpX.ReadByte*
+  name: ReadByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadByte_
+  commentId: Overload:McpXLib.McpX.ReadByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadByte
+  nameWithType: McpX.ReadByte
+- uid: McpXLib.McpX.ReadByteAsync(McpXLib.Enums.Prefix,System.String)
+  name: ReadByteAsync(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadByteAsync_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadByteAsync(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadByteAsync(Prefix, String)
+  fullName: McpXLib.McpX.ReadByteAsync(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadByteAsync(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadByteAsync(Prefix, string)
+  nameWithType.vb: McpX.ReadByteAsync(Prefix, String)
+- uid: McpXLib.McpX.ReadByteAsync*
+  name: ReadByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadByteAsync_
+  commentId: Overload:McpXLib.McpX.ReadByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadByteAsync
+  nameWithType: McpX.ReadByteAsync
+- uid: McpXLib.McpX.ReadDouble(McpXLib.Enums.Prefix,System.String)
+  name: ReadDouble(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadDouble_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadDouble(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadDouble(Prefix, String)
+  fullName: McpXLib.McpX.ReadDouble(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadDouble(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadDouble(Prefix, string)
+  nameWithType.vb: McpX.ReadDouble(Prefix, String)
+- uid: McpXLib.McpX.ReadDouble*
+  name: ReadDouble
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadDouble_
+  commentId: Overload:McpXLib.McpX.ReadDouble
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadDouble
+  nameWithType: McpX.ReadDouble
+- uid: McpXLib.McpX.ReadDoubleAsync(McpXLib.Enums.Prefix,System.String)
+  name: ReadDoubleAsync(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadDoubleAsync_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadDoubleAsync(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadDoubleAsync(Prefix, String)
+  fullName: McpXLib.McpX.ReadDoubleAsync(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadDoubleAsync(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadDoubleAsync(Prefix, string)
+  nameWithType.vb: McpX.ReadDoubleAsync(Prefix, String)
+- uid: McpXLib.McpX.ReadDoubleAsync*
+  name: ReadDoubleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadDoubleAsync_
+  commentId: Overload:McpXLib.McpX.ReadDoubleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadDoubleAsync
+  nameWithType: McpX.ReadDoubleAsync
+- uid: McpXLib.McpX.ReadInt16(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt16(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt16_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt16(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt16(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt16(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt16(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt16(Prefix, string)
+  nameWithType.vb: McpX.ReadInt16(Prefix, String)
+- uid: McpXLib.McpX.ReadInt16*
+  name: ReadInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt16_
+  commentId: Overload:McpXLib.McpX.ReadInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt16
+  nameWithType: McpX.ReadInt16
+- uid: McpXLib.McpX.ReadInt16Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt16Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt16Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt16Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt16Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt16Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt16Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt16Async(Prefix, string)
+  nameWithType.vb: McpX.ReadInt16Async(Prefix, String)
+- uid: McpXLib.McpX.ReadInt16Async*
+  name: ReadInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt16Async_
+  commentId: Overload:McpXLib.McpX.ReadInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt16Async
+  nameWithType: McpX.ReadInt16Async
+- uid: McpXLib.McpX.ReadInt32(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt32(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt32_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt32(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt32(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt32(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt32(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt32(Prefix, string)
+  nameWithType.vb: McpX.ReadInt32(Prefix, String)
+- uid: McpXLib.McpX.ReadInt32*
+  name: ReadInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt32_
+  commentId: Overload:McpXLib.McpX.ReadInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt32
+  nameWithType: McpX.ReadInt32
+- uid: McpXLib.McpX.ReadInt32Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt32Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt32Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt32Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt32Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt32Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt32Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt32Async(Prefix, string)
+  nameWithType.vb: McpX.ReadInt32Async(Prefix, String)
+- uid: McpXLib.McpX.ReadInt32Async*
+  name: ReadInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt32Async_
+  commentId: Overload:McpXLib.McpX.ReadInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt32Async
+  nameWithType: McpX.ReadInt32Async
+- uid: McpXLib.McpX.ReadInt64(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt64(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt64_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt64(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt64(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt64(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt64(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt64(Prefix, string)
+  nameWithType.vb: McpX.ReadInt64(Prefix, String)
+- uid: McpXLib.McpX.ReadInt64*
+  name: ReadInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt64_
+  commentId: Overload:McpXLib.McpX.ReadInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt64
+  nameWithType: McpX.ReadInt64
+- uid: McpXLib.McpX.ReadInt64Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadInt64Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt64Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadInt64Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadInt64Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadInt64Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadInt64Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadInt64Async(Prefix, string)
+  nameWithType.vb: McpX.ReadInt64Async(Prefix, String)
+- uid: McpXLib.McpX.ReadInt64Async*
+  name: ReadInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadInt64Async_
+  commentId: Overload:McpXLib.McpX.ReadInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadInt64Async
+  nameWithType: McpX.ReadInt64Async
+- uid: McpXLib.McpX.ReadSByte(McpXLib.Enums.Prefix,System.String)
+  name: ReadSByte(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSByte_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadSByte(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadSByte(Prefix, String)
+  fullName: McpXLib.McpX.ReadSByte(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadSByte(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadSByte(Prefix, string)
+  nameWithType.vb: McpX.ReadSByte(Prefix, String)
+- uid: McpXLib.McpX.ReadSByte*
+  name: ReadSByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSByte_
+  commentId: Overload:McpXLib.McpX.ReadSByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadSByte
+  nameWithType: McpX.ReadSByte
+- uid: McpXLib.McpX.ReadSByteAsync(McpXLib.Enums.Prefix,System.String)
+  name: ReadSByteAsync(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSByteAsync_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadSByteAsync(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadSByteAsync(Prefix, String)
+  fullName: McpXLib.McpX.ReadSByteAsync(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadSByteAsync(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadSByteAsync(Prefix, string)
+  nameWithType.vb: McpX.ReadSByteAsync(Prefix, String)
+- uid: McpXLib.McpX.ReadSByteAsync*
+  name: ReadSByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSByteAsync_
+  commentId: Overload:McpXLib.McpX.ReadSByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadSByteAsync
+  nameWithType: McpX.ReadSByteAsync
+- uid: McpXLib.McpX.ReadSingle(McpXLib.Enums.Prefix,System.String)
+  name: ReadSingle(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSingle_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadSingle(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadSingle(Prefix, String)
+  fullName: McpXLib.McpX.ReadSingle(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadSingle(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadSingle(Prefix, string)
+  nameWithType.vb: McpX.ReadSingle(Prefix, String)
+- uid: McpXLib.McpX.ReadSingle*
+  name: ReadSingle
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSingle_
+  commentId: Overload:McpXLib.McpX.ReadSingle
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadSingle
+  nameWithType: McpX.ReadSingle
+- uid: McpXLib.McpX.ReadSingleAsync(McpXLib.Enums.Prefix,System.String)
+  name: ReadSingleAsync(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSingleAsync_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadSingleAsync(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadSingleAsync(Prefix, String)
+  fullName: McpXLib.McpX.ReadSingleAsync(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadSingleAsync(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadSingleAsync(Prefix, string)
+  nameWithType.vb: McpX.ReadSingleAsync(Prefix, String)
+- uid: McpXLib.McpX.ReadSingleAsync*
+  name: ReadSingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadSingleAsync_
+  commentId: Overload:McpXLib.McpX.ReadSingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadSingleAsync
+  nameWithType: McpX.ReadSingleAsync
 - uid: McpXLib.McpX.ReadString(McpXLib.Enums.Prefix,System.String,System.UInt16)
   name: ReadString(Prefix, string, ushort)
   href: api/McpXLib.McpX.html#McpXLib_McpX_ReadString_McpXLib_Enums_Prefix_System_String_System_UInt16_
@@ -1098,6 +2442,102 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.ReadStringAsync
   nameWithType: McpX.ReadStringAsync
+- uid: McpXLib.McpX.ReadUInt16(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt16(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt16_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt16(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt16(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt16(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt16(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt16(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt16(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt16*
+  name: ReadUInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt16_
+  commentId: Overload:McpXLib.McpX.ReadUInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt16
+  nameWithType: McpX.ReadUInt16
+- uid: McpXLib.McpX.ReadUInt16Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt16Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt16Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt16Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt16Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt16Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt16Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt16Async(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt16Async(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt16Async*
+  name: ReadUInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt16Async_
+  commentId: Overload:McpXLib.McpX.ReadUInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt16Async
+  nameWithType: McpX.ReadUInt16Async
+- uid: McpXLib.McpX.ReadUInt32(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt32(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt32_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt32(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt32(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt32(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt32(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt32(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt32(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt32*
+  name: ReadUInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt32_
+  commentId: Overload:McpXLib.McpX.ReadUInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt32
+  nameWithType: McpX.ReadUInt32
+- uid: McpXLib.McpX.ReadUInt32Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt32Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt32Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt32Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt32Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt32Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt32Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt32Async(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt32Async(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt32Async*
+  name: ReadUInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt32Async_
+  commentId: Overload:McpXLib.McpX.ReadUInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt32Async
+  nameWithType: McpX.ReadUInt32Async
+- uid: McpXLib.McpX.ReadUInt64(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt64(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt64_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt64(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt64(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt64(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt64(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt64(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt64(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt64*
+  name: ReadUInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt64_
+  commentId: Overload:McpXLib.McpX.ReadUInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt64
+  nameWithType: McpX.ReadUInt64
+- uid: McpXLib.McpX.ReadUInt64Async(McpXLib.Enums.Prefix,System.String)
+  name: ReadUInt64Async(Prefix, string)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt64Async_McpXLib_Enums_Prefix_System_String_
+  commentId: M:McpXLib.McpX.ReadUInt64Async(McpXLib.Enums.Prefix,System.String)
+  name.vb: ReadUInt64Async(Prefix, String)
+  fullName: McpXLib.McpX.ReadUInt64Async(McpXLib.Enums.Prefix, string)
+  fullName.vb: McpXLib.McpX.ReadUInt64Async(McpXLib.Enums.Prefix, String)
+  nameWithType: McpX.ReadUInt64Async(Prefix, string)
+  nameWithType.vb: McpX.ReadUInt64Async(Prefix, String)
+- uid: McpXLib.McpX.ReadUInt64Async*
+  name: ReadUInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadUInt64Async_
+  commentId: Overload:McpXLib.McpX.ReadUInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.ReadUInt64Async
+  nameWithType: McpX.ReadUInt64Async
 - uid: McpXLib.McpX.Read``1(McpXLib.Enums.Prefix,System.String)
   name: Read<T>(Prefix, string)
   href: api/McpXLib.McpX.html#McpXLib_McpX_Read__1_McpXLib_Enums_Prefix_System_String_
@@ -1130,6 +2570,262 @@ references:
   fullName.vb: McpXLib.McpX.WriteAsync(Of T)(McpXLib.Enums.Prefix, String, T)
   nameWithType: McpX.WriteAsync<T>(Prefix, string, T)
   nameWithType.vb: McpX.WriteAsync(Of T)(Prefix, String, T)
+- uid: McpXLib.McpX.WriteBool(McpXLib.Enums.Prefix,System.String,System.Boolean)
+  name: WriteBool(Prefix, string, bool)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteBool_McpXLib_Enums_Prefix_System_String_System_Boolean_
+  commentId: M:McpXLib.McpX.WriteBool(McpXLib.Enums.Prefix,System.String,System.Boolean)
+  name.vb: WriteBool(Prefix, String, Boolean)
+  fullName: McpXLib.McpX.WriteBool(McpXLib.Enums.Prefix, string, bool)
+  fullName.vb: McpXLib.McpX.WriteBool(McpXLib.Enums.Prefix, String, Boolean)
+  nameWithType: McpX.WriteBool(Prefix, string, bool)
+  nameWithType.vb: McpX.WriteBool(Prefix, String, Boolean)
+- uid: McpXLib.McpX.WriteBool*
+  name: WriteBool
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteBool_
+  commentId: Overload:McpXLib.McpX.WriteBool
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteBool
+  nameWithType: McpX.WriteBool
+- uid: McpXLib.McpX.WriteBoolAsync(McpXLib.Enums.Prefix,System.String,System.Boolean)
+  name: WriteBoolAsync(Prefix, string, bool)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteBoolAsync_McpXLib_Enums_Prefix_System_String_System_Boolean_
+  commentId: M:McpXLib.McpX.WriteBoolAsync(McpXLib.Enums.Prefix,System.String,System.Boolean)
+  name.vb: WriteBoolAsync(Prefix, String, Boolean)
+  fullName: McpXLib.McpX.WriteBoolAsync(McpXLib.Enums.Prefix, string, bool)
+  fullName.vb: McpXLib.McpX.WriteBoolAsync(McpXLib.Enums.Prefix, String, Boolean)
+  nameWithType: McpX.WriteBoolAsync(Prefix, string, bool)
+  nameWithType.vb: McpX.WriteBoolAsync(Prefix, String, Boolean)
+- uid: McpXLib.McpX.WriteBoolAsync*
+  name: WriteBoolAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteBoolAsync_
+  commentId: Overload:McpXLib.McpX.WriteBoolAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteBoolAsync
+  nameWithType: McpX.WriteBoolAsync
+- uid: McpXLib.McpX.WriteByte(McpXLib.Enums.Prefix,System.String,System.Byte)
+  name: WriteByte(Prefix, string, byte)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteByte_McpXLib_Enums_Prefix_System_String_System_Byte_
+  commentId: M:McpXLib.McpX.WriteByte(McpXLib.Enums.Prefix,System.String,System.Byte)
+  name.vb: WriteByte(Prefix, String, Byte)
+  fullName: McpXLib.McpX.WriteByte(McpXLib.Enums.Prefix, string, byte)
+  fullName.vb: McpXLib.McpX.WriteByte(McpXLib.Enums.Prefix, String, Byte)
+  nameWithType: McpX.WriteByte(Prefix, string, byte)
+  nameWithType.vb: McpX.WriteByte(Prefix, String, Byte)
+- uid: McpXLib.McpX.WriteByte*
+  name: WriteByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteByte_
+  commentId: Overload:McpXLib.McpX.WriteByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteByte
+  nameWithType: McpX.WriteByte
+- uid: McpXLib.McpX.WriteByteAsync(McpXLib.Enums.Prefix,System.String,System.Byte)
+  name: WriteByteAsync(Prefix, string, byte)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteByteAsync_McpXLib_Enums_Prefix_System_String_System_Byte_
+  commentId: M:McpXLib.McpX.WriteByteAsync(McpXLib.Enums.Prefix,System.String,System.Byte)
+  name.vb: WriteByteAsync(Prefix, String, Byte)
+  fullName: McpXLib.McpX.WriteByteAsync(McpXLib.Enums.Prefix, string, byte)
+  fullName.vb: McpXLib.McpX.WriteByteAsync(McpXLib.Enums.Prefix, String, Byte)
+  nameWithType: McpX.WriteByteAsync(Prefix, string, byte)
+  nameWithType.vb: McpX.WriteByteAsync(Prefix, String, Byte)
+- uid: McpXLib.McpX.WriteByteAsync*
+  name: WriteByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteByteAsync_
+  commentId: Overload:McpXLib.McpX.WriteByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteByteAsync
+  nameWithType: McpX.WriteByteAsync
+- uid: McpXLib.McpX.WriteDouble(McpXLib.Enums.Prefix,System.String,System.Double)
+  name: WriteDouble(Prefix, string, double)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteDouble_McpXLib_Enums_Prefix_System_String_System_Double_
+  commentId: M:McpXLib.McpX.WriteDouble(McpXLib.Enums.Prefix,System.String,System.Double)
+  name.vb: WriteDouble(Prefix, String, Double)
+  fullName: McpXLib.McpX.WriteDouble(McpXLib.Enums.Prefix, string, double)
+  fullName.vb: McpXLib.McpX.WriteDouble(McpXLib.Enums.Prefix, String, Double)
+  nameWithType: McpX.WriteDouble(Prefix, string, double)
+  nameWithType.vb: McpX.WriteDouble(Prefix, String, Double)
+- uid: McpXLib.McpX.WriteDouble*
+  name: WriteDouble
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteDouble_
+  commentId: Overload:McpXLib.McpX.WriteDouble
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteDouble
+  nameWithType: McpX.WriteDouble
+- uid: McpXLib.McpX.WriteDoubleAsync(McpXLib.Enums.Prefix,System.String,System.Double)
+  name: WriteDoubleAsync(Prefix, string, double)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteDoubleAsync_McpXLib_Enums_Prefix_System_String_System_Double_
+  commentId: M:McpXLib.McpX.WriteDoubleAsync(McpXLib.Enums.Prefix,System.String,System.Double)
+  name.vb: WriteDoubleAsync(Prefix, String, Double)
+  fullName: McpXLib.McpX.WriteDoubleAsync(McpXLib.Enums.Prefix, string, double)
+  fullName.vb: McpXLib.McpX.WriteDoubleAsync(McpXLib.Enums.Prefix, String, Double)
+  nameWithType: McpX.WriteDoubleAsync(Prefix, string, double)
+  nameWithType.vb: McpX.WriteDoubleAsync(Prefix, String, Double)
+- uid: McpXLib.McpX.WriteDoubleAsync*
+  name: WriteDoubleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteDoubleAsync_
+  commentId: Overload:McpXLib.McpX.WriteDoubleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteDoubleAsync
+  nameWithType: McpX.WriteDoubleAsync
+- uid: McpXLib.McpX.WriteInt16(McpXLib.Enums.Prefix,System.String,System.Int16)
+  name: WriteInt16(Prefix, string, short)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt16_McpXLib_Enums_Prefix_System_String_System_Int16_
+  commentId: M:McpXLib.McpX.WriteInt16(McpXLib.Enums.Prefix,System.String,System.Int16)
+  name.vb: WriteInt16(Prefix, String, Short)
+  fullName: McpXLib.McpX.WriteInt16(McpXLib.Enums.Prefix, string, short)
+  fullName.vb: McpXLib.McpX.WriteInt16(McpXLib.Enums.Prefix, String, Short)
+  nameWithType: McpX.WriteInt16(Prefix, string, short)
+  nameWithType.vb: McpX.WriteInt16(Prefix, String, Short)
+- uid: McpXLib.McpX.WriteInt16*
+  name: WriteInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt16_
+  commentId: Overload:McpXLib.McpX.WriteInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt16
+  nameWithType: McpX.WriteInt16
+- uid: McpXLib.McpX.WriteInt16Async(McpXLib.Enums.Prefix,System.String,System.Int16)
+  name: WriteInt16Async(Prefix, string, short)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt16Async_McpXLib_Enums_Prefix_System_String_System_Int16_
+  commentId: M:McpXLib.McpX.WriteInt16Async(McpXLib.Enums.Prefix,System.String,System.Int16)
+  name.vb: WriteInt16Async(Prefix, String, Short)
+  fullName: McpXLib.McpX.WriteInt16Async(McpXLib.Enums.Prefix, string, short)
+  fullName.vb: McpXLib.McpX.WriteInt16Async(McpXLib.Enums.Prefix, String, Short)
+  nameWithType: McpX.WriteInt16Async(Prefix, string, short)
+  nameWithType.vb: McpX.WriteInt16Async(Prefix, String, Short)
+- uid: McpXLib.McpX.WriteInt16Async*
+  name: WriteInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt16Async_
+  commentId: Overload:McpXLib.McpX.WriteInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt16Async
+  nameWithType: McpX.WriteInt16Async
+- uid: McpXLib.McpX.WriteInt32(McpXLib.Enums.Prefix,System.String,System.Int32)
+  name: WriteInt32(Prefix, string, int)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt32_McpXLib_Enums_Prefix_System_String_System_Int32_
+  commentId: M:McpXLib.McpX.WriteInt32(McpXLib.Enums.Prefix,System.String,System.Int32)
+  name.vb: WriteInt32(Prefix, String, Integer)
+  fullName: McpXLib.McpX.WriteInt32(McpXLib.Enums.Prefix, string, int)
+  fullName.vb: McpXLib.McpX.WriteInt32(McpXLib.Enums.Prefix, String, Integer)
+  nameWithType: McpX.WriteInt32(Prefix, string, int)
+  nameWithType.vb: McpX.WriteInt32(Prefix, String, Integer)
+- uid: McpXLib.McpX.WriteInt32*
+  name: WriteInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt32_
+  commentId: Overload:McpXLib.McpX.WriteInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt32
+  nameWithType: McpX.WriteInt32
+- uid: McpXLib.McpX.WriteInt32Async(McpXLib.Enums.Prefix,System.String,System.Int32)
+  name: WriteInt32Async(Prefix, string, int)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt32Async_McpXLib_Enums_Prefix_System_String_System_Int32_
+  commentId: M:McpXLib.McpX.WriteInt32Async(McpXLib.Enums.Prefix,System.String,System.Int32)
+  name.vb: WriteInt32Async(Prefix, String, Integer)
+  fullName: McpXLib.McpX.WriteInt32Async(McpXLib.Enums.Prefix, string, int)
+  fullName.vb: McpXLib.McpX.WriteInt32Async(McpXLib.Enums.Prefix, String, Integer)
+  nameWithType: McpX.WriteInt32Async(Prefix, string, int)
+  nameWithType.vb: McpX.WriteInt32Async(Prefix, String, Integer)
+- uid: McpXLib.McpX.WriteInt32Async*
+  name: WriteInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt32Async_
+  commentId: Overload:McpXLib.McpX.WriteInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt32Async
+  nameWithType: McpX.WriteInt32Async
+- uid: McpXLib.McpX.WriteInt64(McpXLib.Enums.Prefix,System.String,System.Int64)
+  name: WriteInt64(Prefix, string, long)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt64_McpXLib_Enums_Prefix_System_String_System_Int64_
+  commentId: M:McpXLib.McpX.WriteInt64(McpXLib.Enums.Prefix,System.String,System.Int64)
+  name.vb: WriteInt64(Prefix, String, Long)
+  fullName: McpXLib.McpX.WriteInt64(McpXLib.Enums.Prefix, string, long)
+  fullName.vb: McpXLib.McpX.WriteInt64(McpXLib.Enums.Prefix, String, Long)
+  nameWithType: McpX.WriteInt64(Prefix, string, long)
+  nameWithType.vb: McpX.WriteInt64(Prefix, String, Long)
+- uid: McpXLib.McpX.WriteInt64*
+  name: WriteInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt64_
+  commentId: Overload:McpXLib.McpX.WriteInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt64
+  nameWithType: McpX.WriteInt64
+- uid: McpXLib.McpX.WriteInt64Async(McpXLib.Enums.Prefix,System.String,System.Int64)
+  name: WriteInt64Async(Prefix, string, long)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt64Async_McpXLib_Enums_Prefix_System_String_System_Int64_
+  commentId: M:McpXLib.McpX.WriteInt64Async(McpXLib.Enums.Prefix,System.String,System.Int64)
+  name.vb: WriteInt64Async(Prefix, String, Long)
+  fullName: McpXLib.McpX.WriteInt64Async(McpXLib.Enums.Prefix, string, long)
+  fullName.vb: McpXLib.McpX.WriteInt64Async(McpXLib.Enums.Prefix, String, Long)
+  nameWithType: McpX.WriteInt64Async(Prefix, string, long)
+  nameWithType.vb: McpX.WriteInt64Async(Prefix, String, Long)
+- uid: McpXLib.McpX.WriteInt64Async*
+  name: WriteInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteInt64Async_
+  commentId: Overload:McpXLib.McpX.WriteInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteInt64Async
+  nameWithType: McpX.WriteInt64Async
+- uid: McpXLib.McpX.WriteSByte(McpXLib.Enums.Prefix,System.String,System.SByte)
+  name: WriteSByte(Prefix, string, sbyte)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSByte_McpXLib_Enums_Prefix_System_String_System_SByte_
+  commentId: M:McpXLib.McpX.WriteSByte(McpXLib.Enums.Prefix,System.String,System.SByte)
+  name.vb: WriteSByte(Prefix, String, SByte)
+  fullName: McpXLib.McpX.WriteSByte(McpXLib.Enums.Prefix, string, sbyte)
+  fullName.vb: McpXLib.McpX.WriteSByte(McpXLib.Enums.Prefix, String, SByte)
+  nameWithType: McpX.WriteSByte(Prefix, string, sbyte)
+  nameWithType.vb: McpX.WriteSByte(Prefix, String, SByte)
+- uid: McpXLib.McpX.WriteSByte*
+  name: WriteSByte
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSByte_
+  commentId: Overload:McpXLib.McpX.WriteSByte
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteSByte
+  nameWithType: McpX.WriteSByte
+- uid: McpXLib.McpX.WriteSByteAsync(McpXLib.Enums.Prefix,System.String,System.SByte)
+  name: WriteSByteAsync(Prefix, string, sbyte)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSByteAsync_McpXLib_Enums_Prefix_System_String_System_SByte_
+  commentId: M:McpXLib.McpX.WriteSByteAsync(McpXLib.Enums.Prefix,System.String,System.SByte)
+  name.vb: WriteSByteAsync(Prefix, String, SByte)
+  fullName: McpXLib.McpX.WriteSByteAsync(McpXLib.Enums.Prefix, string, sbyte)
+  fullName.vb: McpXLib.McpX.WriteSByteAsync(McpXLib.Enums.Prefix, String, SByte)
+  nameWithType: McpX.WriteSByteAsync(Prefix, string, sbyte)
+  nameWithType.vb: McpX.WriteSByteAsync(Prefix, String, SByte)
+- uid: McpXLib.McpX.WriteSByteAsync*
+  name: WriteSByteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSByteAsync_
+  commentId: Overload:McpXLib.McpX.WriteSByteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteSByteAsync
+  nameWithType: McpX.WriteSByteAsync
+- uid: McpXLib.McpX.WriteSingle(McpXLib.Enums.Prefix,System.String,System.Single)
+  name: WriteSingle(Prefix, string, float)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSingle_McpXLib_Enums_Prefix_System_String_System_Single_
+  commentId: M:McpXLib.McpX.WriteSingle(McpXLib.Enums.Prefix,System.String,System.Single)
+  name.vb: WriteSingle(Prefix, String, Single)
+  fullName: McpXLib.McpX.WriteSingle(McpXLib.Enums.Prefix, string, float)
+  fullName.vb: McpXLib.McpX.WriteSingle(McpXLib.Enums.Prefix, String, Single)
+  nameWithType: McpX.WriteSingle(Prefix, string, float)
+  nameWithType.vb: McpX.WriteSingle(Prefix, String, Single)
+- uid: McpXLib.McpX.WriteSingle*
+  name: WriteSingle
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSingle_
+  commentId: Overload:McpXLib.McpX.WriteSingle
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteSingle
+  nameWithType: McpX.WriteSingle
+- uid: McpXLib.McpX.WriteSingleAsync(McpXLib.Enums.Prefix,System.String,System.Single)
+  name: WriteSingleAsync(Prefix, string, float)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSingleAsync_McpXLib_Enums_Prefix_System_String_System_Single_
+  commentId: M:McpXLib.McpX.WriteSingleAsync(McpXLib.Enums.Prefix,System.String,System.Single)
+  name.vb: WriteSingleAsync(Prefix, String, Single)
+  fullName: McpXLib.McpX.WriteSingleAsync(McpXLib.Enums.Prefix, string, float)
+  fullName.vb: McpXLib.McpX.WriteSingleAsync(McpXLib.Enums.Prefix, String, Single)
+  nameWithType: McpX.WriteSingleAsync(Prefix, string, float)
+  nameWithType.vb: McpX.WriteSingleAsync(Prefix, String, Single)
+- uid: McpXLib.McpX.WriteSingleAsync*
+  name: WriteSingleAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteSingleAsync_
+  commentId: Overload:McpXLib.McpX.WriteSingleAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteSingleAsync
+  nameWithType: McpX.WriteSingleAsync
 - uid: McpXLib.McpX.WriteString(McpXLib.Enums.Prefix,System.String,System.String)
   name: WriteString(Prefix, string, string)
   href: api/McpXLib.McpX.html#McpXLib_McpX_WriteString_McpXLib_Enums_Prefix_System_String_System_String_
@@ -1162,6 +2858,102 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.WriteStringAsync
   nameWithType: McpX.WriteStringAsync
+- uid: McpXLib.McpX.WriteUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: WriteUInt16(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.WriteUInt16(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: WriteUInt16(Prefix, String, UShort)
+  fullName: McpXLib.McpX.WriteUInt16(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.WriteUInt16(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.WriteUInt16(Prefix, string, ushort)
+  nameWithType.vb: McpX.WriteUInt16(Prefix, String, UShort)
+- uid: McpXLib.McpX.WriteUInt16*
+  name: WriteUInt16
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt16_
+  commentId: Overload:McpXLib.McpX.WriteUInt16
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt16
+  nameWithType: McpX.WriteUInt16
+- uid: McpXLib.McpX.WriteUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name: WriteUInt16Async(Prefix, string, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_
+  commentId: M:McpXLib.McpX.WriteUInt16Async(McpXLib.Enums.Prefix,System.String,System.UInt16)
+  name.vb: WriteUInt16Async(Prefix, String, UShort)
+  fullName: McpXLib.McpX.WriteUInt16Async(McpXLib.Enums.Prefix, string, ushort)
+  fullName.vb: McpXLib.McpX.WriteUInt16Async(McpXLib.Enums.Prefix, String, UShort)
+  nameWithType: McpX.WriteUInt16Async(Prefix, string, ushort)
+  nameWithType.vb: McpX.WriteUInt16Async(Prefix, String, UShort)
+- uid: McpXLib.McpX.WriteUInt16Async*
+  name: WriteUInt16Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt16Async_
+  commentId: Overload:McpXLib.McpX.WriteUInt16Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt16Async
+  nameWithType: McpX.WriteUInt16Async
+- uid: McpXLib.McpX.WriteUInt32(McpXLib.Enums.Prefix,System.String,System.UInt32)
+  name: WriteUInt32(Prefix, string, uint)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt32_McpXLib_Enums_Prefix_System_String_System_UInt32_
+  commentId: M:McpXLib.McpX.WriteUInt32(McpXLib.Enums.Prefix,System.String,System.UInt32)
+  name.vb: WriteUInt32(Prefix, String, UInteger)
+  fullName: McpXLib.McpX.WriteUInt32(McpXLib.Enums.Prefix, string, uint)
+  fullName.vb: McpXLib.McpX.WriteUInt32(McpXLib.Enums.Prefix, String, UInteger)
+  nameWithType: McpX.WriteUInt32(Prefix, string, uint)
+  nameWithType.vb: McpX.WriteUInt32(Prefix, String, UInteger)
+- uid: McpXLib.McpX.WriteUInt32*
+  name: WriteUInt32
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt32_
+  commentId: Overload:McpXLib.McpX.WriteUInt32
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt32
+  nameWithType: McpX.WriteUInt32
+- uid: McpXLib.McpX.WriteUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt32)
+  name: WriteUInt32Async(Prefix, string, uint)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt32_
+  commentId: M:McpXLib.McpX.WriteUInt32Async(McpXLib.Enums.Prefix,System.String,System.UInt32)
+  name.vb: WriteUInt32Async(Prefix, String, UInteger)
+  fullName: McpXLib.McpX.WriteUInt32Async(McpXLib.Enums.Prefix, string, uint)
+  fullName.vb: McpXLib.McpX.WriteUInt32Async(McpXLib.Enums.Prefix, String, UInteger)
+  nameWithType: McpX.WriteUInt32Async(Prefix, string, uint)
+  nameWithType.vb: McpX.WriteUInt32Async(Prefix, String, UInteger)
+- uid: McpXLib.McpX.WriteUInt32Async*
+  name: WriteUInt32Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt32Async_
+  commentId: Overload:McpXLib.McpX.WriteUInt32Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt32Async
+  nameWithType: McpX.WriteUInt32Async
+- uid: McpXLib.McpX.WriteUInt64(McpXLib.Enums.Prefix,System.String,System.UInt64)
+  name: WriteUInt64(Prefix, string, ulong)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt64_McpXLib_Enums_Prefix_System_String_System_UInt64_
+  commentId: M:McpXLib.McpX.WriteUInt64(McpXLib.Enums.Prefix,System.String,System.UInt64)
+  name.vb: WriteUInt64(Prefix, String, ULong)
+  fullName: McpXLib.McpX.WriteUInt64(McpXLib.Enums.Prefix, string, ulong)
+  fullName.vb: McpXLib.McpX.WriteUInt64(McpXLib.Enums.Prefix, String, ULong)
+  nameWithType: McpX.WriteUInt64(Prefix, string, ulong)
+  nameWithType.vb: McpX.WriteUInt64(Prefix, String, ULong)
+- uid: McpXLib.McpX.WriteUInt64*
+  name: WriteUInt64
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt64_
+  commentId: Overload:McpXLib.McpX.WriteUInt64
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt64
+  nameWithType: McpX.WriteUInt64
+- uid: McpXLib.McpX.WriteUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt64)
+  name: WriteUInt64Async(Prefix, string, ulong)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt64_
+  commentId: M:McpXLib.McpX.WriteUInt64Async(McpXLib.Enums.Prefix,System.String,System.UInt64)
+  name.vb: WriteUInt64Async(Prefix, String, ULong)
+  fullName: McpXLib.McpX.WriteUInt64Async(McpXLib.Enums.Prefix, string, ulong)
+  fullName.vb: McpXLib.McpX.WriteUInt64Async(McpXLib.Enums.Prefix, String, ULong)
+  nameWithType: McpX.WriteUInt64Async(Prefix, string, ulong)
+  nameWithType.vb: McpX.WriteUInt64Async(Prefix, String, ULong)
+- uid: McpXLib.McpX.WriteUInt64Async*
+  name: WriteUInt64Async
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteUInt64Async_
+  commentId: Overload:McpXLib.McpX.WriteUInt64Async
+  isSpec: "True"
+  fullName: McpXLib.McpX.WriteUInt64Async
+  nameWithType: McpX.WriteUInt64Async
 - uid: McpXLib.McpX.Write``1(McpXLib.Enums.Prefix,System.String,``0)
   name: Write<T>(Prefix, string, T)
   href: api/McpXLib.McpX.html#McpXLib_McpX_Write__1_McpXLib_Enums_Prefix_System_String___0_
