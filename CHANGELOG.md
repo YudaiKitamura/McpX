@@ -1,5 +1,9 @@
-## [0.5.2] - 2024-07-16
-### Changed
+## [0.5.3] - 2025-08-14
+### Added
+- Added VB-compatible, type-specific overloads
+
+## [0.5.2] - 2025-07-16
+### Fixed
 - Fix bug in hex address conversion.
 
 ## [0.5.1] - 2024-04-17
