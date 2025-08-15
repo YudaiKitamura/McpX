@@ -1,0 +1,56 @@
+name: .NET CI + Managed Build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          body: "Includes managed (non-AOT) DLLs for all target frameworks."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-managed:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release, non-AOT, all TFMs)
+        run: dotnet build McpXLib/McpXLib.csproj -c Release --no-restore
+
+      - name: Collect managed DLLs (all TFMs)
+        run: |
+          mkdir -p artifacts
+          for tfm in net7.0 net8.0 net9.0 netstandard2.0; do
+            src="McpXLib/bin/Release/${tfm}/McpXLib.dll"
+            if [ -f "$src" ]; then
+              cp "$src" "artifacts/McpXLib-${tfm}.dll"
+            fi
+          done
+          ls -la artifacts || true
+
+      - name: Upload managed DLLs to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: artifacts/*.dll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
