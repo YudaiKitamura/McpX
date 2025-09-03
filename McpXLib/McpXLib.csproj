@@ -30,7 +30,7 @@
 
   <PropertyGroup>
     <PackageId>McpX</PackageId>
-    <Version>0.5.3</Version>
+    <Version>0.5.4</Version>
     <Authors>Yudai Kitamura</Authors>
     <Company></Company>
     <Description>MC protocol communication library for Mitsubishi PLC(三菱PLC用MCプロトコル通信ライブラリ)</Description>
@@ -39,7 +39,7 @@
     <PackageProjectUrl>https://yudaikitamura.github.io/McpX</PackageProjectUrl>
     <RepositoryUrl>https://github.com/YudaiKitamura/McpX</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>MCProtocol;MC Protocol:Melsec;Mitsubishi;MCプロトコル;メルセック;三菱;PLC</PackageTags>
+    <PackageTags>MCProtocol;MC Protocol;Melsec;Mitsubishi;MCプロトコル;メルセック;三菱;PLC</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
