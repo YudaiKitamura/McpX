@@ -1,3 +1,7 @@
+## [0.5.4] - 2025-09-03
+### Fixed
+- Fixed an issue in the BatchRead method where specifying types larger than 32 bits resulted in an incorrect read count.
+
 ## [0.5.3] - 2025-08-14
 ### Added
 - Added VB-compatible, type-specific overloads

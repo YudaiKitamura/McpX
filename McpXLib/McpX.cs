@@ -195,7 +195,7 @@ public partial class McpX : Mcp
                     WordBatchRead<T>(
                         prefix: prefix,
                         address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        wordLength: (ushort)readLength
+                        wordLength: (ushort)(readLength / wordSize)
                     )
                 );
             }
@@ -268,7 +268,7 @@ public partial class McpX : Mcp
                     await WordBatchReadAsync<T>(
                         prefix: prefix,
                         address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        wordLength: (ushort)readLength
+                        wordLength: (ushort)(readLength / wordSize)
                     )
                 );
             }
