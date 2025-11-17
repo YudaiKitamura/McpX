@@ -1,3 +1,7 @@
+## [0.5.5] - 2025-11-17
+### Fixed
+- Fixed In the NativeAOT-compatible McpxInterrop class, corrected BatchWriteBool to call BatchWrite with bool instead of short.
+
 ## [0.5.4] - 2025-09-03
 ### Fixed
 - Fixed an issue in the BatchRead method where specifying types larger than 32 bits resulted in an incorrect read count.

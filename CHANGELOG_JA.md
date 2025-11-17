@@ -1,3 +1,7 @@
+## [0.5.5] - 2025-11-17
+### Fixed
+- NativeAOT対応のMcpxInterropクラスにて、BatchWriteBoolのBatchWrite呼び出しがshortを使用していた不具合を修正（boolに変更）
+
 ## [0.5.4] - 2025-09-03
 ### Fixed
 - BatchReadメソッドで32ビット以上の型を指定した場合、読み出し点数が正しく計算されない不具合を修正

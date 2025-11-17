@@ -63,3 +63,6 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 
 ## Changelog
 - [CHANGELOG.md](https://github.com/YudaiKitamura/McpX/blob/main/CHANGELOG.md)
+
+## Related
+- [mcpx-mcp-server](https://github.com/YudaiKitamura/mcpx-mcp-server) An MCP(Model Context Protocol) server that enables real-time access to Mitsubishi Electric PLC devices from generative AI.

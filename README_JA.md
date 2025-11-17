@@ -1,7 +1,7 @@
 <img src="docfx/images/mcpx_ogp.png" alt="logo" />
 <br>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.5.4-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.5.5-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -78,3 +78,6 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)
+
+## 関連
+- [mcpx-mcp-server](https://github.com/YudaiKitamura/mcpx-mcp-server) 生成AIから三菱電機製 PLC のデバイスへリアルタイムアクセスを可能にする MCP(Model Context Protocol)サーバー
