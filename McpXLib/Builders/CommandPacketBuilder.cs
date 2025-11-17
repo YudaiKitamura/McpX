@@ -63,19 +63,23 @@ internal class CommandPacketBuilder : IPacketBuilder
 
     internal static byte[] BinaryBytesToAsciiBytes(byte[] binaryBytes, bool isReverse)
     {
+        IEnumerable<byte> seq = isReverse 
+            ? System.Linq.Enumerable.Reverse(binaryBytes) 
+            : binaryBytes;
+
         return Encoding.ASCII.GetBytes(
-            string.Concat(
-                isReverse ? binaryBytes.Reverse().Select(b => b.ToString("X2")) : binaryBytes.Select(b => b.ToString("X2"))
-            )  
+            string.Concat(seq.Select(b => b.ToString("X2")))
         );
     }
 
     internal static byte[] BinaryBytesToAsciiByte(byte[] binaryBytes, bool isReverse)
     {
+        IEnumerable<byte> seq = isReverse 
+            ? System.Linq.Enumerable.Reverse(binaryBytes) 
+            : binaryBytes;
+
         return Encoding.ASCII.GetBytes(
-            string.Concat(
-                isReverse ? binaryBytes.Reverse().Select(b => b.ToString("X")) : binaryBytes.Select(b => b.ToString("X"))
-            )  
+            string.Concat(seq.Select(b => b.ToString("X")))
         );
     }
 }
