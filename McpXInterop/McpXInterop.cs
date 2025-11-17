@@ -109,7 +109,7 @@ public static class McpXInterop
     [UnmanagedCallersOnly(EntryPoint = "batch_write_bool")]
     public static int BatchWriteBool(int connectionId, IntPtr outValues, Device device, int length)
     {
-        return BatchWrite<short>(connectionId, outValues, device, length);
+        return BatchWrite<bool>(connectionId, outValues, device, length);
     }
 
     private static int BatchRead<T>(int connectionId, IntPtr outValues, Device device, int length) where T : unmanaged
