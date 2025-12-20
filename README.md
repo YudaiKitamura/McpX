@@ -1,6 +1,7 @@
 <img src="docfx/images/mcpx_ogp.png" alt="logo" />
 <br>
 <p>
+  <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
   <img alt="Version" src="https://img.shields.io/badge/version-0.5.5-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
