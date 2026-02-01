@@ -96,7 +96,7 @@ public class Mcp : BasePlc, IPlc
         bool isAscii = false,
         RequestFrame requestFrame = RequestFrame.E3
     ) : this (
-        transport: isUdp ? new Transports.UdpPlcTransport(ip, port) : new Transports.TcpPlcTransport(ip, port, timeout),
+        transport: isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : new Transports.TcpPlcTransport(ip, port, timeout),
         route: route,
         isAscii: isAscii,
         requestFrame: requestFrame,
