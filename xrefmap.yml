@@ -883,15 +883,15 @@ references:
   commentId: T:McpXLib.McpX
   fullName: McpXLib.McpX
   nameWithType: McpX
-- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame)
-  name: McpX(string, int, string?, bool, bool, RequestFrame)
-  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_
-  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame)
-  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame)
-  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame)
-  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame)
-  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame)
-  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame)
+- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16)
+  name: McpX(string, int, string?, bool, bool, RequestFrame, ushort)
+  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_System_UInt16_
+  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16)
+  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort)
+  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame, ushort)
+  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame, UShort)
+  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame, ushort)
+  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort)
 - uid: McpXLib.McpX.#ctor*
   name: McpX
   href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_
