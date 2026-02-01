@@ -9,7 +9,7 @@ internal class TcpPlcTransport : IPlcTransport
     private readonly TcpClient client;
     private readonly NetworkStream stream;
     private readonly object syncLock = new();
-    
+
     internal TcpPlcTransport(string ip, int port, ushort timeout)
     {
         client = new TcpClient();
@@ -20,7 +20,7 @@ internal class TcpPlcTransport : IPlcTransport
         if (!task.Wait(timeout))
         {
             client.Close();
-            throw new TimeoutException("Conection Timeout");
+            throw new TimeoutException("Connection Timeout");
         }
         stream = client.GetStream();
     }
@@ -147,6 +147,7 @@ internal class TcpPlcTransport : IPlcTransport
         var memoryStream = new MemoryStream();
         var buffer = new byte[1024];
         int totalRead = 0;
+        var stopwatch = Stopwatch.StartNew();
 
         while (totalRead < expectedLength)
         {
@@ -154,6 +155,11 @@ internal class TcpPlcTransport : IPlcTransport
             if (bytesRead == 0)
             {
                 throw new IOException("Connection closed unexpectedly");
+            }
+
+            if (stopwatch.ElapsedMilliseconds > client.ReceiveTimeout)
+            {
+                throw new IOException("Unable to read data from the transport connection: Connection timed out.");
             }
 
             await memoryStream.WriteAsync(buffer, 0, bytesRead);

@@ -27,8 +27,20 @@ internal class UdpPlcTransport : IPlcTransport
     public async Task<byte[]> RequestAsync(byte[] packet)
     {
         await udp.SendAsync(packet, packet.Length, remoteEndPoint);
-        var result = await udp.ReceiveAsync();
-        return result.Buffer;
+
+        using var cts = new CancellationTokenSource();
+        var receiveTask = udp.ReceiveAsync();
+        var delayTask = Task.Delay(udp.Client.ReceiveTimeout, cts.Token);
+
+        var completed = await Task.WhenAny(receiveTask, delayTask);
+
+        if (completed == delayTask)
+        {
+            throw new SocketException((int)SocketError.TimedOut);
+        }
+
+        cts.Cancel();
+        return (await receiveTask).Buffer;
     }
 
     public void Dispose()
