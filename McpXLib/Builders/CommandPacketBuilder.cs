@@ -8,8 +8,9 @@ internal class CommandPacketBuilder : IPacketBuilder
     private readonly byte[] command;
     private readonly byte[] subCommand;
     private readonly IPayloadBuilder? payloadBuilder;
-    private readonly byte[] monitoringTimer;
+    private byte[] monitoringTimer;
 
+    [Obsolete]
     internal CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, byte[] monitoringTimer)
     {   
         this.command = command;
@@ -18,11 +19,37 @@ internal class CommandPacketBuilder : IPacketBuilder
         this.monitoringTimer = monitoringTimer;
     }
 
+    internal CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, ushort monitoringTimer)
+    {
+        if (monitoringTimer > 0 && monitoringTimer < 250)
+        {
+            throw new ArgumentOutOfRangeException("The allowable timeout values are 0 or 250 ms or greater.");
+        }
+
+        this.command = command;
+        this.subCommand = subCommand;
+        this.payloadBuilder = payloadBuilder;
+        this.monitoringTimer = BitConverter.GetBytes((ushort)(monitoringTimer / 250)); // 1 = 250ms 
+    }
+
+    [Obsolete]
     internal CommandPacketBuilder(byte[] command, byte[] subCommand, byte[] monitoringTimer)
     {   
         this.command = command;
         this.subCommand = subCommand;
         this.monitoringTimer = monitoringTimer;
+    }
+
+    internal CommandPacketBuilder(byte[] command, byte[] subCommand, ushort monitoringTimer)
+    {
+        if (monitoringTimer > 0 && monitoringTimer < 250)
+        {
+            throw new ArgumentOutOfRangeException("The allowable timeout values are 0 or 250 ms or greater.");
+        }
+
+        this.command = command;
+        this.subCommand = subCommand;
+        this.monitoringTimer = BitConverter.GetBytes((ushort)(monitoringTimer / 250)); // 1 = 250ms 
     }
 
     public byte[] ToBinaryBytes()

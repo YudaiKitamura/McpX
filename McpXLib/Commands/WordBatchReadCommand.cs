@@ -13,7 +13,7 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
     private readonly ushort wordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordBatchReadCommand(Prefix prefix, string address, ushort wordLength)
+    internal WordBatchReadCommand(Prefix prefix, string address, ushort wordLength, ushort monitoringTimer)
     {
         this.wordLength = wordLength;
 
@@ -23,7 +23,7 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
             command: [0x01, 0x04],
             subCommand: [0x00, 0x00],
             payloadBuilder: new DevicePayloadBuilder(prefix, address, (ushort)(wordLength * DeviceConverter.GetWordLength<T>())),
-            monitoringTimer: [0x00, 0x00]
+            monitoringTimer: monitoringTimer
         );
     }
 
