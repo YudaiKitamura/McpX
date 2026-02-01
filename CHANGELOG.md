@@ -1,3 +1,7 @@
+## [0.6.0] - 2026-02-01
+### Added
+- Made timeout configurable at instance creation.
+
 ## [0.5.5] - 2025-11-17
 ### Fixed
 - Fixed In the NativeAOT-compatible McpxInterrop class, corrected BatchWriteBool to call BatchWrite with bool instead of short.

@@ -8,13 +8,13 @@ internal sealed class RemoteUnlockCommand : IPlcCommand<bool>
 {
     private readonly CommandPacketBuilder commandPacketBuilder;
     
-    internal RemoteUnlockCommand(string password)
+    internal RemoteUnlockCommand(string password, ushort monitoringTimer = 0)
     {
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x30, 0x16],
             subCommand: [0x00, 0x00],
             payloadBuilder: new AsciiPayloadBuilder(password),
-            monitoringTimer: [0x00, 0x00]
+            monitoringTimer: monitoringTimer
         );
     }
 

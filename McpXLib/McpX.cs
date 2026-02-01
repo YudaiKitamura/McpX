@@ -28,6 +28,7 @@ public partial class McpX : Mcp
     /// <param name="isAscii">ASCIIコードによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、バイナリ交信:<c>false</c>です。）</param>
     /// <param name="isUdp">UDPによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、TCP交信:<c>false</c>です。）</param>
     /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
+    /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(
@@ -36,13 +37,15 @@ public partial class McpX : Mcp
         string? password = null, 
         bool isAscii = false, 
         bool isUdp = false, 
-        RequestFrame requestFrame = RequestFrame.E3
+        RequestFrame requestFrame = RequestFrame.E3,
+        ushort timeoutMilliseconds = 5000
     ) : base (
         ip: ip, 
         port: port,
         isAscii: isAscii, 
         isUdp: isUdp, 
-        requestFrame: requestFrame
+        requestFrame: requestFrame,
+        timeout: timeoutMilliseconds
     )
     {
         this.password = password;

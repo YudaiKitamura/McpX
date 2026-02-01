@@ -1,3 +1,7 @@
+## [0.6.0] - 2026-02-01
+### Added
+- タイムアウトの時間をインスタンスの生成時に指定できるように修正
+
 ## [0.5.5] - 2025-11-17
 ### Fixed
 - NativeAOT対応のMcpxInterropクラスにて、BatchWriteBoolのBatchWrite呼び出しがshortを使用していた不具合を修正（boolに変更）

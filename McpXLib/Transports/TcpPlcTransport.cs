@@ -6,15 +6,22 @@ namespace McpXLib.Transports;
 
 internal class TcpPlcTransport : IPlcTransport
 {
-    private const int RECIVE_TIMEOUT_MS = 1000; 
     private readonly TcpClient client;
     private readonly NetworkStream stream;
     private readonly object syncLock = new();
 
-    internal TcpPlcTransport(string ip, int port)
+    internal TcpPlcTransport(string ip, int port, ushort timeout)
     {
         client = new TcpClient();
-        client.Connect(ip, port);
+        client.SendTimeout = timeout;
+        client.ReceiveTimeout = timeout;
+
+        var task = client.ConnectAsync(ip, port);
+        if (!task.Wait(timeout))
+        {
+            client.Close();
+            throw new TimeoutException("Connection Timeout");
+        }
         stream = client.GetStream();
     }
 
@@ -100,7 +107,6 @@ internal class TcpPlcTransport : IPlcTransport
             var length = contentLength.ParseContentLength(headerBytes);
 
             return headerBytes.Concat(GetReceivePacket(length)).ToArray();
-
         }
     }
 
@@ -120,25 +126,17 @@ internal class TcpPlcTransport : IPlcTransport
         var memoryStream = new MemoryStream();
         var buffer = new byte[1024];
         int totalRead = 0;
-        var stopwatch = Stopwatch.StartNew();
 
         while (totalRead < expectedLength)
         {
-            if (stopwatch.ElapsedMilliseconds > RECIVE_TIMEOUT_MS)
+            int bytesRead = stream.Read(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
+            if (bytesRead == 0)
             {
-                throw new TimeoutException("Recive Timeout");
+                throw new IOException("Connection closed unexpectedly");
             }
 
-            if (stream.DataAvailable) 
-            {
-                int bytesRead = stream.Read(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
-                if (bytesRead == 0)
-                {
-                    throw new IOException("Connection closed unexpectedly");
-                }
-                memoryStream.Write(buffer, 0, bytesRead);
-                totalRead += bytesRead;
-            }
+            memoryStream.Write(buffer, 0, bytesRead);
+            totalRead += bytesRead;
         }
 
         return memoryStream.ToArray();
@@ -153,21 +151,19 @@ internal class TcpPlcTransport : IPlcTransport
 
         while (totalRead < expectedLength)
         {
-            if (stopwatch.ElapsedMilliseconds > RECIVE_TIMEOUT_MS)
+            int bytesRead = await stream.ReadAsync(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
+            if (bytesRead == 0)
             {
-                throw new TimeoutException("Recive Timeout");
+                throw new IOException("Connection closed unexpectedly");
             }
 
-            if (stream.DataAvailable) 
+            if (stopwatch.ElapsedMilliseconds > client.ReceiveTimeout)
             {
-                int bytesRead = await stream.ReadAsync(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
-                if (bytesRead == 0)
-                {
-                    throw new IOException("Connection closed unexpectedly");
-                }
-                await memoryStream.WriteAsync(buffer, 0, bytesRead);
-                totalRead += bytesRead;
+                throw new IOException("Unable to read data from the transport connection: Connection timed out.");
             }
+
+            await memoryStream.WriteAsync(buffer, 0, bytesRead);
+            totalRead += bytesRead;
         }
 
         return memoryStream.ToArray();

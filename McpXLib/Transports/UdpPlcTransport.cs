@@ -9,16 +9,16 @@ internal class UdpPlcTransport : IPlcTransport
     private readonly UdpClient udp;
     private readonly IPEndPoint remoteEndPoint;
 
-    internal UdpPlcTransport(string ip, int port)
+    internal UdpPlcTransport(string ip, int port, ushort timeout)
     {
         udp = new UdpClient();
+        udp.Client.ReceiveTimeout = timeout;
         remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
     }
 
     public byte[] Request(byte[] packet)
     {
         udp.Send(packet, packet.Length, remoteEndPoint);
-        udp.Client.ReceiveTimeout = 1000;
 
         IPEndPoint remote = remoteEndPoint;
         return udp.Receive(ref remote);
@@ -27,8 +27,20 @@ internal class UdpPlcTransport : IPlcTransport
     public async Task<byte[]> RequestAsync(byte[] packet)
     {
         await udp.SendAsync(packet, packet.Length, remoteEndPoint);
-        var result = await udp.ReceiveAsync();
-        return result.Buffer;
+
+        using var cts = new CancellationTokenSource();
+        var receiveTask = udp.ReceiveAsync();
+        var delayTask = Task.Delay(udp.Client.ReceiveTimeout, cts.Token);
+
+        var completed = await Task.WhenAny(receiveTask, delayTask);
+
+        if (completed == delayTask)
+        {
+            throw new SocketException((int)SocketError.TimedOut);
+        }
+
+        cts.Cancel();
+        return (await receiveTask).Buffer;
     }
 
     public void Dispose()
