@@ -17,7 +17,7 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
     private readonly int doubleWordLength;
         private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices, ushort monitoringTimer)
+    internal WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices, ushort monitoringTimer = 0)
     {
         wordLength = wordDevices.Length * WORD_SIZE;
         doubleWordLength = doubleWordDevices.Length * DOUBLE_WORD_SIZE;

@@ -13,7 +13,7 @@ internal sealed class MonitorRegistCommand : IPlcCommand<bool>
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer) : base()
+    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;

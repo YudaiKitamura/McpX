@@ -13,7 +13,7 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
     private readonly ushort wordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordBatchReadCommand(Prefix prefix, string address, ushort wordLength, ushort monitoringTimer)
+    internal WordBatchReadCommand(Prefix prefix, string address, ushort wordLength, ushort monitoringTimer = 0)
     {
         this.wordLength = wordLength;
 

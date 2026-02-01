@@ -15,7 +15,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordRandomReadCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer) : base()
+    internal WordRandomReadCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer = 0) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;

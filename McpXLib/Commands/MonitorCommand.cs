@@ -14,7 +14,7 @@ internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer)
+    internal MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer = 0)
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;

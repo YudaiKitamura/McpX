@@ -13,7 +13,7 @@ internal sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     private readonly ushort wordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordBatchWriteCommand(Prefix prefix, string address, T[] values, ushort monitoringTimer)
+    internal WordBatchWriteCommand(Prefix prefix, string address, T[] values, ushort monitoringTimer = 0)
     {
         wordLength = (ushort)(values.Length * DeviceConverter.GetWordLength<T>());
 

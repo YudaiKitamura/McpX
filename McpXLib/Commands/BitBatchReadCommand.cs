@@ -12,7 +12,7 @@ internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
     private readonly ushort bitLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal BitBatchReadCommand(Prefix prefix, string address, ushort bitLength, ushort monitoringTimer) : base()
+    internal BitBatchReadCommand(Prefix prefix, string address, ushort bitLength, ushort monitoringTimer = 0) : base()
     {
         this.bitLength = bitLength;
 

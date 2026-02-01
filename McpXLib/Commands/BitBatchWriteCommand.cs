@@ -12,7 +12,7 @@ internal sealed class BitBatchWriteCommand : IPlcCommand<bool>
     private readonly ushort bitLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal BitBatchWriteCommand(Prefix prefix, string address, bool[] values, ushort monitoringTimer) : base()
+    internal BitBatchWriteCommand(Prefix prefix, string address, bool[] values, ushort monitoringTimer = 0) : base()
     {
         bitLength = (ushort)values.Length;
 
