@@ -77,6 +77,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~4E frame (binary code) support~~
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
+- [ ] GX Simulator support – In progress
 
 ## Changelog
 - [CHANGELOG.md](./CHANGELOG.md)
