@@ -76,6 +76,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~4Eフレーム（バイナリコード）対応~~
 - [x] ~~4Eフレーム（ASCIIコード）対応~~
 - [x] ~~UDP対応~~
+- [ ] GX Simulator 対応 – 対応中
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)
