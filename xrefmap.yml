@@ -281,6 +281,24 @@ references:
   commentId: F:McpXLib.Enums.Prefix.ZR
   fullName: McpXLib.Enums.Prefix.ZR
   nameWithType: Prefix.ZR
+- uid: McpXLib.Enums.ProcessorSeries
+  name: ProcessorSeries
+  href: api/McpXLib.Enums.ProcessorSeries.html
+  commentId: T:McpXLib.Enums.ProcessorSeries
+  fullName: McpXLib.Enums.ProcessorSeries
+  nameWithType: ProcessorSeries
+- uid: McpXLib.Enums.ProcessorSeries.Q
+  name: Q
+  href: api/McpXLib.Enums.ProcessorSeries.html#McpXLib_Enums_ProcessorSeries_Q
+  commentId: F:McpXLib.Enums.ProcessorSeries.Q
+  fullName: McpXLib.Enums.ProcessorSeries.Q
+  nameWithType: ProcessorSeries.Q
+- uid: McpXLib.Enums.ProcessorSeries.iQR
+  name: iQR
+  href: api/McpXLib.Enums.ProcessorSeries.html#McpXLib_Enums_ProcessorSeries_iQR
+  commentId: F:McpXLib.Enums.ProcessorSeries.iQR
+  fullName: McpXLib.Enums.ProcessorSeries.iQR
+  nameWithType: ProcessorSeries.iQR
 - uid: McpXLib.Enums.RequestFrame
   name: RequestFrame
   href: api/McpXLib.Enums.RequestFrame.html
@@ -851,6 +869,19 @@ references:
   fullName.vb: McpXLib.Mcp.Monitor(Of T1, T2)((McpXLib.Enums.Prefix, String)(), (McpXLib.Enums.Prefix, String)())
   nameWithType: Mcp.Monitor<T1, T2>((Prefix, string)[], (Prefix, string)[])
   nameWithType.vb: Mcp.Monitor(Of T1, T2)((Prefix, String)(), (Prefix, String)())
+- uid: McpXLib.Mcp.ProcessorSeries
+  name: ProcessorSeries
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_ProcessorSeries
+  commentId: P:McpXLib.Mcp.ProcessorSeries
+  fullName: McpXLib.Mcp.ProcessorSeries
+  nameWithType: Mcp.ProcessorSeries
+- uid: McpXLib.Mcp.ProcessorSeries*
+  name: ProcessorSeries
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_ProcessorSeries_
+  commentId: Overload:McpXLib.Mcp.ProcessorSeries
+  isSpec: "True"
+  fullName: McpXLib.Mcp.ProcessorSeries
+  nameWithType: Mcp.ProcessorSeries
 - uid: McpXLib.Mcp.RequestFrame
   name: RequestFrame
   href: api/McpXLib.Mcp.html#McpXLib_Mcp_RequestFrame
@@ -883,15 +914,15 @@ references:
   commentId: T:McpXLib.McpX
   fullName: McpXLib.McpX
   nameWithType: McpX
-- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16)
-  name: McpX(string, int, string?, bool, bool, RequestFrame, ushort)
-  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_System_UInt16_
-  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16)
-  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort)
-  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame, ushort)
-  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame, UShort)
-  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame, ushort)
-  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort)
+- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
+  name: McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries)
+  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_
+  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
+  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries)
+  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries)
+  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries)
+  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries)
+  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries)
 - uid: McpXLib.McpX.#ctor*
   name: McpX
   href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_
