@@ -13,7 +13,7 @@ internal sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
     private readonly ushort wordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal WordBatchWriteCommand(Prefix prefix, string address, T[] values, ushort monitoringTimer = 0)
+    internal WordBatchWriteCommand(Prefix prefix, string address, T[] values, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q)
     {
         wordLength = (ushort)(values.Length * DeviceConverter.GetWordLength<T>());
 
@@ -21,8 +21,8 @@ internal sealed class WordBatchWriteCommand<T> : IPlcCommand<bool>
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x14],
-            subCommand: [0x00, 0x00],
-            payloadBuilder: new DeviceValuePayloadBuilder<T>(prefix, address, values),
+            subCommand: DeviceConverter.ToSubCommand([0x00, 0x00], series),
+            payloadBuilder: new DeviceValuePayloadBuilder<T>(prefix, address, values, series),
             monitoringTimer: monitoringTimer
         );
     }

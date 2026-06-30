@@ -46,35 +46,53 @@ public class Mcp : BasePlc, IPlc
     /// フレーム（データ交信電文）の種類を指定します。
     /// </summary>
     public RequestFrame RequestFrame
-    { 
-        get 
+    {
+        get
         {
             return requestFrame;
         }
-        set 
+        set
         {
-            requestFrame = value; 
+            requestFrame = value;
+        }
+    }
+
+    /// <summary>
+    /// PLCのシリーズ（デバイス指定フォーマット）を指定します。
+    /// </summary>
+    public ProcessorSeries ProcessorSeries
+    {
+        get
+        {
+            return processorSeries;
+        }
+        set
+        {
+            processorSeries = value;
         }
     }
 
     private bool isAscii;
     private IPacketBuilder route;
     private RequestFrame requestFrame;
+    private ProcessorSeries processorSeries;
 
     private ushort timeout;
 
     private Mcp(
-        IPlcTransport transport, 
+        IPlcTransport transport,
         ushort timeout,
-        IPacketBuilder? route = null, 
-        bool isAscii = false, 
-        RequestFrame requestFrame = RequestFrame.E3
+        IPacketBuilder? route = null,
+        bool isAscii = false,
+        RequestFrame requestFrame = RequestFrame.E3,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
     ) : base (
         transport
     )
     {
         this.isAscii = isAscii;
         this.requestFrame = requestFrame;
+        this.processorSeries = processorSeries;
         this.timeout = timeout;
 
         if (route != null) 
@@ -88,18 +106,20 @@ public class Mcp : BasePlc, IPlc
     }
 
     internal Mcp(
-        string ip, 
+        string ip,
         int port,
         ushort timeout,
         bool isUdp = false,
         IPacketBuilder? route = null,
         bool isAscii = false,
-        RequestFrame requestFrame = RequestFrame.E3
+        RequestFrame requestFrame = RequestFrame.E3,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
     ) : this (
         transport: isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : new Transports.TcpPlcTransport(ip, port, timeout),
         route: route,
         isAscii: isAscii,
         requestFrame: requestFrame,
+        processorSeries: processorSeries,
         timeout: timeout
     )
     {
@@ -148,7 +168,7 @@ public class Mcp : BasePlc, IPlc
     internal async Task<bool[]> BitBatchReadAsync(Prefix prefix, string address, ushort bitLength)
     {
         return await new PlcCommandHandler<bool[]>().ExecuteAsync(
-            new BitBatchReadCommand(prefix, address, bitLength, timeout),
+            new BitBatchReadCommand(prefix, address, bitLength, timeout, processorSeries),
             this
         );
     }
@@ -156,7 +176,7 @@ public class Mcp : BasePlc, IPlc
     internal bool[] BitBatchRead(Prefix prefix, string address, ushort bitLength)
     {
         return new PlcCommandHandler<bool[]>().Execute(
-            new BitBatchReadCommand(prefix, address, bitLength, timeout),
+            new BitBatchReadCommand(prefix, address, bitLength, timeout, processorSeries),
             this
         );
     }
@@ -164,7 +184,7 @@ public class Mcp : BasePlc, IPlc
     internal async Task BitBatchWriteAsync(Prefix prefix, string address, bool[]values)
     {
         await new PlcCommandHandler<bool>().ExecuteAsync(
-            new BitBatchWriteCommand(prefix, address, values, timeout),
+            new BitBatchWriteCommand(prefix, address, values, timeout, processorSeries),
             this
         );
     }
@@ -172,7 +192,7 @@ public class Mcp : BasePlc, IPlc
     internal void BitBatchWrite(Prefix prefix, string address, bool[]values)
     {
         new PlcCommandHandler<bool>().Execute(
-            new BitBatchWriteCommand(prefix, address, values, timeout),
+            new BitBatchWriteCommand(prefix, address, values, timeout, processorSeries),
             this
         );
     }
@@ -180,7 +200,7 @@ public class Mcp : BasePlc, IPlc
     internal async Task<T[]> WordBatchReadAsync<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
         return await new PlcCommandHandler<T[]>().ExecuteAsync(
-            new WordBatchReadCommand<T>(prefix, address, wordLength, timeout),
+            new WordBatchReadCommand<T>(prefix, address, wordLength, timeout, processorSeries),
             this
         );
     }
@@ -188,7 +208,7 @@ public class Mcp : BasePlc, IPlc
     internal T[] WordBatchRead<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
         return new PlcCommandHandler<T[]>().Execute(
-            new WordBatchReadCommand<T>(prefix, address, wordLength, timeout),
+            new WordBatchReadCommand<T>(prefix, address, wordLength, timeout, processorSeries),
             this
         );
     }
@@ -196,7 +216,7 @@ public class Mcp : BasePlc, IPlc
     internal async Task WordBatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
         await new PlcCommandHandler<bool>().ExecuteAsync(
-            new WordBatchWriteCommand<T>(prefix, address, values, timeout),
+            new WordBatchWriteCommand<T>(prefix, address, values, timeout, processorSeries),
             this
         );
     }
@@ -204,7 +224,7 @@ public class Mcp : BasePlc, IPlc
     internal void WordBatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
         new PlcCommandHandler<bool>().Execute(
-            new WordBatchWriteCommand<T>(prefix, address, values, timeout),
+            new WordBatchWriteCommand<T>(prefix, address, values, timeout, processorSeries),
             this
         );
     }
@@ -214,7 +234,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         return await new PlcCommandHandler<(T1[], T2[])>().ExecuteAsync(
-            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout),
+            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }
@@ -224,7 +244,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         return new PlcCommandHandler<(T1[], T2[])>().Execute(
-            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout),
+            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }
@@ -234,7 +254,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         await new PlcCommandHandler<bool>().ExecuteAsync(
-            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, timeout),
+            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, timeout, processorSeries),
             this
         );
     }
@@ -244,7 +264,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         new PlcCommandHandler<bool>().Execute(
-            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, timeout),
+            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, timeout, processorSeries),
             this
         );
     }
@@ -272,7 +292,7 @@ public class Mcp : BasePlc, IPlc
     public async Task MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
         await new PlcCommandHandler<bool>().ExecuteAsync(
-            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, timeout),
+            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }
@@ -300,7 +320,7 @@ public class Mcp : BasePlc, IPlc
     public void MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
         new PlcCommandHandler<bool>().Execute(
-            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, timeout),
+            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }
@@ -343,7 +363,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         return await new PlcCommandHandler<(T1[], T2[])>().ExecuteAsync(
-            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout),
+            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }
@@ -386,7 +406,7 @@ public class Mcp : BasePlc, IPlc
         where T2 : unmanaged
     {
         return new PlcCommandHandler<(T1[], T2[])>().Execute(
-            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout),
+            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, timeout, processorSeries),
             this
         );
     }

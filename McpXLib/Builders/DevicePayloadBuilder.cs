@@ -5,13 +5,13 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-internal class DevicePayloadBuilder(Prefix prefix, string address, ushort length) : IPayloadBuilder
+internal class DevicePayloadBuilder(Prefix prefix, string address, ushort length, ProcessorSeries series = ProcessorSeries.Q) : IPayloadBuilder
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
         if (isAscii)
         {
-            packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(prefix, address)));
+            packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(prefix, address, series)));
             packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
                 binaryBytes: BitConverter.GetBytes(length),
                 isReverse: true
@@ -19,7 +19,7 @@ internal class DevicePayloadBuilder(Prefix prefix, string address, ushort length
         }
         else
         {
-            packets.AddRange(DeviceConverter.ToByteAddress(prefix, address));
+            packets.AddRange(DeviceConverter.ToByteAddress(prefix, address, series));
             packets.AddRange(BitConverter.GetBytes(length));
         }
     }
