@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices) : IPayloadBuilder
+internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices, ProcessorSeries series = ProcessorSeries.Q) : IPayloadBuilder
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -26,7 +26,7 @@ internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addr
             foreach (var wordDevice in wordDevices)
             { 
                 packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(wordDevice.prefix, wordDevice.address)
+                    DeviceConverter.ToASCIIAddress(wordDevice.prefix, wordDevice.address, series)
                 ));
 
                 packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
@@ -40,7 +40,7 @@ internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addr
             foreach (var doubleWordDevice in doubleWordDevices)
             { 
                 packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(doubleWordDevice.prefix, doubleWordDevice.address)
+                    DeviceConverter.ToASCIIAddress(doubleWordDevice.prefix, doubleWordDevice.address, series)
                 ));
 
                 packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
@@ -55,14 +55,14 @@ internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addr
             packets.Add(BitConverter.GetBytes((ushort)doubleWordDevices.Length).First());
 
             foreach (var wordDevice in wordDevices)
-            { 
-                packets.AddRange(DeviceConverter.ToByteAddress(wordDevice.prefix, wordDevice.address));
+            {
+                packets.AddRange(DeviceConverter.ToByteAddress(wordDevice.prefix, wordDevice.address, series));
                 packets.AddRange(DeviceConverter.StructToBytes(wordDevice.value));
             }
 
             foreach (var doubleWordDevice in doubleWordDevices)
-            { 
-                packets.AddRange(DeviceConverter.ToByteAddress(doubleWordDevice.prefix, doubleWordDevice.address));
+            {
+                packets.AddRange(DeviceConverter.ToByteAddress(doubleWordDevice.prefix, doubleWordDevice.address, series));
                 packets.AddRange(DeviceConverter.StructToBytes(doubleWordDevice.value));
             }
         }

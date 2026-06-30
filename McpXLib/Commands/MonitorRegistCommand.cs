@@ -13,7 +13,7 @@ internal sealed class MonitorRegistCommand : IPlcCommand<bool>
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0) : base()
+    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
@@ -22,8 +22,8 @@ internal sealed class MonitorRegistCommand : IPlcCommand<bool>
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x08],
-            subCommand: [0x00, 0x00],
-            payloadBuilder: new DeviceListPayloadBuilder(wordDevices, doubleWordDevices),
+            subCommand: DeviceConverter.ToSubCommand([0x00, 0x00], series),
+            payloadBuilder: new DeviceListPayloadBuilder(wordDevices, doubleWordDevices, series),
             monitoringTimer: monitoringTimer
         );
     }

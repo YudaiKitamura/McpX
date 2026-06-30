@@ -354,6 +354,80 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
+    public void ToByteAddress_ShouldConvertHexDeviceToByteForiQR()
+    {
+        Prefix hexPrefix = faker.PickRandom(
+            Prefix.X,
+            Prefix.Y,
+            Prefix.B,
+            Prefix.W,
+            Prefix.SB,
+            Prefix.DX,
+            Prefix.DY
+        );
+
+        ushort address = faker.Random.UShort();
+        byte[] expected = BitConverter.GetBytes((uint)address)
+            .Concat([(byte)hexPrefix, (byte)0x00])
+            .ToArray();
+
+        byte[] actual = DeviceConverter.ToByteAddress(hexPrefix, address.ToString("X"), ProcessorSeries.iQR);
+
+        Assert.AreEqual(6, actual.Length);
+        CollectionAssert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void ToByteAddress_ShouldConvertDecDeviceToByteForiQR()
+    {
+        Prefix decPrefix = faker.PickRandomWithout(
+            Prefix.X,
+            Prefix.Y,
+            Prefix.B,
+            Prefix.W,
+            Prefix.SB,
+            Prefix.DX,
+            Prefix.DY
+        );
+
+        uint address = faker.Random.UInt();
+        byte[] expected = BitConverter.GetBytes(address)
+            .Concat([(byte)decPrefix, (byte)0x00])
+            .ToArray();
+
+        byte[] actual = DeviceConverter.ToByteAddress(decPrefix, address.ToString(), ProcessorSeries.iQR);
+
+        Assert.AreEqual(6, actual.Length);
+        CollectionAssert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void ToASCIIAddress_ShouldConvertForQ()
+    {
+        Assert.AreEqual("D*000010", DeviceConverter.ToASCIIAddress(Prefix.D, "10"));
+        Assert.AreEqual("SB00001A", DeviceConverter.ToASCIIAddress(Prefix.SB, "1A"));
+    }
+
+    [TestMethod]
+    public void ToASCIIAddress_ShouldConvertForiQR()
+    {
+        Assert.AreEqual("D***00000010", DeviceConverter.ToASCIIAddress(Prefix.D, "10", ProcessorSeries.iQR));
+        Assert.AreEqual("SB**0000001A", DeviceConverter.ToASCIIAddress(Prefix.SB, "1A", ProcessorSeries.iQR));
+    }
+
+    [TestMethod]
+    public void ToSubCommand_ShouldSetExtensionBitForiQR()
+    {
+        // Q はそのまま
+        CollectionAssert.AreEqual(new byte[] { 0x00, 0x00 }, DeviceConverter.ToSubCommand([0x00, 0x00], ProcessorSeries.Q));
+        CollectionAssert.AreEqual(new byte[] { 0x01, 0x00 }, DeviceConverter.ToSubCommand([0x01, 0x00], ProcessorSeries.Q));
+
+        // iQR は先頭バイトに拡張指定ビット(0x02)を立てる
+        CollectionAssert.AreEqual(new byte[] { 0x02, 0x00 }, DeviceConverter.ToSubCommand([0x00, 0x00], ProcessorSeries.iQR));
+        CollectionAssert.AreEqual(new byte[] { 0x03, 0x00 }, DeviceConverter.ToSubCommand([0x01, 0x00], ProcessorSeries.iQR));
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
     public void GetOffsetAddress_ShuldThrowExceptionForInvalidDecDevice1()
     {

@@ -14,7 +14,7 @@ internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[
     private readonly int doubleWordLength;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    internal MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer = 0)
+    internal MonitorCommand((Prefix prefix, string address)[] wordDevices, (Prefix prefix, string address)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q)
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
@@ -23,7 +23,7 @@ internal sealed class MonitorCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x02, 0x08],
-            subCommand: [0x00, 0x00],
+            subCommand: DeviceConverter.ToSubCommand([0x00, 0x00], series),
             monitoringTimer: monitoringTimer
         );
     }

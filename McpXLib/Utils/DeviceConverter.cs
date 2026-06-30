@@ -165,41 +165,60 @@ internal static class DeviceConverter
     }
 #endif
 
-    internal static byte[] ToByteAddress(Prefix prefix, string address)
+    internal static byte[] ToByteAddress(Prefix prefix, string address, ProcessorSeries series = ProcessorSeries.Q)
     {
-        if (!ValidateAddress(prefix, address)) 
+        if (!ValidateAddress(prefix, address))
         {
             throw new DeviceAddressException($"{prefix}{address} is invalid.");
         }
 
-        byte[] bytes;
+        uint decAddress = IsHexDevice(prefix) ? Convert.ToUInt32(address, 16) : uint.Parse(address);
+        byte[] bytes = BitConverter.GetBytes(decAddress);
+        Array.Resize(ref bytes, 4);
 
-        if (!IsHexDevice(prefix))
+        if (series == ProcessorSeries.iQR)
         {
-            bytes = BitConverter.GetBytes(uint.Parse(address));
-            bytes[bytes.Length - 1] = (byte)prefix;
-            return bytes;
+            // iQ-R デバイス拡張指定: [アドレス4バイト][デバイスコード下位1バイト][0x00]
+            return [.. bytes, (byte)prefix, 0x00];
         }
 
-        uint decAddress = Convert.ToUInt32(address, 16);
-        bytes = BitConverter.GetBytes(decAddress);
-        Array.Resize(ref bytes, 4);
+        // Q/L デバイス指定: [アドレス3バイト][デバイスコード1バイト]
         bytes[3] = (byte)prefix;
         return bytes;
     }
 
-    internal static string ToASCIIAddress(Prefix prefix, string address)
+    internal static string ToASCIIAddress(Prefix prefix, string address, ProcessorSeries series = ProcessorSeries.Q)
     {
-        if (!ValidateAddress(prefix, address)) 
+        if (!ValidateAddress(prefix, address))
         {
             throw new DeviceAddressException($"{prefix}{address} is invalid.");
         }
 
+        if (series == ProcessorSeries.iQR)
+        {
+            // iQ-R: [デバイスコード4桁][デバイス番号8桁]
+            return prefix.ToString().PadRight(4, '*') + address.PadLeft(8, '0');
+        }
+
+        // Q/L: [デバイスコード2桁][デバイス番号6桁]
         string prefixStr = prefix.ToString();
         prefixStr = prefixStr.Length == 1 ? prefixStr + "*" : prefixStr;
         string addressStr = address.PadLeft(6, '0');
 
         return prefixStr + addressStr;
+    }
+
+    internal static byte[] ToSubCommand(byte[] baseSubCommand, ProcessorSeries series)
+    {
+        if (series != ProcessorSeries.iQR)
+        {
+            return baseSubCommand;
+        }
+
+        // iQ-R デバイス拡張指定: サブコマンドに拡張指定ビット(0x0002)を立てる
+        byte[] subCommand = (byte[])baseSubCommand.Clone();
+        subCommand[0] |= 0x02;
+        return subCommand;
     }
 
     internal static string GetOffsetAddress(Prefix prefix, string address, int offset)

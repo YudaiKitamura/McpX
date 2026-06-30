@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Builders;
 
-internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[] values) : IPayloadBuilder
+internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[] values, ProcessorSeries series = ProcessorSeries.Q) : IPayloadBuilder
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
@@ -13,7 +13,7 @@ internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[
 
         if (isAscii)
         {
-            packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(prefix, address)));
+            packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(prefix, address, series)));
             packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
                 binaryBytes: BitConverter.GetBytes(bitLength),
                 isReverse: true
@@ -26,7 +26,7 @@ internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[
         }
         else
         {
-            packets.AddRange(DeviceConverter.ToByteAddress(prefix, address));
+            packets.AddRange(DeviceConverter.ToByteAddress(prefix, address, series));
             packets.AddRange(BitConverter.GetBytes(bitLength));
 
             var valueBytes = new List<byte>();

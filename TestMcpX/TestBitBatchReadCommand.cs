@@ -39,6 +39,23 @@ public sealed class TestBitBatchReadCommand
     }
 
     [TestMethod]
+    public void TestToBytesForiQR()
+    {
+        var command = new BitBatchReadCommand(Prefix.M, "1234", 6, 0, ProcessorSeries.iQR);
+
+        byte[] repuestPacketExpected = [
+            0x0E, 0x00,                     // Content Length
+            0x00, 0x00,                     // Monitoring Timer
+            0x01, 0x04, 0x03, 0x00,         // Command + SubCommand(拡張指定)
+            0xD2, 0x04, 0x00, 0x00,         // Device Address (4 Byte)
+            0x90, 0x00,                     // Device Prefix (2 Byte, 上位は空)
+            0x06, 0x00                      // Device Length
+        ];
+
+        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+    }
+
+    [TestMethod]
     public void TestExecute()
     {
         var command = new BitBatchReadCommand(Prefix.M, "0", 6);

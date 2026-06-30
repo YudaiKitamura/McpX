@@ -29,22 +29,25 @@ public partial class McpX : Mcp
     /// <param name="isUdp">UDPによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、TCP交信:<c>false</c>です。）</param>
     /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
     /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
+    /// <param name="processorSeries">PLCのシリーズを指定します。MELSEC iQ-Rシリーズへ拡張デバイス指定で交信する場合に<c>ProcessorSeries.iQR</c>を指定します。（デフォルトは、MELSEC-Q/Lシリーズ:<c>ProcessorSeries.Q</c>です。）</param>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(
-        string ip, 
-        int port, 
-        string? password = null, 
-        bool isAscii = false, 
-        bool isUdp = false, 
+        string ip,
+        int port,
+        string? password = null,
+        bool isAscii = false,
+        bool isUdp = false,
         RequestFrame requestFrame = RequestFrame.E3,
-        ushort timeoutMilliseconds = 5000
+        ushort timeoutMilliseconds = 5000,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
     ) : base (
-        ip: ip, 
+        ip: ip,
         port: port,
-        isAscii: isAscii, 
-        isUdp: isUdp, 
+        isAscii: isAscii,
+        isUdp: isUdp,
         requestFrame: requestFrame,
+        processorSeries: processorSeries,
         timeout: timeoutMilliseconds
     )
     {
