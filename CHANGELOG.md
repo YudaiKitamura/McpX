@@ -1,3 +1,7 @@
+## [0.7.0] - 2026-06-30
+### Added
+- Added support for the MELSEC iQ-R series (device extension specification) via the `ProcessorSeries` option.
+
 ## [0.6.0] - 2026-02-01
 ### Added
 - Made timeout configurable at instance creation.
