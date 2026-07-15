@@ -1073,6 +1073,64 @@ public partial class McpX : Mcp
         }
     }
 
+    /// <summary>
+    /// モニタデバイス登録（ビルダー）
+    /// </summary>
+    /// <remarks>
+    /// モニタ対象の非連続デバイスを、型ごとにアクセス単位（ビット／ワード／ダブルワード）を意識せずに登録(コマンド: 0801)します。<br/>
+    /// <paramref name="build"/> 内で <see cref="MonitorBuilder.Add{T}(Prefix, string, Action{T})"/> により
+    /// デバイスと読み取り後のコールバックを並べます。<br/>
+    /// 戻り値の <see cref="MonitorSession"/> で <see cref="MonitorSession.Read"/> を繰り返し実行できます。<br/>
+    /// モニタ登録はパケット分割ができず（コマンドの特性上、再登録は全置換）、点数上限は
+    /// ワード＋ダブルワードの合計で 192点（Q/L）／96点（iQ-R）です。超過時は例外をスローします。
+    /// </remarks>
+    /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
+    public MonitorSession MonitorRegist(Action<MonitorBuilder> build)
+    {
+        var builder = new MonitorBuilder();
+        build(builder);
+
+        var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
+        var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
+
+        // モニタ登録は分割不可。点数上限を超えると MonitorRegistCommand が例外をスローする。
+        MonitorRegist(wordAddresses, doubleWordAddresses);
+
+        return new MonitorSession(this, builder);
+    }
+
+    /// <summary>
+    /// モニタデバイス登録（ビルダー・非同期）
+    /// </summary>
+    /// <remarks>
+    /// モニタ対象の非連続デバイスを、型ごとにアクセス単位（ビット／ワード／ダブルワード）を意識せずに非同期で登録(コマンド: 0801)します。<br/>
+    /// 戻り値の <see cref="MonitorSession"/> で <see cref="MonitorSession.ReadAsync"/> を繰り返し実行できます。<br/>
+    /// モニタ登録はパケット分割ができず、点数上限は 192点（Q/L）／96点（iQ-R）です。超過時は例外をスローします。
+    /// </remarks>
+    /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
+    public async Task<MonitorSession> MonitorRegistAsync(Action<MonitorBuilder> build)
+    {
+        var builder = new MonitorBuilder();
+        build(builder);
+
+        var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
+        var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
+
+        await MonitorRegistAsync(wordAddresses, doubleWordAddresses);
+
+        return new MonitorSession(this, builder);
+    }
+
 #if !AOT
     /// <summary>
     /// 文字列読み込み
