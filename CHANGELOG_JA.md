@@ -1,3 +1,18 @@
+## [0.8.0] - 2026-07-15
+### Added
+- ビルダー方式のランダムアクセスAPIを追加：`RandomRead` / `RandomWrite(Action<builder>)`（および非同期版）。型に応じてビット／ワード／ダブルワードを自動振り分けし、ビットデバイスにも対応。
+- ビルダー方式のモニタAPIを追加：`MonitorRegist(Action<MonitorBuilder>)` が `MonitorSession` を返し、登録1回で繰り返し読み出し可能。
+
+### Changed
+- ランダム読み書き・モニタ登録の点数上限を、MELSEC iQ-Rシリーズで系列別に厳密化。
+
+### Deprecated
+- 新しいビルダーAPIへの移行に伴い、ジェネリックの `RandomRead` / `RandomWrite<T1, T2>` および型固有のランダム系オーバーロード（Compat）を非推奨化。
+
+### Fixed
+- ランダム読み書き・モニタ登録のASCII点数エンコードが16点以上で崩れる不具合を修正。
+- ビット（`bool`）デバイスでのランダム読み書きの不具合（要素数が不正／パケットが不正になる）を修正。
+
 ## [0.7.0] - 2026-06-30
 ### Added
 - `ProcessorSeries`オプションにより、MELSEC iQ-Rシリーズ（デバイス拡張指定）に対応
