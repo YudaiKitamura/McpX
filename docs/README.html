@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.7.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.8.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -168,27 +168,27 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 </tr>
 <tr>
 <td><strong>Random Read</strong></td>
-<td>Reads values from non-consecutive word and double-word addresses.</td>
-<td><code>RandomRead&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
-<td><code>RandomReadAsync&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td>Reads values from non-consecutive devices (bit / word / double-word).</td>
+<td><code>RandomRead(Action&lt;RandomReadBuilder&gt; build)</code></td>
+<td><code>RandomReadAsync(Action&lt;RandomReadBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>Random Write</strong></td>
-<td>Writes values to non-consecutive word and double-word addresses.</td>
-<td><code>RandomWrite&lt;T1, T2&gt;(...)</code></td>
-<td><code>RandomWriteAsync&lt;T1, T2&gt;(...)</code></td>
+<td>Writes values to non-consecutive devices (bit / word / double-word).</td>
+<td><code>RandomWrite(Action&lt;RandomWriteBuilder&gt; build)</code></td>
+<td><code>RandomWriteAsync(Action&lt;RandomWriteBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>Monitor Registration</strong></td>
-<td>Registers devices to monitor.</td>
-<td><code>MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
-<td><code>MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td>Registers devices to monitor and returns a <code>MonitorSession</code>.</td>
+<td><code>MonitorRegist(Action&lt;MonitorBuilder&gt; build)</code></td>
+<td><code>MonitorRegistAsync(Action&lt;MonitorBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>Monitor Read</strong></td>
-<td>Reads the latest values from registered monitoring devices.</td>
-<td><code>Monitor&lt;T1, T2&gt;(...)</code></td>
-<td><code>MonitorAsync&lt;T1, T2&gt;(...)</code></td>
+<td>Reads the latest values of registered devices via the returned session.</td>
+<td><code>MonitorSession.Read()</code></td>
+<td><code>MonitorSession.ReadAsync()</code></td>
 </tr>
 <tr>
 <td><strong>Remote Password Lock/Unlock</strong></td>

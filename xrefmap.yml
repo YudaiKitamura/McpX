@@ -1714,6 +1714,47 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.Dispose
   nameWithType: McpX.Dispose
+- uid: McpXLib.McpX.MonitorRegist(System.Action{McpXLib.MonitorBuilder})
+  name: MonitorRegist(Action<MonitorBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_MonitorRegist_System_Action_McpXLib_MonitorBuilder__
+  commentId: M:McpXLib.McpX.MonitorRegist(System.Action{McpXLib.MonitorBuilder})
+  name.vb: MonitorRegist(Action(Of MonitorBuilder))
+  fullName: McpXLib.McpX.MonitorRegist(System.Action<McpXLib.MonitorBuilder>)
+  fullName.vb: McpXLib.McpX.MonitorRegist(System.Action(Of McpXLib.MonitorBuilder))
+  nameWithType: McpX.MonitorRegist(Action<MonitorBuilder>)
+  nameWithType.vb: McpX.MonitorRegist(Action(Of MonitorBuilder))
+- uid: McpXLib.McpX.MonitorRegist*
+  name: MonitorRegist
+  href: api/McpXLib.McpX.html#McpXLib_McpX_MonitorRegist_
+  commentId: Overload:McpXLib.McpX.MonitorRegist
+  isSpec: "True"
+  fullName: McpXLib.McpX.MonitorRegist
+  nameWithType: McpX.MonitorRegist
+- uid: McpXLib.McpX.MonitorRegistAsync(System.Action{McpXLib.MonitorBuilder})
+  name: MonitorRegistAsync(Action<MonitorBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_MonitorRegistAsync_System_Action_McpXLib_MonitorBuilder__
+  commentId: M:McpXLib.McpX.MonitorRegistAsync(System.Action{McpXLib.MonitorBuilder})
+  name.vb: MonitorRegistAsync(Action(Of MonitorBuilder))
+  fullName: McpXLib.McpX.MonitorRegistAsync(System.Action<McpXLib.MonitorBuilder>)
+  fullName.vb: McpXLib.McpX.MonitorRegistAsync(System.Action(Of McpXLib.MonitorBuilder))
+  nameWithType: McpX.MonitorRegistAsync(Action<MonitorBuilder>)
+  nameWithType.vb: McpX.MonitorRegistAsync(Action(Of MonitorBuilder))
+- uid: McpXLib.McpX.MonitorRegistAsync*
+  name: MonitorRegistAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_MonitorRegistAsync_
+  commentId: Overload:McpXLib.McpX.MonitorRegistAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.MonitorRegistAsync
+  nameWithType: McpX.MonitorRegistAsync
+- uid: McpXLib.McpX.RandomRead(System.Action{McpXLib.RandomReadBuilder})
+  name: RandomRead(Action<RandomReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomRead_System_Action_McpXLib_RandomReadBuilder__
+  commentId: M:McpXLib.McpX.RandomRead(System.Action{McpXLib.RandomReadBuilder})
+  name.vb: RandomRead(Action(Of RandomReadBuilder))
+  fullName: McpXLib.McpX.RandomRead(System.Action<McpXLib.RandomReadBuilder>)
+  fullName.vb: McpXLib.McpX.RandomRead(System.Action(Of McpXLib.RandomReadBuilder))
+  nameWithType: McpX.RandomRead(Action<RandomReadBuilder>)
+  nameWithType.vb: McpX.RandomRead(Action(Of RandomReadBuilder))
 - uid: McpXLib.McpX.RandomRead*
   name: RandomRead
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomRead_
@@ -1721,6 +1762,15 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.RandomRead
   nameWithType: McpX.RandomRead
+- uid: McpXLib.McpX.RandomReadAsync(System.Action{McpXLib.RandomReadBuilder})
+  name: RandomReadAsync(Action<RandomReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync_System_Action_McpXLib_RandomReadBuilder__
+  commentId: M:McpXLib.McpX.RandomReadAsync(System.Action{McpXLib.RandomReadBuilder})
+  name.vb: RandomReadAsync(Action(Of RandomReadBuilder))
+  fullName: McpXLib.McpX.RandomReadAsync(System.Action<McpXLib.RandomReadBuilder>)
+  fullName.vb: McpXLib.McpX.RandomReadAsync(System.Action(Of McpXLib.RandomReadBuilder))
+  nameWithType: McpX.RandomReadAsync(Action<RandomReadBuilder>)
+  nameWithType.vb: McpX.RandomReadAsync(Action(Of RandomReadBuilder))
 - uid: McpXLib.McpX.RandomReadAsync*
   name: RandomReadAsync
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync_
@@ -1737,6 +1787,38 @@ references:
   fullName.vb: McpXLib.McpX.RandomReadAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
   nameWithType: McpX.RandomReadAsync<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
   nameWithType.vb: McpX.RandomReadAsync(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadBit(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadBit((Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadBit_System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadBit(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadBit((prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadBit((McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadBit((prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadBit((Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadBit((prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadBit*
+  name: RandomReadBit
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadBit_
+  commentId: Overload:McpXLib.McpX.RandomReadBit
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadBit
+  nameWithType: McpX.RandomReadBit
+- uid: McpXLib.McpX.RandomReadBitAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name: RandomReadBitAsync((Prefix prefix, string address)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadBitAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____
+  commentId: M:McpXLib.McpX.RandomReadBitAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
+  name.vb: RandomReadBitAsync((prefix As Prefix, address As String)())
+  fullName: McpXLib.McpX.RandomReadBitAsync((McpXLib.Enums.Prefix prefix, string address)[])
+  fullName.vb: McpXLib.McpX.RandomReadBitAsync((prefix As McpXLib.Enums.Prefix, address As String)())
+  nameWithType: McpX.RandomReadBitAsync((Prefix prefix, string address)[])
+  nameWithType.vb: McpX.RandomReadBitAsync((prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomReadBitAsync*
+  name: RandomReadBitAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadBitAsync_
+  commentId: Overload:McpXLib.McpX.RandomReadBitAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomReadBitAsync
+  nameWithType: McpX.RandomReadBitAsync
 - uid: McpXLib.McpX.RandomReadInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String}[])
   name: RandomReadInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____
@@ -1938,6 +2020,15 @@ references:
   fullName.vb: McpXLib.McpX.RandomRead(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String)(), (prefix As McpXLib.Enums.Prefix, address As String)())
   nameWithType: McpX.RandomRead<T1, T2>((Prefix prefix, string address)[], (Prefix prefix, string address)[])
   nameWithType.vb: McpX.RandomRead(Of T1, T2)((prefix As Prefix, address As String)(), (prefix As Prefix, address As String)())
+- uid: McpXLib.McpX.RandomWrite(System.Action{McpXLib.RandomWriteBuilder})
+  name: RandomWrite(Action<RandomWriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWrite_System_Action_McpXLib_RandomWriteBuilder__
+  commentId: M:McpXLib.McpX.RandomWrite(System.Action{McpXLib.RandomWriteBuilder})
+  name.vb: RandomWrite(Action(Of RandomWriteBuilder))
+  fullName: McpXLib.McpX.RandomWrite(System.Action<McpXLib.RandomWriteBuilder>)
+  fullName.vb: McpXLib.McpX.RandomWrite(System.Action(Of McpXLib.RandomWriteBuilder))
+  nameWithType: McpX.RandomWrite(Action<RandomWriteBuilder>)
+  nameWithType.vb: McpX.RandomWrite(Action(Of RandomWriteBuilder))
 - uid: McpXLib.McpX.RandomWrite*
   name: RandomWrite
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWrite_
@@ -1945,6 +2036,15 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.RandomWrite
   nameWithType: McpX.RandomWrite
+- uid: McpXLib.McpX.RandomWriteAsync(System.Action{McpXLib.RandomWriteBuilder})
+  name: RandomWriteAsync(Action<RandomWriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync_System_Action_McpXLib_RandomWriteBuilder__
+  commentId: M:McpXLib.McpX.RandomWriteAsync(System.Action{McpXLib.RandomWriteBuilder})
+  name.vb: RandomWriteAsync(Action(Of RandomWriteBuilder))
+  fullName: McpXLib.McpX.RandomWriteAsync(System.Action<McpXLib.RandomWriteBuilder>)
+  fullName.vb: McpXLib.McpX.RandomWriteAsync(System.Action(Of McpXLib.RandomWriteBuilder))
+  nameWithType: McpX.RandomWriteAsync(Action<RandomWriteBuilder>)
+  nameWithType.vb: McpX.RandomWriteAsync(Action(Of RandomWriteBuilder))
 - uid: McpXLib.McpX.RandomWriteAsync*
   name: RandomWriteAsync
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync_
@@ -1961,6 +2061,38 @@ references:
   fullName.vb: McpXLib.McpX.RandomWriteAsync(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String, value As T1)(), (prefix As McpXLib.Enums.Prefix, address As String, value As T2)())
   nameWithType: McpX.RandomWriteAsync<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
   nameWithType.vb: McpX.RandomWriteAsync(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+- uid: McpXLib.McpX.RandomWriteBit(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Boolean}[])
+  name: RandomWriteBit((Prefix prefix, string address, bool value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteBit_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Boolean____
+  commentId: M:McpXLib.McpX.RandomWriteBit(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Boolean}[])
+  name.vb: RandomWriteBit((prefix As Prefix, address As String, value As Boolean)())
+  fullName: McpXLib.McpX.RandomWriteBit((McpXLib.Enums.Prefix prefix, string address, bool value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteBit((prefix As McpXLib.Enums.Prefix, address As String, value As Boolean)())
+  nameWithType: McpX.RandomWriteBit((Prefix prefix, string address, bool value)[])
+  nameWithType.vb: McpX.RandomWriteBit((prefix As Prefix, address As String, value As Boolean)())
+- uid: McpXLib.McpX.RandomWriteBit*
+  name: RandomWriteBit
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteBit_
+  commentId: Overload:McpXLib.McpX.RandomWriteBit
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteBit
+  nameWithType: McpX.RandomWriteBit
+- uid: McpXLib.McpX.RandomWriteBitAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Boolean}[])
+  name: RandomWriteBitAsync((Prefix prefix, string address, bool value)[])
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteBitAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Boolean____
+  commentId: M:McpXLib.McpX.RandomWriteBitAsync(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Boolean}[])
+  name.vb: RandomWriteBitAsync((prefix As Prefix, address As String, value As Boolean)())
+  fullName: McpXLib.McpX.RandomWriteBitAsync((McpXLib.Enums.Prefix prefix, string address, bool value)[])
+  fullName.vb: McpXLib.McpX.RandomWriteBitAsync((prefix As McpXLib.Enums.Prefix, address As String, value As Boolean)())
+  nameWithType: McpX.RandomWriteBitAsync((Prefix prefix, string address, bool value)[])
+  nameWithType.vb: McpX.RandomWriteBitAsync((prefix As Prefix, address As String, value As Boolean)())
+- uid: McpXLib.McpX.RandomWriteBitAsync*
+  name: RandomWriteBitAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteBitAsync_
+  commentId: Overload:McpXLib.McpX.RandomWriteBitAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RandomWriteBitAsync
+  nameWithType: McpX.RandomWriteBitAsync
 - uid: McpXLib.McpX.RandomWriteInt16Int32(System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int16}[],System.ValueTuple{McpXLib.Enums.Prefix,System.String,System.Int32}[])
   name: RandomWriteInt16Int32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])
   href: api/McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____
@@ -2994,3 +3126,101 @@ references:
   fullName.vb: McpXLib.McpX.Write(Of T)(McpXLib.Enums.Prefix, String, T)
   nameWithType: McpX.Write<T>(Prefix, string, T)
   nameWithType.vb: McpX.Write(Of T)(Prefix, String, T)
+- uid: McpXLib.MonitorBuilder
+  name: MonitorBuilder
+  href: api/McpXLib.MonitorBuilder.html
+  commentId: T:McpXLib.MonitorBuilder
+  fullName: McpXLib.MonitorBuilder
+  nameWithType: MonitorBuilder
+- uid: McpXLib.MonitorBuilder.Add*
+  name: Add
+  href: api/McpXLib.MonitorBuilder.html#McpXLib_MonitorBuilder_Add_
+  commentId: Overload:McpXLib.MonitorBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.MonitorBuilder.Add
+  nameWithType: MonitorBuilder.Add
+- uid: McpXLib.MonitorBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name: Add<T>(Prefix, string, Action<T>)
+  href: api/McpXLib.MonitorBuilder.html#McpXLib_MonitorBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_Action___0__
+  commentId: M:McpXLib.MonitorBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name.vb: Add(Of T)(Prefix, String, Action(Of T))
+  fullName: McpXLib.MonitorBuilder.Add<T>(McpXLib.Enums.Prefix, string, System.Action<T>)
+  fullName.vb: McpXLib.MonitorBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, System.Action(Of T))
+  nameWithType: MonitorBuilder.Add<T>(Prefix, string, Action<T>)
+  nameWithType.vb: MonitorBuilder.Add(Of T)(Prefix, String, Action(Of T))
+- uid: McpXLib.MonitorSession
+  name: MonitorSession
+  href: api/McpXLib.MonitorSession.html
+  commentId: T:McpXLib.MonitorSession
+  fullName: McpXLib.MonitorSession
+  nameWithType: MonitorSession
+- uid: McpXLib.MonitorSession.Read
+  name: Read()
+  href: api/McpXLib.MonitorSession.html#McpXLib_MonitorSession_Read
+  commentId: M:McpXLib.MonitorSession.Read
+  fullName: McpXLib.MonitorSession.Read()
+  nameWithType: MonitorSession.Read()
+- uid: McpXLib.MonitorSession.Read*
+  name: Read
+  href: api/McpXLib.MonitorSession.html#McpXLib_MonitorSession_Read_
+  commentId: Overload:McpXLib.MonitorSession.Read
+  isSpec: "True"
+  fullName: McpXLib.MonitorSession.Read
+  nameWithType: MonitorSession.Read
+- uid: McpXLib.MonitorSession.ReadAsync
+  name: ReadAsync()
+  href: api/McpXLib.MonitorSession.html#McpXLib_MonitorSession_ReadAsync
+  commentId: M:McpXLib.MonitorSession.ReadAsync
+  fullName: McpXLib.MonitorSession.ReadAsync()
+  nameWithType: MonitorSession.ReadAsync()
+- uid: McpXLib.MonitorSession.ReadAsync*
+  name: ReadAsync
+  href: api/McpXLib.MonitorSession.html#McpXLib_MonitorSession_ReadAsync_
+  commentId: Overload:McpXLib.MonitorSession.ReadAsync
+  isSpec: "True"
+  fullName: McpXLib.MonitorSession.ReadAsync
+  nameWithType: MonitorSession.ReadAsync
+- uid: McpXLib.RandomReadBuilder
+  name: RandomReadBuilder
+  href: api/McpXLib.RandomReadBuilder.html
+  commentId: T:McpXLib.RandomReadBuilder
+  fullName: McpXLib.RandomReadBuilder
+  nameWithType: RandomReadBuilder
+- uid: McpXLib.RandomReadBuilder.Add*
+  name: Add
+  href: api/McpXLib.RandomReadBuilder.html#McpXLib_RandomReadBuilder_Add_
+  commentId: Overload:McpXLib.RandomReadBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.RandomReadBuilder.Add
+  nameWithType: RandomReadBuilder.Add
+- uid: McpXLib.RandomReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name: Add<T>(Prefix, string, Action<T>)
+  href: api/McpXLib.RandomReadBuilder.html#McpXLib_RandomReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_Action___0__
+  commentId: M:McpXLib.RandomReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name.vb: Add(Of T)(Prefix, String, Action(Of T))
+  fullName: McpXLib.RandomReadBuilder.Add<T>(McpXLib.Enums.Prefix, string, System.Action<T>)
+  fullName.vb: McpXLib.RandomReadBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, System.Action(Of T))
+  nameWithType: RandomReadBuilder.Add<T>(Prefix, string, Action<T>)
+  nameWithType.vb: RandomReadBuilder.Add(Of T)(Prefix, String, Action(Of T))
+- uid: McpXLib.RandomWriteBuilder
+  name: RandomWriteBuilder
+  href: api/McpXLib.RandomWriteBuilder.html
+  commentId: T:McpXLib.RandomWriteBuilder
+  fullName: McpXLib.RandomWriteBuilder
+  nameWithType: RandomWriteBuilder
+- uid: McpXLib.RandomWriteBuilder.Add*
+  name: Add
+  href: api/McpXLib.RandomWriteBuilder.html#McpXLib_RandomWriteBuilder_Add_
+  commentId: Overload:McpXLib.RandomWriteBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.RandomWriteBuilder.Add
+  nameWithType: RandomWriteBuilder.Add
+- uid: McpXLib.RandomWriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0)
+  name: Add<T>(Prefix, string, T)
+  href: api/McpXLib.RandomWriteBuilder.html#McpXLib_RandomWriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0_
+  commentId: M:McpXLib.RandomWriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0)
+  name.vb: Add(Of T)(Prefix, String, T)
+  fullName: McpXLib.RandomWriteBuilder.Add<T>(McpXLib.Enums.Prefix, string, T)
+  fullName.vb: McpXLib.RandomWriteBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, T)
+  nameWithType: RandomWriteBuilder.Add<T>(Prefix, string, T)
+  nameWithType.vb: RandomWriteBuilder.Add(Of T)(Prefix, String, T)

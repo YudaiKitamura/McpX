@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.7.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.8.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -166,27 +166,27 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 </tr>
 <tr>
 <td><strong>ランダム読出し</strong></td>
-<td>非連続アドレスからワード・ダブルワード単位で読み出します。</td>
-<td><code>RandomRead&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
-<td><code>RandomReadAsync&lt;T1, T2&gt;((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td>非連続デバイス（ビット／ワード／ダブルワード）を読み出します。</td>
+<td><code>RandomRead(Action&lt;RandomReadBuilder&gt; build)</code></td>
+<td><code>RandomReadAsync(Action&lt;RandomReadBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>ランダム書込み</strong></td>
-<td>非連続アドレスにワード・ダブルワード単位で書き込みます。</td>
-<td><code>RandomWrite&lt;T1, T2&gt;(...)</code></td>
-<td><code>RandomWriteAsync&lt;T1, T2&gt;(...)</code></td>
+<td>非連続デバイス（ビット／ワード／ダブルワード）へ書き込みます。</td>
+<td><code>RandomWrite(Action&lt;RandomWriteBuilder&gt; build)</code></td>
+<td><code>RandomWriteAsync(Action&lt;RandomWriteBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>モニタ登録</strong></td>
-<td>モニタ対象デバイスを登録します。</td>
-<td><code>MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
-<td><code>MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)</code></td>
+<td>モニタ対象デバイスを登録し、<code>MonitorSession</code> を返します。</td>
+<td><code>MonitorRegist(Action&lt;MonitorBuilder&gt; build)</code></td>
+<td><code>MonitorRegistAsync(Action&lt;MonitorBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>モニタ読み取り</strong></td>
-<td>登録済みモニタデバイスの最新値を読み出します。</td>
-<td><code>Monitor&lt;T1, T2&gt;(...)</code></td>
-<td><code>MonitorAsync&lt;T1, T2&gt;(...)</code></td>
+<td>返却されたセッション経由で登録済みデバイスの最新値を読み出します。</td>
+<td><code>MonitorSession.Read()</code></td>
+<td><code>MonitorSession.ReadAsync()</code></td>
 </tr>
 <tr>
 <td><strong>リモートパスワード ロック/アンロック</strong></td>

@@ -360,6 +360,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.MonitorBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.MonitorBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.MonitorBuilder",
+      "Summary": "<p sourcefile=\"api/McpXLib.MonitorBuilder.yml\" sourcestartlinenumber=\"1\">モニタデバイス登録のリクエストビルダー。</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.MonitorSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.MonitorSession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.MonitorSession",
+      "Summary": "<p sourcefile=\"api/McpXLib.MonitorSession.yml\" sourcestartlinenumber=\"1\">モニタセッション。<xref href=\"McpXLib.McpX.MonitorRegist(System.Action%7bMcpXLib.MonitorBuilder%7d)\" data-throw-if-not-resolved=\"false\"></xref> で登録したデバイスを、\n<xref href=\"McpXLib.MonitorSession.Read\" data-throw-if-not-resolved=\"false\"></xref> / <xref href=\"McpXLib.MonitorSession.ReadAsync\" data-throw-if-not-resolved=\"false\"></xref> により何度でも読み出せます。</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.RandomReadBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.RandomReadBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.RandomReadBuilder",
+      "Summary": "<p sourcefile=\"api/McpXLib.RandomReadBuilder.yml\" sourcestartlinenumber=\"1\">ランダムデバイス読み込みのリクエストビルダー。</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.RandomWriteBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.RandomWriteBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.RandomWriteBuilder",
+      "Summary": "<p sourcefile=\"api/McpXLib.RandomWriteBuilder.yml\" sourcestartlinenumber=\"1\">ランダムデバイス書き込みのリクエストビルダー。</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/McpXLib.yml",
       "output": {
         ".html": {
