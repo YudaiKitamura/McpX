@@ -153,4 +153,31 @@ public sealed class TestWordRandomWriteCommand
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
     }
+
+    [TestMethod]
+    public void TestExceptionIqr()
+    {
+        int iqrMax = WordRandomWriteCommand<short, int>.GetMaxWordLength(ProcessorSeries.iQR);
+        Assert.AreEqual(960, iqrMax);
+
+        // iQ-R: (word points * 12) budget over 960 throws. 81 * 12 = 972 > 960.
+        int overCount = iqrMax / WordRandomWriteCommand<short, int>.WORD_SIZE + 1;
+        var ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, overCount)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), faker.Random.Short()))
+                .ToArray();
+
+            _ = new WordRandomWriteCommand<short, int>(wordAddresses, [], 0, ProcessorSeries.iQR);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        // iQ-R: exactly at the 960 budget (80 * 12 = 960) is allowed.
+        int okCount = iqrMax / WordRandomWriteCommand<short, int>.WORD_SIZE;
+        var okAddresses = Enumerable.Range(0, okCount)
+            .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString(), faker.Random.Short()))
+            .ToArray();
+
+        _ = new WordRandomWriteCommand<short, int>(okAddresses, [], 0, ProcessorSeries.iQR);
+    }
 }

@@ -1,3 +1,18 @@
+## [0.8.0] - 2026-07-15
+### Added
+- Added a builder-based random access API: `RandomRead` / `RandomWrite(Action<builder>)` (and their async versions) with automatic bit/word/double-word routing, including bit-device support.
+- Added a builder-based monitor API: `MonitorRegist(Action<MonitorBuilder>)` returning a `MonitorSession` for repeated reads (register once, read many).
+
+### Changed
+- Made the point-count limits of random read/write and monitor register series-aware for the MELSEC iQ-R series.
+
+### Deprecated
+- Deprecated the generic `RandomRead` / `RandomWrite<T1, T2>` and the type-specific random overloads (Compat) in favor of the new builder API.
+
+### Fixed
+- Fixed ASCII access-point count encoding for 16 or more points in random read/write and monitor register.
+- Fixed random read/write with bit (`bool`) devices, which previously returned an incorrect element count or produced malformed packets.
+
 ## [0.7.0] - 2026-06-30
 ### Added
 - Added support for the MELSEC iQ-R series (device extension specification) via the `ProcessorSeries` option.

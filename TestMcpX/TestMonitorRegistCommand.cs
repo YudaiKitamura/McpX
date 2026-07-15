@@ -122,4 +122,29 @@ public sealed class TestMonitorRegistCommand
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
     }
+
+    [TestMethod]
+    public void TestExceptionIqr()
+    {
+        int iqrMax = MonitorRegistCommand.GetMaxWordLength(ProcessorSeries.iQR);
+        Assert.AreEqual(96, iqrMax);
+
+        // iQ-R: total over 96 points throws (no packet split for monitor register).
+        var ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, iqrMax + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new MonitorRegistCommand(wordAddresses, [], 0, ProcessorSeries.iQR);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        // iQ-R: exactly 96 points is allowed.
+        var okAddresses = Enumerable.Range(0, iqrMax)
+            .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+            .ToArray();
+
+        _ = new MonitorRegistCommand(okAddresses, [], 0, ProcessorSeries.iQR);
+    }
 }

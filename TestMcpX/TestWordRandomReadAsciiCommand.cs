@@ -157,4 +157,25 @@ public sealed class TestWordRandomReadAsciiCommand
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
     }
+
+    // Regression: word/dword access point counts >= 16 must be encoded as exactly 2 hex chars, not 3 ("010").
+    [TestMethod]
+    public void TestAccessPointCountEncodingNotCorruptedAt16Points()
+    {
+        var wordAddresses = Enumerable.Range(0, 16)
+            .Select(i => (Prefix.D, i.ToString()))
+            .ToArray();
+
+        var command = new WordRandomReadCommand<short, int>(wordAddresses, []);
+
+        byte[] result = command.ToAsciiBytes();
+
+        // Content Length(4) + Monitoring(4) + Command(4) + SubCommand(4) = offset 16
+        // Word count "10", Double word count "00", then first device "D*...".
+        Assert.AreEqual((byte)0x31, result[16]); // '1'
+        Assert.AreEqual((byte)0x30, result[17]); // '0'
+        Assert.AreEqual((byte)0x30, result[18]); // '0' (double word count high)
+        Assert.AreEqual((byte)0x30, result[19]); // '0' (double word count low)
+        Assert.AreEqual((byte)0x44, result[20]); // 'D' (first device, not shifted)
+    }
 }

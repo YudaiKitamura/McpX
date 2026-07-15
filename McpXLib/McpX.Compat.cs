@@ -1,5 +1,9 @@
 using McpXLib.Enums;
 
+// Random系の型別ラッパーは、後方互換のため残している旧ランダムAPI([Obsolete])へ委譲するため、
+// このファイル内での CS0618 警告は抑制する。外部利用者には引き続き警告が出る。
+#pragma warning disable CS0618
+
 namespace McpXLib;
 
 public partial class McpX
@@ -100,121 +104,145 @@ public partial class McpX
     public Task<float[]> BatchWriteSingleAsync(Prefix prefix, string address, float[] values) => BatchWriteAsync(prefix, address, values);
     public Task<double[]> BatchWriteDoubleAsync(Prefix prefix, string address, double[] values) => BatchWriteAsync(prefix, address, values);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (short[] wordValues, int[] doubleValues)
         RandomReadInt16Int32((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<short, int>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (short[] wordValues, uint[] doubleValues)
         RandomReadInt16UInt32((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<short, uint>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (short[] wordValues, float[] doubleValues)
         RandomReadInt16Single((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<short, float>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (ushort[] wordValues, int[] doubleValues)
         RandomReadUInt16Int32((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<ushort, int>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (ushort[] wordValues, uint[] doubleValues)
         RandomReadUInt16UInt32((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<ushort, uint>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
     public (ushort[] wordValues, float[] doubleValues)
         RandomReadUInt16Single((Prefix prefix, string address)[] wordAddresses,
                                 (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomRead<ushort, float>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(short[] wordValues, int[] doubleValues)>
         RandomReadInt16Int32Async((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<short, int>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(short[] wordValues, uint[] doubleValues)>
         RandomReadInt16UInt32Async((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<short, uint>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(short[] wordValues, float[] doubleValues)>
         RandomReadInt16SingleAsync((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<short, float>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(ushort[] wordValues, int[] doubleValues)>
         RandomReadUInt16Int32Async((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<ushort, int>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(ushort[] wordValues, uint[] doubleValues)>
         RandomReadUInt16UInt32Async((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
     public Task<(ushort[] wordValues, float[] doubleValues)>
         RandomReadUInt16SingleAsync((Prefix prefix, string address)[] wordAddresses,
                                     (Prefix prefix, string address)[] doubleWordAddresses)
             => RandomReadAsync<ushort, float>(wordAddresses, doubleWordAddresses);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteInt16Int32(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, int value)[] doubleWordDevices)
             => RandomWrite<short, int>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteInt16UInt32(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, uint value)[] doubleWordDevices)
             => RandomWrite<short, uint>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteInt16Single(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, float value)[] doubleWordDevices)
             => RandomWrite<short, float>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteUInt16Int32(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, int value)[] doubleWordDevices)
             => RandomWrite<ushort, int>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteUInt16UInt32(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, uint value)[] doubleWordDevices)
             => RandomWrite<ushort, uint>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
     public void RandomWriteUInt16Single(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, float value)[] doubleWordDevices)
             => RandomWrite<ushort, float>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteInt16Int32Async(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, int value)[] doubleWordDevices)
             => RandomWriteAsync<short, int>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteInt16UInt32Async(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, uint value)[] doubleWordDevices)
             => RandomWriteAsync<short, uint>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteInt16SingleAsync(
         (Prefix prefix, string address, short value)[] wordDevices,
         (Prefix prefix, string address, float value)[] doubleWordDevices)
             => RandomWriteAsync<short, float>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteUInt16Int32Async(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, int value)[] doubleWordDevices)
             => RandomWriteAsync<ushort, int>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteUInt16UInt32Async(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, uint value)[] doubleWordDevices)
             => RandomWriteAsync<ushort, uint>(wordDevices, doubleWordDevices);
 
+    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
     public Task RandomWriteUInt16SingleAsync(
         (Prefix prefix, string address, ushort value)[] wordDevices,
         (Prefix prefix, string address, float value)[] doubleWordDevices)

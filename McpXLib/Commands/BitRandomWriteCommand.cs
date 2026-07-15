@@ -5,42 +5,38 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-internal sealed class MonitorRegistCommand : IPlcCommand<bool>
+internal sealed class BitRandomWriteCommand : IPlcCommand<bool>
 {
-    internal const int MIN_WORD_LENGTH = 1;
-    internal const int MAX_WORD_LENGTH = 192;
-    private readonly int wordLength;
-    private readonly int doubleWordLength;
+    internal const ushort MIN_BIT_LENGTH = 1;
+    internal const ushort MAX_BIT_LENGTH = 188;
+    private readonly int bitLength;
     private readonly ProcessorSeries series;
     private readonly CommandPacketBuilder commandPacketBuilder;
 
-    // モニタ登録(0801)の点数上限はワード単位のランダム読出し(0403)と同一（マニュアル p.118）。
-    internal static int GetMaxWordLength(ProcessorSeries series)
-        => series == ProcessorSeries.iQR ? 96 : MAX_WORD_LENGTH;
+    internal static ushort GetMaxBitLength(ProcessorSeries series)
+        => (ushort)(series == ProcessorSeries.iQR ? 94 : MAX_BIT_LENGTH);
 
-    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
+    internal BitRandomWriteCommand((Prefix prefix, string address, bool value)[] bitDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q)
     {
-        wordLength = wordDevices.Length;
-        doubleWordLength = doubleWordDevices.Length;
+        bitLength = bitDevices.Length;
         this.series = series;
 
         ValidatePramater();
 
         commandPacketBuilder = new CommandPacketBuilder(
-            command: [0x01, 0x08],
-            subCommand: DeviceConverter.ToSubCommand([0x00, 0x00], series),
-            payloadBuilder: new DeviceListPayloadBuilder(wordDevices, doubleWordDevices, series),
+            command: [0x02, 0x14],
+            subCommand: DeviceConverter.ToSubCommand([0x01, 0x00], series),
+            payloadBuilder: new BitDeviceValueListPayloadBuilder(bitDevices, series),
             monitoringTimer: monitoringTimer
         );
     }
 
     internal void ValidatePramater()
     {
-        var maxWordLength = GetMaxWordLength(series);
-        var totalLength = wordLength + doubleWordLength;
-        if (totalLength < MIN_WORD_LENGTH || totalLength > maxWordLength)
+        var maxBitLength = GetMaxBitLength(series);
+        if (bitLength < MIN_BIT_LENGTH || bitLength > maxBitLength)
         {
-            throw new ArgumentException($"Word length can be from {MIN_WORD_LENGTH} to {maxWordLength}.");
+            throw new ArgumentException($"Bit length can be from {MIN_BIT_LENGTH} to {maxBitLength}.");
         }
     }
 
@@ -50,8 +46,7 @@ internal sealed class MonitorRegistCommand : IPlcCommand<bool>
         var responseFrameSelector = new ResponseFrameSelector(
             plc,
             requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
+            DeviceAccessMode.Bit
         );
 
         responseFrameSelector.ParsePacket(
@@ -67,8 +62,7 @@ internal sealed class MonitorRegistCommand : IPlcCommand<bool>
         var responseFrameSelector = new ResponseFrameSelector(
             plc,
             requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
+            DeviceAccessMode.Bit
         );
 
         responseFrameSelector.ParsePacket(
