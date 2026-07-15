@@ -13,14 +13,14 @@ internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addr
     {
         if (isAscii)
         {
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiByte(
-                binaryBytes: BitConverter.GetBytes((ushort)wordDevices.Length),
-                isReverse: true
+            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
+                binaryBytes: new[] { (byte)wordDevices.Length },
+                isReverse: false
             ));
 
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiByte(
-                binaryBytes: BitConverter.GetBytes((ushort)doubleWordDevices.Length),
-                isReverse: true
+            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
+                binaryBytes: new[] { (byte)doubleWordDevices.Length },
+                isReverse: false
             ));
 
             foreach (var wordDevice in wordDevices)

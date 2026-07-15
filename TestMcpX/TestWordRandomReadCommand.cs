@@ -154,4 +154,29 @@ public sealed class TestWordRandomReadCommand
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
     }
+
+    [TestMethod]
+    public void TestExceptionIqr()
+    {
+        int iqrMax = WordRandomReadCommand<short, int>.GetMaxWordLength(ProcessorSeries.iQR);
+        Assert.AreEqual(96, iqrMax);
+
+        // iQ-R: total over 96 points throws.
+        var ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, iqrMax + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new WordRandomReadCommand<short, int>(wordAddresses, [], 0, ProcessorSeries.iQR);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        // iQ-R: exactly 96 points is allowed (does not throw).
+        var okAddresses = Enumerable.Range(0, iqrMax)
+            .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+            .ToArray();
+
+        _ = new WordRandomReadCommand<short, int>(okAddresses, [], 0, ProcessorSeries.iQR);
+    }
 }

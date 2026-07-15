@@ -15,12 +15,17 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
     internal const int DOUBLE_WORD_SIZE = 14;
     private readonly int wordLength;
     private readonly int doubleWordLength;
+    private readonly ProcessorSeries series;
         private readonly CommandPacketBuilder commandPacketBuilder;
+
+    internal static int GetMaxWordLength(ProcessorSeries series)
+        => series == ProcessorSeries.iQR ? 960 : MAX_WORD_LENGTH;
 
     internal WordRandomWriteCommand((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q)
     {
         wordLength = wordDevices.Length * WORD_SIZE;
         doubleWordLength = doubleWordDevices.Length * DOUBLE_WORD_SIZE;
+        this.series = series;
 
         ValidatePramater();
 
@@ -34,10 +39,11 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
 
     internal void ValidatePramater()
     {
+        var maxWordLength = GetMaxWordLength(series);
         var totalLength = wordLength + doubleWordLength;
-        if (totalLength < MIN_WORD_LENGTH || totalLength > MAX_WORD_LENGTH)
+        if (totalLength < MIN_WORD_LENGTH || totalLength > maxWordLength)
         {
-            throw new ArgumentException($"Word length can be from {MIN_WORD_LENGTH} to {MAX_WORD_LENGTH}.");
+            throw new ArgumentException($"Word length can be from {MIN_WORD_LENGTH} to {maxWordLength}.");
         }
     }
 

@@ -259,7 +259,7 @@ public class Mcp : BasePlc, IPlc
         );
     }
 
-    internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices) 
+    internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices)
         where T1 : unmanaged
         where T2 : unmanaged
     {
@@ -268,7 +268,23 @@ public class Mcp : BasePlc, IPlc
             this
         );
     }
-    
+
+    internal async Task BitRandomWriteAsync((Prefix prefix, string address, bool value)[] bitDevices)
+    {
+        await new PlcCommandHandler<bool>().ExecuteAsync(
+            new BitRandomWriteCommand(bitDevices, timeout, processorSeries),
+            this
+        );
+    }
+
+    internal void BitRandomWrite((Prefix prefix, string address, bool value)[] bitDevices)
+    {
+        new PlcCommandHandler<bool>().Execute(
+            new BitRandomWriteCommand(bitDevices, timeout, processorSeries),
+            this
+        );
+    }
+
     /// <summary>
     /// デバイスモニター登録（非同期）
     /// </summary>
