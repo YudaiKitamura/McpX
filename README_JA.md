@@ -2,7 +2,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
-  <img alt="Version" src="https://img.shields.io/badge/version-0.8.1-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.9.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -44,6 +44,13 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 
     // D0に1234、D1に5678を符号あり32ビットで書込み 
     mcpx.BatchWrite<int>(Prefix.D, "0", [1234, 5678]);
+
+    // 範囲と単一デバイスをまとめて読み込み（範囲:連続アクセス、単一:ランダムアクセス）
+    short[] block = [];
+    int total = 0;
+    mcpx.Read(b => b
+        .Add<short>(Prefix.D, "400", 100, v => block = v)
+        .Add<int>(Prefix.D, "2000", v => total = v));
 }
 ```
 [C#、Visual Basicのサンプルはこちら](https://github.com/YudaiKitamura/McpX/tree/main/Example)
@@ -60,6 +67,8 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 | **ランダム書込み**       | 非連続デバイス（ビット／ワード／ダブルワード）へ書き込みます。   | `RandomWrite(Action<RandomWriteBuilder> build)` | `RandomWriteAsync(Action<RandomWriteBuilder> build)`      |
 | **モニタ登録**           | モニタ対象デバイスを登録し、`MonitorSession` を返します。    | `MonitorRegist(Action<MonitorBuilder> build)`   | `MonitorRegistAsync(Action<MonitorBuilder> build)`        |
 | **モニタ読み取り**        | 返却されたセッション経由で登録済みデバイスの最新値を読み出します。 | `MonitorSession.Read()`                    | `MonitorSession.ReadAsync()`                              |
+| **統合読み込み**          | 範囲指定（点数あり）と単一指定のデバイスをまとめて読み込みます。範囲は連続アクセス、単一はランダムアクセスで読み込みます。 | `Read(Action<ReadBuilder> build)`   | `ReadAsync(Action<ReadBuilder> build)`   |
+| **統合書き込み**          | 範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス、単一値はランダムアクセスで書き込みます。 | `Write(Action<WriteBuilder> build)` | `WriteAsync(Action<WriteBuilder> build)` |
 | **リモートパスワード ロック/アンロック** | リモートパスワード指定時、インスタンス生成時にロック、破棄時に自動アンロックします。 | `McpX(string ip, int port, string? password = null)` | －                                                          |
 
 

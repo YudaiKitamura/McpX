@@ -1,3 +1,7 @@
+## [0.9.0] - 2026-09-25
+### Added
+- 連続／ランダム統合のビルダーAPIを追加：`Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)`（および非同期版）。点数指定（読み込み）・配列指定（書き込み）のデバイスは連続アクセス、単一指定のデバイスはランダムアクセスで処理。
+
 ## [0.8.1] - 2026-09-25
 ### Fixed
 - TCP接続がタイムアウトした際、例外が観測されないまま失敗したタスクが残り、後から `TaskScheduler.UnobservedTaskException` として通知される不具合を修正（#41）。

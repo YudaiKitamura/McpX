@@ -29,6 +29,13 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 
     // Write 1234 to D0 and 5678 to D1 as signed 32-bit integers
     mcpx.BatchWrite<int>(Prefix.D, "0", [1234, 5678]);
+
+    // Read a range and single devices together (ranges: batch access, single: random access)
+    short[] block = [];
+    int total = 0;
+    mcpx.Read(b => b
+        .Add<short>(Prefix.D, "400", 100, v => block = v)
+        .Add<int>(Prefix.D, "2000", v => total = v));
 }
 ```
 [C# and Visual Basic samples are available here.](https://github.com/YudaiKitamura/McpX/tree/main/Example)
@@ -45,6 +52,8 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 | **Random Write**             | Writes values to non-consecutive devices (bit / word / double-word).  | `RandomWrite(Action<RandomWriteBuilder> build)`        | `RandomWriteAsync(Action<RandomWriteBuilder> build)`            |
 | **Monitor Registration**     | Registers devices to monitor and returns a `MonitorSession`.           | `MonitorRegist(Action<MonitorBuilder> build)`          | `MonitorRegistAsync(Action<MonitorBuilder> build)`             |
 | **Monitor Read**             | Reads the latest values of registered devices via the returned session. | `MonitorSession.Read()`                              | `MonitorSession.ReadAsync()`                                   |
+| **Combined Read**            | Reads consecutive ranges (with a point count) and single devices together; ranges use batch access, single devices use random access. | `Read(Action<ReadBuilder> build)`   | `ReadAsync(Action<ReadBuilder> build)`   |
+| **Combined Write**           | Writes consecutive ranges (arrays) and single devices together; arrays use batch access, single values use random access. | `Write(Action<WriteBuilder> build)` | `WriteAsync(Action<WriteBuilder> build)` |
 | **Remote Password Lock/Unlock** | Automatically locks the PLC with the specified remote password when the instance is created and unlocks it when disposed. | `McpX(string ip, int port, string? password = null)`   | –                                                                |
 
 ## Supported Protocols
