@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.9.1] - 2026-09-25
 ### Fixed
 - Fixed `BatchRead` / `BatchWrite` with word-sized types on bit devices (e.g. `BatchRead<ushort>(Prefix.M, ...)`): requests split beyond 960 words started at the wrong device number (advanced by words instead of 16 points per word).
 - Fixed `BatchRead` / `BatchWrite` silently truncating data when the total exceeded 65535 words.
