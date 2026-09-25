@@ -1,3 +1,8 @@
+## [0.8.1] - 2026-09-25
+### Fixed
+- Fixed an unobserved faulted task being left behind when a TCP connection attempt timed out, which surfaced later via `TaskScheduler.UnobservedTaskException` (#41).
+- Fixed UDP async requests after a receive timeout: the abandoned pending receive could consume the next request's response, causing cascading timeouts. The UDP socket is now recreated on timeout.
+
 ## [0.8.0] - 2026-07-15
 ### Added
 - Added a builder-based random access API: `RandomRead` / `RandomWrite(Action<builder>)` (and their async versions) with automatic bit/word/double-word routing, including bit-device support.

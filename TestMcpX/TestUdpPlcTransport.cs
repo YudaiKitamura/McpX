@@ -70,9 +70,46 @@ public class TestUdpPlcTransport
         return (port, cts);
     }
 
+    private (int Port, CancellationTokenSource Cts) StartSkipFirstEchoServer()
+    {
+        var udpClient = new UdpClient(0);
+        int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
+        var cts = new CancellationTokenSource();
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var isFirst = true;
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    var result = await udpClient.ReceiveAsync(cts.Token);
+                    if (isFirst)
+                    {
+                        // 1回目の要求には応答しない
+                        isFirst = false;
+                        continue;
+                    }
+                    await udpClient.SendAsync(result.Buffer, result.Buffer.Length, result.RemoteEndPoint);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // キャンセル時は終了
+            }
+            finally
+            {
+                udpClient.Close();
+            }
+        }, cts.Token);
+
+        return (port, cts);
+    }
+
     private class TestPlc : UdpPlcTransport
     {
         public TestPlc(string ip, int port) : base(ip, port, 5000) { }
+        public TestPlc(string ip, int port, ushort timeout) : base(ip, port, timeout) { }
     }
 
     private class DummyReceiveLengthParser : IReceiveLengthParser
@@ -206,6 +243,23 @@ public class TestUdpPlcTransport
         Assert.IsInstanceOfType<SocketException>(ex2);
         Assert.AreEqual("Connection timed out", ex2.Message);
         
+        cts.Cancel();
+    }
+
+    [TestMethod]
+    public async Task TestRequestAsyncAfterTimeout()
+    {
+        var (port, cts) = StartSkipFirstEchoServer();
+        using var plc = new TestPlc("127.0.0.1", port, 500);
+        var parser = new DummyReceiveLengthParser(0, 0);
+
+        byte[] firstData = faker.Random.Bytes(16);
+        await Assert.ThrowsExceptionAsync<SocketException>(async () => await plc.RequestAsync(firstData, parser));
+
+        // タイムアウトした受信が次の応答を横取りしないこと
+        byte[] secondData = faker.Random.Bytes(16);
+        CollectionAssert.AreEqual(secondData, await plc.RequestAsync(secondData, parser));
+
         cts.Cancel();
     }
 }
