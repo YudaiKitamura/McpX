@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net.Sockets;
 using McpXLib.Interfaces;
+using McpXLib.Utils;
 
 namespace McpXLib.Transports;
 
@@ -19,6 +20,7 @@ internal class TcpPlcTransport : IPlcTransport
         var task = client.ConnectAsync(ip, port);
         if (!task.Wait(timeout))
         {
+            task.ObserveException();
             client.Close();
             throw new TimeoutException("Connection Timeout");
         }

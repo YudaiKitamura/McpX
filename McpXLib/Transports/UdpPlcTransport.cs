@@ -1,19 +1,28 @@
 using System.Net;
 using System.Net.Sockets;
 using McpXLib.Interfaces;
+using McpXLib.Utils;
 
 namespace McpXLib.Transports;
 
 internal class UdpPlcTransport : IPlcTransport
 {
-    private readonly UdpClient udp;
+    private UdpClient udp;
     private readonly IPEndPoint remoteEndPoint;
+    private readonly ushort timeout;
 
     internal UdpPlcTransport(string ip, int port, ushort timeout)
     {
-        udp = new UdpClient();
-        udp.Client.ReceiveTimeout = timeout;
+        this.timeout = timeout;
+        udp = CreateClient();
         remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+    }
+
+    private UdpClient CreateClient()
+    {
+        var client = new UdpClient();
+        client.Client.ReceiveTimeout = timeout;
+        return client;
     }
 
     public byte[] Request(byte[] packet)
@@ -30,12 +39,16 @@ internal class UdpPlcTransport : IPlcTransport
 
         using var cts = new CancellationTokenSource();
         var receiveTask = udp.ReceiveAsync();
-        var delayTask = Task.Delay(udp.Client.ReceiveTimeout, cts.Token);
+        var delayTask = Task.Delay(timeout, cts.Token);
 
         var completed = await Task.WhenAny(receiveTask, delayTask);
 
         if (completed == delayTask)
         {
+            // 保留中の受信が次の応答を横取りしないよう、ソケットを作り直す
+            receiveTask.ObserveException();
+            udp.Dispose();
+            udp = CreateClient();
             throw new SocketException((int)SocketError.TimedOut);
         }
 
