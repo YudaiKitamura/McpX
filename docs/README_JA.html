@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.8.1-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.9.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -126,6 +126,13 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 
     // D0に1234、D1に5678を符号あり32ビットで書込み 
     mcpx.BatchWrite&lt;int&gt;(Prefix.D, &quot;0&quot;, [1234, 5678]);
+
+    // 範囲と単一デバイスをまとめて読み込み（範囲:連続アクセス、単一:ランダムアクセス）
+    short[] block = [];
+    int total = 0;
+    mcpx.Read(b =&gt; b
+        .Add&lt;short&gt;(Prefix.D, &quot;400&quot;, 100, v =&gt; block = v)
+        .Add&lt;int&gt;(Prefix.D, &quot;2000&quot;, v =&gt; total = v));
 }
 </code></pre>
 <p><a href="https://github.com/YudaiKitamura/McpX/tree/main/Example">C#、Visual Basicのサンプルはこちら</a></p>
@@ -187,6 +194,18 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 <td>返却されたセッション経由で登録済みデバイスの最新値を読み出します。</td>
 <td><code>MonitorSession.Read()</code></td>
 <td><code>MonitorSession.ReadAsync()</code></td>
+</tr>
+<tr>
+<td><strong>統合読み込み</strong></td>
+<td>範囲指定（点数あり）と単一指定のデバイスをまとめて読み込みます。範囲は連続アクセス、単一はランダムアクセスで読み込みます。</td>
+<td><code>Read(Action&lt;ReadBuilder&gt; build)</code></td>
+<td><code>ReadAsync(Action&lt;ReadBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>統合書き込み</strong></td>
+<td>範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス、単一値はランダムアクセスで書き込みます。</td>
+<td><code>Write(Action&lt;WriteBuilder&gt; build)</code></td>
+<td><code>WriteAsync(Action&lt;WriteBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>リモートパスワード ロック/アンロック</strong></td>

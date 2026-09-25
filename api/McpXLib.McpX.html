@@ -2311,7 +2311,7 @@ Class McpX  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="McpXLib_McpX_Dispose" data-uid="McpXLib.McpX.Dispose">
   Dispose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1216"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1338"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>インスタンス破棄</p>
@@ -2341,7 +2341,7 @@ Class McpX  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="McpXLib_McpX_MonitorRegist_System_Action_McpXLib_MonitorBuilder__" data-uid="McpXLib.McpX.MonitorRegist(System.Action{McpXLib.MonitorBuilder})">
   MonitorRegist(Action&lt;MonitorBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1093"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>モニタデバイス登録（ビルダー）</p>
@@ -2403,7 +2403,7 @@ Class McpX  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="McpXLib_McpX_MonitorRegistAsync_System_Action_McpXLib_MonitorBuilder__" data-uid="McpXLib.McpX.MonitorRegistAsync(System.Action{McpXLib.MonitorBuilder})">
   MonitorRegistAsync(Action&lt;MonitorBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1137"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>モニタデバイス登録（ビルダー・非同期）</p>
@@ -2513,7 +2513,7 @@ Class McpX  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="McpXLib_McpX_RandomReadAsync_System_Action_McpXLib_RandomReadBuilder__" data-uid="McpXLib.McpX.RandomReadAsync(System.Action{McpXLib.RandomReadBuilder})">
   RandomReadAsync(Action&lt;RandomReadBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L993"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L997"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>ランダムデバイス読み込み（ビルダー・非同期）</p>
@@ -3306,7 +3306,7 @@ public (T1[] wordValues, T2[] doubleValues) RandomRead&lt;T1, T2&gt;((Prefix pre
 
   <h3 id="McpXLib_McpX_RandomWrite_System_Action_McpXLib_RandomWriteBuilder__" data-uid="McpXLib.McpX.RandomWrite(System.Action{McpXLib.RandomWriteBuilder})">
   RandomWrite(Action&lt;RandomWriteBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1032"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1040"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>ランダムデバイス書き込み（ビルダー）</p>
@@ -3357,7 +3357,7 @@ public (T1[] wordValues, T2[] doubleValues) RandomRead&lt;T1, T2&gt;((Prefix pre
 
   <h3 id="McpXLib_McpX_RandomWriteAsync_System_Action_McpXLib_RandomWriteBuilder__" data-uid="McpXLib.McpX.RandomWriteAsync(System.Action{McpXLib.RandomWriteBuilder})">
   RandomWriteAsync(Action&lt;RandomWriteBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1060"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1072"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>ランダムデバイス書き込み（ビルダー・非同期）</p>
@@ -4102,6 +4102,115 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
 
 
 
+  <a id="McpXLib_McpX_Read_" data-uid="McpXLib.McpX.Read*"></a>
+
+  <h3 id="McpXLib_McpX_Read_System_Action_McpXLib_ReadBuilder__" data-uid="McpXLib.McpX.Read(System.Action{McpXLib.ReadBuilder})">
+  Read(Action&lt;ReadBuilder&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>連続／ランダム統合デバイス読み込み（ビルダー）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Read(Action&lt;ReadBuilder&gt; build)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>build</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="McpXLib.ReadBuilder.html">ReadBuilder</a>&gt;</dt>
+    <dd><p>読み込むデバイスとコールバックを登録するビルダー操作を指定します。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpX_Read_System_Action_McpXLib_ReadBuilder___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>連続デバイスと非連続デバイスを、1つのビルダーでまとめて読み込みます。<br>
+<code class="paramref">build</code> 内で、点数を指定した <a class="xref" href="McpXLib.ReadBuilder.html#McpXLib_ReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_UInt16_System_Action___0____">Add&lt;T&gt;(Prefix, string, ushort, Action&lt;T[]&gt;)</a> は
+連続アクセス（<a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchRead__1_McpXLib_Enums_Prefix_System_String_System_UInt16_">BatchRead&lt;T&gt;(Prefix, string, ushort)</a>）、点数を指定しない
+<a class="xref" href="McpXLib.ReadBuilder.html#McpXLib_ReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_Action___0__">Add&lt;T&gt;(Prefix, string, Action&lt;T&gt;)</a> はランダムアクセス
+（<a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomRead_System_Action_McpXLib_RandomReadBuilder__">RandomRead(Action&lt;RandomReadBuilder&gt;)</a>）で読み込まれます。<br>
+連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
+複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_McpX_ReadAsync_" data-uid="McpXLib.McpX.ReadAsync*"></a>
+
+  <h3 id="McpXLib_McpX_ReadAsync_System_Action_McpXLib_ReadBuilder__" data-uid="McpXLib.McpX.ReadAsync(System.Action{McpXLib.ReadBuilder})">
+  ReadAsync(Action&lt;ReadBuilder&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>連続／ランダム統合デバイス読み込み（ビルダー・非同期）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReadAsync(Action&lt;ReadBuilder&gt; build)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>build</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="McpXLib.ReadBuilder.html">ReadBuilder</a>&gt;</dt>
+    <dd><p>読み込むデバイスとコールバックを登録するビルダー操作を指定します。</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpX_ReadAsync_System_Action_McpXLib_ReadBuilder___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>連続デバイスと非連続デバイスを、1つのビルダーでまとめて非同期で読み込みます。<br>
+点数を指定したデバイスは連続アクセス、点数を指定しないデバイスはランダムアクセスで読み込まれます。<br>
+複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
   <a id="McpXLib_McpX_ReadAsync_" data-uid="McpXLib.McpX.ReadAsync*"></a>
 
   <h3 id="McpXLib_McpX_ReadAsync__1_McpXLib_Enums_Prefix_System_String_" data-uid="McpXLib.McpX.ReadAsync``1(McpXLib.Enums.Prefix,System.String)">
@@ -4779,7 +4888,7 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
 
   <h3 id="McpXLib_McpX_ReadString_McpXLib_Enums_Prefix_System_String_System_UInt16_" data-uid="McpXLib.McpX.ReadString(McpXLib.Enums.Prefix,System.String,System.UInt16)">
   ReadString(Prefix, string, ushort)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1270"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>文字列読み込み</p>
@@ -4839,7 +4948,7 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
 
   <h3 id="McpXLib_McpX_ReadStringAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_" data-uid="McpXLib.McpX.ReadStringAsync(McpXLib.Enums.Prefix,System.String,System.UInt16)">
   ReadStringAsync(Prefix, string, ushort)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1168"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1290"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>文字列読み込み（非同期）</p>
@@ -5171,6 +5280,113 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
   <h4 class="section" id="McpXLib_McpX_Read__1_McpXLib_Enums_Prefix_System_String__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>単一デバイスの値をPLCから読み込みます。<br>
 指定された型<code>T</code>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_McpX_Write_" data-uid="McpXLib.McpX.Write*"></a>
+
+  <h3 id="McpXLib_McpX_Write_System_Action_McpXLib_WriteBuilder__" data-uid="McpXLib.McpX.Write(System.Action{McpXLib.WriteBuilder})">
+  Write(Action&lt;WriteBuilder&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>連続／ランダム統合デバイス書き込み（ビルダー）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Write(Action&lt;WriteBuilder&gt; build)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>build</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="McpXLib.WriteBuilder.html">WriteBuilder</a>&gt;</dt>
+    <dd><p>書き込むデバイスと値を登録するビルダー操作を指定します。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpX_Write_System_Action_McpXLib_WriteBuilder___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>連続デバイスと非連続デバイスに、1つのビルダーでまとめて書き込みます。<br>
+<code class="paramref">build</code> 内で、配列を指定した <a class="xref" href="McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0___">Add&lt;T&gt;(Prefix, string, T[])</a> は
+連続アクセス（<a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWrite__1_McpXLib_Enums_Prefix_System_String___0___">BatchWrite&lt;T&gt;(Prefix, string, T[])</a>）、単一の値を指定した
+<a class="xref" href="McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0_">Add&lt;T&gt;(Prefix, string, T)</a> はランダムアクセス
+（<a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWrite_System_Action_McpXLib_RandomWriteBuilder__">RandomWrite(Action&lt;RandomWriteBuilder&gt;)</a>）で書き込まれます。<br>
+連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="McpXLib.Exceptions.DeviceAddressException.html">DeviceAddressException</a></dt>
+    <dd><p>指定したアドレスが不正の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <a id="McpXLib_McpX_WriteAsync_" data-uid="McpXLib.McpX.WriteAsync*"></a>
+
+  <h3 id="McpXLib_McpX_WriteAsync_System_Action_McpXLib_WriteBuilder__" data-uid="McpXLib.McpX.WriteAsync(System.Action{McpXLib.WriteBuilder})">
+  WriteAsync(Action&lt;WriteBuilder&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>連続／ランダム統合デバイス書き込み（ビルダー・非同期）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task WriteAsync(Action&lt;WriteBuilder&gt; build)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>build</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="McpXLib.WriteBuilder.html">WriteBuilder</a>&gt;</dt>
+    <dd><p>書き込むデバイスと値を登録するビルダー操作を指定します。</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpX_WriteAsync_System_Action_McpXLib_WriteBuilder___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>連続デバイスと非連続デバイスに、1つのビルダーでまとめて非同期で書き込みます。<br>
+配列を指定したデバイスは連続アクセス、単一の値を指定したデバイスはランダムアクセスで書き込まれます。</p>
 </div>
 
   <h4 class="section">Exceptions</h4>
@@ -5859,7 +6075,7 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
 
   <h3 id="McpXLib_McpX_WriteString_McpXLib_Enums_Prefix_System_String_System_String_" data-uid="McpXLib.McpX.WriteString(McpXLib.Enums.Prefix,System.String,System.String)">
   WriteString(Prefix, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1187"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1309"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>文字列書き込み</p>
@@ -5913,7 +6129,7 @@ public void RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[
 
   <h3 id="McpXLib_McpX_WriteStringAsync_McpXLib_Enums_Prefix_System_String_System_String_" data-uid="McpXLib.McpX.WriteStringAsync(McpXLib.Enums.Prefix,System.String,System.String)">
   WriteStringAsync(Prefix, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1204"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpX.cs/#L1326"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>文字列書き込み（非同期）</p>

@@ -2294,6 +2294,15 @@ references:
   fullName.vb: McpXLib.McpX.RandomWrite(Of T1, T2)((prefix As McpXLib.Enums.Prefix, address As String, value As T1)(), (prefix As McpXLib.Enums.Prefix, address As String, value As T2)())
   nameWithType: McpX.RandomWrite<T1, T2>((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])
   nameWithType.vb: McpX.RandomWrite(Of T1, T2)((prefix As Prefix, address As String, value As T1)(), (prefix As Prefix, address As String, value As T2)())
+- uid: McpXLib.McpX.Read(System.Action{McpXLib.ReadBuilder})
+  name: Read(Action<ReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Read_System_Action_McpXLib_ReadBuilder__
+  commentId: M:McpXLib.McpX.Read(System.Action{McpXLib.ReadBuilder})
+  name.vb: Read(Action(Of ReadBuilder))
+  fullName: McpXLib.McpX.Read(System.Action<McpXLib.ReadBuilder>)
+  fullName.vb: McpXLib.McpX.Read(System.Action(Of McpXLib.ReadBuilder))
+  nameWithType: McpX.Read(Action<ReadBuilder>)
+  nameWithType.vb: McpX.Read(Action(Of ReadBuilder))
 - uid: McpXLib.McpX.Read*
   name: Read
   href: api/McpXLib.McpX.html#McpXLib_McpX_Read_
@@ -2301,6 +2310,15 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.Read
   nameWithType: McpX.Read
+- uid: McpXLib.McpX.ReadAsync(System.Action{McpXLib.ReadBuilder})
+  name: ReadAsync(Action<ReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_ReadAsync_System_Action_McpXLib_ReadBuilder__
+  commentId: M:McpXLib.McpX.ReadAsync(System.Action{McpXLib.ReadBuilder})
+  name.vb: ReadAsync(Action(Of ReadBuilder))
+  fullName: McpXLib.McpX.ReadAsync(System.Action<McpXLib.ReadBuilder>)
+  fullName.vb: McpXLib.McpX.ReadAsync(System.Action(Of McpXLib.ReadBuilder))
+  nameWithType: McpX.ReadAsync(Action<ReadBuilder>)
+  nameWithType.vb: McpX.ReadAsync(Action(Of ReadBuilder))
 - uid: McpXLib.McpX.ReadAsync*
   name: ReadAsync
   href: api/McpXLib.McpX.html#McpXLib_McpX_ReadAsync_
@@ -2710,6 +2728,15 @@ references:
   fullName.vb: McpXLib.McpX.Read(Of T)(McpXLib.Enums.Prefix, String)
   nameWithType: McpX.Read<T>(Prefix, string)
   nameWithType.vb: McpX.Read(Of T)(Prefix, String)
+- uid: McpXLib.McpX.Write(System.Action{McpXLib.WriteBuilder})
+  name: Write(Action<WriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_Write_System_Action_McpXLib_WriteBuilder__
+  commentId: M:McpXLib.McpX.Write(System.Action{McpXLib.WriteBuilder})
+  name.vb: Write(Action(Of WriteBuilder))
+  fullName: McpXLib.McpX.Write(System.Action<McpXLib.WriteBuilder>)
+  fullName.vb: McpXLib.McpX.Write(System.Action(Of McpXLib.WriteBuilder))
+  nameWithType: McpX.Write(Action<WriteBuilder>)
+  nameWithType.vb: McpX.Write(Action(Of WriteBuilder))
 - uid: McpXLib.McpX.Write*
   name: Write
   href: api/McpXLib.McpX.html#McpXLib_McpX_Write_
@@ -2717,6 +2744,15 @@ references:
   isSpec: "True"
   fullName: McpXLib.McpX.Write
   nameWithType: McpX.Write
+- uid: McpXLib.McpX.WriteAsync(System.Action{McpXLib.WriteBuilder})
+  name: WriteAsync(Action<WriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_WriteAsync_System_Action_McpXLib_WriteBuilder__
+  commentId: M:McpXLib.McpX.WriteAsync(System.Action{McpXLib.WriteBuilder})
+  name.vb: WriteAsync(Action(Of WriteBuilder))
+  fullName: McpXLib.McpX.WriteAsync(System.Action<McpXLib.WriteBuilder>)
+  fullName.vb: McpXLib.McpX.WriteAsync(System.Action(Of McpXLib.WriteBuilder))
+  nameWithType: McpX.WriteAsync(Action<WriteBuilder>)
+  nameWithType.vb: McpX.WriteAsync(Action(Of WriteBuilder))
 - uid: McpXLib.McpX.WriteAsync*
   name: WriteAsync
   href: api/McpXLib.McpX.html#McpXLib_McpX_WriteAsync_
@@ -3224,3 +3260,65 @@ references:
   fullName.vb: McpXLib.RandomWriteBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, T)
   nameWithType: RandomWriteBuilder.Add<T>(Prefix, string, T)
   nameWithType.vb: RandomWriteBuilder.Add(Of T)(Prefix, String, T)
+- uid: McpXLib.ReadBuilder
+  name: ReadBuilder
+  href: api/McpXLib.ReadBuilder.html
+  commentId: T:McpXLib.ReadBuilder
+  fullName: McpXLib.ReadBuilder
+  nameWithType: ReadBuilder
+- uid: McpXLib.ReadBuilder.Add*
+  name: Add
+  href: api/McpXLib.ReadBuilder.html#McpXLib_ReadBuilder_Add_
+  commentId: Overload:McpXLib.ReadBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.ReadBuilder.Add
+  nameWithType: ReadBuilder.Add
+- uid: McpXLib.ReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name: Add<T>(Prefix, string, Action<T>)
+  href: api/McpXLib.ReadBuilder.html#McpXLib_ReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_Action___0__
+  commentId: M:McpXLib.ReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.Action{``0})
+  name.vb: Add(Of T)(Prefix, String, Action(Of T))
+  fullName: McpXLib.ReadBuilder.Add<T>(McpXLib.Enums.Prefix, string, System.Action<T>)
+  fullName.vb: McpXLib.ReadBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, System.Action(Of T))
+  nameWithType: ReadBuilder.Add<T>(Prefix, string, Action<T>)
+  nameWithType.vb: ReadBuilder.Add(Of T)(Prefix, String, Action(Of T))
+- uid: McpXLib.ReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.UInt16,System.Action{``0[]})
+  name: Add<T>(Prefix, string, ushort, Action<T[]>)
+  href: api/McpXLib.ReadBuilder.html#McpXLib_ReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_UInt16_System_Action___0____
+  commentId: M:McpXLib.ReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.UInt16,System.Action{``0[]})
+  name.vb: Add(Of T)(Prefix, String, UShort, Action(Of T()))
+  fullName: McpXLib.ReadBuilder.Add<T>(McpXLib.Enums.Prefix, string, ushort, System.Action<T[]>)
+  fullName.vb: McpXLib.ReadBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, UShort, System.Action(Of T()))
+  nameWithType: ReadBuilder.Add<T>(Prefix, string, ushort, Action<T[]>)
+  nameWithType.vb: ReadBuilder.Add(Of T)(Prefix, String, UShort, Action(Of T()))
+- uid: McpXLib.WriteBuilder
+  name: WriteBuilder
+  href: api/McpXLib.WriteBuilder.html
+  commentId: T:McpXLib.WriteBuilder
+  fullName: McpXLib.WriteBuilder
+  nameWithType: WriteBuilder
+- uid: McpXLib.WriteBuilder.Add*
+  name: Add
+  href: api/McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add_
+  commentId: Overload:McpXLib.WriteBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.WriteBuilder.Add
+  nameWithType: WriteBuilder.Add
+- uid: McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0)
+  name: Add<T>(Prefix, string, T)
+  href: api/McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0_
+  commentId: M:McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0)
+  name.vb: Add(Of T)(Prefix, String, T)
+  fullName: McpXLib.WriteBuilder.Add<T>(McpXLib.Enums.Prefix, string, T)
+  fullName.vb: McpXLib.WriteBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, T)
+  nameWithType: WriteBuilder.Add<T>(Prefix, string, T)
+  nameWithType.vb: WriteBuilder.Add(Of T)(Prefix, String, T)
+- uid: McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name: Add<T>(Prefix, string, T[])
+  href: api/McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0___
+  commentId: M:McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name.vb: Add(Of T)(Prefix, String, T())
+  fullName: McpXLib.WriteBuilder.Add<T>(McpXLib.Enums.Prefix, string, T[])
+  fullName.vb: McpXLib.WriteBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, T())
+  nameWithType: WriteBuilder.Add<T>(Prefix, string, T[])
+  nameWithType.vb: WriteBuilder.Add(Of T)(Prefix, String, T())

@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.8.1-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.9.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -128,6 +128,13 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 
     // Write 1234 to D0 and 5678 to D1 as signed 32-bit integers
     mcpx.BatchWrite&lt;int&gt;(Prefix.D, &quot;0&quot;, [1234, 5678]);
+
+    // Read a range and single devices together (ranges: batch access, single: random access)
+    short[] block = [];
+    int total = 0;
+    mcpx.Read(b =&gt; b
+        .Add&lt;short&gt;(Prefix.D, &quot;400&quot;, 100, v =&gt; block = v)
+        .Add&lt;int&gt;(Prefix.D, &quot;2000&quot;, v =&gt; total = v));
 }
 </code></pre>
 <p><a href="https://github.com/YudaiKitamura/McpX/tree/main/Example">C# and Visual Basic samples are available here.</a></p>
@@ -189,6 +196,18 @@ using (var mcpx = new McpX(&quot;192.168.12.88&quot;, 10000))
 <td>Reads the latest values of registered devices via the returned session.</td>
 <td><code>MonitorSession.Read()</code></td>
 <td><code>MonitorSession.ReadAsync()</code></td>
+</tr>
+<tr>
+<td><strong>Combined Read</strong></td>
+<td>Reads consecutive ranges (with a point count) and single devices together; ranges use batch access, single devices use random access.</td>
+<td><code>Read(Action&lt;ReadBuilder&gt; build)</code></td>
+<td><code>ReadAsync(Action&lt;ReadBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>Combined Write</strong></td>
+<td>Writes consecutive ranges (arrays) and single devices together; arrays use batch access, single values use random access.</td>
+<td><code>Write(Action&lt;WriteBuilder&gt; build)</code></td>
+<td><code>WriteAsync(Action&lt;WriteBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>Remote Password Lock/Unlock</strong></td>
