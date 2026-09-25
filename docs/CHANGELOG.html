@@ -87,6 +87,12 @@
 
         <article data-uid="">
 
+<h2 id="081---2026-09-25">[0.8.1] - 2026-09-25</h2>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>Fixed an unobserved faulted task being left behind when a TCP connection attempt timed out, which surfaced later via <code>TaskScheduler.UnobservedTaskException</code> (#41).</li>
+<li>Fixed UDP async requests after a receive timeout: the abandoned pending receive could consume the next request's response, causing cascading timeouts. The UDP socket is now recreated on timeout.</li>
+</ul>
 <h2 id="080---2026-07-15">[0.8.0] - 2026-07-15</h2>
 <h3 id="added">Added</h3>
 <ul>
@@ -101,7 +107,7 @@
 <ul>
 <li>Deprecated the generic <code>RandomRead</code> / <code>RandomWrite&lt;T1, T2&gt;</code> and the type-specific random overloads (Compat) in favor of the new builder API.</li>
 </ul>
-<h3 id="fixed">Fixed</h3>
+<h3 id="fixed-1">Fixed</h3>
 <ul>
 <li>Fixed ASCII access-point count encoding for 16 or more points in random read/write and monitor register.</li>
 <li>Fixed random read/write with bit (<code>bool</code>) devices, which previously returned an incorrect element count or produced malformed packets.</li>
@@ -117,12 +123,12 @@
 <li>Made timeout configurable at instance creation.</li>
 </ul>
 <h2 id="055---2025-11-17">[0.5.5] - 2025-11-17</h2>
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 <ul>
 <li>Fixed In the NativeAOT-compatible McpxInterrop class, corrected BatchWriteBool to call BatchWrite with bool instead of short.</li>
 </ul>
 <h2 id="054---2025-09-03">[0.5.4] - 2025-09-03</h2>
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 <ul>
 <li>Fixed an issue in the BatchRead method where specifying types larger than 32 bits resulted in an incorrect read count.</li>
 </ul>
@@ -132,7 +138,7 @@
 <li>Added VB-compatible, type-specific overloads</li>
 </ul>
 <h2 id="052---2025-07-16">[0.5.2] - 2025-07-16</h2>
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 <ul>
 <li>Fix bug in hex address conversion.</li>
 </ul>
@@ -152,7 +158,7 @@
 <li>Changed unnecessary <code>public</code> modifiers to <code>internal</code></li>
 </ul>
 <h2 id="041---2024-04-12">[0.4.1] - 2024-04-12</h2>
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 <ul>
 <li>Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two.</li>
 </ul>
