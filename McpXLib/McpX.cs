@@ -2,6 +2,7 @@ using McpXLib.Commands;
 using McpXLib.Enums;
 using McpXLib.Utils;
 using McpXLib.Exceptions;
+using McpXLib.Interfaces;
 
 // 新しいビルダーAPIは、後方互換のため残している旧ランダムAPI([Obsolete])を内部的に利用するため、
 // このファイル内での CS0618(古い形式のメンバー使用) 警告は抑制する。外部利用者には引き続き警告が出る。
@@ -57,10 +58,22 @@ public partial class McpX : Mcp
     {
         this.password = password;
 
-        if (password != null) 
+        if (password != null)
         {
             RemoteUnlock(password);
         }
+    }
+
+    // テスト用：トランスポートを差し替えて生成する。
+    internal McpX(
+        IPlcTransport transport,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
+    ) : base (
+        transport: transport,
+        timeout: 5000,
+        processorSeries: processorSeries
+    )
+    {
     }
 
     /// <summary>
@@ -95,7 +108,7 @@ public partial class McpX : Mcp
             return WordBatchRead<T>(
                 prefix: prefix,
                 address: address,
-                wordLength: (ushort)DeviceConverter.GetWordLength<T>()
+                wordLength: 1
             ).First();
         }
     }
@@ -134,7 +147,7 @@ public partial class McpX : Mcp
             var wordValues = await WordBatchReadAsync<T>(
                 prefix: prefix,
                 address: address,
-                wordLength: (ushort)DeviceConverter.GetWordLength<T>()
+                wordLength: 1
             );
 
             return (T)(object)wordValues.First();
@@ -190,9 +203,11 @@ public partial class McpX : Mcp
         }
         else
         {
-            ushort wordSize = (ushort)DeviceConverter.GetWordLength<T>();
-            ushort wordLength = (ushort)(wordSize * length);
+            int wordSize = DeviceConverter.GetWordLength<T>();
+            int wordLength = wordSize * length;
             ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
+            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
+            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
             for (int i = 0; i <= wordLength / maxLengh; i++) 
             {
@@ -204,7 +219,7 @@ public partial class McpX : Mcp
                 values.AddRange(
                     WordBatchRead<T>(
                         prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
+                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                         wordLength: (ushort)(readLength / wordSize)
                     )
                 );
@@ -263,9 +278,11 @@ public partial class McpX : Mcp
         }
         else
         {
-            ushort wordSize = (ushort)DeviceConverter.GetWordLength<T>();
-            ushort wordLength = (ushort)(wordSize * length);
+            int wordSize = DeviceConverter.GetWordLength<T>();
+            int wordLength = wordSize * length;
             ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
+            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
+            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
             for (int i = 0; i <= wordLength / maxLengh; i++) 
             {
@@ -277,7 +294,7 @@ public partial class McpX : Mcp
                 values.AddRange(
                     await WordBatchReadAsync<T>(
                         prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
+                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                         wordLength: (ushort)(readLength / wordSize)
                     )
                 );
@@ -404,9 +421,11 @@ public partial class McpX : Mcp
         }
         else
         {
-            ushort wordSize = (ushort)DeviceConverter.GetWordLength<T>();
-            ushort wordLength = (ushort)(wordSize * values.Length);
+            int wordSize = DeviceConverter.GetWordLength<T>();
+            int wordLength = wordSize * values.Length;
             ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
+            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
+            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
             for (int i = 0; i <= wordLength / maxLengh; i++) 
             {
@@ -417,7 +436,7 @@ public partial class McpX : Mcp
 
                 WordBatchWrite<T>(
                     prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
+                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                     values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
                 );
             }
@@ -467,9 +486,11 @@ public partial class McpX : Mcp
         }
         else
         {
-            ushort wordSize = (ushort)DeviceConverter.GetWordLength<T>();
-            ushort wordLength = (ushort)(wordSize * values.Length);
+            int wordSize = DeviceConverter.GetWordLength<T>();
+            int wordLength = wordSize * values.Length;
             ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
+            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
+            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
             for (int i = 0; i <= wordLength / maxLengh; i++) 
             {
@@ -480,7 +501,7 @@ public partial class McpX : Mcp
 
                 await WordBatchWriteAsync<T>(
                     prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
+                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                     values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
                 );
             }
@@ -1270,7 +1291,7 @@ public partial class McpX : Mcp
     public string ReadString(Prefix prefix, string address, ushort length)
     {
         return DeviceConverter.ConvertString(
-            BatchRead<byte>(prefix, address, length)
+            BatchRead<ushort>(prefix, address, length).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 
@@ -1290,7 +1311,7 @@ public partial class McpX : Mcp
     public async Task<string> ReadStringAsync(Prefix prefix, string address, ushort length)
     {
         return DeviceConverter.ConvertString(
-            await BatchReadAsync<byte>(prefix, address, length)
+            (await BatchReadAsync<ushort>(prefix, address, length)).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 

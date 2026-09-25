@@ -79,7 +79,7 @@ public class Mcp : BasePlc, IPlc
 
     private ushort timeout;
 
-    private Mcp(
+    internal Mcp(
         IPlcTransport transport,
         ushort timeout,
         IPacketBuilder? route = null,
@@ -197,6 +197,7 @@ public class Mcp : BasePlc, IPlc
         );
     }
     
+    // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
     internal async Task<T[]> WordBatchReadAsync<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
         return await new PlcCommandHandler<T[]>().ExecuteAsync(
@@ -205,6 +206,7 @@ public class Mcp : BasePlc, IPlc
         );
     }
 
+    // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
     internal T[] WordBatchRead<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
         return new PlcCommandHandler<T[]>().Execute(

@@ -11,6 +11,7 @@ internal static class DeviceConverter
     {
         { typeof(bool), 1 },
         { typeof(byte), 1 },
+        { typeof(sbyte), 1 },
         { typeof(short), 1 },
         { typeof(ushort), 1 },
         { typeof(int), 2 },
@@ -35,7 +36,7 @@ internal static class DeviceConverter
 
     internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
-        int byteLength = typeof(T) != typeof(bool) && typeof(T) != typeof(byte) ? GetWordLength<T>() * 2 : 1;
+        int byteLength = typeof(T) != typeof(bool) ? GetWordLength<T>() * 2 : 1;
         if (bytes.Length % byteLength != 0)
         {
             throw new ArgumentException("Byte array is not the correct length.");
@@ -84,7 +85,12 @@ internal static class DeviceConverter
             }
             else if (typeof(T) == typeof(byte)) 
             {
-                return (T[])(object)bytes;
+                // 1要素=1ワード。ワードの下位バイトを値とする。
+                values[i] = (T)(object)bytes[i * byteLength];
+            }
+            else if (typeof(T) == typeof(sbyte)) 
+            {
+                values[i] = (T)(object)(sbyte)bytes[i * byteLength];
             }
         }
 
@@ -120,25 +126,18 @@ internal static class DeviceConverter
             return length;
         }
         
-        throw new NotSupportedException("Type {typeof(T)} is not supported.");
+        throw new NotSupportedException($"Type {typeof(T)} is not supported.");
     }
 
     internal static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
-        if (typeof(T) == typeof(byte))
+        var bytes = new List<byte>();
+        foreach (var value in values) 
         {
-            return (byte[])(object)values;
+            bytes.AddRange(StructToBytes(value));
         }
-        else 
-        {
-            var bytes = new List<byte>();
-            foreach (var value in values) 
-            {
-                bytes.AddRange(StructToBytes(value));
-            }
 
-            return bytes.ToArray();
-        }
+        return bytes.ToArray();
     }
 
 #if !AOT
@@ -256,6 +255,16 @@ internal static class DeviceConverter
         {
             return (bool)(object)value ? [0x01] : [0x00];
         }
+        else if (typeof(T) == typeof(byte))
+        {
+            // 1要素=1ワード。下位バイトに値、上位バイトは0。
+            return [(byte)(object)value, 0x00];
+        }
+        else if (typeof(T) == typeof(sbyte))
+        {
+            // 1要素=1ワード。符号拡張して16ビット値として書き込む。
+            return BitConverter.GetBytes((short)(sbyte)(object)value);
+        }
         else if (typeof(T) == typeof(short))
         {
             return BitConverter.GetBytes((short)(object)value);
@@ -316,6 +325,28 @@ internal static class DeviceConverter
         {
             return Regex.IsMatch(address, @"^[0-9A-Fa-f]+$");
         }
+    }
+
+    internal static bool IsBitDevice(Prefix prefix)
+    {
+        return prefix == Prefix.X ||
+            prefix == Prefix.Y ||
+            prefix == Prefix.M ||
+            prefix == Prefix.L ||
+            prefix == Prefix.F ||
+            prefix == Prefix.V ||
+            prefix == Prefix.B ||
+            prefix == Prefix.TS ||
+            prefix == Prefix.TC ||
+            prefix == Prefix.SS ||
+            prefix == Prefix.SC ||
+            prefix == Prefix.CS ||
+            prefix == Prefix.CC ||
+            prefix == Prefix.SB ||
+            prefix == Prefix.S ||
+            prefix == Prefix.DX ||
+            prefix == Prefix.DY ||
+            prefix == Prefix.SM;
     }
 
     private static bool IsHexDevice(Prefix prefix)

@@ -1,3 +1,11 @@
+## [0.9.1] - 2026-09-25
+### Fixed
+- Fixed `BatchRead` / `BatchWrite` with word-sized types on bit devices (e.g. `BatchRead<ushort>(Prefix.M, ...)`): requests split beyond 960 words started at the wrong device number (advanced by words instead of 16 points per word).
+- Fixed `BatchRead` / `BatchWrite` silently truncating data when the total exceeded 65535 words.
+- Fixed `Read<T>` reading more words than necessary for multi-word types (e.g. 4 words for `int`, 16 words for `long`).
+- Fixed `sbyte` APIs (`ReadSByte`, `WriteSByte`, etc.) always throwing `NotSupportedException`.
+- Fixed `byte` writes sending malformed packets. `byte` / `sbyte` now map one element to one word (low byte). **Breaking:** `BatchRead<byte>(n)` / `BatchReadByte(n)` now returns `n` elements instead of `2n` raw bytes.
+
 ## [0.9.0] - 2026-09-25
 ### Added
 - Added a combined builder API: `Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)` (and their async versions). Devices added with a point count (read) or an array (write) use batch access; single devices use random access.

@@ -32,6 +32,8 @@ public sealed class TestDeviceConverter
         TestConvertByteValueArray<float>(0, float.MinValue, float.MaxValue);
         TestConvertByteValueArray<double>(0, double.MinValue, double.MaxValue);
         TestConvertByteValueArray<bool>(true, false);
+        TestConvertByteValueArray<byte>(0, byte.MinValue, byte.MaxValue);
+        TestConvertByteValueArray<sbyte>(0, sbyte.MinValue, sbyte.MaxValue);
     }
 
     private void TestConvertByteValueArray<T>(params T[] values) where T : unmanaged
@@ -41,6 +43,16 @@ public sealed class TestDeviceConverter
             if (typeof(T) == typeof(bool))
             {
                 return [(bool)(object)v ? (byte)0x01 : (byte)0x00];
+            }
+            else if (typeof(T) == typeof(byte))
+            {
+                // 1要素=1ワード（下位バイト）
+                return [(byte)(object)v, (byte)0x00];
+            }
+            else if (typeof(T) == typeof(sbyte))
+            {
+                // 1要素=1ワード（符号拡張）
+                return BitConverter.GetBytes((short)(sbyte)(object)v);
             }
             return BitConverter.GetBytes((dynamic)v);
         }).ToArray();
@@ -81,6 +93,7 @@ public sealed class TestDeviceConverter
         TestConvertValueArray<float>(0f, float.MinValue, float.MaxValue);
         TestConvertValueArray<double>(0.0, double.MinValue, double.MaxValue);
         TestConvertValueArray<byte>(0, byte.MinValue, byte.MaxValue);
+        TestConvertValueArray<sbyte>(0, sbyte.MinValue, sbyte.MaxValue);
         TestConvertValueArray<bool>(true, false);
     }
 
@@ -94,8 +107,13 @@ public sealed class TestDeviceConverter
             }
             else if (typeof(T) == typeof(byte))
             {
-                return [(byte)(object)v];
+                // 1要素=1ワード（下位バイト）
+                return [(byte)(object)v, (byte)0x00];
             } 
+            else if (typeof(T) == typeof(sbyte))
+            {
+                return BitConverter.GetBytes((short)(sbyte)(object)v);
+            }
             return BitConverter.GetBytes((dynamic)v);
         }).ToArray();
 
