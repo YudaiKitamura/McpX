@@ -956,7 +956,11 @@ public partial class McpX : Mcp
     {
         var builder = new RandomReadBuilder();
         build(builder);
+        ExecuteRandomRead(builder);
+    }
 
+    private void ExecuteRandomRead(RandomReadBuilder builder)
+    {
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
@@ -994,7 +998,11 @@ public partial class McpX : Mcp
     {
         var builder = new RandomReadBuilder();
         build(builder);
+        await ExecuteRandomReadAsync(builder);
+    }
 
+    private async Task ExecuteRandomReadAsync(RandomReadBuilder builder)
+    {
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
@@ -1033,7 +1041,11 @@ public partial class McpX : Mcp
     {
         var builder = new RandomWriteBuilder();
         build(builder);
+        ExecuteRandomWrite(builder);
+    }
 
+    private void ExecuteRandomWrite(RandomWriteBuilder builder)
+    {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
             RandomWrite<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
@@ -1061,7 +1073,11 @@ public partial class McpX : Mcp
     {
         var builder = new RandomWriteBuilder();
         build(builder);
+        await ExecuteRandomWriteAsync(builder);
+    }
 
+    private async Task ExecuteRandomWriteAsync(RandomWriteBuilder builder)
+    {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
             await RandomWriteAsync<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
@@ -1129,6 +1145,112 @@ public partial class McpX : Mcp
         await MonitorRegistAsync(wordAddresses, doubleWordAddresses);
 
         return new MonitorSession(this, builder);
+    }
+
+    /// <summary>
+    /// 連続／ランダム統合デバイス読み込み（ビルダー）
+    /// </summary>
+    /// <remarks>
+    /// 連続デバイスと非連続デバイスを、1つのビルダーでまとめて読み込みます。<br/>
+    /// <paramref name="build"/> 内で、点数を指定した <see cref="ReadBuilder.Add{T}(Prefix, string, ushort, Action{T[]})"/> は
+    /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, ushort)"/>）、点数を指定しない
+    /// <see cref="ReadBuilder.Add{T}(Prefix, string, Action{T})"/> はランダムアクセス
+    /// （<see cref="RandomRead(Action{RandomReadBuilder})"/>）で読み込まれます。<br/>
+    /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
+    /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
+    /// </remarks>
+    /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    public void Read(Action<ReadBuilder> build)
+    {
+        var builder = new ReadBuilder();
+        build(builder);
+
+        foreach (var entry in builder.batchEntries)
+        {
+            entry.read(this);
+        }
+
+        ExecuteRandomRead(builder.random);
+    }
+
+    /// <summary>
+    /// 連続／ランダム統合デバイス読み込み（ビルダー・非同期）
+    /// </summary>
+    /// <remarks>
+    /// 連続デバイスと非連続デバイスを、1つのビルダーでまとめて非同期で読み込みます。<br/>
+    /// 点数を指定したデバイスは連続アクセス、点数を指定しないデバイスはランダムアクセスで読み込まれます。<br/>
+    /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
+    /// </remarks>
+    /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    public async Task ReadAsync(Action<ReadBuilder> build)
+    {
+        var builder = new ReadBuilder();
+        build(builder);
+
+        foreach (var entry in builder.batchEntries)
+        {
+            await entry.readAsync(this);
+        }
+
+        await ExecuteRandomReadAsync(builder.random);
+    }
+
+    /// <summary>
+    /// 連続／ランダム統合デバイス書き込み（ビルダー）
+    /// </summary>
+    /// <remarks>
+    /// 連続デバイスと非連続デバイスに、1つのビルダーでまとめて書き込みます。<br/>
+    /// <paramref name="build"/> 内で、配列を指定した <see cref="WriteBuilder.Add{T}(Prefix, string, T[])"/> は
+    /// 連続アクセス（<see cref="BatchWrite{T}(Prefix, string, T[])"/>）、単一の値を指定した
+    /// <see cref="WriteBuilder.Add{T}(Prefix, string, T)"/> はランダムアクセス
+    /// （<see cref="RandomWrite(Action{RandomWriteBuilder})"/>）で書き込まれます。<br/>
+    /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
+    /// </remarks>
+    /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    public void Write(Action<WriteBuilder> build)
+    {
+        var builder = new WriteBuilder();
+        build(builder);
+
+        foreach (var entry in builder.batchEntries)
+        {
+            entry.write(this);
+        }
+
+        ExecuteRandomWrite(builder.random);
+    }
+
+    /// <summary>
+    /// 連続／ランダム統合デバイス書き込み（ビルダー・非同期）
+    /// </summary>
+    /// <remarks>
+    /// 連続デバイスと非連続デバイスに、1つのビルダーでまとめて非同期で書き込みます。<br/>
+    /// 配列を指定したデバイスは連続アクセス、単一の値を指定したデバイスはランダムアクセスで書き込まれます。
+    /// </remarks>
+    /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
+    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    public async Task WriteAsync(Action<WriteBuilder> build)
+    {
+        var builder = new WriteBuilder();
+        build(builder);
+
+        foreach (var entry in builder.batchEntries)
+        {
+            await entry.writeAsync(this);
+        }
+
+        await ExecuteRandomWriteAsync(builder.random);
     }
 
 #if !AOT
