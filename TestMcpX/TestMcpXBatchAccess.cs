@@ -24,6 +24,24 @@ public sealed class TestMcpXBatchAccess
     }
 
     [TestMethod]
+    public async Task TestBatchAccessBitDeviceAsDoubleWordsAdvancesBy16PerWord()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        // int は2ワード。960ワード(=480要素)で分割され、2回目は 960×16 点先から残り40ワード。
+        var values = mcpx.BatchRead<int>(Prefix.M, "0", 500);
+        await mcpx.BatchWriteAsync(Prefix.M, "0", new int[500]);
+
+        Assert.AreEqual(500, values.Length);
+        Assert.AreEqual(4, transport.Requests.Count);
+        Assert.AreEqual((0u, (ushort)960), (transport.Requests[0].DeviceNumber, transport.Requests[0].Points));
+        Assert.AreEqual((960u * 16, (ushort)40), (transport.Requests[1].DeviceNumber, transport.Requests[1].Points));
+        Assert.AreEqual((0u, (ushort)960), (transport.Requests[2].DeviceNumber, transport.Requests[2].Points));
+        Assert.AreEqual((960u * 16, (ushort)40), (transport.Requests[3].DeviceNumber, transport.Requests[3].Points));
+    }
+
+    [TestMethod]
     public async Task TestBatchReadAsyncHexBitDeviceAsWordsAdvancesBy16PerWord()
     {
         var transport = new FakePlcTransport();
