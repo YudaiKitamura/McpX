@@ -87,13 +87,22 @@
 
         <article data-uid="">
 
+<h2 id="091---2026-09-25">[0.9.1] - 2026-09-25</h2>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>Fixed <code>BatchRead</code> / <code>BatchWrite</code> with word-sized types on bit devices (e.g. <code>BatchRead&lt;ushort&gt;(Prefix.M, ...)</code>): requests split beyond 960 words started at the wrong device number (advanced by words instead of 16 points per word).</li>
+<li>Fixed <code>BatchRead</code> / <code>BatchWrite</code> silently truncating data when the total exceeded 65535 words.</li>
+<li>Fixed <code>Read&lt;T&gt;</code> reading more words than necessary for multi-word types (e.g. 4 words for <code>int</code>, 16 words for <code>long</code>).</li>
+<li>Fixed <code>sbyte</code> APIs (<code>ReadSByte</code>, <code>WriteSByte</code>, etc.) always throwing <code>NotSupportedException</code>.</li>
+<li>Fixed <code>byte</code> writes sending malformed packets. <code>byte</code> / <code>sbyte</code> now map one element to one word (low byte). <strong>Breaking:</strong> <code>BatchRead&lt;byte&gt;(n)</code> / <code>BatchReadByte(n)</code> now returns <code>n</code> elements instead of <code>2n</code> raw bytes.</li>
+</ul>
 <h2 id="090---2026-09-25">[0.9.0] - 2026-09-25</h2>
 <h3 id="added">Added</h3>
 <ul>
 <li>Added a combined builder API: <code>Read(Action&lt;ReadBuilder&gt;)</code> / <code>Write(Action&lt;WriteBuilder&gt;)</code> (and their async versions). Devices added with a point count (read) or an array (write) use batch access; single devices use random access.</li>
 </ul>
 <h2 id="081---2026-09-25">[0.8.1] - 2026-09-25</h2>
-<h3 id="fixed">Fixed</h3>
+<h3 id="fixed-1">Fixed</h3>
 <ul>
 <li>Fixed an unobserved faulted task being left behind when a TCP connection attempt timed out, which surfaced later via <code>TaskScheduler.UnobservedTaskException</code> (#41).</li>
 <li>Fixed UDP async requests after a receive timeout: the abandoned pending receive could consume the next request's response, causing cascading timeouts. The UDP socket is now recreated on timeout.</li>
@@ -112,7 +121,7 @@
 <ul>
 <li>Deprecated the generic <code>RandomRead</code> / <code>RandomWrite&lt;T1, T2&gt;</code> and the type-specific random overloads (Compat) in favor of the new builder API.</li>
 </ul>
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 <ul>
 <li>Fixed ASCII access-point count encoding for 16 or more points in random read/write and monitor register.</li>
 <li>Fixed random read/write with bit (<code>bool</code>) devices, which previously returned an incorrect element count or produced malformed packets.</li>
@@ -128,12 +137,12 @@
 <li>Made timeout configurable at instance creation.</li>
 </ul>
 <h2 id="055---2025-11-17">[0.5.5] - 2025-11-17</h2>
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 <ul>
 <li>Fixed In the NativeAOT-compatible McpxInterrop class, corrected BatchWriteBool to call BatchWrite with bool instead of short.</li>
 </ul>
 <h2 id="054---2025-09-03">[0.5.4] - 2025-09-03</h2>
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 <ul>
 <li>Fixed an issue in the BatchRead method where specifying types larger than 32 bits resulted in an incorrect read count.</li>
 </ul>
@@ -143,7 +152,7 @@
 <li>Added VB-compatible, type-specific overloads</li>
 </ul>
 <h2 id="052---2025-07-16">[0.5.2] - 2025-07-16</h2>
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 <ul>
 <li>Fix bug in hex address conversion.</li>
 </ul>
@@ -163,7 +172,7 @@
 <li>Changed unnecessary <code>public</code> modifiers to <code>internal</code></li>
 </ul>
 <h2 id="041---2024-04-12">[0.4.1] - 2024-04-12</h2>
-<h3 id="fixed-5">Fixed</h3>
+<h3 id="fixed-6">Fixed</h3>
 <ul>
 <li>Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two.</li>
 </ul>
