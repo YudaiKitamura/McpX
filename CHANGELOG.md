@@ -1,3 +1,7 @@
+## [0.9.0] - 2026-09-25
+### Added
+- Added a combined builder API: `Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)` (and their async versions). Devices added with a point count (read) or an array (write) use batch access; single devices use random access.
+
 ## [0.8.1] - 2026-09-25
 ### Fixed
 - Fixed an unobserved faulted task being left behind when a TCP connection attempt timed out, which surfaced later via `TaskScheduler.UnobservedTaskException` (#41).
