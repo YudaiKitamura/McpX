@@ -79,6 +79,9 @@ public class Mcp : BasePlc, IPlc
 
     private ushort timeout;
 
+    // 再接続用のトランスポート生成処理（トランスポートを直接指定した場合は null）
+    private readonly Func<IPlcTransport>? transportFactory;
+
     internal Mcp(
         IPlcTransport transport,
         ushort timeout,
@@ -106,6 +109,25 @@ public class Mcp : BasePlc, IPlc
     }
 
     internal Mcp(
+        Func<IPlcTransport> transportFactory,
+        ushort timeout,
+        IPacketBuilder? route = null,
+        bool isAscii = false,
+        RequestFrame requestFrame = RequestFrame.E3,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
+    ) : this (
+        transport: transportFactory(),
+        timeout: timeout,
+        route: route,
+        isAscii: isAscii,
+        requestFrame: requestFrame,
+        processorSeries: processorSeries
+    )
+    {
+        this.transportFactory = transportFactory;
+    }
+
+    internal Mcp(
         string ip,
         int port,
         ushort timeout,
@@ -115,7 +137,7 @@ public class Mcp : BasePlc, IPlc
         RequestFrame requestFrame = RequestFrame.E3,
         ProcessorSeries processorSeries = ProcessorSeries.Q
     ) : this (
-        transport: isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : new Transports.TcpPlcTransport(ip, port, timeout),
+        transportFactory: () => isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : (IPlcTransport)new Transports.TcpPlcTransport(ip, port, timeout),
         route: route,
         isAscii: isAscii,
         requestFrame: requestFrame,
@@ -163,6 +185,30 @@ public class Mcp : BasePlc, IPlc
             new RemoteLockCommand(password, timeout),
             this
         );
+    }
+
+    // トランスポートを直接指定した場合は再接続できない
+    internal bool CanReconnect => transportFactory != null;
+
+    // トランスポートを作り直して接続し直す。
+    internal void Reconnect()
+    {
+        if (transportFactory == null)
+        {
+            throw new InvalidOperationException("This instance cannot reconnect.");
+        }
+
+        ReplaceTransport(transportFactory());
+    }
+
+    internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create)
+    {
+        await new PlcCommandHandler<bool>().ExecuteAsync(create(timeout), this);
+    }
+
+    internal void RemoteOperation(Func<ushort, RemoteOperationCommand> create)
+    {
+        new PlcCommandHandler<bool>().Execute(create(timeout), this);
     }
 
     internal async Task<ushort[][]> MultiBlockReadAsync(DeviceBlock[] blocks)

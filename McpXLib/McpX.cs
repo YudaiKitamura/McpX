@@ -64,6 +64,18 @@ public partial class McpX : Mcp
         }
     }
 
+    // テスト用：再接続できるよう、トランスポートの生成処理を指定して生成する。
+    internal McpX(
+        Func<IPlcTransport> transportFactory,
+        ProcessorSeries processorSeries = ProcessorSeries.Q
+    ) : base (
+        transportFactory: transportFactory,
+        timeout: 5000,
+        processorSeries: processorSeries
+    )
+    {
+    }
+
     // テスト用：トランスポートを差し替えて生成する。
     internal McpX(
         IPlcTransport transport,

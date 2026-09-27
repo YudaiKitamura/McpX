@@ -72,6 +72,8 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 | **Combined Write**           | Writes consecutive ranges (arrays) and single devices together; arrays use batch access (multiple block write when there are several ranges), single values use random access. | `Write(Action<WriteBuilder> build)` | `WriteAsync(Action<WriteBuilder> build)` |
 | **Multiple Block Read**      | Reads multiple ranges (blocks) of consecutive devices in one request (command 0406). | `BlockRead(Action<BlockReadBuilder> build)`   | `BlockReadAsync(Action<BlockReadBuilder> build)`   |
 | **Multiple Block Write**     | Writes multiple ranges (blocks) of consecutive devices in one request (command 1406). | `BlockWrite(Action<BlockWriteBuilder> build)` | `BlockWriteAsync(Action<BlockWriteBuilder> build)` |
+| **Remote RUN / STOP / PAUSE** | Changes the operating status of the CPU (commands 1001 / 1002 / 1003). | `RemoteRun(bool force, RemoteRunClearMode clearMode)` / `RemoteStop()` / `RemotePause(bool force)` | `RemoteRunAsync(...)` / `RemoteStopAsync()` / `RemotePauseAsync(...)` |
+| **Remote Latch Clear / RESET** | Executes latch clear or reset (commands 1005 / 1006). Execute while the CPU is stopped. | `RemoteLatchClear()` / `RemoteReset()` | `RemoteLatchClearAsync()` / `RemoteResetAsync()` |
 | **Remote Password Lock/Unlock** | Automatically locks the PLC with the specified remote password when the instance is created and unlocks it when disposed. | `McpX(string ip, int port, string? password = null)`   | –                                                                |
 
 ## Supported Protocols

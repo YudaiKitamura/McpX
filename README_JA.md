@@ -87,6 +87,8 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 | **統合書き込み**          | 範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス（範囲が複数あれば複数ブロック一括書込み）、単一値はランダムアクセスで書き込みます。 | `Write(Action<WriteBuilder> build)` | `WriteAsync(Action<WriteBuilder> build)` |
 | **複数ブロック一括読出し**  | 連続したデバイスの範囲（ブロック）を複数指定し、1回の交信でまとめて読み出します（コマンド: 0406）。 | `BlockRead(Action<BlockReadBuilder> build)`   | `BlockReadAsync(Action<BlockReadBuilder> build)`   |
 | **複数ブロック一括書込み**  | 連続したデバイスの範囲（ブロック）を複数指定し、1回の交信でまとめて書き込みます（コマンド: 1406）。 | `BlockWrite(Action<BlockWriteBuilder> build)` | `BlockWriteAsync(Action<BlockWriteBuilder> build)` |
+| **リモートRUN / STOP / PAUSE** | CPUユニットの動作状態を変更します（コマンド: 1001 / 1002 / 1003）。 | `RemoteRun(bool force, RemoteRunClearMode clearMode)` / `RemoteStop()` / `RemotePause(bool force)` | `RemoteRunAsync(...)` / `RemoteStopAsync()` / `RemotePauseAsync(...)` |
+| **リモートラッチクリア / RESET** | ラッチクリア、リセットを実行します（コマンド: 1005 / 1006）。STOP状態で実行してください。 | `RemoteLatchClear()` / `RemoteReset()` | `RemoteLatchClearAsync()` / `RemoteResetAsync()` |
 | **リモートパスワード ロック/アンロック** | リモートパスワード指定時、インスタンス生成時にロック、破棄時に自動アンロックします。 | `McpX(string ip, int port, string? password = null)` | －                                                          |
 
 
