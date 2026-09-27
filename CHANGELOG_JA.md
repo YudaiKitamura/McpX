@@ -1,3 +1,7 @@
+## [Unreleased]
+### Added
+- システムNo.・号機No.を指定して GX Simulator3 に接続する `McpXSimulator`（ポート `5500 + システムNo. × 10 + 号機No.`、TCP・バイナリ、既定は `ProcessorSeries.iQR`）と、`McpXSimulator.GetPort` を追加。シミュレータごとにインスタンスを生成することで、複数のシミュレータに同時に接続可能。
+
 ## [0.9.2] - 2026-09-27
 ### Fixed
 - `ProcessorSeries.iQR` を指定した場合に、ビットデバイスのランダム書き込み（`RandomWriteBit`、および `RandomWrite` / `Write(Action<WriteBuilder>)` のビットデバイス）がエラー C061 になる不具合を修正。MELSEC iQ-R 用サブコマンド（0003）のセット/リセットを2バイト（ASCIIは4桁）で送信するように変更。

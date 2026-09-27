@@ -55,6 +55,22 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 ```
 [C#、Visual Basicのサンプルはこちら](https://github.com/YudaiKitamura/McpX/tree/main/Example)
 
+### GX Simulator3 への接続
+`McpXSimulator` を使うと、システムNo.と号機No.を指定して GX Simulator3（GX Works3 のシミュレーション機能）に接続できます。
+ポート番号は `5500 + システムNo. × 10 + 号機No.` です（例：システム1・号機1 = 5511、システム2・号機1 = 5521）。
+複数のシミュレータに同時に接続する場合は、シミュレータごとにインスタンスを生成します。読み書きのAPIは `McpX` と同じです。
+```csharp
+using var sim1 = new McpXSimulator();                                  // 127.0.0.1:5511（システム1・号機1）
+using var sim2 = new McpXSimulator(systemNo: 2, ip: "192.168.12.90");  // 192.168.12.90:5521
+using var cpu2 = new McpXSimulator(systemNo: 1, cpuNo: 2);             // 127.0.0.1:5512（マルチCPUの2号機）
+
+sim1.Write(Prefix.D, "100", (short)123);
+short d0 = sim2.Read<short>(Prefix.D, "0");
+int port = McpXSimulator.GetPort(systemNo: 2);                        // 5521
+```
+GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続する場合は、シミュレータ側のPCで各ポートを 127.0.0.1 へ転送してください（`netsh interface portproxy` など）。
+交信はTCP・バイナリコードのみです（GX Simulator3 はASCIIコードの交信に応答しません）。
+
 ## 対応コマンド
 
 | 名称                     | 説明                                             | 同期メソッド                                     | 非同期メソッド                                               |
@@ -85,7 +101,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~4Eフレーム（バイナリコード）対応~~
 - [x] ~~4Eフレーム（ASCIIコード）対応~~
 - [x] ~~UDP対応~~
-- [ ] GX Simulator 対応 – 対応中
+- [x] ~~GX Simulator 対応~~
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)
