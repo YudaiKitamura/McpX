@@ -1,3 +1,7 @@
+## [0.9.2] - 2026-09-27
+### Fixed
+- Fixed bit random write (`RandomWriteBit`, and bit devices in `RandomWrite` / `Write(Action<WriteBuilder>)`) failing with error C061 when `ProcessorSeries.iQR` is specified. The set/reset value is now sent as 2 bytes (4 digits in ASCII) for the MELSEC iQ-R subcommand (0003).
+
 ## [0.9.1] - 2026-09-25
 ### Fixed
 - Fixed `BatchRead` / `BatchWrite` with word-sized types on bit devices (e.g. `BatchRead<ushort>(Prefix.M, ...)`): requests split beyond 960 words started at the wrong device number (advanced by words instead of 16 points per word).

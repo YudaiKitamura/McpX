@@ -59,14 +59,14 @@ public sealed class TestBitRandomWriteCommand
         );
 
         byte[] repuestPacketExpected = [
-            0x15, 0x00,                                 // Content Length
+            0x17, 0x00,                                 // Content Length
             0x00, 0x00,                                 // Monitoring Timer
             0x02, 0x14, 0x03, 0x00,                     // Command + SubCommand (iQ-R bit = 0003)
             0x02,                                       // Bit Access Points
             0x32, 0x00, 0x00, 0x00, 0x90, 0x00,         // M50 (Address 4Byte + Code 1Byte + 0x00)
-            0x00,                                       // Set/Reset1 (OFF)
+            0x00, 0x00,                                 // Set/Reset1 (OFF, iQ-R = 2Byte)
             0x2F, 0x00, 0x00, 0x00, 0x9D, 0x00,         // Y2F
-            0x01,                                       // Set/Reset2 (ON)
+            0x01, 0x00,                                 // Set/Reset2 (ON, iQ-R = 2Byte)
         ];
 
         CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());

@@ -23,8 +23,8 @@ internal class BitDeviceValueListPayloadBuilder((Prefix prefix, string address, 
                 ));
 
                 packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                    binaryBytes: new[] { bitDevice.value ? (byte)0x01 : (byte)0x00 },
-                    isReverse: false
+                    binaryBytes: ToSetResetBytes(bitDevice.value),
+                    isReverse: true
                 ));
             }
         }
@@ -35,8 +35,15 @@ internal class BitDeviceValueListPayloadBuilder((Prefix prefix, string address, 
             foreach (var bitDevice in bitDevices)
             {
                 packets.AddRange(DeviceConverter.ToByteAddress(bitDevice.prefix, bitDevice.address, series));
-                packets.Add(bitDevice.value ? (byte)0x01 : (byte)0x00);
+                packets.AddRange(ToSetResetBytes(bitDevice.value));
             }
         }
+    }
+
+    // セット/リセット指定は Q/L 形式（サブコマンド0001）が1バイト、iQ-R 形式（サブコマンド0003）が2バイト。
+    private byte[] ToSetResetBytes(bool value)
+    {
+        byte setReset = value ? (byte)0x01 : (byte)0x00;
+        return series == ProcessorSeries.iQR ? [setReset, 0x00] : [setReset];
     }
 }
