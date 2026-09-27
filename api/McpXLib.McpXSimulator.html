@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class McpXSimulator | McpX </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class McpXSimulator | McpX ">
+      
+      <meta name="description" content="GX Simulator3 接続クラス">
+      <link rel="icon" href="../images/mcpx_favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_McpXSimulator.md&amp;value=---%0Auid%3A%20McpXLib.McpXSimulator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+    <meta name="google-site-verification" content="Nf1B_QMZ1Atz5K1fOI3sZQQIxrCu_pP9aZMuh3QEQi8">
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.svg" alt="McpX">
+            McpX
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="McpXLib.McpXSimulator">
+
+
+
+  <h1 id="McpXLib_McpXSimulator" data-uid="McpXLib.McpXSimulator" class="text-break">
+Class McpXSimulator  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="McpXLib.html">McpXLib</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>McpXLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>GX Simulator3 接続クラス</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class McpXSimulator : McpX, IDisposable, IPlc</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="McpXLib.Abstructs.BasePlc.html">BasePlc</a></div>
+      <div><a class="xref" href="McpXLib.Mcp.html">Mcp</a></div>
+      <div><a class="xref" href="McpXLib.McpX.html">McpX</a></div>
+      <div><span class="xref">McpXSimulator</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="McpXLib.Interfaces.IPlc.html">IPlc</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadBool_McpXLib_Enums_Prefix_System_String_">McpX.ReadBool(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadByte_McpXLib_Enums_Prefix_System_String_">McpX.ReadByte(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadSByte_McpXLib_Enums_Prefix_System_String_">McpX.ReadSByte(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt16_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt16(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt16_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt16(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt32_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt32(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt32_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt32(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt64_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt64(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt64_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt64(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadSingle_McpXLib_Enums_Prefix_System_String_">McpX.ReadSingle(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadDouble_McpXLib_Enums_Prefix_System_String_">McpX.ReadDouble(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadBoolAsync_McpXLib_Enums_Prefix_System_String_">McpX.ReadBoolAsync(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadByteAsync_McpXLib_Enums_Prefix_System_String_">McpX.ReadByteAsync(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadSByteAsync_McpXLib_Enums_Prefix_System_String_">McpX.ReadSByteAsync(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt16Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt16Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt16Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt16Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt32Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt32Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt32Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt32Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadInt64Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadInt64Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadUInt64Async_McpXLib_Enums_Prefix_System_String_">McpX.ReadUInt64Async(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadSingleAsync_McpXLib_Enums_Prefix_System_String_">McpX.ReadSingleAsync(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadDoubleAsync_McpXLib_Enums_Prefix_System_String_">McpX.ReadDoubleAsync(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadBool_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadBool(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadByte_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadByte(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadSByte_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadSByte(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt16(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt16(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt32(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt32(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt64(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt64(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadSingle_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadSingle(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadDouble_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadDouble(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadBoolAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadBoolAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadByteAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadByteAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadSByteAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadSByteAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt16Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt16Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt32Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt32Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadInt64Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadUInt64Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadSingleAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadSingleAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadDoubleAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadDoubleAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteBool_McpXLib_Enums_Prefix_System_String_System_Boolean_">McpX.WriteBool(Prefix, string, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteByte_McpXLib_Enums_Prefix_System_String_System_Byte_">McpX.WriteByte(Prefix, string, byte)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteSByte_McpXLib_Enums_Prefix_System_String_System_SByte_">McpX.WriteSByte(Prefix, string, sbyte)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt16_McpXLib_Enums_Prefix_System_String_System_Int16_">McpX.WriteInt16(Prefix, string, short)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.WriteUInt16(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt32_McpXLib_Enums_Prefix_System_String_System_Int32_">McpX.WriteInt32(Prefix, string, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt32_McpXLib_Enums_Prefix_System_String_System_UInt32_">McpX.WriteUInt32(Prefix, string, uint)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt64_McpXLib_Enums_Prefix_System_String_System_Int64_">McpX.WriteInt64(Prefix, string, long)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt64_McpXLib_Enums_Prefix_System_String_System_UInt64_">McpX.WriteUInt64(Prefix, string, ulong)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteSingle_McpXLib_Enums_Prefix_System_String_System_Single_">McpX.WriteSingle(Prefix, string, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteDouble_McpXLib_Enums_Prefix_System_String_System_Double_">McpX.WriteDouble(Prefix, string, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteBoolAsync_McpXLib_Enums_Prefix_System_String_System_Boolean_">McpX.WriteBoolAsync(Prefix, string, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteByteAsync_McpXLib_Enums_Prefix_System_String_System_Byte_">McpX.WriteByteAsync(Prefix, string, byte)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteSByteAsync_McpXLib_Enums_Prefix_System_String_System_SByte_">McpX.WriteSByteAsync(Prefix, string, sbyte)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt16Async_McpXLib_Enums_Prefix_System_String_System_Int16_">McpX.WriteInt16Async(Prefix, string, short)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.WriteUInt16Async(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt32Async_McpXLib_Enums_Prefix_System_String_System_Int32_">McpX.WriteInt32Async(Prefix, string, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt32_">McpX.WriteUInt32Async(Prefix, string, uint)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteInt64Async_McpXLib_Enums_Prefix_System_String_System_Int64_">McpX.WriteInt64Async(Prefix, string, long)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt64_">McpX.WriteUInt64Async(Prefix, string, ulong)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteSingleAsync_McpXLib_Enums_Prefix_System_String_System_Single_">McpX.WriteSingleAsync(Prefix, string, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteDoubleAsync_McpXLib_Enums_Prefix_System_String_System_Double_">McpX.WriteDoubleAsync(Prefix, string, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteBool_McpXLib_Enums_Prefix_System_String_System_Boolean___">McpX.BatchWriteBool(Prefix, string, bool[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteByte_McpXLib_Enums_Prefix_System_String_System_Byte___">McpX.BatchWriteByte(Prefix, string, byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByte_McpXLib_Enums_Prefix_System_String_System_SByte___">McpX.BatchWriteSByte(Prefix, string, sbyte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16_McpXLib_Enums_Prefix_System_String_System_Int16___">McpX.BatchWriteInt16(Prefix, string, short[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16_McpXLib_Enums_Prefix_System_String_System_UInt16___">McpX.BatchWriteUInt16(Prefix, string, ushort[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32_McpXLib_Enums_Prefix_System_String_System_Int32___">McpX.BatchWriteInt32(Prefix, string, int[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32_McpXLib_Enums_Prefix_System_String_System_UInt32___">McpX.BatchWriteUInt32(Prefix, string, uint[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64_McpXLib_Enums_Prefix_System_String_System_Int64___">McpX.BatchWriteInt64(Prefix, string, long[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64_McpXLib_Enums_Prefix_System_String_System_UInt64___">McpX.BatchWriteUInt64(Prefix, string, ulong[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingle_McpXLib_Enums_Prefix_System_String_System_Single___">McpX.BatchWriteSingle(Prefix, string, float[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteDouble_McpXLib_Enums_Prefix_System_String_System_Double___">McpX.BatchWriteDouble(Prefix, string, double[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteBoolAsync_McpXLib_Enums_Prefix_System_String_System_Boolean___">McpX.BatchWriteBoolAsync(Prefix, string, bool[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteByteAsync_McpXLib_Enums_Prefix_System_String_System_Byte___">McpX.BatchWriteByteAsync(Prefix, string, byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteSByteAsync_McpXLib_Enums_Prefix_System_String_System_SByte___">McpX.BatchWriteSByteAsync(Prefix, string, sbyte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt16Async_McpXLib_Enums_Prefix_System_String_System_Int16___">McpX.BatchWriteInt16Async(Prefix, string, short[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt16Async_McpXLib_Enums_Prefix_System_String_System_UInt16___">McpX.BatchWriteUInt16Async(Prefix, string, ushort[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt32Async_McpXLib_Enums_Prefix_System_String_System_Int32___">McpX.BatchWriteInt32Async(Prefix, string, int[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt32Async_McpXLib_Enums_Prefix_System_String_System_UInt32___">McpX.BatchWriteUInt32Async(Prefix, string, uint[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteInt64Async_McpXLib_Enums_Prefix_System_String_System_Int64___">McpX.BatchWriteInt64Async(Prefix, string, long[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteUInt64Async_McpXLib_Enums_Prefix_System_String_System_UInt64___">McpX.BatchWriteUInt64Async(Prefix, string, ulong[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteSingleAsync_McpXLib_Enums_Prefix_System_String_System_Single___">McpX.BatchWriteSingleAsync(Prefix, string, float[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteDoubleAsync_McpXLib_Enums_Prefix_System_String_System_Double___">McpX.BatchWriteDoubleAsync(Prefix, string, double[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16Int32((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16UInt32((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16Single((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16Int32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16UInt32Async((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadUInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadUInt16SingleAsync((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____">McpX.RandomWriteInt16Int32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____">McpX.RandomWriteInt16UInt32((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____">McpX.RandomWriteInt16Single((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____">McpX.RandomWriteUInt16Int32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____">McpX.RandomWriteUInt16UInt32((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Single_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____">McpX.RandomWriteUInt16Single((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____">McpX.RandomWriteInt16Int32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, int value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____">McpX.RandomWriteInt16UInt32Async((Prefix prefix, string address, short value)[], (Prefix prefix, string address, uint value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____">McpX.RandomWriteInt16SingleAsync((Prefix prefix, string address, short value)[], (Prefix prefix, string address, float value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16Int32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Int32____">McpX.RandomWriteUInt16Int32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, int value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16UInt32Async_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt32____">McpX.RandomWriteUInt16UInt32Async((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, uint value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteUInt16SingleAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_UInt16____System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Single____">McpX.RandomWriteUInt16SingleAsync((Prefix prefix, string address, ushort value)[], (Prefix prefix, string address, float value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Read__1_McpXLib_Enums_Prefix_System_String_">McpX.Read&lt;T&gt;(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadAsync__1_McpXLib_Enums_Prefix_System_String_">McpX.ReadAsync&lt;T&gt;(Prefix, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchRead__1_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchRead&lt;T&gt;(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchReadAsync__1_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.BatchReadAsync&lt;T&gt;(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Write__1_McpXLib_Enums_Prefix_System_String___0_">McpX.Write&lt;T&gt;(Prefix, string, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteAsync__1_McpXLib_Enums_Prefix_System_String___0_">McpX.WriteAsync&lt;T&gt;(Prefix, string, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWrite__1_McpXLib_Enums_Prefix_System_String___0___">McpX.BatchWrite&lt;T&gt;(Prefix, string, T[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BatchWriteAsync__1_McpXLib_Enums_Prefix_System_String___0___">McpX.BatchWriteAsync&lt;T&gt;(Prefix, string, T[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomRead__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomRead&lt;T1, T2&gt;((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadAsync&lt;T1, T2&gt;((Prefix prefix, string address)[], (Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWrite__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String___0____System_ValueTuple_McpXLib_Enums_Prefix_System_String___1____">McpX.RandomWrite&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String___0____System_ValueTuple_McpXLib_Enums_Prefix_System_String___1____">McpX.RandomWriteAsync&lt;T1, T2&gt;((Prefix prefix, string address, T1 value)[], (Prefix prefix, string address, T2 value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadBit_System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadBit((Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadBitAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____">McpX.RandomReadBitAsync((Prefix prefix, string address)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteBit_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Boolean____">McpX.RandomWriteBit((Prefix prefix, string address, bool value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteBitAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String_System_Boolean____">McpX.RandomWriteBitAsync((Prefix prefix, string address, bool value)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomRead_System_Action_McpXLib_RandomReadBuilder__">McpX.RandomRead(Action&lt;RandomReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomReadAsync_System_Action_McpXLib_RandomReadBuilder__">McpX.RandomReadAsync(Action&lt;RandomReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWrite_System_Action_McpXLib_RandomWriteBuilder__">McpX.RandomWrite(Action&lt;RandomWriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RandomWriteAsync_System_Action_McpXLib_RandomWriteBuilder__">McpX.RandomWriteAsync(Action&lt;RandomWriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_MonitorRegist_System_Action_McpXLib_MonitorBuilder__">McpX.MonitorRegist(Action&lt;MonitorBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_MonitorRegistAsync_System_Action_McpXLib_MonitorBuilder__">McpX.MonitorRegistAsync(Action&lt;MonitorBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Read_System_Action_McpXLib_ReadBuilder__">McpX.Read(Action&lt;ReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadAsync_System_Action_McpXLib_ReadBuilder__">McpX.ReadAsync(Action&lt;ReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Write_System_Action_McpXLib_WriteBuilder__">McpX.Write(Action&lt;WriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteAsync_System_Action_McpXLib_WriteBuilder__">McpX.WriteAsync(Action&lt;WriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadString_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.ReadString(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_ReadStringAsync_McpXLib_Enums_Prefix_System_String_System_UInt16_">McpX.ReadStringAsync(Prefix, string, ushort)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteString_McpXLib_Enums_Prefix_System_String_System_String_">McpX.WriteString(Prefix, string, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_WriteStringAsync_McpXLib_Enums_Prefix_System_String_System_String_">McpX.WriteStringAsync(Prefix, string, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Dispose">McpX.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_IsAscii">Mcp.IsAscii</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_Route">Mcp.Route</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_RequestFrame">Mcp.RequestFrame</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_ProcessorSeries">Mcp.ProcessorSeries</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegistAsync_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">Mcp.MonitorRegistAsync((Prefix, string)[], (Prefix, string)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_MonitorRegist_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">Mcp.MonitorRegist((Prefix, string)[], (Prefix, string)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_MonitorAsync__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">Mcp.MonitorAsync&lt;T1, T2&gt;((Prefix, string)[], (Prefix, string)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_Monitor__2_System_ValueTuple_McpXLib_Enums_Prefix_System_String____System_ValueTuple_McpXLib_Enums_Prefix_System_String____">Mcp.Monitor&lt;T1, T2&gt;((Prefix, string)[], (Prefix, string)[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___">BasePlc.RequestAsync(byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___">BasePlc.Request(byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_Request_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_">BasePlc.Request(byte[], IReceiveLengthParser)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.Abstructs.BasePlc.html#McpXLib_Abstructs_BasePlc_RequestAsync_System_Byte___McpXLib_Interfaces_IReceiveLengthParser_">BasePlc.RequestAsync(byte[], IReceiveLengthParser)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="McpXLib_McpXSimulator_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>GX Simulator3（GX Works3 のシミュレーション機能）に、外部機器との通信（SLMP）で接続するクラスです。<br>
+接続先のポート番号は、システムNo.と号機No.から <code>5500 + システムNo. × 10 + 号機No.</code> で決まります。（例: システム1・号機1 = 5511、システム2・号機1 = 5521）<br>
+システムNo.はシミュレーション（プロジェクト）ごとの番号、号機No.はマルチCPUシステムのCPU No.（1〜4）です。<br>
+1インスタンスが1つのシミュレータ（CPU）への接続です。複数のシミュレータに接続する場合は、それぞれインスタンスを生成してください。<br>
+GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接続する場合は、シミュレータ側のPCでポートフォワーディング（<code>netsh interface portproxy</code> など）を設定してください。<br>
+交信はTCP・バイナリコードで行います。（GX Simulator3 はASCIIコードの交信に応答しません）</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="McpXLib_McpXSimulator__ctor_" data-uid="McpXLib.McpXSimulator.#ctor*"></a>
+
+  <h3 id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_" data-uid="McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)">
+  McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>インスタンス初期化</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public McpXSimulator(int systemNo = 1, int cpuNo = 1, string ip = &quot;127.0.0.1&quot;, RequestFrame requestFrame = RequestFrame.E3, ushort timeoutMilliseconds = 5000, ProcessorSeries processorSeries = ProcessorSeries.iQR)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>systemNo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>システムNo.を指定します。（デフォルトは、<code>1</code>です。）</p>
+</dd>
+    <dt><code>cpuNo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>号機No.（1〜4）を指定します。（デフォルトは、<code>1</code>です。）</p>
+</dd>
+    <dt><code>ip</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>シミュレータが動作しているPCのIPアドレスを指定します。（デフォルトは、<code>127.0.0.1</code>です。）</p>
+</dd>
+    <dt><code>requestFrame</code> <a class="xref" href="McpXLib.Enums.RequestFrame.html">RequestFrame</a></dt>
+    <dd><p>フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<code>RequestFrame.E3</code>です。）</p>
+</dd>
+    <dt><code>timeoutMilliseconds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</p>
+</dd>
+    <dt><code>processorSeries</code> <a class="xref" href="McpXLib.Enums.ProcessorSeries.html">ProcessorSeries</a></dt>
+    <dd><p>PLCのシリーズを指定します。（デフォルトは、MELSEC iQ-Rシリーズ:<code>ProcessorSeries.iQR</code>です。）</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>システムNo.と号機No.から求めたポート番号で、GX Simulator3 に接続します。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>システムNo.または号機No.が範囲外の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.RecivePacketException.html">RecivePacketException</a></dt>
+    <dd><p>受信したパケットの内容が不正な値の場合に例外をスローします。</p>
+</dd>
+    <dt><a class="xref" href="McpXLib.Exceptions.McProtocolException.html">McProtocolException</a></dt>
+    <dd><p>PLCからエラーコードを受信した場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="McpXLib_McpXSimulator_BasePort" data-uid="McpXLib.McpXSimulator.BasePort">
+  BasePort
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>ポート番号の基準値</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int BasePort = 5500</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="McpXLib_McpXSimulator_MaxCpuNo" data-uid="McpXLib.McpXSimulator.MaxCpuNo">
+  MaxCpuNo
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>号機No.の最大値（マルチCPUシステムのCPU台数）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int MaxCpuNo = 4</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="McpXLib_McpXSimulator_CpuNo_" data-uid="McpXLib.McpXSimulator.CpuNo*"></a>
+
+  <h3 id="McpXLib_McpXSimulator_CpuNo" data-uid="McpXLib.McpXSimulator.CpuNo">
+  CpuNo
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>接続先の号機No.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CpuNo { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="McpXLib_McpXSimulator_SystemNo_" data-uid="McpXLib.McpXSimulator.SystemNo*"></a>
+
+  <h3 id="McpXLib_McpXSimulator_SystemNo" data-uid="McpXLib.McpXSimulator.SystemNo">
+  SystemNo
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>接続先のシステムNo.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SystemNo { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="McpXLib_McpXSimulator_GetPort_" data-uid="McpXLib.McpXSimulator.GetPort*"></a>
+
+  <h3 id="McpXLib_McpXSimulator_GetPort_System_Int32_System_Int32_" data-uid="McpXLib.McpXSimulator.GetPort(System.Int32,System.Int32)">
+  GetPort(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>ポート番号取得</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetPort(int systemNo = 1, int cpuNo = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>systemNo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>システムNo.を指定します。（デフォルトは、<code>1</code>です。）</p>
+</dd>
+    <dt><code>cpuNo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>号機No.（1〜4）を指定します。（デフォルトは、<code>1</code>です。）</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>ポート番号を返します。</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="McpXLib_McpXSimulator_GetPort_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>システムNo.と号機No.から、GX Simulator3 のポート番号（<code>5500 + システムNo. × 10 + 号機No.</code>）を求めます。</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>システムNo.または号機No.が範囲外の場合に例外をスローします。</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L17" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

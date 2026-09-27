@@ -361,6 +361,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/McpXLib.McpXSimulator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/McpXLib.McpXSimulator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "McpXLib.McpXSimulator",
+      "Summary": "<p sourcefile=\"api/McpXLib.McpXSimulator.yml\" sourcestartlinenumber=\"1\">GX Simulator3 接続クラス</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/McpXLib.MonitorBuilder.yml",
       "output": {
         ".html": {

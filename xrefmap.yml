@@ -3162,6 +3162,85 @@ references:
   fullName.vb: McpXLib.McpX.Write(Of T)(McpXLib.Enums.Prefix, String, T)
   nameWithType: McpX.Write<T>(Prefix, string, T)
   nameWithType.vb: McpX.Write(Of T)(Prefix, String, T)
+- uid: McpXLib.McpXSimulator
+  name: McpXSimulator
+  href: api/McpXLib.McpXSimulator.html
+  commentId: T:McpXLib.McpXSimulator
+  fullName: McpXLib.McpXSimulator
+  nameWithType: McpXSimulator
+- uid: McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
+  name: McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_
+  commentId: M:McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
+  name.vb: New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries)
+  fullName: McpXLib.McpXSimulator.McpXSimulator(int, int, string, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries)
+  fullName.vb: McpXLib.McpXSimulator.New(Integer, Integer, String, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries)
+  nameWithType: McpXSimulator.McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
+  nameWithType.vb: McpXSimulator.New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries)
+- uid: McpXLib.McpXSimulator.#ctor*
+  name: McpXSimulator
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator__ctor_
+  commentId: Overload:McpXLib.McpXSimulator.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: McpXLib.McpXSimulator.McpXSimulator
+  fullName.vb: McpXLib.McpXSimulator.New
+  nameWithType: McpXSimulator.McpXSimulator
+  nameWithType.vb: McpXSimulator.New
+- uid: McpXLib.McpXSimulator.BasePort
+  name: BasePort
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_BasePort
+  commentId: F:McpXLib.McpXSimulator.BasePort
+  fullName: McpXLib.McpXSimulator.BasePort
+  nameWithType: McpXSimulator.BasePort
+- uid: McpXLib.McpXSimulator.CpuNo
+  name: CpuNo
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_CpuNo
+  commentId: P:McpXLib.McpXSimulator.CpuNo
+  fullName: McpXLib.McpXSimulator.CpuNo
+  nameWithType: McpXSimulator.CpuNo
+- uid: McpXLib.McpXSimulator.CpuNo*
+  name: CpuNo
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_CpuNo_
+  commentId: Overload:McpXLib.McpXSimulator.CpuNo
+  isSpec: "True"
+  fullName: McpXLib.McpXSimulator.CpuNo
+  nameWithType: McpXSimulator.CpuNo
+- uid: McpXLib.McpXSimulator.GetPort(System.Int32,System.Int32)
+  name: GetPort(int, int)
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_GetPort_System_Int32_System_Int32_
+  commentId: M:McpXLib.McpXSimulator.GetPort(System.Int32,System.Int32)
+  name.vb: GetPort(Integer, Integer)
+  fullName: McpXLib.McpXSimulator.GetPort(int, int)
+  fullName.vb: McpXLib.McpXSimulator.GetPort(Integer, Integer)
+  nameWithType: McpXSimulator.GetPort(int, int)
+  nameWithType.vb: McpXSimulator.GetPort(Integer, Integer)
+- uid: McpXLib.McpXSimulator.GetPort*
+  name: GetPort
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_GetPort_
+  commentId: Overload:McpXLib.McpXSimulator.GetPort
+  isSpec: "True"
+  fullName: McpXLib.McpXSimulator.GetPort
+  nameWithType: McpXSimulator.GetPort
+- uid: McpXLib.McpXSimulator.MaxCpuNo
+  name: MaxCpuNo
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_MaxCpuNo
+  commentId: F:McpXLib.McpXSimulator.MaxCpuNo
+  fullName: McpXLib.McpXSimulator.MaxCpuNo
+  nameWithType: McpXSimulator.MaxCpuNo
+- uid: McpXLib.McpXSimulator.SystemNo
+  name: SystemNo
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_SystemNo
+  commentId: P:McpXLib.McpXSimulator.SystemNo
+  fullName: McpXLib.McpXSimulator.SystemNo
+  nameWithType: McpXSimulator.SystemNo
+- uid: McpXLib.McpXSimulator.SystemNo*
+  name: SystemNo
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator_SystemNo_
+  commentId: Overload:McpXLib.McpXSimulator.SystemNo
+  isSpec: "True"
+  fullName: McpXLib.McpXSimulator.SystemNo
+  nameWithType: McpXSimulator.SystemNo
 - uid: McpXLib.MonitorBuilder
   name: MonitorBuilder
   href: api/McpXLib.MonitorBuilder.html
