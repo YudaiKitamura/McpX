@@ -21,7 +21,8 @@ internal class ErrorCodePacketParser : BasePacketParser
     {
         if (!errorCode.SequenceEqual(new byte[] { 0x00, 0x00 })) 
         {
-            throw new McProtocolException($"An error code was received from PLC. ({ BitConverter.ToUInt16(errorCode, 0).ToString("X") })");
+            ushort code = BitConverter.ToUInt16(errorCode, 0);
+            throw new McProtocolException($"An error code was received from PLC. ({ code.ToString("X") })", code);
         }
     }
 }
