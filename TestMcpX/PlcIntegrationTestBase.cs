@@ -26,20 +26,31 @@ public abstract class PlcIntegrationTestBase
     protected virtual int BitDeviceAsWordsPoints => 16000;
 
     /// <summary>
-    /// 環境変数 <paramref name="enableVar"/> が 1 のときのみ、IP/ポートを環境変数（未指定なら既定値）から決めて接続する。
+    /// 環境変数 <paramref name="enableVar"/> が 1 でなければ <see cref="Assert.Inconclusive(string)"/> で中断する。
     /// </summary>
-    internal static McpX ConnectIfEnabled(
-        string enableVar, string ipVar, string defaultIp, string portVar, int defaultPort,
-        RequestFrame requestFrame = RequestFrame.E3, ProcessorSeries processorSeries = ProcessorSeries.Q)
+    internal static void EnsureEnabled(string enableVar)
     {
         if (Environment.GetEnvironmentVariable(enableVar) != "1")
         {
             Assert.Inconclusive($"このテストは {enableVar}=1 のときのみ実行します。");
         }
+    }
+
+    /// <summary>
+    /// 環境変数 <paramref name="name"/> の整数値（未指定・不正なら <paramref name="defaultValue"/>）。
+    /// </summary>
+    internal static int GetEnvironmentInt(string name, int defaultValue)
+        => int.TryParse(Environment.GetEnvironmentVariable(name), out var value) ? value : defaultValue;
+
+    /// <summary>
+    /// 環境変数 <paramref name="enableVar"/> が 1 のときのみ、IP/ポートを環境変数（未指定なら既定値）から決めて接続する。
+    /// </summary>
+    internal static McpX ConnectIfEnabled(string enableVar, string ipVar, string defaultIp, string portVar, int defaultPort)
+    {
+        EnsureEnabled(enableVar);
 
         var ip = Environment.GetEnvironmentVariable(ipVar) ?? defaultIp;
-        var port = int.TryParse(Environment.GetEnvironmentVariable(portVar), out var p) ? p : defaultPort;
-        return new McpX(ip, port, requestFrame: requestFrame, processorSeries: processorSeries);
+        return new McpX(ip, GetEnvironmentInt(portVar, defaultPort));
     }
 
     private static T[] RandomValues<T>(int length, Func<T> next) => Enumerable.Range(0, length).Select(_ => next()).ToArray();
