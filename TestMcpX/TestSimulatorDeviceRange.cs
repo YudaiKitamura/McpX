@@ -11,7 +11,7 @@ namespace TestMcpX;
 /// 対象デバイスの全点を上書きし、テスト後は0で埋め戻します。<br/>
 /// デバイス点数は R120CPU の既定値（M 12K / B 8K / SB 2K / F 2K / V 2K / T 1K / C 512 / D 18K / W 64K / SW 2K / L 8K）を前提とします。<br/>
 /// 点数0の S・ST、およびLT・LC（ライブラリの <see cref="Prefix"/> に未定義）は対象外です。<br/>
-/// 実行条件・接続先は <see cref="TestSimulatorPlc"/> と同じです。
+/// 実行条件・接続先は <see cref="SimulatorConnection"/> を参照してください。
 /// <code>
 /// MCPX_SIM_PLC=1 dotnet test TestMcpX --filter TestCategory=SimulatorPlc
 /// </code>
@@ -27,8 +27,7 @@ public abstract class SimulatorDeviceRangeTestBase
     // BatchRead/BatchWrite の点数は ushort のため、W（65536点）などは分けて要求する
     private const int ChunkSize = 0x8000;
 
-    private McpX Connect() =>
-        PlcIntegrationTestBase.ConnectIfEnabled("MCPX_SIM_PLC", "MCPX_SIM_IP", "192.168.12.90", "MCPX_SIM_PORT", 5511, RequestFrame, ProcessorSeries);
+    private McpX Connect() => SimulatorConnection.Connect(RequestFrame, ProcessorSeries);
 
     private static bool IsHex(Prefix prefix) =>
         prefix is Prefix.B or Prefix.W or Prefix.SB or Prefix.SW;

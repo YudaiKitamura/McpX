@@ -2,7 +2,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
-  <img alt="Version" src="https://img.shields.io/badge/version-0.9.2-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.10.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -57,6 +57,22 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 ```
 [C# and Visual Basic samples are available here.](https://github.com/YudaiKitamura/McpX/tree/main/Example)
 
+### Connecting to GX Simulator3
+`McpXSimulator` connects to GX Simulator3 (the simulation function of GX Works3) by system No. and CPU No.
+The port is `5500 + system No. × 10 + CPU No.` (e.g. system 1 / CPU 1 = 5511, system 2 / CPU 1 = 5521).
+Create one instance per simulator to connect to several simulators at the same time. The read/write API is the same as `McpX`.
+```csharp
+using var sim1 = new McpXSimulator();                                  // 127.0.0.1:5511 (system 1 / CPU 1)
+using var sim2 = new McpXSimulator(systemNo: 2, ip: "192.168.12.90");  // 192.168.12.90:5521
+using var cpu2 = new McpXSimulator(systemNo: 1, cpuNo: 2);             // 127.0.0.1:5512 (CPU No.2 of a multiple CPU system)
+
+sim1.Write(Prefix.D, "100", (short)123);
+short d0 = sim2.Read<short>(Prefix.D, "0");
+int port = McpXSimulator.GetPort(systemNo: 2);                        // 5521
+```
+GX Simulator3 listens on 127.0.0.1 only. To connect from another PC, forward each port to 127.0.0.1 on the simulator PC (e.g. `netsh interface portproxy`).
+Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII code).
+
 ## Supported Commands
 
 | Name                         | Description                                                            | Synchronous Method                                      | Asynchronous Method                                              |
@@ -86,7 +102,7 @@ using (var mcpx = new McpX("192.168.12.88", 10000))
 - [x] ~~4E frame (binary code) support~~
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
-- [ ] GX Simulator support – In progress
+- [x] ~~GX Simulator support~~
 
 ## Changelog
 - [CHANGELOG.md](./CHANGELOG.md)

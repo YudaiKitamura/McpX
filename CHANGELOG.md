@@ -1,3 +1,7 @@
+## [0.10.0] - 2026-09-27
+### Added
+- Added `McpXSimulator` for connecting to GX Simulator3 by system No. and CPU No. (port `5500 + system No. × 10 + CPU No.`, TCP / binary, `ProcessorSeries.iQR` by default), and `McpXSimulator.GetPort`. Multiple simulators can be connected at the same time by creating an instance for each.
+
 ## [0.9.2] - 2026-09-27
 ### Fixed
 - Fixed bit random write (`RandomWriteBit`, and bit devices in `RandomWrite` / `Write(Action<WriteBuilder>)`) failing with error C061 when `ProcessorSeries.iQR` is specified. The set/reset value is now sent as 2 bytes (4 digits in ASCII) for the MELSEC iQ-R subcommand (0003).
