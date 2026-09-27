@@ -1,3 +1,9 @@
+## [Unreleased]
+### Added
+- Added multiple block batch read / write (commands 0406 / 1406): `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)` and their async versions. Requests exceeding the limits (120 blocks, or 60 for `ProcessorSeries.iQR`; 960 points) are split automatically.
+- `Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)` now send multiple ranges in one request with multiple block access. Controlled by the new `McpX.MultiBlockAccess` (`Auto` by default: if the target returns error C059 (not supported), e.g. a CPU built-in Ethernet port, it falls back to per-range batch access and remembers it for the instance). `bool` ranges on bit devices whose length is not a multiple of 16 are still written per range, so that no other bits are overwritten.
+- Added `McProtocolException.ErrorCode` to get the error code returned by the PLC.
+
 ## [0.10.0] - 2026-09-27
 ### Added
 - Added `McpXSimulator` for connecting to GX Simulator3 by system No. and CPU No. (port `5500 + system No. × 10 + CPU No.`, TCP / binary, `ProcessorSeries.iQR` by default), and `McpXSimulator.GetPort`. Multiple simulators can be connected at the same time by creating an instance for each.

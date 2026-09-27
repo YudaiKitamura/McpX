@@ -1,3 +1,9 @@
+## [Unreleased]
+### Added
+- 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）の `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)`（および非同期版）を追加。上限（120ブロック、`ProcessorSeries.iQR` は60ブロック、合計960点）を超える場合は自動で分割。
+- `Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)` で、複数の範囲を複数ブロックアクセスで1回の交信にまとめるように変更。新しい `McpX.MultiBlockAccess` で制御可能（既定の `Auto` は、CPU内蔵Ethernetポートなど接続先がエラー C059（非対応）を返した場合、範囲ごとの一括アクセスでやり直し、以降そのインスタンスでは複数ブロックを使わない）。ビットデバイスへの `bool` で要素数が16の倍数でない範囲は、他のビットを上書きしないよう従来どおり範囲ごとに書き込み。
+- PLCから受信したエラーコードを取得できる `McProtocolException.ErrorCode` を追加。
+
 ## [0.10.0] - 2026-09-27
 ### Added
 - システムNo.・号機No.を指定して GX Simulator3 に接続する `McpXSimulator`（ポート `5500 + システムNo. × 10 + 号機No.`、TCP・バイナリ、既定は `ProcessorSeries.iQR`）と、`McpXSimulator.GetPort` を追加。シミュレータごとにインスタンスを生成することで、複数のシミュレータに同時に接続可能。

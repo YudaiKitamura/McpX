@@ -165,6 +165,38 @@ public class Mcp : BasePlc, IPlc
         );
     }
 
+    internal async Task<ushort[][]> MultiBlockReadAsync(DeviceBlock[] blocks)
+    {
+        return await new PlcCommandHandler<ushort[][]>().ExecuteAsync(
+            new MultiBlockReadCommand(blocks, timeout, processorSeries),
+            this
+        );
+    }
+
+    internal ushort[][] MultiBlockRead(DeviceBlock[] blocks)
+    {
+        return new PlcCommandHandler<ushort[][]>().Execute(
+            new MultiBlockReadCommand(blocks, timeout, processorSeries),
+            this
+        );
+    }
+
+    internal async Task MultiBlockWriteAsync(DeviceBlock[] blocks)
+    {
+        await new PlcCommandHandler<bool>().ExecuteAsync(
+            new MultiBlockWriteCommand(blocks, timeout, processorSeries),
+            this
+        );
+    }
+
+    internal void MultiBlockWrite(DeviceBlock[] blocks)
+    {
+        new PlcCommandHandler<bool>().Execute(
+            new MultiBlockWriteCommand(blocks, timeout, processorSeries),
+            this
+        );
+    }
+
     internal async Task<bool[]> BitBatchReadAsync(Prefix prefix, string address, ushort bitLength)
     {
         return await new PlcCommandHandler<bool[]>().ExecuteAsync(
