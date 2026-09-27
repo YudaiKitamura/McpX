@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.10.0] - 2026-09-27
 ### Added
 - システムNo.・号機No.を指定して GX Simulator3 に接続する `McpXSimulator`（ポート `5500 + システムNo. × 10 + 号機No.`、TCP・バイナリ、既定は `ProcessorSeries.iQR`）と、`McpXSimulator.GetPort` を追加。シミュレータごとにインスタンスを生成することで、複数のシミュレータに同時に接続可能。
 
