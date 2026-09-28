@@ -94,20 +94,20 @@ public abstract class SimulatorPlcTestBase : PlcIntegrationTestBase
     }
 
     [TestMethod]
-    public void TestIntegratedMultiBlockModes()
+    public void TestIntegratedMultiBlock()
     {
         using var mcpx = Connect();
 
-        // Always（複数ブロック）と Never（範囲ごと）で、同じ値を読み書きできること
-        foreach (var mode in new[] { MultiBlockAccessMode.Always, MultiBlockAccessMode.Never })
+        // 複数ブロックを使う場合（true）と使わない場合（false）で、同じ値を読み書きできること
+        foreach (var useMultiBlock in new[] { true, false })
         {
-            mcpx.MultiBlockAccess = mode;
-            short value = (short)mode;
+            mcpx.UseMultiBlockAccess = useMultiBlock;
+            short value = (short)(useMultiBlock ? 100 : 200);
 
             mcpx.Write(b => b
                 .Add(Prefix.D, "7000", new[] { value, (short)(value + 1) })
                 .Add(Prefix.D, "8000", new[] { (short)(value + 2) })
-                .Add(Prefix.M, "11000", Enumerable.Repeat(mode == MultiBlockAccessMode.Always, 10).ToArray()));
+                .Add(Prefix.M, "11000", Enumerable.Repeat(useMultiBlock, 10).ToArray()));
 
             short[] a = []; short[] c = []; bool[] bits = [];
             mcpx.Read(b => b
@@ -115,9 +115,9 @@ public abstract class SimulatorPlcTestBase : PlcIntegrationTestBase
                 .Add<short>(Prefix.D, "8000", 1, v => c = v)
                 .Add<bool>(Prefix.M, "11000", 10, v => bits = v));
 
-            CollectionAssert.AreEqual(new[] { value, (short)(value + 1) }, a, mode.ToString());
-            CollectionAssert.AreEqual(new[] { (short)(value + 2) }, c, mode.ToString());
-            Assert.IsTrue(bits.All(x => x == (mode == MultiBlockAccessMode.Always)), mode.ToString());
+            CollectionAssert.AreEqual(new[] { value, (short)(value + 1) }, a, $"UseMultiBlockAccess={useMultiBlock}");
+            CollectionAssert.AreEqual(new[] { (short)(value + 2) }, c, $"UseMultiBlockAccess={useMultiBlock}");
+            Assert.IsTrue(bits.All(x => x == useMultiBlock), $"UseMultiBlockAccess={useMultiBlock}");
         }
     }
 }

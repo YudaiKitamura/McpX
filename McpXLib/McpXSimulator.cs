@@ -38,6 +38,9 @@ public sealed class McpXSimulator : McpX
     /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
     /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
     /// <param name="processorSeries">PLCのシリーズを指定します。（デフォルトは、MELSEC iQ-Rシリーズ:<c>ProcessorSeries.iQR</c>です。）</param>
+    /// <param name="useMultiBlockAccess">
+    /// 統合アクセスで、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。詳細は <see cref="McpX.UseMultiBlockAccess"/> を参照してください。）
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">システムNo.または号機No.が範囲外の場合に例外をスローします。</exception>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -47,7 +50,8 @@ public sealed class McpXSimulator : McpX
         string ip = "127.0.0.1",
         RequestFrame requestFrame = RequestFrame.E3,
         ushort timeoutMilliseconds = 5000,
-        ProcessorSeries processorSeries = ProcessorSeries.iQR
+        ProcessorSeries processorSeries = ProcessorSeries.iQR,
+        bool useMultiBlockAccess = false
     ) : base (
         ip: ip,
         port: GetPort(systemNo, cpuNo),
@@ -55,7 +59,8 @@ public sealed class McpXSimulator : McpX
         isUdp: false,
         requestFrame: requestFrame,
         timeoutMilliseconds: timeoutMilliseconds,
-        processorSeries: processorSeries
+        processorSeries: processorSeries,
+        useMultiBlockAccess: useMultiBlockAccess
     )
     {
         SystemNo = systemNo;

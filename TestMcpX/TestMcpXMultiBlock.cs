@@ -142,7 +142,7 @@ public sealed class TestMcpXMultiBlock
     public async Task TestIntegratedUsesMultiBlock()
     {
         var transport = new FakeMultiBlockTransport();
-        using var mcpx = new McpX(transport);
+        using var mcpx = new McpX(transport) { UseMultiBlockAccess = true };
 
         await mcpx.WriteAsync(b => b
             .Add(Prefix.D, "0", new short[] { 1, 2, 3 })
@@ -165,9 +165,9 @@ public sealed class TestMcpXMultiBlock
     [TestMethod]
     public void TestIntegratedSingleRange()
     {
-        // 範囲が1つだけなら従来どおり 0401
+        // 範囲が1つだけなら、有効にしていても従来どおり 0401
         var transport = new FakeMultiBlockTransport();
-        using var mcpx = new McpX(transport);
+        using var mcpx = new McpX(transport) { UseMultiBlockAccess = true };
 
         mcpx.Read(b => b.Add<short>(Prefix.D, "0", 3, _ => { }));
 
@@ -175,61 +175,39 @@ public sealed class TestMcpXMultiBlock
     }
 
     [TestMethod]
-    public async Task TestIntegratedAutoFallback()
+    public async Task TestIntegratedDefault()
     {
+        // 既定（無効）では、接続先が対応していても・非対応でも 0406 / 1406 を送らない（PLC側でエラーにしない）
+        foreach (var supports in new[] { true, false })
+        {
+            var transport = new FakeMultiBlockTransport { SupportsMultiBlock = supports };
+            using var mcpx = new McpX(transport);
+            Assert.IsFalse(mcpx.UseMultiBlockAccess);
+
+            mcpx.Write(b => b.Add(Prefix.D, "0", new short[] { 7, 8 }).Add(Prefix.D, "100", new short[] { 9 }));
+            short[] a = []; short[] c = [];
+            await mcpx.ReadAsync(b => b.Add<short>(Prefix.D, "0", 2, v => a = v).Add<short>(Prefix.D, "100", 1, v => c = v));
+
+            CollectionAssert.AreEqual(new ushort[] { 0x1401, 0x1401, 0x0401, 0x0401 }, transport.Requests.Select(q => q.Command).ToArray());
+            CollectionAssert.AreEqual(new short[] { 7, 8 }, a);
+            CollectionAssert.AreEqual(new short[] { 9 }, c);
+        }
+    }
+
+    [TestMethod]
+    public async Task TestIntegratedUnsupported()
+    {
+        // 有効にしたが接続先が非対応の場合は、切り替えずに例外（何も書き込まない）
         var transport = new FakeMultiBlockTransport { SupportsMultiBlock = false };
-        using var mcpx = new McpX(transport);
-        mcpx.BatchWrite(Prefix.D, "0", new short[] { 7, 8 });
-        mcpx.BatchWrite(Prefix.D, "100", new short[] { 9 });
-        transport.Requests.Clear();
-
-        // 1回目: 0406 が C059 → 範囲ごとの 0401 でやり直す
-        short[] a = []; short[] b2 = [];
-        mcpx.Read(b => b.Add<short>(Prefix.D, "0", 2, v => a = v).Add<short>(Prefix.D, "100", 1, v => b2 = v));
-        CollectionAssert.AreEqual(new ushort[] { 0x0406, 0x0401, 0x0401 }, transport.Requests.Select(q => q.Command).ToArray());
-        CollectionAssert.AreEqual(new short[] { 7, 8 }, a);
-        CollectionAssert.AreEqual(new short[] { 9 }, b2);
-        transport.Requests.Clear();
-
-        // 2回目以降は 0406 / 1406 を送らない
-        await mcpx.ReadAsync(b => b.Add<short>(Prefix.D, "0", 2, _ => { }).Add<short>(Prefix.D, "100", 1, _ => { }));
-        mcpx.Write(b => b.Add(Prefix.D, "0", new short[] { 1 }).Add(Prefix.D, "100", new short[] { 2 }));
-        CollectionAssert.AreEqual(new ushort[] { 0x0401, 0x0401, 0x1401, 0x1401 }, transport.Requests.Select(q => q.Command).ToArray());
-        CollectionAssert.AreEqual(new short[] { 1 }, mcpx.BatchRead<short>(Prefix.D, "0", 1));
-    }
-
-    [TestMethod]
-    public void TestIntegratedAutoFallbackWrite()
-    {
-        var transport = new FakeMultiBlockTransport { SupportsMultiBlock = false };
-        using var mcpx = new McpX(transport);
-
-        mcpx.Write(b => b.Add(Prefix.D, "0", new short[] { 1, 2 }).Add(Prefix.D, "100", new short[] { 3 }));
-
-        CollectionAssert.AreEqual(new ushort[] { 0x1406, 0x1401, 0x1401 }, transport.Requests.Select(q => q.Command).ToArray());
-        CollectionAssert.AreEqual(new short[] { 1, 2 }, mcpx.BatchRead<short>(Prefix.D, "0", 2));
-        CollectionAssert.AreEqual(new short[] { 3 }, mcpx.BatchRead<short>(Prefix.D, "100", 1));
-    }
-
-    [TestMethod]
-    public void TestIntegratedNever()
-    {
-        var transport = new FakeMultiBlockTransport();
-        using var mcpx = new McpX(transport) { MultiBlockAccess = MultiBlockAccessMode.Never };
-
-        mcpx.Read(b => b.Add<short>(Prefix.D, "0", 2, _ => { }).Add<short>(Prefix.D, "100", 1, _ => { }));
-
-        CollectionAssert.AreEqual(new ushort[] { 0x0401, 0x0401 }, transport.Requests.Select(q => q.Command).ToArray());
-    }
-
-    [TestMethod]
-    public async Task TestIntegratedAlways()
-    {
-        using var mcpx = new McpX(new FakeMultiBlockTransport { SupportsMultiBlock = false }) { MultiBlockAccess = MultiBlockAccessMode.Always };
+        using var mcpx = new McpX(transport) { UseMultiBlockAccess = true };
 
         var ex = await Assert.ThrowsExceptionAsync<McProtocolException>(() =>
             mcpx.ReadAsync(b => b.Add<short>(Prefix.D, "0", 2, _ => { }).Add<short>(Prefix.D, "100", 1, _ => { })));
         Assert.AreEqual((ushort)0xC059, ex.ErrorCode);
+
+        Assert.ThrowsException<McProtocolException>(() =>
+            mcpx.Write(b => b.Add(Prefix.D, "0", new short[] { 1 }).Add(Prefix.D, "100", new short[] { 2 })));
+        CollectionAssert.AreEqual(new ushort[] { 0x0406, 0x1406 }, transport.Requests.Select(q => q.Command).ToArray());
     }
 
     /// <summary>

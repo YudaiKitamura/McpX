@@ -8,22 +8,17 @@ namespace McpXLib;
 // 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）
 public partial class McpX
 {
-    // コマンド・サブコマンドが非対応の場合のエラーコード
-    private const ushort UNSUPPORTED_COMMAND_ERROR_CODE = 0xC059;
-
-    // MultiBlockAccessMode.Auto で、接続先が複数ブロックに非対応と判明した場合に true
-    private bool isMultiBlockUnsupported;
-
     /// <summary>
     /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、
-    /// 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使うかどうかを指定します。（デフォルトは、<c>MultiBlockAccessMode.Auto</c>です。）
+    /// 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）
     /// </summary>
     /// <remarks>
-    /// <c>Auto</c> の場合、接続先が複数ブロックに非対応（エラーコード <c>C059</c>）であれば、
-    /// 範囲ごとの一括読出し・書込み（0401 / 1401）でやり直し、以降このインスタンスでは複数ブロックを使いません。<br/>
+    /// <c>true</c> の場合、連続アクセスの範囲が2つ以上あれば、複数ブロックで1回の交信にまとめます。<br/>
     /// CPUユニットの内蔵Ethernetポートなど、接続先によっては複数ブロックに対応していません。
+    /// 非対応の接続先で <c>true</c> にすると、PLCからエラーコード <c>C059</c> が返り <see cref="McProtocolException"/> をスローするため、
+    /// 接続先が対応している場合のみ指定してください。
     /// </remarks>
-    public MultiBlockAccessMode MultiBlockAccess { get; set; } = MultiBlockAccessMode.Auto;
+    public bool UseMultiBlockAccess { get; set; }
 
     /// <summary>
     /// 複数ブロック一括読み込み（ビルダー）
@@ -43,7 +38,7 @@ public partial class McpX
     {
         var builder = new BlockReadBuilder();
         build(builder);
-        ExecuteBlockRead(builder.entries, new BlockProgress());
+        ExecuteBlockRead(builder.entries);
     }
 
     /// <summary>
@@ -62,7 +57,7 @@ public partial class McpX
     {
         var builder = new BlockReadBuilder();
         build(builder);
-        await ExecuteBlockReadAsync(builder.entries, new BlockProgress());
+        await ExecuteBlockReadAsync(builder.entries);
     }
 
     /// <summary>
@@ -84,7 +79,7 @@ public partial class McpX
     {
         var builder = new BlockWriteBuilder();
         build(builder);
-        ExecuteBlockWrite(builder.entries, new BlockProgress());
+        ExecuteBlockWrite(builder.entries);
     }
 
     /// <summary>
@@ -103,13 +98,7 @@ public partial class McpX
     {
         var builder = new BlockWriteBuilder();
         build(builder);
-        await ExecuteBlockWriteAsync(builder.entries, new BlockProgress());
-    }
-
-    // 送信済みのリクエスト数（1回目が非対応エラーの場合のみ、従来の方法でやり直すために使う）
-    private sealed class BlockProgress
-    {
-        internal int CompletedRequests;
+        await ExecuteBlockWriteAsync(builder.entries);
     }
 
     // 1リクエスト分のブロック。entryIndex の範囲の、offset（点）から Block.Points 点分。
@@ -123,26 +112,7 @@ public partial class McpX
     }
 
     // 統合アクセスで複数ブロックを使うか（まとめる範囲が2つ以上の場合のみ効果がある）
-    private bool CanUseMultiBlock(int entryCount)
-    {
-        if (entryCount < 2)
-        {
-            return false;
-        }
-
-        return MultiBlockAccess switch
-        {
-            MultiBlockAccessMode.Always => true,
-            MultiBlockAccessMode.Never => false,
-            _ => !isMultiBlockUnsupported,
-        };
-    }
-
-    // 1回目のリクエストで非対応エラーになった場合のみ、従来の方法でやり直す
-    private bool IsMultiBlockFallback(McProtocolException ex, BlockProgress progress)
-        => MultiBlockAccess == MultiBlockAccessMode.Auto
-            && ex.ErrorCode == UNSUPPORTED_COMMAND_ERROR_CODE
-            && progress.CompletedRequests == 0;
+    private bool CanUseMultiBlock(int entryCount) => UseMultiBlockAccess && entryCount >= 2;
 
     // 範囲を maxPoints 点ごとのブロックに分け、上限に収まるようにリクエストへ詰める。
     // ビットデバイスは1点=16デバイス分のため、分割時の先頭アドレスを16倍進める。
@@ -198,14 +168,13 @@ public partial class McpX
             (i, offset) => entries[i].Words.Skip(offset).ToArray(),
             MultiBlockWriteCommand.GetBlockCost(ProcessorSeries));
 
-    private void ExecuteBlockRead(IReadOnlyList<BlockReadEntry> entries, BlockProgress progress)
+    private void ExecuteBlockRead(IReadOnlyList<BlockReadEntry> entries)
     {
         var buffers = entries.Select(e => new ushort[e.Points]).ToArray();
 
         foreach (var request in PackReadBlocks(entries))
         {
             var words = MultiBlockRead(request.Select(c => c.Block).ToArray());
-            progress.CompletedRequests++;
             CopyToBuffers(request, words, buffers);
         }
 
@@ -216,14 +185,13 @@ public partial class McpX
         }
     }
 
-    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries, BlockProgress progress)
+    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries)
     {
         var buffers = entries.Select(e => new ushort[e.Points]).ToArray();
 
         foreach (var request in PackReadBlocks(entries))
         {
             var words = await MultiBlockReadAsync(request.Select(c => c.Block).ToArray());
-            progress.CompletedRequests++;
             CopyToBuffers(request, words, buffers);
         }
 
@@ -241,21 +209,19 @@ public partial class McpX
         }
     }
 
-    private void ExecuteBlockWrite(IReadOnlyList<BlockWriteEntry> entries, BlockProgress progress)
+    private void ExecuteBlockWrite(IReadOnlyList<BlockWriteEntry> entries)
     {
         foreach (var request in PackWriteBlocks(entries))
         {
             MultiBlockWrite(request.Select(c => c.Block).ToArray());
-            progress.CompletedRequests++;
         }
     }
 
-    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries, BlockProgress progress)
+    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries)
     {
         foreach (var request in PackWriteBlocks(entries))
         {
             await MultiBlockWriteAsync(request.Select(c => c.Block).ToArray());
-            progress.CompletedRequests++;
         }
     }
 }

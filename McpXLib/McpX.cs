@@ -35,6 +35,10 @@ public partial class McpX : Mcp
     /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
     /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
     /// <param name="processorSeries">PLCのシリーズを指定します。MELSEC iQ-Rシリーズへ拡張デバイス指定で交信する場合に<c>ProcessorSeries.iQR</c>を指定します。（デフォルトは、MELSEC-Q/Lシリーズ:<c>ProcessorSeries.Q</c>です。）</param>
+    /// <param name="useMultiBlockAccess">
+    /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。
+    /// 接続先が対応している場合のみ指定してください。（デフォルトは、<c>false</c>です。詳細は <see cref="UseMultiBlockAccess"/> を参照してください。）
+    /// </param>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(
@@ -45,7 +49,8 @@ public partial class McpX : Mcp
         bool isUdp = false,
         RequestFrame requestFrame = RequestFrame.E3,
         ushort timeoutMilliseconds = 5000,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
+        ProcessorSeries processorSeries = ProcessorSeries.Q,
+        bool useMultiBlockAccess = false
     ) : base (
         ip: ip,
         port: port,
@@ -57,6 +62,7 @@ public partial class McpX : Mcp
     )
     {
         this.password = password;
+        UseMultiBlockAccess = useMultiBlockAccess;
 
         if (password != null)
         {
@@ -1189,7 +1195,7 @@ public partial class McpX : Mcp
     /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, ushort)"/>）、点数を指定しない
     /// <see cref="ReadBuilder.Add{T}(Prefix, string, Action{T})"/> はランダムアクセス
     /// （<see cref="RandomRead(Action{RandomReadBuilder})"/>）で読み込まれます。<br/>
-    /// 連続アクセスの範囲が2つ以上ある場合は、<see cref="MultiBlockAccess"/> の設定に従い、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。（接続先が非対応の場合は範囲ごとに読み込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。<br/>
     /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
     /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
     /// </remarks>
@@ -1206,17 +1212,8 @@ public partial class McpX : Mcp
         var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
         if (CanUseMultiBlock(blocks.Count))
         {
-            var progress = new BlockProgress();
-            try
-            {
-                ExecuteBlockRead(blocks.Select(e => e.block!).ToList(), progress);
-                remaining = builder.batchEntries.Where(e => e.block == null).ToList();
-            }
-            catch (McProtocolException ex) when (IsMultiBlockFallback(ex, progress))
-            {
-                // 接続先が複数ブロックに非対応。以降は範囲ごとの一括読出しを使う。
-                isMultiBlockUnsupported = true;
-            }
+            ExecuteBlockRead(blocks.Select(e => e.block!).ToList());
+            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
         }
 
         foreach (var entry in remaining)
@@ -1233,7 +1230,7 @@ public partial class McpX : Mcp
     /// <remarks>
     /// 連続デバイスと非連続デバイスを、1つのビルダーでまとめて非同期で読み込みます。<br/>
     /// 点数を指定したデバイスは連続アクセス、点数を指定しないデバイスはランダムアクセスで読み込まれます。<br/>
-    /// 連続アクセスの範囲が2つ以上ある場合は、<see cref="MultiBlockAccess"/> の設定に従い、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。（接続先が非対応の場合は範囲ごとに読み込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。<br/>
     /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
@@ -1249,17 +1246,8 @@ public partial class McpX : Mcp
         var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
         if (CanUseMultiBlock(blocks.Count))
         {
-            var progress = new BlockProgress();
-            try
-            {
-                await ExecuteBlockReadAsync(blocks.Select(e => e.block!).ToList(), progress);
-                remaining = builder.batchEntries.Where(e => e.block == null).ToList();
-            }
-            catch (McProtocolException ex) when (IsMultiBlockFallback(ex, progress))
-            {
-                // 接続先が複数ブロックに非対応。以降は範囲ごとの一括読出しを使う。
-                isMultiBlockUnsupported = true;
-            }
+            await ExecuteBlockReadAsync(blocks.Select(e => e.block!).ToList());
+            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
         }
 
         foreach (var entry in remaining)
@@ -1279,7 +1267,7 @@ public partial class McpX : Mcp
     /// 連続アクセス（<see cref="BatchWrite{T}(Prefix, string, T[])"/>）、単一の値を指定した
     /// <see cref="WriteBuilder.Add{T}(Prefix, string, T)"/> はランダムアクセス
     /// （<see cref="RandomWrite(Action{RandomWriteBuilder})"/>）で書き込まれます。<br/>
-    /// 連続アクセスの範囲が2つ以上ある場合は、<see cref="MultiBlockAccess"/> の設定に従い、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（接続先が非対応の場合は範囲ごとに書き込みます。ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
     /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
@@ -1295,18 +1283,8 @@ public partial class McpX : Mcp
         var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
         if (CanUseMultiBlock(blocks.Count))
         {
-            var progress = new BlockProgress();
-            try
-            {
-                ExecuteBlockWrite(blocks.Select(e => e.block!).ToList(), progress);
-                remaining = builder.batchEntries.Where(e => e.block == null).ToList();
-            }
-            catch (McProtocolException ex) when (IsMultiBlockFallback(ex, progress))
-            {
-                // 接続先が複数ブロックに非対応（1回目の要求で失敗したため、何も書き込まれていない）。
-                // 以降は範囲ごとの一括書込みを使う。
-                isMultiBlockUnsupported = true;
-            }
+            ExecuteBlockWrite(blocks.Select(e => e.block!).ToList());
+            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
         }
 
         foreach (var entry in remaining)
@@ -1323,7 +1301,7 @@ public partial class McpX : Mcp
     /// <remarks>
     /// 連続デバイスと非連続デバイスに、1つのビルダーでまとめて非同期で書き込みます。<br/>
     /// 配列を指定したデバイスは連続アクセス、単一の値を指定したデバイスはランダムアクセスで書き込まれます。
-    /// 連続アクセスの範囲が2つ以上ある場合は、<see cref="MultiBlockAccess"/> の設定に従い、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（接続先が非対応の場合は範囲ごとに書き込みます。ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
@@ -1338,18 +1316,8 @@ public partial class McpX : Mcp
         var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
         if (CanUseMultiBlock(blocks.Count))
         {
-            var progress = new BlockProgress();
-            try
-            {
-                await ExecuteBlockWriteAsync(blocks.Select(e => e.block!).ToList(), progress);
-                remaining = builder.batchEntries.Where(e => e.block == null).ToList();
-            }
-            catch (McProtocolException ex) when (IsMultiBlockFallback(ex, progress))
-            {
-                // 接続先が複数ブロックに非対応（1回目の要求で失敗したため、何も書き込まれていない）。
-                // 以降は範囲ごとの一括書込みを使う。
-                isMultiBlockUnsupported = true;
-            }
+            await ExecuteBlockWriteAsync(blocks.Select(e => e.block!).ToList());
+            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
         }
 
         foreach (var entry in remaining)

@@ -47,9 +47,12 @@ public sealed class TestMcpXSimulator
             Assert.AreEqual(RequestFrame.E3, simulator.RequestFrame);
             Assert.IsFalse(simulator.IsAscii);
 
-            using var e4 = new McpXSimulator(9, 4, requestFrame: RequestFrame.E4, processorSeries: ProcessorSeries.Q);
+            Assert.IsFalse(simulator.UseMultiBlockAccess);
+
+            using var e4 = new McpXSimulator(9, 4, requestFrame: RequestFrame.E4, processorSeries: ProcessorSeries.Q, useMultiBlockAccess: true);
             Assert.AreEqual(RequestFrame.E4, e4.RequestFrame);
             Assert.AreEqual(ProcessorSeries.Q, e4.ProcessorSeries);
+            Assert.IsTrue(e4.UseMultiBlockAccess);
         }
         finally
         {
