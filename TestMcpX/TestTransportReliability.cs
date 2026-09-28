@@ -339,4 +339,34 @@ public sealed class TestTransportReliability
         var second = Packet("second");
         CollectionAssert.AreEqual(second, transport.Request(second, parser));
     }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public void TestTcpConnectionRefusedThrowsSocketException()
+    {
+        // 待ち受けていないポートを用意する
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+
+        // AggregateException に包まれず、SocketException がそのままスローされること
+        var ex = Assert.ThrowsException<SocketException>(() => new TcpPlcTransport("127.0.0.1", port, 5000));
+        Assert.AreEqual(SocketError.ConnectionRefused, ex.SocketErrorCode);
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public async Task TestTcpZeroTimeoutMeansInfinite()
+    {
+        var (port, cts) = StartTcpServer(SlowEcho);
+        using var _ = cts;
+
+        // timeout = 0 でも接続でき（無期限）、要求も完了すること
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 0);
+        var packet = Packet("zero-timeout");
+
+        CollectionAssert.AreEqual(packet, transport.Request(packet, parser));
+        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser));
+    }
 }

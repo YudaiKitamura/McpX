@@ -25,12 +25,23 @@ internal class TcpPlcTransport : IPlcTransport
         client.ReceiveTimeout = timeout;
 
         var task = client.ConnectAsync(ip, port);
-        if (!task.Wait(timeout))
+
+        // Task.Wait は接続失敗時に AggregateException をスローして後始末を飛ばすため、WaitAny で完了だけを待つ。
+        // timeout が 0 の場合は、要求と同じく無期限とする。
+        if (Task.WaitAny([task], timeout == 0 ? Timeout.Infinite : timeout) != 0)
         {
             task.ObserveException();
-            client.Close();
+            client.Dispose();
             throw new TimeoutException("Connection Timeout");
         }
+
+        if (task.IsFaulted)
+        {
+            client.Dispose();
+            // AggregateException を外し、SocketException などをそのままスローする
+            task.GetAwaiter().GetResult();
+        }
+
         stream = client.GetStream();
     }
 

@@ -39,6 +39,8 @@ public partial class McpX : Mcp
     /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。
     /// 接続先が対応している場合のみ指定してください。（デフォルトは、<c>false</c>です。詳細は <see cref="UseMultiBlockAccess"/> を参照してください。）
     /// </param>
+    /// <exception cref="TimeoutException">指定したタイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(

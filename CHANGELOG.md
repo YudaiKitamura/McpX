@@ -3,10 +3,13 @@
 - Fixed async TCP requests never timing out when the PLC does not respond (`NetworkStream.ReadAsync` ignores `ReceiveTimeout`).
 - Fixed concurrent requests on the same instance (async TCP and UDP) interleaving their packets, which could swap responses between requests. Requests are now processed one at a time.
 - Fixed the next request returning a stale (late) response after a timeout or communication error. TCP now closes the connection, and UDP recreates the socket on sync timeouts as well.
+- Fixed a refused TCP connection throwing `AggregateException` and leaking the `TcpClient`. It now disposes the client and throws the underlying `SocketException`.
+- Fixed `timeoutMilliseconds = 0` always failing to connect over TCP. `0` now means no timeout, as for requests.
 
 ### Changed
 - The timeout (`timeoutMilliseconds`) now applies to the whole request, from sending to receiving the complete response, for both sync and async TCP requests (previously per read call).
 - After a TCP timeout or communication error, the connection is closed and subsequent requests throw `IOException`. Create a new instance to reconnect.
+- **Breaking:** A refused TCP connection now throws `SocketException` instead of `AggregateException`.
 
 ### Removed
 - **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.
