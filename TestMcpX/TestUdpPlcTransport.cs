@@ -188,7 +188,8 @@ public class TestUdpPlcTransport
         cts.Cancel();
         
         Assert.IsInstanceOfType<SocketException>(ex);
-        Assert.AreEqual("Connection timed out", ex.Message);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ex.SocketErrorCode);
 
         var ex2 = Assert.ThrowsException<SocketException>(() => {
             // 実在しない、テスト用IPアドレス
@@ -204,7 +205,8 @@ public class TestUdpPlcTransport
         });
         
         Assert.IsInstanceOfType<SocketException>(ex2);
-        Assert.AreEqual("Connection timed out", ex2.Message);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ex2.SocketErrorCode);
     }
 
     [TestMethod]
@@ -225,7 +227,8 @@ public class TestUdpPlcTransport
         });
 
         Assert.IsInstanceOfType<SocketException>(ex);
-        Assert.AreEqual("Connection timed out", ex.Message);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ex.SocketErrorCode);
 
         var ex2 = await Assert.ThrowsExceptionAsync<SocketException>(async () => {
             // 実在しない、テスト用IPアドレス
@@ -241,7 +244,8 @@ public class TestUdpPlcTransport
         });
         
         Assert.IsInstanceOfType<SocketException>(ex2);
-        Assert.AreEqual("Connection timed out", ex2.Message);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ex2.SocketErrorCode);
         
         cts.Cancel();
     }

@@ -32,7 +32,17 @@ internal class UdpPlcTransport : IPlcTransport
         udp.Send(packet, packet.Length, remoteEndPoint);
 
         IPEndPoint remote = remoteEndPoint;
-        return udp.Receive(ref remote);
+        try
+        {
+            return udp.Receive(ref remote);
+        }
+        catch (SocketException ex) when (ex.SocketErrorCode == SocketError.TimedOut)
+        {
+            // 遅れて届いた応答を次の要求が受け取らないよう、ソケットを作り直す
+            udp.Dispose();
+            udp = CreateClient();
+            throw;
+        }
     }
 
     private async Task<byte[]> SendReceiveAsync(byte[] packet)

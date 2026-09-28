@@ -244,4 +244,99 @@ public sealed class TestTransportReliability
         AssertTimedOut(ex);
         Assert.IsTrue(elapsed.ElapsedMilliseconds < 1500, $"elapsed: {elapsed.ElapsedMilliseconds}ms");
     }
+
+    // 最初の要求だけ応答を 800ms 遅らせ、以降はすぐに返すエコー
+    private static Func<NetworkStream, byte[], Task> FirstResponseDelayedEcho(Action onRequest)
+    {
+        int count = 0;
+        return async (stream, request) =>
+        {
+            onRequest();
+            if (Interlocked.Increment(ref count) == 1)
+            {
+                await Task.Delay(800);
+            }
+            await stream.WriteAsync(request, 0, request.Length);
+        };
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public async Task TestTcpConnectionIsClosedAfterAsyncTimeout()
+    {
+        int requests = 0;
+        var (port, cts) = StartTcpServer(FirstResponseDelayedEcho(() => Interlocked.Increment(ref requests)));
+        using var _ = cts;
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+
+        await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("first"), parser));
+
+        // 遅れて届いた1回目の応答を2回目の応答として返さず、例外になること
+        await Task.Delay(500);
+        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("second"), parser));
+        StringAssert.Contains(ex.Message, "closed");
+        Assert.ThrowsException<IOException>(() => transport.Request(Packet("third"), parser));
+
+        // 閉じた後の要求は送信されないこと
+        Assert.AreEqual(1, requests);
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public void TestTcpConnectionIsClosedAfterSyncTimeout()
+    {
+        var (port, cts) = StartTcpServer(FirstResponseDelayedEcho(() => { }));
+        using var _ = cts;
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+
+        Assert.ThrowsException<IOException>(() => transport.Request(Packet("first"), parser));
+
+        Thread.Sleep(500);
+        var ex = Assert.ThrowsException<IOException>(() => transport.Request(Packet("second"), parser));
+        StringAssert.Contains(ex.Message, "closed");
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public void TestUdpSyncTimeoutDoesNotReturnLateResponse()
+    {
+        // 最初の要求だけ応答を 800ms 遅らせる UDP エコーサーバー
+        var server = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        int port = ((IPEndPoint)server.Client.LocalEndPoint!).Port;
+        using var cts = new CancellationTokenSource();
+        _ = Task.Run(async () =>
+        {
+            int count = 0;
+            try
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    var result = await server.ReceiveAsync(cts.Token);
+                    int delay = ++count == 1 ? 800 : 0;
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(delay);
+                        await server.SendAsync(result.Buffer, result.Buffer.Length, result.RemoteEndPoint);
+                    });
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                server.Close();
+            }
+        });
+
+        using var transport = new UdpPlcTransport("127.0.0.1", port, 500);
+
+        var ex = Assert.ThrowsException<SocketException>(() => transport.Request(Packet("first"), parser));
+        Assert.AreEqual(SocketError.TimedOut, ex.SocketErrorCode);
+
+        // 1回目の遅延応答が届いた後でも、2回目は自分の応答を受け取ること（UDP はソケットを作り直して継続利用できる）
+        Thread.Sleep(500);
+        var second = Packet("second");
+        CollectionAssert.AreEqual(second, transport.Request(second, parser));
+    }
 }

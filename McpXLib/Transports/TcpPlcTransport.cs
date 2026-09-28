@@ -13,6 +13,9 @@ internal class TcpPlcTransport : IPlcTransport
     private readonly SemaphoreSlim gate = new(1, 1);
     // 1要求（送信開始〜応答受信完了）の期限（ミリ秒）。0 は無期限。
     private readonly ushort timeout;
+    // タイムアウト・通信エラーで接続を閉じたか。閉じた後は応答がずれるため再利用しない。
+    // 要求中の読み書きは gate の内側で行う（gate の取得・解放で最新の値が見えるため volatile は不要）。
+    private bool broken;
 
     internal TcpPlcTransport(string ip, int port, ushort timeout)
     {
@@ -33,8 +36,7 @@ internal class TcpPlcTransport : IPlcTransport
 
     public void Dispose()
     {
-        stream.Dispose();
-        client.Dispose();
+        Break();
     }
 
     public byte[] Request(byte[] packet, IReceiveLengthParser contentLength)
@@ -42,16 +44,26 @@ internal class TcpPlcTransport : IPlcTransport
         gate.Wait();
         try
         {
-            var elapsed = Stopwatch.StartNew();
+            ThrowIfBroken();
+            try
+            {
+                var elapsed = Stopwatch.StartNew();
 
-            stream.WriteTimeout = GetRemaining(elapsed);
-            stream.Write(packet, 0, packet.Length);
+                stream.WriteTimeout = GetRemaining(elapsed);
+                stream.Write(packet, 0, packet.Length);
 
-            var headerBytes = GetReceivePacket(contentLength.GetHeaderLength(), elapsed);
+                var headerBytes = GetReceivePacket(contentLength.GetHeaderLength(), elapsed);
 
-            var length = contentLength.ParseContentLength(headerBytes);
+                var length = contentLength.ParseContentLength(headerBytes);
 
-            return headerBytes.Concat(GetReceivePacket(length, elapsed)).ToArray();
+                return headerBytes.Concat(GetReceivePacket(length, elapsed)).ToArray();
+            }
+            catch
+            {
+                // 応答の途中で失敗すると残りがストリームに残り、次の要求が古い応答を読むため接続を閉じる。
+                Break();
+                throw;
+            }
         }
         finally
         {
@@ -64,20 +76,45 @@ internal class TcpPlcTransport : IPlcTransport
         await gate.WaitAsync();
         try
         {
-            var elapsed = Stopwatch.StartNew();
+            ThrowIfBroken();
+            try
+            {
+                var elapsed = Stopwatch.StartNew();
 
-            await WithDeadlineAsync(stream.WriteAsync(packet, 0, packet.Length), elapsed);
+                await WithDeadlineAsync(stream.WriteAsync(packet, 0, packet.Length), elapsed);
 
-            var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength(), elapsed);
+                var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength(), elapsed);
 
-            var length = contentLength.ParseContentLength(headerBytes);
+                var length = contentLength.ParseContentLength(headerBytes);
 
-            return headerBytes.Concat(await GetReceivePacketAsync(length, elapsed)).ToArray();
+                return headerBytes.Concat(await GetReceivePacketAsync(length, elapsed)).ToArray();
+            }
+            catch
+            {
+                // 打ち切った受信が後から応答を読み込むこともあるため、接続を閉じる。
+                Break();
+                throw;
+            }
         }
         finally
         {
             gate.Release();
         }
+    }
+
+    private void ThrowIfBroken()
+    {
+        if (broken)
+        {
+            throw new IOException("The connection was closed due to a previous error. Create a new instance to reconnect.");
+        }
+    }
+
+    private void Break()
+    {
+        broken = true;
+        stream.Dispose();
+        client.Dispose();
     }
 
     private byte[] GetReceivePacket(int expectedLength, Stopwatch elapsed)
