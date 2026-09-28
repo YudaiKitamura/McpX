@@ -10,6 +10,8 @@ internal class UdpPlcTransport : IPlcTransport
     private UdpClient udp;
     private readonly IPEndPoint remoteEndPoint;
     private readonly ushort timeout;
+    // 同期・非同期の要求を1つずつ処理する（応答の取り違えを防ぐ）。
+    private readonly SemaphoreSlim gate = new(1, 1);
 
     internal UdpPlcTransport(string ip, int port, ushort timeout)
     {
@@ -63,11 +65,27 @@ internal class UdpPlcTransport : IPlcTransport
 
     public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        return SendReceive(packet);
+        gate.Wait();
+        try
+        {
+            return SendReceive(packet);
+        }
+        finally
+        {
+            gate.Release();
+        }
     }
 
     public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        return await SendReceiveAsync(packet);
+        await gate.WaitAsync();
+        try
+        {
+            return await SendReceiveAsync(packet);
+        }
+        finally
+        {
+            gate.Release();
+        }
     }
 }

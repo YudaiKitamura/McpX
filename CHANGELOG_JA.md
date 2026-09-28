@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Fixed
+- 同じインスタンスで要求を並行実行（TCP の非同期・UDP）すると、送受信が交錯して応答が入れ替わることがある不具合を修正。要求を1つずつ処理するように変更。
+
 ### Removed
 - **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。
 

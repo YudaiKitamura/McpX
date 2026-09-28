@@ -9,7 +9,8 @@ internal class TcpPlcTransport : IPlcTransport
 {
     private readonly TcpClient client;
     private readonly NetworkStream stream;
-    private readonly object syncLock = new();
+    // 同期・非同期の要求を1つずつ処理する（送受信の交錯を防ぐ）。
+    private readonly SemaphoreSlim gate = new(1, 1);
 
     internal TcpPlcTransport(string ip, int port, ushort timeout)
     {
@@ -35,7 +36,8 @@ internal class TcpPlcTransport : IPlcTransport
 
     public byte[] Request(byte[] packet, IReceiveLengthParser contentLength)
     {
-        lock (syncLock)
+        gate.Wait();
+        try
         {
             stream.Write(packet, 0, packet.Length);
 
@@ -45,17 +47,29 @@ internal class TcpPlcTransport : IPlcTransport
 
             return headerBytes.Concat(GetReceivePacket(length)).ToArray();
         }
+        finally
+        {
+            gate.Release();
+        }
     }
 
     public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser contentLength)
     {
-        await stream.WriteAsync(packet, 0, packet.Length);
+        await gate.WaitAsync();
+        try
+        {
+            await stream.WriteAsync(packet, 0, packet.Length);
 
-        var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength());
+            var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength());
 
-        var length = contentLength.ParseContentLength(headerBytes);
+            var length = contentLength.ParseContentLength(headerBytes);
 
-        return headerBytes.Concat(await GetReceivePacketAsync(length)).ToArray();
+            return headerBytes.Concat(await GetReceivePacketAsync(length)).ToArray();
+        }
+        finally
+        {
+            gate.Release();
+        }
     }
 
     private byte[] GetReceivePacket(int expectedLength)

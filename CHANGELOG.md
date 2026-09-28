@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Fixed
+- Fixed concurrent requests on the same instance (async TCP and UDP) interleaving their packets, which could swap responses between requests. Requests are now processed one at a time.
+
 ### Removed
 - **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.
 
