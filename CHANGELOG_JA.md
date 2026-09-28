@@ -1,6 +1,10 @@
 ## [Unreleased]
 ### Fixed
+- PLC が応答しない場合に、TCP の非同期要求がタイムアウトせず永久に待ち続ける不具合を修正（`NetworkStream.ReadAsync` は `ReceiveTimeout` を参照しないため）。
 - 同じインスタンスで要求を並行実行（TCP の非同期・UDP）すると、送受信が交錯して応答が入れ替わることがある不具合を修正。要求を1つずつ処理するように変更。
+
+### Changed
+- TCP のタイムアウト（`timeoutMilliseconds`）を、同期・非同期とも「送信開始から応答の受信完了まで」の要求全体に対する期限に変更（従来は1回の読み込みごと）。
 
 ### Removed
 - **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。

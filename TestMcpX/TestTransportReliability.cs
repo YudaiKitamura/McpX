@@ -176,4 +176,72 @@ public sealed class TestTransportReliability
             CollectionAssert.AreEqual(packet, response);
         }
     }
+
+    private static void AssertTimedOut(IOException ex)
+    {
+        Assert.IsInstanceOfType<SocketException>(ex.InnerException);
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
+    }
+
+    // 応答を返さないサーバー
+    private static Task NoResponse(NetworkStream stream, byte[] request) => Task.Delay(Timeout.Infinite);
+
+    // 応答を1バイトずつ 200ms 間隔で返すサーバー（1回の待ちは期限内だが、合計は期限を超える）
+    private static async Task TrickleEcho(NetworkStream stream, byte[] request)
+    {
+        foreach (var b in request)
+        {
+            await stream.WriteAsync(new[] { b }, 0, 1);
+            await Task.Delay(200);
+        }
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public async Task TestTcpAsyncRequestTimesOutWhenNoResponse()
+    {
+        var (port, cts) = StartTcpServer(NoResponse);
+        using var _ = cts;
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+
+        var elapsed = System.Diagnostics.Stopwatch.StartNew();
+        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("no-response"), parser));
+        elapsed.Stop();
+
+        AssertTimedOut(ex);
+        Assert.IsTrue(elapsed.ElapsedMilliseconds is >= 400 and < 3000, $"elapsed: {elapsed.ElapsedMilliseconds}ms");
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public void TestTcpRequestDeadlineCoversWholeResponse()
+    {
+        var (port, cts) = StartTcpServer(TrickleEcho);
+        using var _ = cts;
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+
+        // 応答は 2 + 10 バイト = 約 2.4 秒かかるが、期限 500ms で打ち切られること
+        var elapsed = System.Diagnostics.Stopwatch.StartNew();
+        var ex = Assert.ThrowsException<IOException>(() => transport.Request(Packet("0123456789"), parser));
+        elapsed.Stop();
+
+        AssertTimedOut(ex);
+        Assert.IsTrue(elapsed.ElapsedMilliseconds < 1500, $"elapsed: {elapsed.ElapsedMilliseconds}ms");
+    }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public async Task TestTcpAsyncRequestDeadlineCoversWholeResponse()
+    {
+        var (port, cts) = StartTcpServer(TrickleEcho);
+        using var _ = cts;
+        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+
+        var elapsed = System.Diagnostics.Stopwatch.StartNew();
+        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("0123456789"), parser));
+        elapsed.Stop();
+
+        AssertTimedOut(ex);
+        Assert.IsTrue(elapsed.ElapsedMilliseconds < 1500, $"elapsed: {elapsed.ElapsedMilliseconds}ms");
+    }
 }
