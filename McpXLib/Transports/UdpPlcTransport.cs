@@ -25,7 +25,7 @@ internal class UdpPlcTransport : IPlcTransport
         return client;
     }
 
-    public byte[] Request(byte[] packet)
+    private byte[] SendReceive(byte[] packet)
     {
         udp.Send(packet, packet.Length, remoteEndPoint);
 
@@ -33,7 +33,7 @@ internal class UdpPlcTransport : IPlcTransport
         return udp.Receive(ref remote);
     }
 
-    public async Task<byte[]> RequestAsync(byte[] packet)
+    private async Task<byte[]> SendReceiveAsync(byte[] packet)
     {
         await udp.SendAsync(packet, packet.Length, remoteEndPoint);
 
@@ -63,11 +63,11 @@ internal class UdpPlcTransport : IPlcTransport
 
     public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        return Request(packet);
+        return SendReceive(packet);
     }
 
     public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        return await RequestAsync(packet);
+        return await SendReceiveAsync(packet);
     }
 }

@@ -1,3 +1,7 @@
+## [Unreleased]
+### Removed
+- **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。
+
 ## [0.11.0] - 2026-09-28
 ### Added
 - 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）の `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)`（および非同期版）を追加。上限（120ブロック、`ProcessorSeries.iQR` は60ブロック、合計960点）を超える場合は自動で分割。

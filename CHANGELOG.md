@@ -1,3 +1,7 @@
+## [Unreleased]
+### Removed
+- **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.
+
 ## [0.11.0] - 2026-09-28
 ### Added
 - Added multiple block batch read / write (commands 0406 / 1406): `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)` and their async versions. Requests exceeding the limits (120 blocks, or 60 for `ProcessorSeries.iQR`; 960 points) are split automatically.

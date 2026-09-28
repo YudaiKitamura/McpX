@@ -48,12 +48,6 @@ internal sealed class FakePlcTransport : IPlcTransport
     public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
         => Task.FromResult(Request(packet, receiveLengthParser));
 
-    [Obsolete]
-    public byte[] Request(byte[] packet) => throw new NotSupportedException();
-
-    [Obsolete]
-    public Task<byte[]> RequestAsync(byte[] packet) => throw new NotSupportedException();
-
     public void Dispose()
     {
     }

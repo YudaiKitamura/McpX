@@ -8,16 +8,7 @@ internal class CommandPacketBuilder : IPacketBuilder
     private readonly byte[] command;
     private readonly byte[] subCommand;
     private readonly IPayloadBuilder? payloadBuilder;
-    private byte[] monitoringTimer;
-
-    [Obsolete]
-    internal CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, byte[] monitoringTimer)
-    {   
-        this.command = command;
-        this.subCommand = subCommand;
-        this.payloadBuilder = payloadBuilder;
-        this.monitoringTimer = monitoringTimer;
-    }
+    private readonly byte[] monitoringTimer;
 
     internal CommandPacketBuilder(byte[] command, byte[] subCommand, IPayloadBuilder payloadBuilder, ushort monitoringTimer)
     {
@@ -30,14 +21,6 @@ internal class CommandPacketBuilder : IPacketBuilder
         this.subCommand = subCommand;
         this.payloadBuilder = payloadBuilder;
         this.monitoringTimer = BitConverter.GetBytes((ushort)(monitoringTimer / 250)); // 1 = 250ms 
-    }
-
-    [Obsolete]
-    internal CommandPacketBuilder(byte[] command, byte[] subCommand, byte[] monitoringTimer)
-    {   
-        this.command = command;
-        this.subCommand = subCommand;
-        this.monitoringTimer = monitoringTimer;
     }
 
     internal CommandPacketBuilder(byte[] command, byte[] subCommand, ushort monitoringTimer)
