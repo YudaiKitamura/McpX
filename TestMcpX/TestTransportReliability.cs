@@ -177,7 +177,7 @@ public sealed class TestTransportReliability
         }
     }
 
-    private static void AssertTimedOut(IOException ex)
+    private static void AssertTimedOut(TimeoutException ex)
     {
         Assert.IsInstanceOfType<SocketException>(ex.InnerException);
         Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
@@ -205,7 +205,7 @@ public sealed class TestTransportReliability
         using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
 
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
-        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("no-response"), parser));
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("no-response"), parser));
         elapsed.Stop();
 
         AssertTimedOut(ex);
@@ -222,7 +222,7 @@ public sealed class TestTransportReliability
 
         // 応答は 2 + 10 バイト = 約 2.4 秒かかるが、期限 500ms で打ち切られること
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
-        var ex = Assert.ThrowsException<IOException>(() => transport.Request(Packet("0123456789"), parser));
+        var ex = Assert.ThrowsException<TimeoutException>(() => transport.Request(Packet("0123456789"), parser));
         elapsed.Stop();
 
         AssertTimedOut(ex);
@@ -238,7 +238,7 @@ public sealed class TestTransportReliability
         using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
 
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
-        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("0123456789"), parser));
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("0123456789"), parser));
         elapsed.Stop();
 
         AssertTimedOut(ex);
@@ -269,7 +269,7 @@ public sealed class TestTransportReliability
         using var _ = cts;
         using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
 
-        await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("first"), parser));
+        await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("first"), parser));
 
         // 遅れて届いた1回目の応答を2回目の応答として返さず、例外になること
         await Task.Delay(500);
@@ -289,7 +289,7 @@ public sealed class TestTransportReliability
         using var _ = cts;
         using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
 
-        Assert.ThrowsException<IOException>(() => transport.Request(Packet("first"), parser));
+        Assert.ThrowsException<TimeoutException>(() => transport.Request(Packet("first"), parser));
 
         Thread.Sleep(500);
         var ex = Assert.ThrowsException<IOException>(() => transport.Request(Packet("second"), parser));
@@ -331,8 +331,8 @@ public sealed class TestTransportReliability
 
         using var transport = new UdpPlcTransport("127.0.0.1", port, 500);
 
-        var ex = Assert.ThrowsException<SocketException>(() => transport.Request(Packet("first"), parser));
-        Assert.AreEqual(SocketError.TimedOut, ex.SocketErrorCode);
+        var ex = Assert.ThrowsException<TimeoutException>(() => transport.Request(Packet("first"), parser));
+        AssertTimedOut(ex);
 
         // 1回目の遅延応答が届いた後でも、2回目は自分の応答を受け取ること（UDP はソケットを作り直して継続利用できる）
         Thread.Sleep(500);

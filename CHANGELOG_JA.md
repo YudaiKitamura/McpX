@@ -11,6 +11,7 @@
 - TCP のタイムアウト（`timeoutMilliseconds`）を、同期・非同期とも「送信開始から応答の受信完了まで」の要求全体に対する期限に変更（従来は1回の読み込みごと）。
 - TCP でタイムアウト・通信エラーが発生すると接続を閉じ、以降の要求は `IOException` になります。再接続するにはインスタンスを作り直してください。
 - **破壊的変更：** TCP の接続が拒否された場合の例外を、`AggregateException` から `SocketException` に変更。
+- **破壊的変更：** 通信のタイムアウトは、すべて `TimeoutException`（InnerException は `SocketError.TimedOut` の `SocketException`）をスローするように変更。従来は TCP の要求で `IOException`、UDP の要求で `SocketException` だった。
 
 ### Removed
 - **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。

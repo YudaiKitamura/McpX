@@ -162,7 +162,7 @@ public class TestTcpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = Assert.ThrowsException<IOException>(() => {
+        var ex = Assert.ThrowsException<TimeoutException>(() => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
@@ -201,7 +201,7 @@ public class TestTcpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = await Assert.ThrowsExceptionAsync<IOException>(async () => {
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);

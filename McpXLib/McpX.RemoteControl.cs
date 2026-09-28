@@ -210,7 +210,7 @@ public partial class McpX
         throw new TimeoutException("Reconnection after remote RESET timed out.", lastError);
     }
 
-    // リセットによる応答なし・切断（TCP: IOException / TimeoutException、UDP: SocketException）
+    // リセットによる応答なし・切断（タイムアウト: TimeoutException、切断・エラー後の要求: IOException、接続拒否など: SocketException）
     private static bool IsDisconnectedByReset(Exception ex)
         => ex is IOException or TimeoutException or System.Net.Sockets.SocketException;
 

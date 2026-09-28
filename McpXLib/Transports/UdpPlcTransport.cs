@@ -20,6 +20,8 @@ internal class UdpPlcTransport : IPlcTransport
         remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
     }
 
+    private const string TimeoutMessage = "The request timed out.";
+
     private UdpClient CreateClient()
     {
         var client = new UdpClient();
@@ -41,7 +43,7 @@ internal class UdpPlcTransport : IPlcTransport
             // 遅れて届いた応答を次の要求が受け取らないよう、ソケットを作り直す
             udp.Dispose();
             udp = CreateClient();
-            throw;
+            throw new TimeoutException(TimeoutMessage, ex);
         }
     }
 
@@ -61,7 +63,7 @@ internal class UdpPlcTransport : IPlcTransport
             receiveTask.ObserveException();
             udp.Dispose();
             udp = CreateClient();
-            throw new SocketException((int)SocketError.TimedOut);
+            throw new TimeoutException(TimeoutMessage, new SocketException((int)SocketError.TimedOut));
         }
 
         cts.Cancel();

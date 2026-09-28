@@ -69,6 +69,12 @@ internal class TcpPlcTransport : IPlcTransport
 
                 return headerBytes.Concat(GetReceivePacket(length, elapsed)).ToArray();
             }
+            catch (IOException ex) when (ex.InnerException is SocketException { SocketErrorCode: SocketError.TimedOut } inner)
+            {
+                // OS の受信・送信タイムアウトも、非同期と同じ TimeoutException として扱う。
+                Break();
+                throw new TimeoutException(TimeoutMessage, inner);
+            }
             catch
             {
                 // 応答の途中で失敗すると残りがストリームに残り、次の要求が古い応答を読むため接続を閉じる。
@@ -230,12 +236,10 @@ internal class TcpPlcTransport : IPlcTransport
         return await task;
     }
 
-    private static IOException CreateTimeoutException()
+    private const string TimeoutMessage = "The request timed out.";
+
+    private static TimeoutException CreateTimeoutException()
     {
-        // 同期版で OS がスローする例外と型・InnerException を揃える（メッセージは OS 非依存の固定文言）。
-        return new IOException(
-            "Unable to read data from the transport connection: Connection timed out.",
-            new SocketException((int)SocketError.TimedOut)
-        );
+        return new TimeoutException(TimeoutMessage, new SocketException((int)SocketError.TimedOut));
     }
 }

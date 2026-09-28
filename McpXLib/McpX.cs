@@ -14,7 +14,9 @@ namespace McpXLib;
 /// MCプロトコル拡張クラス
 /// </summary>
 /// <remarks>
-/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。
+/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。<br/>
+/// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
+/// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
 /// </remarks> 
 public partial class McpX : Mcp
 {
