@@ -12,6 +12,9 @@ internal sealed class FakePlcTransport : IPlcTransport
 
     internal List<RecordedRequest> Requests { get; } = new();
 
+    // 最後に受信した要求パケット（ヘッダ含む）
+    internal byte[]? LastPacket { get; private set; }
+
     // 読み込み時に返すワード値。未設定のデバイスは「デバイス番号の下位16ビット」を返す。
     internal Dictionary<uint, ushort> Words { get; } = new();
 
@@ -25,6 +28,7 @@ internal sealed class FakePlcTransport : IPlcTransport
         byte[] data = packet.Skip(21).ToArray();
 
         Requests.Add(new RecordedRequest(command, deviceNumber, deviceCode, points, data));
+        LastPacket = packet;
 
         var content = new List<byte>();
         if (command == 0x0401)

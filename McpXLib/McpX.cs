@@ -87,10 +87,11 @@ public partial class McpX : Mcp
     // テスト用：トランスポートを差し替えて生成する。
     internal McpX(
         IPlcTransport transport,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
+        ProcessorSeries processorSeries = ProcessorSeries.Q,
+        ushort timeoutMilliseconds = 5000
     ) : base (
         transport: transport,
-        timeout: 5000,
+        timeout: timeoutMilliseconds,
         processorSeries: processorSeries
     )
     {

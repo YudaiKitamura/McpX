@@ -14,7 +14,7 @@ internal class CommandPacketBuilder : IPacketBuilder
     {
         if (monitoringTimer > 0 && monitoringTimer < 250)
         {
-            throw new ArgumentOutOfRangeException("The allowable timeout values are 0 or 250 ms or greater.");
+            throw new ArgumentOutOfRangeException(nameof(monitoringTimer), "The allowable monitoring timer values are 0 or 250 ms or greater.");
         }
 
         this.command = command;
@@ -27,7 +27,7 @@ internal class CommandPacketBuilder : IPacketBuilder
     {
         if (monitoringTimer > 0 && monitoringTimer < 250)
         {
-            throw new ArgumentOutOfRangeException("The allowable timeout values are 0 or 250 ms or greater.");
+            throw new ArgumentOutOfRangeException(nameof(monitoringTimer), "The allowable monitoring timer values are 0 or 250 ms or greater.");
         }
 
         this.command = command;
