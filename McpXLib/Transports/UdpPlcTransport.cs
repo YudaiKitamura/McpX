@@ -53,7 +53,8 @@ internal class UdpPlcTransport : IPlcTransport
 
         using var cts = new CancellationTokenSource();
         var receiveTask = udp.ReceiveAsync();
-        var delayTask = Task.Delay(timeout, cts.Token);
+        // timeout が 0 の場合は、同期版（ReceiveTimeout = 0）や TCP と同じく無期限とする
+        var delayTask = Task.Delay(timeout == 0 ? Timeout.Infinite : timeout, cts.Token);
 
         var completed = await Task.WhenAny(receiveTask, delayTask);
 

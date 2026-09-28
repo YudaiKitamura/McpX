@@ -6,6 +6,7 @@
 - TCP の接続が拒否された場合に `AggregateException` がスローされ、`TcpClient` が破棄されない不具合を修正。`TcpClient` を破棄し、元の `SocketException` をスローするように変更。
 - `timeoutMilliseconds = 0` を指定すると TCP の接続が必ず失敗する不具合を修正。要求と同じく `0` は無期限として扱う。
 - `timeoutMilliseconds` に 1〜249 を指定すると、すべてのコマンドが `ArgumentOutOfRangeException` になる不具合を修正。監視タイマをタイムアウトから決める（タイムアウトより 250ms 短い 250ms 単位の値。500ms 未満は 0）ように変更し、PLC のエラー応答がクライアント側のタイムアウトより先に届くようにした。
+- `timeoutMilliseconds = 0` を指定すると、UDP の非同期要求が必ずタイムアウトする不具合を修正。TCP・UDP の同期要求と同じく `0` は無期限として扱う。
 
 ### Changed
 - TCP のタイムアウト（`timeoutMilliseconds`）を、同期・非同期とも「送信開始から応答の受信完了まで」の要求全体に対する期限に変更（従来は1回の読み込みごと）。

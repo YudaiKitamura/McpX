@@ -369,4 +369,40 @@ public sealed class TestTransportReliability
         CollectionAssert.AreEqual(packet, transport.Request(packet, parser));
         CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser));
     }
+
+    [TestMethod]
+    [Timeout(10000)]
+    public async Task TestUdpZeroTimeoutMeansInfinite()
+    {
+        // 応答を 300ms 遅らせる UDP エコーサーバー
+        var server = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        int port = ((IPEndPoint)server.Client.LocalEndPoint!).Port;
+        using var cts = new CancellationTokenSource();
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    var result = await server.ReceiveAsync(cts.Token);
+                    await Task.Delay(300);
+                    await server.SendAsync(result.Buffer, result.Buffer.Length, result.RemoteEndPoint);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                server.Close();
+            }
+        });
+
+        // timeout = 0 でも同期・非同期とも応答を待って完了すること（無期限）
+        using var transport = new UdpPlcTransport("127.0.0.1", port, 0);
+        var packet = Packet("zero-timeout");
+
+        CollectionAssert.AreEqual(packet, transport.Request(packet, parser));
+        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser));
+    }
 }
