@@ -8,12 +8,14 @@
 - `timeoutMilliseconds` に 1〜249 を指定すると、すべてのコマンドが `ArgumentOutOfRangeException` になる不具合を修正。監視タイマをタイムアウトから決める（タイムアウトより 250ms 短い 250ms 単位の値。500ms 未満は 0）ように変更し、PLC のエラー応答がクライアント側のタイムアウトより先に届くようにした。
 - `timeoutMilliseconds = 0` を指定すると、UDP の非同期要求が必ずタイムアウトする不具合を修正。TCP・UDP の同期要求と同じく `0` は無期限として扱う。
 - コンストラクタでリモートパスワードの解除に失敗した場合に、接続が閉じられず残る不具合を修正。
+- リモートロックに失敗した場合（切断後など）に `Dispose` がソケットを解放しない不具合、および2回呼ぶと例外になる不具合を修正。
 
 ### Changed
 - TCP のタイムアウト（`timeoutMilliseconds`）を、同期・非同期とも「送信開始から応答の受信完了まで」の要求全体に対する期限に変更（従来は1回の読み込みごと）。
 - TCP でタイムアウト・通信エラーが発生すると接続を閉じ、以降の要求は `IOException` になります。再接続するにはインスタンスを作り直してください。
 - **破壊的変更：** TCP の接続が拒否された場合の例外を、`AggregateException` から `SocketException` に変更。
 - **破壊的変更：** 通信のタイムアウトは、すべて `TimeoutException`（InnerException は `SocketError.TimedOut` の `SocketException`）をスローするように変更。従来は TCP の要求で `IOException`、UDP の要求で `SocketException` だった。
+- `Dispose` は、リモートロックに失敗しても例外をスローせず、接続を必ず解放するように変更。
 
 ### Removed
 - **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。

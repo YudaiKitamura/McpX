@@ -8,12 +8,14 @@
 - Fixed every command failing with `ArgumentOutOfRangeException` when `timeoutMilliseconds` was 1–249. The monitoring timer is now derived from the timeout (250 ms shorter, in 250 ms units; 0 below 500 ms) so that the PLC's error response arrives before the client times out.
 - Fixed async UDP requests always timing out when `timeoutMilliseconds = 0`. `0` now means no timeout, as for TCP and sync UDP requests.
 - Fixed the connection being left open when the remote password unlock failed in the constructor.
+- Fixed `Dispose` leaving the socket open when the remote lock failed (e.g. after a disconnect), and throwing when called twice.
 
 ### Changed
 - The timeout (`timeoutMilliseconds`) now applies to the whole request, from sending to receiving the complete response, for both sync and async TCP requests (previously per read call).
 - After a TCP timeout or communication error, the connection is closed and subsequent requests throw `IOException`. Create a new instance to reconnect.
 - **Breaking:** A refused TCP connection now throws `SocketException` instead of `AggregateException`.
 - **Breaking:** All transport timeouts now throw `TimeoutException` (with the `SocketException` of `SocketError.TimedOut` as the inner exception). Previously TCP requests threw `IOException` and UDP requests threw `SocketException`.
+- `Dispose` no longer throws when the remote lock fails; the connection is always released.
 
 ### Removed
 - **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.

@@ -21,6 +21,7 @@ namespace McpXLib;
 public partial class McpX : Mcp
 {
     private readonly string? password;
+    private bool disposed;
 
     /// <summary>
     /// インスタンス初期化
@@ -1432,15 +1433,31 @@ public partial class McpX : Mcp
     /// インスタンス破棄
     /// </summary>
     /// <remarks>
-    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。
+    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。<br/>
+    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず解放します。2回目以降の呼び出しは何もしません。
     /// </remarks>
     public override void Dispose()
     {
-        if (password != null) 
+        if (disposed)
         {
-            RemoteLock(password);
+            return;
         }
+        disposed = true;
 
-        base.Dispose();
+        try
+        {
+            if (password != null) 
+            {
+                RemoteLock(password);
+            }
+        }
+        catch
+        {
+            // 接続が切れている場合などはロックを送れない。Dispose からは例外をスローしない（.NET の指針）。
+        }
+        finally
+        {
+            base.Dispose();
+        }
     }
 }

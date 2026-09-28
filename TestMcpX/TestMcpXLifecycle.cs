@@ -37,4 +37,30 @@ public sealed class TestMcpXLifecycle
         Assert.AreEqual(REMOTE_UNLOCK, transport.Requests.Single().Command);
         Assert.IsFalse(transport.Disposed);
     }
+
+    [TestMethod]
+    public void TestDisposeReleasesTransportWhenLockFails()
+    {
+        var transport = new FakePlcTransport();
+        transport.EndCodes[REMOTE_LOCK] = 0xC201;
+        var mcpx = new McpX(transport, password: "1234");
+
+        // リモートロックが失敗しても例外にならず、接続は解放されること
+        mcpx.Dispose();
+
+        Assert.IsTrue(transport.Disposed);
+    }
+
+    [TestMethod]
+    public void TestDisposeTwiceIsNoOp()
+    {
+        var transport = new FakePlcTransport();
+        var mcpx = new McpX(transport, password: "1234");
+
+        mcpx.Dispose();
+        mcpx.Dispose();
+
+        // リモートロックは1回だけ送ること
+        Assert.AreEqual(1, transport.Requests.Count(r => r.Command == REMOTE_LOCK));
+    }
 }
