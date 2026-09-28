@@ -1,3 +1,10 @@
+## [0.11.0] - 2026-09-28
+### Added
+- 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）の `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)`（および非同期版）を追加。上限（120ブロック、`ProcessorSeries.iQR` は60ブロック、合計960点）を超える場合は自動で分割。
+- `McpX.UseMultiBlockAccess`（および `McpX` / `McpXSimulator` のコンストラクタ引数 `useMultiBlockAccess`）を追加。有効にすると、`Read(Action<ReadBuilder>)` / `Write(Action<WriteBuilder>)` で複数の範囲を複数ブロックアクセスで1回の交信にまとめる。CPU内蔵Ethernetポートなど非対応（エラー C059）の接続先があるため、既定は無効。ビットデバイスへの `bool` で要素数が16の倍数でない範囲は、他のビットを上書きしないよう従来どおり範囲ごとに書き込み。
+- リモート操作 `RemoteRun` / `RemoteStop` / `RemotePause` / `RemoteLatchClear` / `RemoteReset`（および非同期版、コマンド: 1001 / 1002 / 1003 / 1005 / 1006）と `RemoteRunClearMode` を追加。`RemoteReset` は、リセットによる接続の切断・タイムアウトを例外にせず、リセット後に接続し直す（リモートパスワードのアンロックもやり直す）ため、同じインスタンスで続けて通信可能。
+- PLCから受信したエラーコードを取得できる `McProtocolException.ErrorCode` を追加。
+
 ## [0.10.0] - 2026-09-27
 ### Added
 - システムNo.・号機No.を指定して GX Simulator3 に接続する `McpXSimulator`（ポート `5500 + システムNo. × 10 + 号機No.`、TCP・バイナリ、既定は `ProcessorSeries.iQR`）と、`McpXSimulator.GetPort` を追加。シミュレータごとにインスタンスを生成することで、複数のシミュレータに同時に接続可能。

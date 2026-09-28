@@ -7,7 +7,7 @@ namespace McpXLib.Abstructs;
 /// </summary> 
 public abstract class BasePlc : IDisposable
 {
-    private readonly IPlcTransport transport;
+    private IPlcTransport transport;
 
     /// <summary>
     /// インスタンス初期化
@@ -72,6 +72,14 @@ public abstract class BasePlc : IDisposable
     public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
         return await transport.RequestAsync(packet, receiveLengthParser);
+    }
+
+    // 通信トランスポートを差し替える（再接続用）。差し替え前のトランスポートは破棄する。
+    internal void ReplaceTransport(IPlcTransport newTransport)
+    {
+        var oldTransport = transport;
+        transport = newTransport ?? throw new ArgumentNullException(nameof(newTransport));
+        oldTransport.Dispose();
     }
 
     /// <summary>
