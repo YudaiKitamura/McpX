@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class WriteBuilder | McpX </title>
+      <title>Class BlockReadBuilder | McpX </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class WriteBuilder | McpX ">
+      <meta name="title" content="Class BlockReadBuilder | McpX ">
       
-      <meta name="description" content="連続／ランダム統合デバイス書き込みのリクエストビルダー。">
+      <meta name="description" content="複数ブロック一括読み込みのリクエストビルダー。">
       <link rel="icon" href="../images/mcpx_favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_WriteBuilder.md&amp;value=---%0Auid%3A%20McpXLib.WriteBuilder%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_BlockReadBuilder.md&amp;value=---%0Auid%3A%20McpXLib.BlockReadBuilder%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -85,12 +85,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="McpXLib.WriteBuilder">
+        <article data-uid="McpXLib.BlockReadBuilder">
 
 
 
-  <h1 id="McpXLib_WriteBuilder" data-uid="McpXLib.WriteBuilder" class="text-break">
-Class WriteBuilder  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/WriteBuilder.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <h1 id="McpXLib_BlockReadBuilder" data-uid="McpXLib.BlockReadBuilder" class="text-break">
+Class BlockReadBuilder  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/BlockReadBuilder.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -98,12 +98,12 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
   <dl><dt>Assembly</dt><dd>McpXLib.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>連続／ランダム統合デバイス書き込みのリクエストビルダー。</p>
+  <div class="markdown summary"><p>複数ブロック一括読み込みのリクエストビルダー。</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class WriteBuilder</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class BlockReadBuilder</code></pre>
   </div>
 
 
@@ -113,7 +113,7 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">WriteBuilder</span></div>
+      <div><span class="xref">BlockReadBuilder</span></div>
     </dd>
   </dl>
 
@@ -145,9 +145,9 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
 
 
 
-  <h2 id="McpXLib_WriteBuilder_remarks">Remarks</h2>
-  <div class="markdown level0 remarks"><p>配列を指定した <a class="xref" href="McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0___">Add&lt;T&gt;(Prefix, string, T[])</a> は連続アクセス（一括書き込み）、
-単一の値を指定した <a class="xref" href="McpXLib.WriteBuilder.html#McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0_">Add&lt;T&gt;(Prefix, string, T)</a> はランダムアクセスで書き込まれます。</p>
+  <h2 id="McpXLib_BlockReadBuilder_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>追加した範囲（ブロック）を、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。<br>
+読み取り完了後、各コールバックに変換済みの値が渡されます。</p>
 </div>
 
 
@@ -155,37 +155,40 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
 </h2>
 
 
-  <a id="McpXLib_WriteBuilder_Add_" data-uid="McpXLib.WriteBuilder.Add*"></a>
+  <a id="McpXLib_BlockReadBuilder_Add_" data-uid="McpXLib.BlockReadBuilder.Add*"></a>
 
-  <h3 id="McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0_" data-uid="McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0)">
-  Add&lt;T&gt;(Prefix, string, T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/WriteBuilder.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <h3 id="McpXLib_BlockReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_UInt16_System_Action___0____" data-uid="McpXLib.BlockReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.UInt16,System.Action{``0[]})">
+  Add&lt;T&gt;(Prefix, string, ushort, Action&lt;T[]&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/BlockReadBuilder.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>ランダムアクセスで書き込むデバイスと値を追加します。</p>
+  <div class="markdown level1 summary"><p>読み込むデバイス範囲と、読み取り後に値を受け取るコールバックを追加します。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WriteBuilder Add&lt;T&gt;(Prefix prefix, string address, T value) where T : unmanaged</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockReadBuilder Add&lt;T&gt;(Prefix prefix, string address, ushort length, Action&lt;T[]&gt; onRead) where T : unmanaged</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>prefix</code> <a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a></dt>
-    <dd><p>書き込み対象のデバイスコードを指定します。</p>
+    <dd><p>読み込み対象の先頭デバイスコードを指定します。</p>
 </dd>
     <dt><code>address</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>書き込み対象のアドレスを指定します。</p>
+    <dd><p>読み込み対象の先頭アドレスを指定します。</p>
 </dd>
-    <dt><code>value</code> <span class="xref">T</span></dt>
-    <dd><p>書き込む値を指定します。</p>
+    <dt><code>length</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>読み込み対象の要素数（<code>T</code>型の要素数）を指定します。</p>
+</dd>
+    <dt><code>onRead</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T[]&gt;</dt>
+    <dd><p>読み取り完了後に、変換済みの値<code>T[]</code>を受け取るコールバックを指定します。</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="McpXLib.WriteBuilder.html">WriteBuilder</a></dt>
+    <dt><a class="xref" href="McpXLib.BlockReadBuilder.html">BlockReadBuilder</a></dt>
     <dd><p>メソッドチェーン用に自身を返します。</p>
 </dd>
   </dl>
@@ -193,8 +196,8 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>T</code></dt>
-    <dd><p>書き込む値の型。<code>bool</code>(ビット) / <code>short</code>,<code>ushort</code>(ワード) /
-<code>int</code>,<code>uint</code>,<code>float</code>(ダブルワード) を指定できます。</p>
+    <dd><p>読み込むデータの型。<code>bool</code>（ビットデバイスのみ）、<code>short</code>、<code>int</code>、<code>float</code> などの値型を指定します。<br>
+ビットデバイスをワード型で指定した場合は、1ワード=16点として読み込みます。</p>
 </dd>
   </dl>
 
@@ -206,62 +209,13 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>ワードデバイスに <code>bool</code> を指定した場合にスローします。</p>
+</dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></dt>
-    <dd><p>ランダムアクセス非対応の型（<code>long</code>,<code>double</code> など）を指定した場合にスローします。</p>
+    <dd><p>非対応の型を指定した場合にスローします。</p>
 </dd>
   </dl>
-
-
-
-  <a id="McpXLib_WriteBuilder_Add_" data-uid="McpXLib.WriteBuilder.Add*"></a>
-
-  <h3 id="McpXLib_WriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0___" data-uid="McpXLib.WriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0[])">
-  Add&lt;T&gt;(Prefix, string, T[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/WriteBuilder.cs/#L50"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>連続アクセスで書き込むデバイス範囲と値を追加します。</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WriteBuilder Add&lt;T&gt;(Prefix prefix, string address, T[] values) where T : unmanaged</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>prefix</code> <a class="xref" href="McpXLib.Enums.Prefix.html">Prefix</a></dt>
-    <dd><p>書き込み対象の先頭デバイスコードを指定します。</p>
-</dd>
-    <dt><code>address</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>書き込み対象の先頭アドレスを指定します。</p>
-</dd>
-    <dt><code>values</code> T[]</dt>
-    <dd><p>書き込む値を配列で指定します。</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="McpXLib.WriteBuilder.html">WriteBuilder</a></dt>
-    <dd><p>メソッドチェーン用に自身を返します。</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Type Parameters</h4>
-  <dl class="parameters">
-    <dt><code>T</code></dt>
-    <dd><p>書き込むデータの型。bool, short, int などの値型を指定します。
-<code>unmanaged</code> 制約があるため、参照型は使用できません。</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
 
 
 
@@ -269,7 +223,7 @@ Class WriteBuilder  <a class="header-action link-secondary" title="View source" 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/WriteBuilder.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Builders/BlockReadBuilder.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

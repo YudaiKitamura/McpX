@@ -101,6 +101,50 @@ references:
   isSpec: "True"
   fullName: McpXLib.Abstructs.BasePlc.RequestAsync
   nameWithType: BasePlc.RequestAsync
+- uid: McpXLib.BlockReadBuilder
+  name: BlockReadBuilder
+  href: api/McpXLib.BlockReadBuilder.html
+  commentId: T:McpXLib.BlockReadBuilder
+  fullName: McpXLib.BlockReadBuilder
+  nameWithType: BlockReadBuilder
+- uid: McpXLib.BlockReadBuilder.Add*
+  name: Add
+  href: api/McpXLib.BlockReadBuilder.html#McpXLib_BlockReadBuilder_Add_
+  commentId: Overload:McpXLib.BlockReadBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.BlockReadBuilder.Add
+  nameWithType: BlockReadBuilder.Add
+- uid: McpXLib.BlockReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.UInt16,System.Action{``0[]})
+  name: Add<T>(Prefix, string, ushort, Action<T[]>)
+  href: api/McpXLib.BlockReadBuilder.html#McpXLib_BlockReadBuilder_Add__1_McpXLib_Enums_Prefix_System_String_System_UInt16_System_Action___0____
+  commentId: M:McpXLib.BlockReadBuilder.Add``1(McpXLib.Enums.Prefix,System.String,System.UInt16,System.Action{``0[]})
+  name.vb: Add(Of T)(Prefix, String, UShort, Action(Of T()))
+  fullName: McpXLib.BlockReadBuilder.Add<T>(McpXLib.Enums.Prefix, string, ushort, System.Action<T[]>)
+  fullName.vb: McpXLib.BlockReadBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, UShort, System.Action(Of T()))
+  nameWithType: BlockReadBuilder.Add<T>(Prefix, string, ushort, Action<T[]>)
+  nameWithType.vb: BlockReadBuilder.Add(Of T)(Prefix, String, UShort, Action(Of T()))
+- uid: McpXLib.BlockWriteBuilder
+  name: BlockWriteBuilder
+  href: api/McpXLib.BlockWriteBuilder.html
+  commentId: T:McpXLib.BlockWriteBuilder
+  fullName: McpXLib.BlockWriteBuilder
+  nameWithType: BlockWriteBuilder
+- uid: McpXLib.BlockWriteBuilder.Add*
+  name: Add
+  href: api/McpXLib.BlockWriteBuilder.html#McpXLib_BlockWriteBuilder_Add_
+  commentId: Overload:McpXLib.BlockWriteBuilder.Add
+  isSpec: "True"
+  fullName: McpXLib.BlockWriteBuilder.Add
+  nameWithType: BlockWriteBuilder.Add
+- uid: McpXLib.BlockWriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name: Add<T>(Prefix, string, T[])
+  href: api/McpXLib.BlockWriteBuilder.html#McpXLib_BlockWriteBuilder_Add__1_McpXLib_Enums_Prefix_System_String___0___
+  commentId: M:McpXLib.BlockWriteBuilder.Add``1(McpXLib.Enums.Prefix,System.String,``0[])
+  name.vb: Add(Of T)(Prefix, String, T())
+  fullName: McpXLib.BlockWriteBuilder.Add<T>(McpXLib.Enums.Prefix, string, T[])
+  fullName.vb: McpXLib.BlockWriteBuilder.Add(Of T)(McpXLib.Enums.Prefix, String, T())
+  nameWithType: BlockWriteBuilder.Add<T>(Prefix, string, T[])
+  nameWithType.vb: BlockWriteBuilder.Add(Of T)(Prefix, String, T())
 - uid: McpXLib.Enums
   name: McpXLib.Enums
   href: api/McpXLib.Enums.html
@@ -299,6 +343,30 @@ references:
   commentId: F:McpXLib.Enums.ProcessorSeries.iQR
   fullName: McpXLib.Enums.ProcessorSeries.iQR
   nameWithType: ProcessorSeries.iQR
+- uid: McpXLib.Enums.RemoteRunClearMode
+  name: RemoteRunClearMode
+  href: api/McpXLib.Enums.RemoteRunClearMode.html
+  commentId: T:McpXLib.Enums.RemoteRunClearMode
+  fullName: McpXLib.Enums.RemoteRunClearMode
+  nameWithType: RemoteRunClearMode
+- uid: McpXLib.Enums.RemoteRunClearMode.All
+  name: All
+  href: api/McpXLib.Enums.RemoteRunClearMode.html#McpXLib_Enums_RemoteRunClearMode_All
+  commentId: F:McpXLib.Enums.RemoteRunClearMode.All
+  fullName: McpXLib.Enums.RemoteRunClearMode.All
+  nameWithType: RemoteRunClearMode.All
+- uid: McpXLib.Enums.RemoteRunClearMode.None
+  name: None
+  href: api/McpXLib.Enums.RemoteRunClearMode.html#McpXLib_Enums_RemoteRunClearMode_None
+  commentId: F:McpXLib.Enums.RemoteRunClearMode.None
+  fullName: McpXLib.Enums.RemoteRunClearMode.None
+  nameWithType: RemoteRunClearMode.None
+- uid: McpXLib.Enums.RemoteRunClearMode.OutsideLatch
+  name: OutsideLatch
+  href: api/McpXLib.Enums.RemoteRunClearMode.html#McpXLib_Enums_RemoteRunClearMode_OutsideLatch
+  commentId: F:McpXLib.Enums.RemoteRunClearMode.OutsideLatch
+  fullName: McpXLib.Enums.RemoteRunClearMode.OutsideLatch
+  nameWithType: RemoteRunClearMode.OutsideLatch
 - uid: McpXLib.Enums.RequestFrame
   name: RequestFrame
   href: api/McpXLib.Enums.RequestFrame.html
@@ -363,6 +431,15 @@ references:
   fullName.vb: McpXLib.Exceptions.McProtocolException.New(String)
   nameWithType: McProtocolException.McProtocolException(string)
   nameWithType.vb: McProtocolException.New(String)
+- uid: McpXLib.Exceptions.McProtocolException.#ctor(System.String,System.UInt16)
+  name: McProtocolException(string, ushort)
+  href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException__ctor_System_String_System_UInt16_
+  commentId: M:McpXLib.Exceptions.McProtocolException.#ctor(System.String,System.UInt16)
+  name.vb: New(String, UShort)
+  fullName: McpXLib.Exceptions.McProtocolException.McProtocolException(string, ushort)
+  fullName.vb: McpXLib.Exceptions.McProtocolException.New(String, UShort)
+  nameWithType: McProtocolException.McProtocolException(string, ushort)
+  nameWithType.vb: McProtocolException.New(String, UShort)
 - uid: McpXLib.Exceptions.McProtocolException.#ctor*
   name: McProtocolException
   href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException__ctor_
@@ -373,6 +450,19 @@ references:
   fullName.vb: McpXLib.Exceptions.McProtocolException.New
   nameWithType: McProtocolException.McProtocolException
   nameWithType.vb: McProtocolException.New
+- uid: McpXLib.Exceptions.McProtocolException.ErrorCode
+  name: ErrorCode
+  href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException_ErrorCode
+  commentId: P:McpXLib.Exceptions.McProtocolException.ErrorCode
+  fullName: McpXLib.Exceptions.McProtocolException.ErrorCode
+  nameWithType: McProtocolException.ErrorCode
+- uid: McpXLib.Exceptions.McProtocolException.ErrorCode*
+  name: ErrorCode
+  href: api/McpXLib.Exceptions.McProtocolException.html#McpXLib_Exceptions_McProtocolException_ErrorCode_
+  commentId: Overload:McpXLib.Exceptions.McProtocolException.ErrorCode
+  isSpec: "True"
+  fullName: McpXLib.Exceptions.McProtocolException.ErrorCode
+  nameWithType: McProtocolException.ErrorCode
 - uid: McpXLib.Exceptions.PlcDuplicationException
   name: PlcDuplicationException
   href: api/McpXLib.Exceptions.PlcDuplicationException.html
@@ -914,15 +1004,15 @@ references:
   commentId: T:McpXLib.McpX
   fullName: McpXLib.McpX
   nameWithType: McpX
-- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
-  name: McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries)
-  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_
-  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
-  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries)
-  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries)
-  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries)
-  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries)
-  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries)
+- uid: McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries,System.Boolean)
+  name: McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries, bool)
+  href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_System_Boolean_
+  commentId: M:McpXLib.McpX.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries,System.Boolean)
+  name.vb: New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries, Boolean)
+  fullName: McpXLib.McpX.McpX(string, int, string?, bool, bool, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries, bool)
+  fullName.vb: McpXLib.McpX.New(String, Integer, String, Boolean, Boolean, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries, Boolean)
+  nameWithType: McpX.McpX(string, int, string?, bool, bool, RequestFrame, ushort, ProcessorSeries, bool)
+  nameWithType.vb: McpX.New(String, Integer, String, Boolean, Boolean, RequestFrame, UShort, ProcessorSeries, Boolean)
 - uid: McpXLib.McpX.#ctor*
   name: McpX
   href: api/McpXLib.McpX.html#McpXLib_McpX__ctor_
@@ -1701,6 +1791,70 @@ references:
   fullName.vb: McpXLib.McpX.BatchWrite(Of T)(McpXLib.Enums.Prefix, String, T())
   nameWithType: McpX.BatchWrite<T>(Prefix, string, T[])
   nameWithType.vb: McpX.BatchWrite(Of T)(Prefix, String, T())
+- uid: McpXLib.McpX.BlockRead(System.Action{McpXLib.BlockReadBuilder})
+  name: BlockRead(Action<BlockReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockRead_System_Action_McpXLib_BlockReadBuilder__
+  commentId: M:McpXLib.McpX.BlockRead(System.Action{McpXLib.BlockReadBuilder})
+  name.vb: BlockRead(Action(Of BlockReadBuilder))
+  fullName: McpXLib.McpX.BlockRead(System.Action<McpXLib.BlockReadBuilder>)
+  fullName.vb: McpXLib.McpX.BlockRead(System.Action(Of McpXLib.BlockReadBuilder))
+  nameWithType: McpX.BlockRead(Action<BlockReadBuilder>)
+  nameWithType.vb: McpX.BlockRead(Action(Of BlockReadBuilder))
+- uid: McpXLib.McpX.BlockRead*
+  name: BlockRead
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockRead_
+  commentId: Overload:McpXLib.McpX.BlockRead
+  isSpec: "True"
+  fullName: McpXLib.McpX.BlockRead
+  nameWithType: McpX.BlockRead
+- uid: McpXLib.McpX.BlockReadAsync(System.Action{McpXLib.BlockReadBuilder})
+  name: BlockReadAsync(Action<BlockReadBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockReadAsync_System_Action_McpXLib_BlockReadBuilder__
+  commentId: M:McpXLib.McpX.BlockReadAsync(System.Action{McpXLib.BlockReadBuilder})
+  name.vb: BlockReadAsync(Action(Of BlockReadBuilder))
+  fullName: McpXLib.McpX.BlockReadAsync(System.Action<McpXLib.BlockReadBuilder>)
+  fullName.vb: McpXLib.McpX.BlockReadAsync(System.Action(Of McpXLib.BlockReadBuilder))
+  nameWithType: McpX.BlockReadAsync(Action<BlockReadBuilder>)
+  nameWithType.vb: McpX.BlockReadAsync(Action(Of BlockReadBuilder))
+- uid: McpXLib.McpX.BlockReadAsync*
+  name: BlockReadAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockReadAsync_
+  commentId: Overload:McpXLib.McpX.BlockReadAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BlockReadAsync
+  nameWithType: McpX.BlockReadAsync
+- uid: McpXLib.McpX.BlockWrite(System.Action{McpXLib.BlockWriteBuilder})
+  name: BlockWrite(Action<BlockWriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockWrite_System_Action_McpXLib_BlockWriteBuilder__
+  commentId: M:McpXLib.McpX.BlockWrite(System.Action{McpXLib.BlockWriteBuilder})
+  name.vb: BlockWrite(Action(Of BlockWriteBuilder))
+  fullName: McpXLib.McpX.BlockWrite(System.Action<McpXLib.BlockWriteBuilder>)
+  fullName.vb: McpXLib.McpX.BlockWrite(System.Action(Of McpXLib.BlockWriteBuilder))
+  nameWithType: McpX.BlockWrite(Action<BlockWriteBuilder>)
+  nameWithType.vb: McpX.BlockWrite(Action(Of BlockWriteBuilder))
+- uid: McpXLib.McpX.BlockWrite*
+  name: BlockWrite
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockWrite_
+  commentId: Overload:McpXLib.McpX.BlockWrite
+  isSpec: "True"
+  fullName: McpXLib.McpX.BlockWrite
+  nameWithType: McpX.BlockWrite
+- uid: McpXLib.McpX.BlockWriteAsync(System.Action{McpXLib.BlockWriteBuilder})
+  name: BlockWriteAsync(Action<BlockWriteBuilder>)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockWriteAsync_System_Action_McpXLib_BlockWriteBuilder__
+  commentId: M:McpXLib.McpX.BlockWriteAsync(System.Action{McpXLib.BlockWriteBuilder})
+  name.vb: BlockWriteAsync(Action(Of BlockWriteBuilder))
+  fullName: McpXLib.McpX.BlockWriteAsync(System.Action<McpXLib.BlockWriteBuilder>)
+  fullName.vb: McpXLib.McpX.BlockWriteAsync(System.Action(Of McpXLib.BlockWriteBuilder))
+  nameWithType: McpX.BlockWriteAsync(Action<BlockWriteBuilder>)
+  nameWithType.vb: McpX.BlockWriteAsync(Action(Of BlockWriteBuilder))
+- uid: McpXLib.McpX.BlockWriteAsync*
+  name: BlockWriteAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_BlockWriteAsync_
+  commentId: Overload:McpXLib.McpX.BlockWriteAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.BlockWriteAsync
+  nameWithType: McpX.BlockWriteAsync
 - uid: McpXLib.McpX.Dispose
   name: Dispose()
   href: api/McpXLib.McpX.html#McpXLib_McpX_Dispose
@@ -2728,6 +2882,167 @@ references:
   fullName.vb: McpXLib.McpX.Read(Of T)(McpXLib.Enums.Prefix, String)
   nameWithType: McpX.Read<T>(Prefix, string)
   nameWithType.vb: McpX.Read(Of T)(Prefix, String)
+- uid: McpXLib.McpX.RemoteLatchClear
+  name: RemoteLatchClear()
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClear
+  commentId: M:McpXLib.McpX.RemoteLatchClear
+  fullName: McpXLib.McpX.RemoteLatchClear()
+  nameWithType: McpX.RemoteLatchClear()
+- uid: McpXLib.McpX.RemoteLatchClear*
+  name: RemoteLatchClear
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClear_
+  commentId: Overload:McpXLib.McpX.RemoteLatchClear
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteLatchClear
+  nameWithType: McpX.RemoteLatchClear
+- uid: McpXLib.McpX.RemoteLatchClearAsync
+  name: RemoteLatchClearAsync()
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClearAsync
+  commentId: M:McpXLib.McpX.RemoteLatchClearAsync
+  fullName: McpXLib.McpX.RemoteLatchClearAsync()
+  nameWithType: McpX.RemoteLatchClearAsync()
+- uid: McpXLib.McpX.RemoteLatchClearAsync*
+  name: RemoteLatchClearAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClearAsync_
+  commentId: Overload:McpXLib.McpX.RemoteLatchClearAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteLatchClearAsync
+  nameWithType: McpX.RemoteLatchClearAsync
+- uid: McpXLib.McpX.RemotePause(System.Boolean)
+  name: RemotePause(bool)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemotePause_System_Boolean_
+  commentId: M:McpXLib.McpX.RemotePause(System.Boolean)
+  name.vb: RemotePause(Boolean)
+  fullName: McpXLib.McpX.RemotePause(bool)
+  fullName.vb: McpXLib.McpX.RemotePause(Boolean)
+  nameWithType: McpX.RemotePause(bool)
+  nameWithType.vb: McpX.RemotePause(Boolean)
+- uid: McpXLib.McpX.RemotePause*
+  name: RemotePause
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemotePause_
+  commentId: Overload:McpXLib.McpX.RemotePause
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemotePause
+  nameWithType: McpX.RemotePause
+- uid: McpXLib.McpX.RemotePauseAsync(System.Boolean)
+  name: RemotePauseAsync(bool)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemotePauseAsync_System_Boolean_
+  commentId: M:McpXLib.McpX.RemotePauseAsync(System.Boolean)
+  name.vb: RemotePauseAsync(Boolean)
+  fullName: McpXLib.McpX.RemotePauseAsync(bool)
+  fullName.vb: McpXLib.McpX.RemotePauseAsync(Boolean)
+  nameWithType: McpX.RemotePauseAsync(bool)
+  nameWithType.vb: McpX.RemotePauseAsync(Boolean)
+- uid: McpXLib.McpX.RemotePauseAsync*
+  name: RemotePauseAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemotePauseAsync_
+  commentId: Overload:McpXLib.McpX.RemotePauseAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemotePauseAsync
+  nameWithType: McpX.RemotePauseAsync
+- uid: McpXLib.McpX.RemoteReset(System.Int32)
+  name: RemoteReset(int)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteReset_System_Int32_
+  commentId: M:McpXLib.McpX.RemoteReset(System.Int32)
+  name.vb: RemoteReset(Integer)
+  fullName: McpXLib.McpX.RemoteReset(int)
+  fullName.vb: McpXLib.McpX.RemoteReset(Integer)
+  nameWithType: McpX.RemoteReset(int)
+  nameWithType.vb: McpX.RemoteReset(Integer)
+- uid: McpXLib.McpX.RemoteReset*
+  name: RemoteReset
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteReset_
+  commentId: Overload:McpXLib.McpX.RemoteReset
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteReset
+  nameWithType: McpX.RemoteReset
+- uid: McpXLib.McpX.RemoteResetAsync(System.Int32)
+  name: RemoteResetAsync(int)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteResetAsync_System_Int32_
+  commentId: M:McpXLib.McpX.RemoteResetAsync(System.Int32)
+  name.vb: RemoteResetAsync(Integer)
+  fullName: McpXLib.McpX.RemoteResetAsync(int)
+  fullName.vb: McpXLib.McpX.RemoteResetAsync(Integer)
+  nameWithType: McpX.RemoteResetAsync(int)
+  nameWithType.vb: McpX.RemoteResetAsync(Integer)
+- uid: McpXLib.McpX.RemoteResetAsync*
+  name: RemoteResetAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteResetAsync_
+  commentId: Overload:McpXLib.McpX.RemoteResetAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteResetAsync
+  nameWithType: McpX.RemoteResetAsync
+- uid: McpXLib.McpX.RemoteRun(System.Boolean,McpXLib.Enums.RemoteRunClearMode)
+  name: RemoteRun(bool, RemoteRunClearMode)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteRun_System_Boolean_McpXLib_Enums_RemoteRunClearMode_
+  commentId: M:McpXLib.McpX.RemoteRun(System.Boolean,McpXLib.Enums.RemoteRunClearMode)
+  name.vb: RemoteRun(Boolean, RemoteRunClearMode)
+  fullName: McpXLib.McpX.RemoteRun(bool, McpXLib.Enums.RemoteRunClearMode)
+  fullName.vb: McpXLib.McpX.RemoteRun(Boolean, McpXLib.Enums.RemoteRunClearMode)
+  nameWithType: McpX.RemoteRun(bool, RemoteRunClearMode)
+  nameWithType.vb: McpX.RemoteRun(Boolean, RemoteRunClearMode)
+- uid: McpXLib.McpX.RemoteRun*
+  name: RemoteRun
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteRun_
+  commentId: Overload:McpXLib.McpX.RemoteRun
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteRun
+  nameWithType: McpX.RemoteRun
+- uid: McpXLib.McpX.RemoteRunAsync(System.Boolean,McpXLib.Enums.RemoteRunClearMode)
+  name: RemoteRunAsync(bool, RemoteRunClearMode)
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteRunAsync_System_Boolean_McpXLib_Enums_RemoteRunClearMode_
+  commentId: M:McpXLib.McpX.RemoteRunAsync(System.Boolean,McpXLib.Enums.RemoteRunClearMode)
+  name.vb: RemoteRunAsync(Boolean, RemoteRunClearMode)
+  fullName: McpXLib.McpX.RemoteRunAsync(bool, McpXLib.Enums.RemoteRunClearMode)
+  fullName.vb: McpXLib.McpX.RemoteRunAsync(Boolean, McpXLib.Enums.RemoteRunClearMode)
+  nameWithType: McpX.RemoteRunAsync(bool, RemoteRunClearMode)
+  nameWithType.vb: McpX.RemoteRunAsync(Boolean, RemoteRunClearMode)
+- uid: McpXLib.McpX.RemoteRunAsync*
+  name: RemoteRunAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteRunAsync_
+  commentId: Overload:McpXLib.McpX.RemoteRunAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteRunAsync
+  nameWithType: McpX.RemoteRunAsync
+- uid: McpXLib.McpX.RemoteStop
+  name: RemoteStop()
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteStop
+  commentId: M:McpXLib.McpX.RemoteStop
+  fullName: McpXLib.McpX.RemoteStop()
+  nameWithType: McpX.RemoteStop()
+- uid: McpXLib.McpX.RemoteStop*
+  name: RemoteStop
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteStop_
+  commentId: Overload:McpXLib.McpX.RemoteStop
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteStop
+  nameWithType: McpX.RemoteStop
+- uid: McpXLib.McpX.RemoteStopAsync
+  name: RemoteStopAsync()
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteStopAsync
+  commentId: M:McpXLib.McpX.RemoteStopAsync
+  fullName: McpXLib.McpX.RemoteStopAsync()
+  nameWithType: McpX.RemoteStopAsync()
+- uid: McpXLib.McpX.RemoteStopAsync*
+  name: RemoteStopAsync
+  href: api/McpXLib.McpX.html#McpXLib_McpX_RemoteStopAsync_
+  commentId: Overload:McpXLib.McpX.RemoteStopAsync
+  isSpec: "True"
+  fullName: McpXLib.McpX.RemoteStopAsync
+  nameWithType: McpX.RemoteStopAsync
+- uid: McpXLib.McpX.UseMultiBlockAccess
+  name: UseMultiBlockAccess
+  href: api/McpXLib.McpX.html#McpXLib_McpX_UseMultiBlockAccess
+  commentId: P:McpXLib.McpX.UseMultiBlockAccess
+  fullName: McpXLib.McpX.UseMultiBlockAccess
+  nameWithType: McpX.UseMultiBlockAccess
+- uid: McpXLib.McpX.UseMultiBlockAccess*
+  name: UseMultiBlockAccess
+  href: api/McpXLib.McpX.html#McpXLib_McpX_UseMultiBlockAccess_
+  commentId: Overload:McpXLib.McpX.UseMultiBlockAccess
+  isSpec: "True"
+  fullName: McpXLib.McpX.UseMultiBlockAccess
+  nameWithType: McpX.UseMultiBlockAccess
 - uid: McpXLib.McpX.Write(System.Action{McpXLib.WriteBuilder})
   name: Write(Action<WriteBuilder>)
   href: api/McpXLib.McpX.html#McpXLib_McpX_Write_System_Action_McpXLib_WriteBuilder__
@@ -3168,15 +3483,15 @@ references:
   commentId: T:McpXLib.McpXSimulator
   fullName: McpXLib.McpXSimulator
   nameWithType: McpXSimulator
-- uid: McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
-  name: McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
-  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_
-  commentId: M:McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)
-  name.vb: New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries)
-  fullName: McpXLib.McpXSimulator.McpXSimulator(int, int, string, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries)
-  fullName.vb: McpXLib.McpXSimulator.New(Integer, Integer, String, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries)
-  nameWithType: McpXSimulator.McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
-  nameWithType.vb: McpXSimulator.New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries)
+- uid: McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries,System.Boolean)
+  name: McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries, bool)
+  href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_System_Boolean_
+  commentId: M:McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries,System.Boolean)
+  name.vb: New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries, Boolean)
+  fullName: McpXLib.McpXSimulator.McpXSimulator(int, int, string, McpXLib.Enums.RequestFrame, ushort, McpXLib.Enums.ProcessorSeries, bool)
+  fullName.vb: McpXLib.McpXSimulator.New(Integer, Integer, String, McpXLib.Enums.RequestFrame, UShort, McpXLib.Enums.ProcessorSeries, Boolean)
+  nameWithType: McpXSimulator.McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries, bool)
+  nameWithType.vb: McpXSimulator.New(Integer, Integer, String, RequestFrame, UShort, ProcessorSeries, Boolean)
 - uid: McpXLib.McpXSimulator.#ctor*
   name: McpXSimulator
   href: api/McpXLib.McpXSimulator.html#McpXLib_McpXSimulator__ctor_

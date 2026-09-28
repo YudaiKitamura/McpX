@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Namespace McpXLib | McpX </title>
+      <title>Enum RemoteRunClearMode | McpX </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Namespace McpXLib | McpX ">
+      <meta name="title" content="Enum RemoteRunClearMode | McpX ">
       
-      
+      <meta name="description" content="リモートRUN時のデバイスメモリのクリア範囲">
       <link rel="icon" href="../images/mcpx_favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/YudaiKitamura/McpX/new/main/apiSpec/new?filename=McpXLib_Enums_RemoteRunClearMode.md&amp;value=---%0Auid%3A%20McpXLib.Enums.RemoteRunClearMode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -85,77 +85,62 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="McpXLib">
+        <article data-uid="McpXLib.Enums.RemoteRunClearMode">
 
-  <h1 id="McpXLib" data-uid="McpXLib" class="text-break">Namespace McpXLib</h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
 
-    <h3 id="classes">
-Classes
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.BlockReadBuilder.html">BlockReadBuilder</a></dt>
-      <dd><p>複数ブロック一括読み込みのリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.BlockWriteBuilder.html">BlockWriteBuilder</a></dt>
-      <dd><p>複数ブロック一括書き込みのリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.Mcp.html">Mcp</a></dt>
-      <dd><p>MCプロトコル実装クラス（コマンド追加以外は、<a class="xref" href="McpXLib.McpX.html">McpX</a>クラスを使用してください。）</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.McpX.html">McpX</a></dt>
-      <dd><p>MCプロトコル拡張クラス</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.McpXSimulator.html">McpXSimulator</a></dt>
-      <dd><p>GX Simulator3 接続クラス</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.MonitorBuilder.html">MonitorBuilder</a></dt>
-      <dd><p>モニタデバイス登録のリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.MonitorSession.html">MonitorSession</a></dt>
-      <dd><p>モニタセッション。<a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_MonitorRegist_System_Action_McpXLib_MonitorBuilder__">MonitorRegist(Action&lt;MonitorBuilder&gt;)</a> で登録したデバイスを、
-<a class="xref" href="McpXLib.MonitorSession.html#McpXLib_MonitorSession_Read">Read()</a> / <a class="xref" href="McpXLib.MonitorSession.html#McpXLib_MonitorSession_ReadAsync">ReadAsync()</a> により何度でも読み出せます。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.RandomReadBuilder.html">RandomReadBuilder</a></dt>
-      <dd><p>ランダムデバイス読み込みのリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.RandomWriteBuilder.html">RandomWriteBuilder</a></dt>
-      <dd><p>ランダムデバイス書き込みのリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.ReadBuilder.html">ReadBuilder</a></dt>
-      <dd><p>連続／ランダム統合デバイス読み込みのリクエストビルダー。</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="McpXLib.WriteBuilder.html">WriteBuilder</a></dt>
-      <dd><p>連続／ランダム統合デバイス書き込みのリクエストビルダー。</p>
-</dd>
-    </dl>
 
+
+  <h1 id="McpXLib_Enums_RemoteRunClearMode" data-uid="McpXLib.Enums.RemoteRunClearMode" class="text-break">
+Enum RemoteRunClearMode  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Enums/RemoteRunClearMode.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="McpXLib.html">McpXLib</a>.<a class="xref" href="McpXLib.Enums.html">Enums</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>McpXLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>リモートRUN時のデバイスメモリのクリア範囲</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum RemoteRunClearMode : byte</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h2 id="fields">Fields
+</h2>
+  <dl class="parameters">
+    <dt id="McpXLib_Enums_RemoteRunClearMode_All"><code>All = 2</code></dt>
+  
+  <dd><p>ラッチ範囲を含むすべてのデバイスメモリをクリア</p>
+</dd>
+    <dt id="McpXLib_Enums_RemoteRunClearMode_None"><code>None = 0</code></dt>
+  
+  <dd><p>クリアしない</p>
+</dd>
+    <dt id="McpXLib_Enums_RemoteRunClearMode_OutsideLatch"><code>OutsideLatch = 1</code></dt>
+  
+  <dd><p>ラッチ範囲外のみクリア</p>
+</dd>
+  </dl>
+
+
+  <h2 id="McpXLib_Enums_RemoteRunClearMode_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>デバイス初期値が設定されている場合は、クリア後にデバイス初期値が反映されます。</p>
+</div>
 
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Enums/RemoteRunClearMode.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

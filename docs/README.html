@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.10.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.11.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -213,15 +213,39 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 </tr>
 <tr>
 <td><strong>Combined Read</strong></td>
-<td>Reads consecutive ranges (with a point count) and single devices together; ranges use batch access, single devices use random access.</td>
+<td>Reads consecutive ranges (with a point count) and single devices together; ranges use batch access (multiple block read for several ranges when <code>UseMultiBlockAccess</code> is enabled), single devices use random access.</td>
 <td><code>Read(Action&lt;ReadBuilder&gt; build)</code></td>
 <td><code>ReadAsync(Action&lt;ReadBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>Combined Write</strong></td>
-<td>Writes consecutive ranges (arrays) and single devices together; arrays use batch access, single values use random access.</td>
+<td>Writes consecutive ranges (arrays) and single devices together; arrays use batch access (multiple block write for several ranges when <code>UseMultiBlockAccess</code> is enabled), single values use random access.</td>
 <td><code>Write(Action&lt;WriteBuilder&gt; build)</code></td>
 <td><code>WriteAsync(Action&lt;WriteBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>Multiple Block Read</strong></td>
+<td>Reads multiple ranges (blocks) of consecutive devices in one request (command 0406).</td>
+<td><code>BlockRead(Action&lt;BlockReadBuilder&gt; build)</code></td>
+<td><code>BlockReadAsync(Action&lt;BlockReadBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>Multiple Block Write</strong></td>
+<td>Writes multiple ranges (blocks) of consecutive devices in one request (command 1406).</td>
+<td><code>BlockWrite(Action&lt;BlockWriteBuilder&gt; build)</code></td>
+<td><code>BlockWriteAsync(Action&lt;BlockWriteBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>Remote RUN / STOP / PAUSE</strong></td>
+<td>Changes the operating status of the CPU (commands 1001 / 1002 / 1003).</td>
+<td><code>RemoteRun(bool force, RemoteRunClearMode clearMode)</code> / <code>RemoteStop()</code> / <code>RemotePause(bool force)</code></td>
+<td><code>RemoteRunAsync(...)</code> / <code>RemoteStopAsync()</code> / <code>RemotePauseAsync(...)</code></td>
+</tr>
+<tr>
+<td><strong>Remote Latch Clear / RESET</strong></td>
+<td>Executes latch clear or reset (commands 1005 / 1006). Execute while the CPU is stopped.</td>
+<td><code>RemoteLatchClear()</code> / <code>RemoteReset()</code></td>
+<td><code>RemoteLatchClearAsync()</code> / <code>RemoteResetAsync()</code></td>
 </tr>
 <tr>
 <td><strong>Remote Password Lock/Unlock</strong></td>

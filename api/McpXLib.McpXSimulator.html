@@ -562,6 +562,51 @@ Class McpXSimulator  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_Dispose">McpX.Dispose()</a>
     </div>
     <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_UseMultiBlockAccess">McpX.UseMultiBlockAccess</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BlockRead_System_Action_McpXLib_BlockReadBuilder__">McpX.BlockRead(Action&lt;BlockReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BlockReadAsync_System_Action_McpXLib_BlockReadBuilder__">McpX.BlockReadAsync(Action&lt;BlockReadBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BlockWrite_System_Action_McpXLib_BlockWriteBuilder__">McpX.BlockWrite(Action&lt;BlockWriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_BlockWriteAsync_System_Action_McpXLib_BlockWriteBuilder__">McpX.BlockWriteAsync(Action&lt;BlockWriteBuilder&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteRun_System_Boolean_McpXLib_Enums_RemoteRunClearMode_">McpX.RemoteRun(bool, RemoteRunClearMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteRunAsync_System_Boolean_McpXLib_Enums_RemoteRunClearMode_">McpX.RemoteRunAsync(bool, RemoteRunClearMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteStop">McpX.RemoteStop()</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteStopAsync">McpX.RemoteStopAsync()</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemotePause_System_Boolean_">McpX.RemotePause(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemotePauseAsync_System_Boolean_">McpX.RemotePauseAsync(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClear">McpX.RemoteLatchClear()</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteLatchClearAsync">McpX.RemoteLatchClearAsync()</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteReset_System_Int32_">McpX.RemoteReset(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_RemoteResetAsync_System_Int32_">McpX.RemoteResetAsync(int)</a>
+    </div>
+    <div>
       <a class="xref" href="McpXLib.Mcp.html#McpXLib_Mcp_IsAscii">Mcp.IsAscii</a>
     </div>
     <div>
@@ -636,9 +681,9 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
 
   <a id="McpXLib_McpXSimulator__ctor_" data-uid="McpXLib.McpXSimulator.#ctor*"></a>
 
-  <h3 id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_" data-uid="McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries)">
-  McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <h3 id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_System_Boolean_" data-uid="McpXLib.McpXSimulator.#ctor(System.Int32,System.Int32,System.String,McpXLib.Enums.RequestFrame,System.UInt16,McpXLib.Enums.ProcessorSeries,System.Boolean)">
+  McpXSimulator(int, int, string, RequestFrame, ushort, ProcessorSeries, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>インスタンス初期化</p>
@@ -646,7 +691,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public McpXSimulator(int systemNo = 1, int cpuNo = 1, string ip = &quot;127.0.0.1&quot;, RequestFrame requestFrame = RequestFrame.E3, ushort timeoutMilliseconds = 5000, ProcessorSeries processorSeries = ProcessorSeries.iQR)</code></pre>
+    <pre><code class="lang-csharp hljs">public McpXSimulator(int systemNo = 1, int cpuNo = 1, string ip = &quot;127.0.0.1&quot;, RequestFrame requestFrame = RequestFrame.E3, ushort timeoutMilliseconds = 5000, ProcessorSeries processorSeries = ProcessorSeries.iQR, bool useMultiBlockAccess = false)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -669,6 +714,9 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
     <dt><code>processorSeries</code> <a class="xref" href="McpXLib.Enums.ProcessorSeries.html">ProcessorSeries</a></dt>
     <dd><p>PLCのシリーズを指定します。（デフォルトは、MELSEC iQ-Rシリーズ:<code>ProcessorSeries.iQR</code>です。）</p>
 </dd>
+    <dt><code>useMultiBlockAccess</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>統合アクセスで、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<code>true</code>を指定します。（デフォルトは、<code>false</code>です。詳細は <a class="xref" href="McpXLib.McpX.html#McpXLib_McpX_UseMultiBlockAccess">UseMultiBlockAccess</a> を参照してください。）</p>
+</dd>
   </dl>
 
 
@@ -678,7 +726,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
 
 
 
-  <h4 class="section" id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries__remarks">Remarks</h4>
+  <h4 class="section" id="McpXLib_McpXSimulator__ctor_System_Int32_System_Int32_System_String_McpXLib_Enums_RequestFrame_System_UInt16_McpXLib_Enums_ProcessorSeries_System_Boolean__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>システムNo.と号機No.から求めたポート番号で、GX Simulator3 に接続します。</p>
 </div>
 
@@ -771,7 +819,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
 
   <h3 id="McpXLib_McpXSimulator_CpuNo" data-uid="McpXLib.McpXSimulator.CpuNo">
   CpuNo
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>接続先の号機No.</p>
@@ -803,7 +851,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
 
   <h3 id="McpXLib_McpXSimulator_SystemNo" data-uid="McpXLib.McpXSimulator.SystemNo">
   SystemNo
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>接続先のシステムNo.</p>
@@ -839,7 +887,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接�
 
   <h3 id="McpXLib_McpXSimulator_GetPort_System_Int32_System_Int32_" data-uid="McpXLib.McpXSimulator.GetPort(System.Int32,System.Int32)">
   GetPort(int, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/McpXSimulator.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>ポート番号取得</p>

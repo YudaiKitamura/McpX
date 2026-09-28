@@ -233,6 +233,81 @@ Class McProtocolException  <a class="header-action link-secondary" title="View s
 
 
 
+  <a id="McpXLib_Exceptions_McProtocolException__ctor_" data-uid="McpXLib.Exceptions.McProtocolException.#ctor*"></a>
+
+  <h3 id="McpXLib_Exceptions_McProtocolException__ctor_System_String_System_UInt16_" data-uid="McpXLib.Exceptions.McProtocolException.#ctor(System.String,System.UInt16)">
+  McProtocolException(string, ushort)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Exceptions/McProtocolException.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>例外の初期化（エラーコード指定）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public McProtocolException(string message, ushort errorCode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>詳細の内容</p>
+</dd>
+    <dt><code>errorCode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>PLCから受信したエラーコード（終了コード）</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="McpXLib_Exceptions_McProtocolException_ErrorCode_" data-uid="McpXLib.Exceptions.McProtocolException.ErrorCode*"></a>
+
+  <h3 id="McpXLib_Exceptions_McProtocolException_ErrorCode" data-uid="McpXLib.Exceptions.McProtocolException.ErrorCode">
+  ErrorCode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/YudaiKitamura/McpX/blob/main/McpXLib/Exceptions/McProtocolException.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>PLCから受信したエラーコード（終了コード）。不明な場合は <code>0</code> です。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort ErrorCode { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="McpXLib_Exceptions_McProtocolException_ErrorCode_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>例えば <code>0xC059</code> は、コマンドまたはサブコマンドに対応していないことを示します。</p>
+</div>
+
+
+
+
 
 </article>
 

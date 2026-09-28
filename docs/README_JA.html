@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.10.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.11.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -211,15 +211,39 @@ int port = McpXSimulator.GetPort(systemNo: 2);                        // 5521
 </tr>
 <tr>
 <td><strong>統合読み込み</strong></td>
-<td>範囲指定（点数あり）と単一指定のデバイスをまとめて読み込みます。範囲は連続アクセス、単一はランダムアクセスで読み込みます。</td>
+<td>範囲指定（点数あり）と単一指定のデバイスをまとめて読み込みます。範囲は連続アクセス（<code>UseMultiBlockAccess</code> を有効にすると、範囲が複数あれば複数ブロック一括読出し）、単一はランダムアクセスで読み込みます。</td>
 <td><code>Read(Action&lt;ReadBuilder&gt; build)</code></td>
 <td><code>ReadAsync(Action&lt;ReadBuilder&gt; build)</code></td>
 </tr>
 <tr>
 <td><strong>統合書き込み</strong></td>
-<td>範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス、単一値はランダムアクセスで書き込みます。</td>
+<td>範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス（<code>UseMultiBlockAccess</code> を有効にすると、範囲が複数あれば複数ブロック一括書込み）、単一値はランダムアクセスで書き込みます。</td>
 <td><code>Write(Action&lt;WriteBuilder&gt; build)</code></td>
 <td><code>WriteAsync(Action&lt;WriteBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>複数ブロック一括読出し</strong></td>
+<td>連続したデバイスの範囲（ブロック）を複数指定し、1回の交信でまとめて読み出します（コマンド: 0406）。</td>
+<td><code>BlockRead(Action&lt;BlockReadBuilder&gt; build)</code></td>
+<td><code>BlockReadAsync(Action&lt;BlockReadBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>複数ブロック一括書込み</strong></td>
+<td>連続したデバイスの範囲（ブロック）を複数指定し、1回の交信でまとめて書き込みます（コマンド: 1406）。</td>
+<td><code>BlockWrite(Action&lt;BlockWriteBuilder&gt; build)</code></td>
+<td><code>BlockWriteAsync(Action&lt;BlockWriteBuilder&gt; build)</code></td>
+</tr>
+<tr>
+<td><strong>リモートRUN / STOP / PAUSE</strong></td>
+<td>CPUユニットの動作状態を変更します（コマンド: 1001 / 1002 / 1003）。</td>
+<td><code>RemoteRun(bool force, RemoteRunClearMode clearMode)</code> / <code>RemoteStop()</code> / <code>RemotePause(bool force)</code></td>
+<td><code>RemoteRunAsync(...)</code> / <code>RemoteStopAsync()</code> / <code>RemotePauseAsync(...)</code></td>
+</tr>
+<tr>
+<td><strong>リモートラッチクリア / RESET</strong></td>
+<td>ラッチクリア、リセットを実行します（コマンド: 1005 / 1006）。STOP状態で実行してください。</td>
+<td><code>RemoteLatchClear()</code> / <code>RemoteReset()</code></td>
+<td><code>RemoteLatchClearAsync()</code> / <code>RemoteResetAsync()</code></td>
 </tr>
 <tr>
 <td><strong>リモートパスワード ロック/アンロック</strong></td>
