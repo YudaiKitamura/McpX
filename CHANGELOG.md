@@ -7,6 +7,7 @@
 - Fixed `timeoutMilliseconds = 0` always failing to connect over TCP. `0` now means no timeout, as for requests.
 - Fixed every command failing with `ArgumentOutOfRangeException` when `timeoutMilliseconds` was 1–249. The monitoring timer is now derived from the timeout (250 ms shorter, in 250 ms units; 0 below 500 ms) so that the PLC's error response arrives before the client times out.
 - Fixed async UDP requests always timing out when `timeoutMilliseconds = 0`. `0` now means no timeout, as for TCP and sync UDP requests.
+- Fixed the connection being left open when the remote password unlock failed in the constructor.
 
 ### Changed
 - The timeout (`timeoutMilliseconds`) now applies to the whole request, from sending to receiving the complete response, for both sync and async TCP requests (previously per read call).

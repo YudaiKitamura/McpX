@@ -67,11 +67,7 @@ public partial class McpX : Mcp
     {
         this.password = password;
         UseMultiBlockAccess = useMultiBlockAccess;
-
-        if (password != null)
-        {
-            RemoteUnlock(password);
-        }
+        UnlockOrRelease();
     }
 
     // テスト用：再接続できるよう、トランスポートの生成処理を指定して生成する。
@@ -90,13 +86,36 @@ public partial class McpX : Mcp
     internal McpX(
         IPlcTransport transport,
         ProcessorSeries processorSeries = ProcessorSeries.Q,
-        ushort timeoutMilliseconds = 5000
+        ushort timeoutMilliseconds = 5000,
+        string? password = null
     ) : base (
         transport: transport,
         timeout: timeoutMilliseconds,
         processorSeries: processorSeries
     )
     {
+        this.password = password;
+        UnlockOrRelease();
+    }
+
+    // リモートパスワードを解除する。失敗した場合はインスタンスが返らず Dispose できないため、ここで接続を閉じる。
+    private void UnlockOrRelease()
+    {
+        if (password == null)
+        {
+            return;
+        }
+
+        try
+        {
+            RemoteUnlock(password);
+        }
+        catch
+        {
+            // this.Dispose() はリモートロックを送るため、トランスポートだけを閉じる
+            base.Dispose();
+            throw;
+        }
     }
 
     /// <summary>
