@@ -20,9 +20,13 @@ public sealed class MonitorSession
     private readonly Action<ushort>[] wordApplies;
     private readonly Action<uint>[] doubleWordApplies;
 
-    internal MonitorSession(McpX mcpX, MonitorBuilder builder)
+    // このセッションを作ったモニタ登録の世代。別の登録が行われると無効になる。
+    private readonly int generation;
+
+    internal MonitorSession(McpX mcpX, MonitorBuilder builder, int generation)
     {
         this.mcpX = mcpX;
+        this.generation = generation;
         wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
         wordApplies = builder.wordEntries.Select(e => e.apply).ToArray();
@@ -34,9 +38,10 @@ public sealed class MonitorSession
     /// </summary>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="InvalidOperationException">このセッションの作成後に別のモニタ登録（MonitorRegist）が行われ、PLC の登録が置き換わっている場合にスローします。</exception>
     public void Read()
     {
-        var (rawWords, rawDoubleWords) = mcpX.Monitor<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = mcpX.MonitorRegistered(generation, wordAddresses, doubleWordAddresses);
         Dispatch(rawWords, rawDoubleWords);
     }
 
@@ -45,9 +50,10 @@ public sealed class MonitorSession
     /// </summary>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="InvalidOperationException">このセッションの作成後に別のモニタ登録（MonitorRegist）が行われ、PLC の登録が置き換わっている場合にスローします。</exception>
     public async Task ReadAsync()
     {
-        var (rawWords, rawDoubleWords) = await mcpX.MonitorAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = await mcpX.MonitorRegisteredAsync(generation, wordAddresses, doubleWordAddresses);
         Dispatch(rawWords, rawDoubleWords);
     }
 

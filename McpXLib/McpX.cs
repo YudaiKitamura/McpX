@@ -1179,9 +1179,9 @@ public partial class McpX : Mcp
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
         // モニタ登録は分割不可。点数上限を超えると MonitorRegistCommand が例外をスローする。
-        MonitorRegist(wordAddresses, doubleWordAddresses);
+        int generation = RegisterMonitor(wordAddresses, doubleWordAddresses);
 
-        return new MonitorSession(this, builder);
+        return new MonitorSession(this, builder, generation);
     }
 
     /// <summary>
@@ -1206,9 +1206,9 @@ public partial class McpX : Mcp
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
-        await MonitorRegistAsync(wordAddresses, doubleWordAddresses);
+        int generation = await RegisterMonitorAsync(wordAddresses, doubleWordAddresses);
 
-        return new MonitorSession(this, builder);
+        return new MonitorSession(this, builder, generation);
     }
 
     /// <summary>

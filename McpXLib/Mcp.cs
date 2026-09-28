@@ -83,6 +83,11 @@ public class Mcp : BasePlc, IPlc
     // 再接続用のトランスポート生成処理（トランスポートを直接指定した場合は null）
     private readonly Func<IPlcTransport>? transportFactory;
 
+    // PLC に残るモニタ登録は最後の1つだけのため、登録のたびに世代を進めて古い MonitorSession を検出する。
+    // 登録と世代の更新、世代の確認とモニタ読み出しを、それぞれ monitorGate の内側で一まとめに行う。
+    private readonly SemaphoreSlim monitorGate = new(1, 1);
+    private int monitorGeneration;
+
     internal Mcp(
         IPlcTransport transport,
         ushort timeout,
@@ -214,6 +219,17 @@ public class Mcp : BasePlc, IPlc
         }
 
         ReplaceTransport(transportFactory());
+
+        // 新しい接続には PLC のモニタ登録が引き継がれないため、既存の MonitorSession を無効にする
+        monitorGate.Wait();
+        try
+        {
+            monitorGeneration++;
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
     }
 
     internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create)
@@ -402,10 +418,7 @@ public class Mcp : BasePlc, IPlc
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        await RegisterMonitorAsync(wordAddresses, doubleWordAddresses);
     }
 
     /// <summary>
@@ -430,10 +443,88 @@ public class Mcp : BasePlc, IPlc
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        RegisterMonitor(wordAddresses, doubleWordAddresses);
+    }
+
+    /// <summary>
+    /// モニタ登録を行い、登録後の世代を返します。
+    /// </summary>
+    internal int RegisterMonitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    {
+        // 点数などの検証はコマンド生成時に行われる（検証エラーでは PLC の登録は変わらないため世代も進めない）
+        var command = new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
+
+        monitorGate.Wait();
+        try
+        {
+            // 送信した時点で PLC の登録は置き換わりうるため、登録が失敗しても古いセッションは無効にする
+            monitorGeneration++;
+            new PlcCommandHandler<bool>().Execute(command, this);
+            return monitorGeneration;
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
+    }
+
+    internal async Task<int> RegisterMonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    {
+        var command = new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
+
+        await monitorGate.WaitAsync();
+        try
+        {
+            monitorGeneration++;
+            await new PlcCommandHandler<bool>().ExecuteAsync(command, this);
+            return monitorGeneration;
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
+    }
+
+    /// <summary>
+    /// 指定した世代のモニタ登録が有効な場合に、モニタ（0802）で値を読み出します。
+    /// </summary>
+    /// <exception cref="InvalidOperationException">その後に別のモニタ登録が行われ、指定した世代の登録が無効になっている場合にスローします。</exception>
+    internal (ushort[] wordValues, uint[] doubleValues) MonitorRegistered(int generation, (Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    {
+        monitorGate.Wait();
+        try
+        {
+            ThrowIfStaleMonitor(generation);
+            return Monitor<ushort, uint>(wordAddresses, doubleWordAddresses);
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
+    }
+
+    internal async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorRegisteredAsync(int generation, (Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    {
+        await monitorGate.WaitAsync();
+        try
+        {
+            ThrowIfStaleMonitor(generation);
+            return await MonitorAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
+    }
+
+    private void ThrowIfStaleMonitor(int generation)
+    {
+        if (generation != monitorGeneration)
+        {
+            throw new InvalidOperationException(
+                "This MonitorSession is no longer valid because the monitor registration was replaced by another MonitorRegist call."
+            );
+        }
     }
 
     /// <summary>

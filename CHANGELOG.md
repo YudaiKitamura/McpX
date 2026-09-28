@@ -9,6 +9,7 @@
 - Fixed async UDP requests always timing out when `timeoutMilliseconds = 0`. `0` now means no timeout, as for TCP and sync UDP requests.
 - Fixed the connection being left open when the remote password unlock failed in the constructor.
 - Fixed `Dispose` leaving the socket open when the remote lock failed (e.g. after a disconnect), and throwing when called twice.
+- Fixed an old `MonitorSession` silently passing values of another registration to its callbacks after a new `MonitorRegist` (the PLC keeps only the latest registration).
 
 ### Changed
 - The timeout (`timeoutMilliseconds`) now applies to the whole request, from sending to receiving the complete response, for both sync and async TCP requests (previously per read call).
@@ -16,6 +17,7 @@
 - **Breaking:** A refused TCP connection now throws `SocketException` instead of `AggregateException`.
 - **Breaking:** All transport timeouts now throw `TimeoutException` (with the `SocketException` of `SocketError.TimedOut` as the inner exception). Previously TCP requests threw `IOException` and UDP requests threw `SocketException`.
 - `Dispose` no longer throws when the remote lock fails; the connection is always released.
+- `MonitorSession.Read` / `ReadAsync` now throw `InvalidOperationException` when the monitor registration has been replaced by another `MonitorRegist` call, or the connection has been re-established (e.g. by `RemoteReset`).
 
 ### Removed
 - **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.

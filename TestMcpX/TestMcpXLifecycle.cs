@@ -63,4 +63,86 @@ public sealed class TestMcpXLifecycle
         // リモートロックは1回だけ送ること
         Assert.AreEqual(1, transport.Requests.Count(r => r.Command == REMOTE_LOCK));
     }
+
+    private const ushort MONITOR_REGIST = 0x0801;
+    private const ushort MONITOR = 0x0802;
+
+    [TestMethod]
+    public async Task TestStaleMonitorSessionThrows()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        short a = -1, b = -1;
+        var s1 = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", v => a = v));
+        s1.Read();
+        s1.Read();  // 登録が変わらなければ繰り返し読めること
+        Assert.AreEqual((short)0, a);
+
+        var s2 = await mcpx.MonitorRegistAsync(x => x.Add<short>(Prefix.D, "200", v => b = v));
+
+        // 登録が置き換わった後の古いセッションは例外になり、通信もしないこと
+        int monitors = transport.Requests.Count(r => r.Command == MONITOR);
+        Assert.ThrowsException<InvalidOperationException>(() => s1.Read());
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => s1.ReadAsync());
+        Assert.AreEqual(monitors, transport.Requests.Count(r => r.Command == MONITOR));
+
+        // 新しいセッションは読めること
+        await s2.ReadAsync();
+        Assert.AreEqual((short)0, b);
+    }
+
+    [TestMethod]
+    public void TestLegacyMonitorRegistInvalidatesSession()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+        mcpx.MonitorRegist([(Prefix.D, "0"), (Prefix.D, "1")], []);
+
+        Assert.ThrowsException<InvalidOperationException>(() => session.Read());
+    }
+
+    [TestMethod]
+    public void TestFailedMonitorRegistInvalidatesSession()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        // 送信後に失敗した登録でも、PLC の登録が置き換わった可能性があるため古いセッションは無効にする
+        transport.EndCodes[MONITOR_REGIST] = 0xC059;
+        Assert.ThrowsException<McProtocolException>(() => mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "200", _ => { })));
+
+        Assert.ThrowsException<InvalidOperationException>(() => session.Read());
+    }
+
+    [TestMethod]
+    public void TestInvalidMonitorRegistKeepsSession()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        // 点数0など送信前の検証エラーでは PLC の登録は変わらないため、既存のセッションは使えること
+        Assert.ThrowsException<ArgumentException>(() => mcpx.MonitorRegist(_ => { }));
+
+        session.Read();
+    }
+
+    [TestMethod]
+    public void TestReconnectInvalidatesSession()
+    {
+        using var mcpx = new McpX(() => new FakePlcTransport());
+
+        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        // 接続し直すと PLC のモニタ登録は引き継がれないため、既存のセッションは無効になること
+        mcpx.Reconnect();
+
+        Assert.ThrowsException<InvalidOperationException>(() => session.Read());
+    }
 }
