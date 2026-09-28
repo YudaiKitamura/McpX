@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.12.0] - 2026-09-28
 ### Fixed
 - Fixed async TCP requests never timing out when the PLC does not respond (`NetworkStream.ReadAsync` ignores `ReceiveTimeout`).
 - Fixed concurrent requests on the same instance (async TCP and UDP) interleaving their packets, which could swap responses between requests. Requests are now processed one at a time.
