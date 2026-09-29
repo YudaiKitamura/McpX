@@ -113,6 +113,21 @@ internal static unsafe class Native
     internal static int SessionFree(ulong session, NativeError* err)
         => ((delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&MonitorExports.Free)(session, err);
 
+    internal static int RemoteRun(ulong client, byte force, byte clearMode, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, byte, byte, NativeError*, int>)&RemoteExports.Run)(client, force, clearMode, err);
+
+    internal static int RemoteStop(ulong client, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&RemoteExports.Stop)(client, err);
+
+    internal static int RemotePause(ulong client, byte force, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, byte, NativeError*, int>)&RemoteExports.Pause)(client, force, err);
+
+    internal static int RemoteLatchClear(ulong client, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&RemoteExports.LatchClear)(client, err);
+
+    internal static int RemoteReset(ulong client, int reconnectTimeoutMs, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, int, NativeError*, int>)&RemoteExports.Reset)(client, reconnectTimeoutMs, err);
+
     internal static int Close(ulong client, NativeError* err)
     {
         var f = (delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&ClientExports.Close;

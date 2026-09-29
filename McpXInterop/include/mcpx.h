@@ -246,7 +246,7 @@ mcpx_status_t mcpx_remote_stop(mcpx_client_t client, mcpx_error* err);
 mcpx_status_t mcpx_remote_pause(mcpx_client_t client, uint8_t force, mcpx_error* err);
 mcpx_status_t mcpx_remote_latch_clear(mcpx_client_t client, mcpx_error* err);
 
-/* リモート RESET。リセットで切れた接続を reconnect_timeout_ms（負の値は既定の 30000）以内に接続し直す */
+/* リモート RESET。リセットで切れた接続を reconnect_timeout_ms 以内に接続し直す（負の値は既定の 30000、0 は接続し直さない） */
 mcpx_status_t mcpx_remote_reset(mcpx_client_t client, int32_t reconnect_timeout_ms, mcpx_error* err);
 
 #ifdef __cplusplus
