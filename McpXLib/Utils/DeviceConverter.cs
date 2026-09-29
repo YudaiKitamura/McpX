@@ -22,17 +22,18 @@ internal static class DeviceConverter
         { typeof(ulong), 4 }
     };
 
-#if !AOT
-    private static readonly Encoding sjisEncoding;
+    // 文字列を扱うときに初めて生成する（取得できない環境でも、文字列以外の API に影響させないため）。
+    private static readonly Lazy<Encoding> sjis = new(CreateShiftJis);
 
-    static DeviceConverter()
+    private static Encoding sjisEncoding => sjis.Value;
+
+    private static Encoding CreateShiftJis()
     {
 #if !NETSTANDARD2_0
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 #endif
-        sjisEncoding = Encoding.GetEncoding("shift_jis");
+        return Encoding.GetEncoding("shift_jis");
     }
-#endif
 
     internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
@@ -97,7 +98,6 @@ internal static class DeviceConverter
         return values;
     }
 
-#if !AOT
     internal static string ConvertString(byte[] bytes)
     {
         int length = Array.IndexOf(bytes, (byte)0x00);
@@ -117,7 +117,6 @@ internal static class DeviceConverter
             value
         );
     }
-#endif
 
     internal static int GetWordLength<T>() where T : unmanaged
     {
@@ -140,7 +139,6 @@ internal static class DeviceConverter
         return bytes.ToArray();
     }
 
-#if !AOT
     internal static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
     {
         List<byte> bytes = sjisEncoding.GetBytes(value).ToList();
@@ -162,7 +160,6 @@ internal static class DeviceConverter
 
         return result;
     }
-#endif
 
     internal static byte[] ToByteAddress(Prefix prefix, string address, ProcessorSeries series = ProcessorSeries.Q)
     {
