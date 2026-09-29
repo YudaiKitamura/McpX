@@ -26,6 +26,7 @@
   <ItemGroup>
     <!-- 偽 PLC（TestMcpX と共有） -->
     <Compile Include="..\TestMcpX\FakePlcTransport.cs" Link="FakePlcTransport.cs" />
+    <Compile Include="..\TestMcpX\FakePlcCore.cs" Link="FakePlcCore.cs" />
   </ItemGroup>
 
 </Project>
