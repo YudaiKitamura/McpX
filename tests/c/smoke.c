@@ -36,6 +36,7 @@ int main(int argc, char** argv)
     CHECK(mcpx_struct_size(MCPX_STRUCT_ERROR) == sizeof(mcpx_error));
     CHECK(mcpx_struct_size(MCPX_STRUCT_CONNECT_OPTIONS) == sizeof(mcpx_connect_options));
     CHECK(mcpx_struct_size(MCPX_STRUCT_SIMULATOR_OPTIONS) == sizeof(mcpx_simulator_options));
+    CHECK(mcpx_struct_size(MCPX_STRUCT_ITEM) == sizeof(mcpx_item));
     printf("mcpx %s (abi %u.%u)\n", mcpx_version(), mcpx_abi_version() >> 16, mcpx_abi_version() & 0xFFFF);
 
     mcpx_error err = { .struct_size = sizeof(mcpx_error) };

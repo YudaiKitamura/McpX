@@ -9,26 +9,6 @@ namespace McpXNative;
 /// </summary>
 internal static unsafe class AccessExports
 {
-    private const int MaxAddressBytes = 64;
-
-    // 既知のデバイスコード（Prefix の値）
-    private static readonly bool[] knownPrefixes = CreateKnownPrefixes();
-
-    private static bool[] CreateKnownPrefixes()
-    {
-        var known = new bool[256];
-        byte[] codes =
-        [
-            0x9C, 0x9D, 0x90, 0x92, 0x93, 0x94, 0xA0, 0xA8, 0xB4, 0xC1, 0xC0, 0xC2, 0xC7, 0xC6,
-            0xC8, 0xC4, 0xC3, 0xC5, 0xA1, 0xB5, 0x98, 0xA2, 0xA3, 0x91, 0xA9, 0xCC, 0xAF, 0xB0,
-        ];
-        foreach (var code in codes)
-        {
-            known[code] = true;
-        }
-        return known;
-    }
-
     [UnmanagedCallersOnly(EntryPoint = "mcpx_read", CallConvs = [typeof(CallConvCdecl)])]
     public static int Read(ulong client, byte prefix, byte* address, byte type, void* output, nuint outputSize, NativeError* err)
     {
@@ -127,7 +107,7 @@ internal static unsafe class AccessExports
             return false;
         }
 
-        if (!knownPrefixes[prefix])
+        if (!Validation.IsKnownPrefix(prefix))
         {
             status = Errors.InvalidArgument(err, $"Unknown device prefix 0x{prefix:X2}.");
             return false;
@@ -140,9 +120,9 @@ internal static unsafe class AccessExports
             return false;
         }
 
-        if (!Utf8.TryRead(address, MaxAddressBytes, out addressText) || addressText.Length == 0)
+        if (!Utf8.TryRead(address, Validation.MaxAddressBytes, out addressText) || addressText.Length == 0)
         {
-            status = Errors.InvalidArgument(err, $"address must be a non-empty string of at most {MaxAddressBytes} bytes.");
+            status = Errors.InvalidArgument(err, $"address must be a non-empty string of at most {Validation.MaxAddressBytes} bytes.");
             return false;
         }
 

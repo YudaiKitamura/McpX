@@ -22,4 +22,11 @@ _Static_assert(offsetof(mcpx_simulator_options, host) == 16, "mcpx_simulator_opt
 _Static_assert(offsetof(mcpx_simulator_options, timeout_ms) == 24, "mcpx_simulator_options.timeout_ms");
 _Static_assert(offsetof(mcpx_simulator_options, frame) == 28, "mcpx_simulator_options.frame");
 
+_Static_assert(sizeof(mcpx_item) == 32, "mcpx_item size");
+_Static_assert(offsetof(mcpx_item, buffer) == 8, "mcpx_item.buffer");
+_Static_assert(offsetof(mcpx_item, buffer_size) == 16, "mcpx_item.buffer_size");
+_Static_assert(offsetof(mcpx_item, count) == 24, "mcpx_item.count");
+_Static_assert(offsetof(mcpx_item, type) == 28, "mcpx_item.type");
+_Static_assert(offsetof(mcpx_item, kind) == 30, "mcpx_item.kind");
+
 int main(void) { return 0; }

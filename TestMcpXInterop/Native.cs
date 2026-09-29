@@ -73,6 +73,18 @@ internal static unsafe class Native
         }
     }
 
+    internal static int ReadItems(ulong client, NativeItem* items, nuint count, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, NativeError*, int>)&ItemExports.ReadItems)(client, items, count, err);
+
+    internal static int WriteItems(ulong client, NativeItem* items, nuint count, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, NativeError*, int>)&ItemExports.WriteItems)(client, items, count, err);
+
+    internal static int BlockRead(ulong client, NativeItem* items, nuint count, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, NativeError*, int>)&ItemExports.BlockRead)(client, items, count, err);
+
+    internal static int BlockWrite(ulong client, NativeItem* items, nuint count, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, NativeError*, int>)&ItemExports.BlockWrite)(client, items, count, err);
+
     internal static int Close(ulong client, NativeError* err)
     {
         var f = (delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&ClientExports.Close;

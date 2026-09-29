@@ -43,6 +43,7 @@ internal static unsafe class LibraryExports
             McpxStruct.Error => (uint)sizeof(NativeError),
             McpxStruct.ConnectOptions => (uint)sizeof(NativeConnectOptions),
             McpxStruct.SimulatorOptions => (uint)sizeof(NativeSimulatorOptions),
+            McpxStruct.Item => (uint)sizeof(NativeItem),
             _ => 0,
         };
     }

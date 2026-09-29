@@ -25,6 +25,7 @@ public sealed unsafe class TestLibrary
         Assert.AreEqual(528u, Native.StructSize(1));
         Assert.AreEqual(40u, Native.StructSize(2));
         Assert.AreEqual(32u, Native.StructSize(3));
+        Assert.AreEqual(32u, Native.StructSize(4));
         Assert.AreEqual(0u, Native.StructSize(99));
     }
 

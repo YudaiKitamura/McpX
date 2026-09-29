@@ -29,6 +29,9 @@ extern "C" {
 /* クライアント（PLC への接続）のハンドル。0 は無効値です。 */
 typedef uint64_t mcpx_client_t;
 
+/* モニタセッションのハンドル。0 は無効値です。 */
+typedef uint64_t mcpx_session_t;
+
 typedef int32_t mcpx_status_t;
 
 /* 状態コード（値は固定で、今後も変更しません） */
@@ -71,6 +74,15 @@ enum { MCPX_FRAME_3E = 0, MCPX_FRAME_4E = 1 };
 /* PLC のシリーズ（デバイス指定の形式） */
 enum { MCPX_SERIES_Q = 0, MCPX_SERIES_IQR = 1 };
 
+/* 項目の種類（mcpx_item.kind） */
+enum {
+    MCPX_ITEM_SINGLE = 0,  /* 単一デバイス（ランダムアクセス）。bool / i16 / u16 / i32 / u32 / f32 のみ */
+    MCPX_ITEM_RANGE = 1    /* 先頭デバイスから count 要素（連続アクセス） */
+};
+
+/* リモート RUN のクリアモード */
+enum { MCPX_CLEAR_NONE = 0, MCPX_CLEAR_OUTSIDE_LATCH = 1, MCPX_CLEAR_ALL = 2 };
+
 /* デバイスコード（McpX の Prefix と同じ値） */
 enum {
     MCPX_PREFIX_X = 0x9C,  MCPX_PREFIX_Y = 0x9D,  MCPX_PREFIX_M = 0x90,  MCPX_PREFIX_L = 0x92,
@@ -86,7 +98,8 @@ enum {
 enum {
     MCPX_STRUCT_ERROR = 1,
     MCPX_STRUCT_CONNECT_OPTIONS = 2,
-    MCPX_STRUCT_SIMULATOR_OPTIONS = 3
+    MCPX_STRUCT_SIMULATOR_OPTIONS = 3,
+    MCPX_STRUCT_ITEM = 4
 };
 
 /* エラーの詳細 */
@@ -126,6 +139,18 @@ typedef struct mcpx_simulator_options {
     uint8_t     use_multi_block;  /* 既定 0 */
     uint8_t     reserved;
 } mcpx_simulator_options;
+
+/* 読み書きする項目（mcpx_read_items などに配列で渡す）。配列の要素サイズは sizeof(mcpx_item) 固定 */
+typedef struct mcpx_item {
+    const char* address;      /* アドレス（UTF-8） */
+    void*       buffer;       /* 読み込みは出力先、書き込みは入力元 */
+    size_t      buffer_size;  /* buffer のバイト数（count × 型のサイズ以上） */
+    uint32_t    count;        /* RANGE の要素数（1〜65535）。SINGLE は 0 または 1 */
+    uint8_t     type;         /* MCPX_TYPE_* */
+    uint8_t     prefix;       /* MCPX_PREFIX_* */
+    uint8_t     kind;         /* MCPX_ITEM_* */
+    uint8_t     reserved;
+} mcpx_item;
 
 /* ---- ライブラリ情報 ---- */
 
@@ -174,6 +199,55 @@ mcpx_status_t mcpx_batch_read(mcpx_client_t client, uint8_t prefix, const char* 
 /* 先頭デバイスから count 要素（1〜65535）を書き込む */
 mcpx_status_t mcpx_batch_write(mcpx_client_t client, uint8_t prefix, const char* address, uint8_t type,
                                uint32_t count, const void* values, size_t size, mcpx_error* err);
+
+/* ---- 複数の項目をまとめて読み書き ----
+ * 失敗した場合、バッファの内容は不定です（先に完了した項目だけ書き込まれていることがあります）。 */
+
+/* 連続（RANGE）とランダム（SINGLE）の項目をまとめて読み込む（McpX.Read(Action<ReadBuilder>)） */
+mcpx_status_t mcpx_read_items(mcpx_client_t client, mcpx_item* items, size_t count, mcpx_error* err);
+
+/* 連続（RANGE）とランダム（SINGLE）の項目をまとめて書き込む（McpX.Write(Action<WriteBuilder>)） */
+mcpx_status_t mcpx_write_items(mcpx_client_t client, const mcpx_item* items, size_t count, mcpx_error* err);
+
+/* 複数ブロック一括読み込み（コマンド 0406、RANGE のみ。McpX.BlockRead） */
+mcpx_status_t mcpx_block_read(mcpx_client_t client, mcpx_item* items, size_t count, mcpx_error* err);
+
+/* 複数ブロック一括書き込み（コマンド 1406、RANGE のみ。McpX.BlockWrite） */
+mcpx_status_t mcpx_block_write(mcpx_client_t client, const mcpx_item* items, size_t count, mcpx_error* err);
+
+/* ---- 文字列（PLC 側は Shift_JIS） ---- */
+
+/* word_length ワード（1〜65535）を文字列として読み込み、UTF-8 の NUL 終端文字列で out に書き込む。
+ * out_len には NUL を除いた必要バイト数を返す。out_size が足りない場合は MCPX_E_BUFFER_TOO_SMALL。
+ * out_size が word_length × 6 + 1 以上なら必ず収まる。 */
+mcpx_status_t mcpx_read_string(mcpx_client_t client, uint8_t prefix, const char* address, uint32_t word_length,
+                               char* out, size_t out_size, size_t* out_len, mcpx_error* err);
+
+/* UTF-8 の文字列を Shift_JIS に変換して書き込む（終端の NUL も書き込まれる） */
+mcpx_status_t mcpx_write_string(mcpx_client_t client, uint8_t prefix, const char* address, const char* value, mcpx_error* err);
+
+/* ---- モニタ ---- */
+
+/* SINGLE の項目をモニタ登録し、セッションのハンドルを out に返す（McpX.MonitorRegist）。
+ * 登録時の buffer は使わない。別の登録や再接続を行うと、既存のセッションは MCPX_E_INVALID_OPERATION になる。 */
+mcpx_status_t mcpx_monitor_register(mcpx_client_t client, const mcpx_item* items, size_t count, mcpx_session_t* out, mcpx_error* err);
+
+/* 登録したデバイスの最新値を読み込み、items[i].buffer に書き込む。
+ * items は登録時と同じ数・同じ型で渡す（アドレスは参照しない）。 */
+mcpx_status_t mcpx_monitor_read(mcpx_session_t session, mcpx_item* items, size_t count, mcpx_error* err);
+
+/* セッションを解放する（0 は何もしない）。クライアントを close すると、そのセッションも解放される */
+mcpx_status_t mcpx_session_free(mcpx_session_t session, mcpx_error* err);
+
+/* ---- リモート操作 ---- */
+
+mcpx_status_t mcpx_remote_run(mcpx_client_t client, uint8_t force, uint8_t clear_mode, mcpx_error* err);
+mcpx_status_t mcpx_remote_stop(mcpx_client_t client, mcpx_error* err);
+mcpx_status_t mcpx_remote_pause(mcpx_client_t client, uint8_t force, mcpx_error* err);
+mcpx_status_t mcpx_remote_latch_clear(mcpx_client_t client, mcpx_error* err);
+
+/* リモート RESET。リセットで切れた接続を reconnect_timeout_ms（負の値は既定の 30000）以内に接続し直す */
+mcpx_status_t mcpx_remote_reset(mcpx_client_t client, int32_t reconnect_timeout_ms, mcpx_error* err);
 
 #ifdef __cplusplus
 }

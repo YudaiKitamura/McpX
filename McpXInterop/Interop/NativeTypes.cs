@@ -43,6 +43,13 @@ internal enum McpxStruct : uint
     Error = 1,
     ConnectOptions = 2,
     SimulatorOptions = 3,
+    Item = 4,
+}
+
+internal enum McpxItemKind : byte
+{
+    Single = 0,
+    Range = 1,
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -76,6 +83,19 @@ internal struct NativeConnectOptions
     public byte Reserved0;
     public byte Reserved1;
     public byte Reserved2;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct NativeItem
+{
+    public IntPtr Address;
+    public IntPtr Buffer;
+    public nuint BufferSize;
+    public uint Count;
+    public byte Type;
+    public byte Prefix;
+    public byte Kind;
+    public byte Reserved;
 }
 
 [StructLayout(LayoutKind.Sequential)]
