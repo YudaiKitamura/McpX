@@ -2,21 +2,34 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
+    <!-- ネイティブライブラリ名（mcpx.dll / mcpx.so / mcpx.dylib） -->
+    <AssemblyName>mcpx</AssemblyName>
+    <RootNamespace>McpXNative</RootNamespace>
+    <!-- McpXLib のパッケージ ID（McpX）と衝突しないよう別の ID にする（NuGet パッケージにはしない） -->
+    <PackageId>McpX.Native</PackageId>
+    <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>net9.0</TargetFramework>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <IlcDisableReflection>true</IlcDisableReflection>
+    <IsAotCompatible>true</IsAotCompatible>
+    <!-- AOT・トリミングで問題になる箇所はビルドエラーにする -->
+    <WarningsAsErrors>$(WarningsAsErrors);IL2026;IL2046;IL2057;IL2067;IL2070;IL2072;IL2075;IL2087;IL2091;IL3050;IL3051</WarningsAsErrors>
+    <IlcTreatWarningsAsErrors>true</IlcTreatWarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TestMcpXInterop" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\McpXLib\McpXLib.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64;osx-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
 </Project>
