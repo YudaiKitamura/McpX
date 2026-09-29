@@ -162,7 +162,7 @@ public class TestTcpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = Assert.ThrowsException<IOException>(() => {
+        var ex = Assert.ThrowsException<TimeoutException>(() => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
@@ -176,8 +176,8 @@ public class TestTcpPlcTransport
         
         cts.Cancel();
         
-        Assert.IsInstanceOfType<IOException>(ex);
-        Assert.AreEqual("Unable to read data from the transport connection: Connection timed out.", ex.Message);
+        // メッセージは OS により異なる（Linux: Connection timed out / macOS: Operation timed out）ため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
 
         var ex2 = Assert.ThrowsException<TimeoutException>(() => {
             // 実在しない、テスト用IPアドレス
@@ -201,7 +201,7 @@ public class TestTcpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = await Assert.ThrowsExceptionAsync<IOException>(async () => {
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
@@ -213,8 +213,8 @@ public class TestTcpPlcTransport
             await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
         });
 
-        Assert.IsInstanceOfType<IOException>(ex);
-        Assert.AreEqual("Unable to read data from the transport connection: Connection timed out.", ex.Message);
+        // メッセージは OS により異なる（Linux: Connection timed out / macOS: Operation timed out）ため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
 
         var ex2 = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             // 実在しない、テスト用IPアドレス

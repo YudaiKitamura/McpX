@@ -173,7 +173,7 @@ public class TestUdpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = Assert.ThrowsException<SocketException>(() => {
+        var ex = Assert.ThrowsException<TimeoutException>(() => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
@@ -187,10 +187,11 @@ public class TestUdpPlcTransport
         
         cts.Cancel();
         
-        Assert.IsInstanceOfType<SocketException>(ex);
-        Assert.AreEqual("Connection timed out", ex.Message);
+        Assert.IsInstanceOfType<TimeoutException>(ex);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
 
-        var ex2 = Assert.ThrowsException<SocketException>(() => {
+        var ex2 = Assert.ThrowsException<TimeoutException>(() => {
             // 実在しない、テスト用IPアドレス
             using var plc = new TestPlc("192.0.2.1", port);
             
@@ -203,8 +204,9 @@ public class TestUdpPlcTransport
             plc.Request(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
         });
         
-        Assert.IsInstanceOfType<SocketException>(ex2);
-        Assert.AreEqual("Connection timed out", ex2.Message);
+        Assert.IsInstanceOfType<TimeoutException>(ex2);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex2.InnerException!).SocketErrorCode);
     }
 
     [TestMethod]
@@ -212,7 +214,7 @@ public class TestUdpPlcTransport
     {
         var (port, cts) = StartReciveTimeoutEchoServer();
 
-        var ex = await Assert.ThrowsExceptionAsync<SocketException>(async () => {
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             using var plc = new TestPlc("127.0.0.1", port);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
@@ -224,10 +226,11 @@ public class TestUdpPlcTransport
             await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
         });
 
-        Assert.IsInstanceOfType<SocketException>(ex);
-        Assert.AreEqual("Connection timed out", ex.Message);
+        Assert.IsInstanceOfType<TimeoutException>(ex);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex.InnerException!).SocketErrorCode);
 
-        var ex2 = await Assert.ThrowsExceptionAsync<SocketException>(async () => {
+        var ex2 = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             // 実在しない、テスト用IPアドレス
             using var plc = new TestPlc("192.0.2.1", port);;
             
@@ -240,8 +243,9 @@ public class TestUdpPlcTransport
             await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
         });
         
-        Assert.IsInstanceOfType<SocketException>(ex2);
-        Assert.AreEqual("Connection timed out", ex2.Message);
+        Assert.IsInstanceOfType<TimeoutException>(ex2);
+        // メッセージは OS により異なるため、エラー種別で判定する
+        Assert.AreEqual(SocketError.TimedOut, ((SocketException)ex2.InnerException!).SocketErrorCode);
         
         cts.Cancel();
     }
@@ -254,7 +258,7 @@ public class TestUdpPlcTransport
         var parser = new DummyReceiveLengthParser(0, 0);
 
         byte[] firstData = faker.Random.Bytes(16);
-        await Assert.ThrowsExceptionAsync<SocketException>(async () => await plc.RequestAsync(firstData, parser));
+        await Assert.ThrowsExceptionAsync<TimeoutException>(async () => await plc.RequestAsync(firstData, parser));
 
         // タイムアウトした受信が次の応答を横取りしないこと
         byte[] secondData = faker.Random.Bytes(16);

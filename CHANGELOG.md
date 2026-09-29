@@ -1,3 +1,27 @@
+## [0.12.0] - 2026-09-28
+### Fixed
+- Fixed async TCP requests never timing out when the PLC does not respond (`NetworkStream.ReadAsync` ignores `ReceiveTimeout`).
+- Fixed concurrent requests on the same instance (async TCP and UDP) interleaving their packets, which could swap responses between requests. Requests are now processed one at a time.
+- Fixed the next request returning a stale (late) response after a timeout or communication error. TCP now closes the connection, and UDP recreates the socket on sync timeouts as well.
+- Fixed a refused TCP connection throwing `AggregateException` and leaking the `TcpClient`. It now disposes the client and throws the underlying `SocketException`.
+- Fixed `timeoutMilliseconds = 0` always failing to connect over TCP. `0` now means no timeout, as for requests.
+- Fixed every command failing with `ArgumentOutOfRangeException` when `timeoutMilliseconds` was 1–249. The monitoring timer is now derived from the timeout (250 ms shorter, in 250 ms units; 0 below 500 ms) so that the PLC's error response arrives before the client times out.
+- Fixed async UDP requests always timing out when `timeoutMilliseconds = 0`. `0` now means no timeout, as for TCP and sync UDP requests.
+- Fixed the connection being left open when the remote password unlock failed in the constructor.
+- Fixed `Dispose` leaving the socket open when the remote lock failed (e.g. after a disconnect), and throwing when called twice.
+- Fixed an old `MonitorSession` silently passing values of another registration to its callbacks after a new `MonitorRegist` (the PLC keeps only the latest registration).
+
+### Changed
+- The timeout (`timeoutMilliseconds`) now applies to the whole request, from sending to receiving the complete response, for both sync and async TCP requests (previously per read call).
+- After a TCP timeout or communication error, the connection is closed and subsequent requests throw `IOException`. Create a new instance to reconnect.
+- **Breaking:** A refused TCP connection now throws `SocketException` instead of `AggregateException`.
+- **Breaking:** All transport timeouts now throw `TimeoutException` (with the `SocketException` of `SocketError.TimedOut` as the inner exception). Previously TCP requests threw `IOException` and UDP requests threw `SocketException`.
+- `Dispose` no longer throws when the remote lock fails; the connection is always released.
+- `MonitorSession.Read` / `ReadAsync` now throw `InvalidOperationException` when the monitor registration has been replaced by another `MonitorRegist` call, or the connection has been re-established (e.g. by `RemoteReset`).
+
+### Removed
+- **Breaking:** Removed the obsolete single-argument `Request(byte[])` / `RequestAsync(byte[])` from `IPlc`, `IPlcTransport` and `BasePlc` (deprecated since 0.5.1). Use the overloads that take an `IReceiveLengthParser`.
+
 ## [0.11.0] - 2026-09-28
 ### Added
 - Added multiple block batch read / write (commands 0406 / 1406): `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)` and their async versions. Requests exceeding the limits (120 blocks, or 60 for `ProcessorSeries.iQR`; 960 points) are split automatically.

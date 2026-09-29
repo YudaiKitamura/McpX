@@ -14,11 +14,14 @@ namespace McpXLib;
 /// MCプロトコル拡張クラス
 /// </summary>
 /// <remarks>
-/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。
+/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。<br/>
+/// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
+/// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
 /// </remarks> 
 public partial class McpX : Mcp
 {
     private readonly string? password;
+    private bool disposed;
 
     /// <summary>
     /// インスタンス初期化
@@ -39,6 +42,8 @@ public partial class McpX : Mcp
     /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。
     /// 接続先が対応している場合のみ指定してください。（デフォルトは、<c>false</c>です。詳細は <see cref="UseMultiBlockAccess"/> を参照してください。）
     /// </param>
+    /// <exception cref="TimeoutException">指定したタイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
     /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(
@@ -63,11 +68,7 @@ public partial class McpX : Mcp
     {
         this.password = password;
         UseMultiBlockAccess = useMultiBlockAccess;
-
-        if (password != null)
-        {
-            RemoteUnlock(password);
-        }
+        UnlockOrRelease();
     }
 
     // テスト用：再接続できるよう、トランスポートの生成処理を指定して生成する。
@@ -85,13 +86,37 @@ public partial class McpX : Mcp
     // テスト用：トランスポートを差し替えて生成する。
     internal McpX(
         IPlcTransport transport,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
+        ProcessorSeries processorSeries = ProcessorSeries.Q,
+        ushort timeoutMilliseconds = 5000,
+        string? password = null
     ) : base (
         transport: transport,
-        timeout: 5000,
+        timeout: timeoutMilliseconds,
         processorSeries: processorSeries
     )
     {
+        this.password = password;
+        UnlockOrRelease();
+    }
+
+    // リモートパスワードを解除する。失敗した場合はインスタンスが返らず Dispose できないため、ここで接続を閉じる。
+    private void UnlockOrRelease()
+    {
+        if (password == null)
+        {
+            return;
+        }
+
+        try
+        {
+            RemoteUnlock(password);
+        }
+        catch
+        {
+            // this.Dispose() はリモートロックを送るため、トランスポートだけを閉じる
+            base.Dispose();
+            throw;
+        }
     }
 
     /// <summary>
@@ -1154,9 +1179,9 @@ public partial class McpX : Mcp
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
         // モニタ登録は分割不可。点数上限を超えると MonitorRegistCommand が例外をスローする。
-        MonitorRegist(wordAddresses, doubleWordAddresses);
+        int generation = RegisterMonitor(wordAddresses, doubleWordAddresses);
 
-        return new MonitorSession(this, builder);
+        return new MonitorSession(this, builder, generation);
     }
 
     /// <summary>
@@ -1181,9 +1206,9 @@ public partial class McpX : Mcp
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
-        await MonitorRegistAsync(wordAddresses, doubleWordAddresses);
+        int generation = await RegisterMonitorAsync(wordAddresses, doubleWordAddresses);
 
-        return new MonitorSession(this, builder);
+        return new MonitorSession(this, builder, generation);
     }
 
     /// <summary>
@@ -1408,15 +1433,31 @@ public partial class McpX : Mcp
     /// インスタンス破棄
     /// </summary>
     /// <remarks>
-    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。
+    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。<br/>
+    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず解放します。2回目以降の呼び出しは何もしません。
     /// </remarks>
     public override void Dispose()
     {
-        if (password != null) 
+        if (disposed)
         {
-            RemoteLock(password);
+            return;
         }
+        disposed = true;
 
-        base.Dispose();
+        try
+        {
+            if (password != null) 
+            {
+                RemoteLock(password);
+            }
+        }
+        catch
+        {
+            // 接続が切れている場合などはロックを送れない。Dispose からは例外をスローしない（.NET の指針）。
+        }
+        finally
+        {
+            base.Dispose();
+        }
     }
 }

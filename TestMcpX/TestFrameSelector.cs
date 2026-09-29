@@ -28,7 +28,7 @@ public sealed class TestFrameSelector
         commandPacketBuilder = new CommandPacketBuilder(
             command: faker.Random.Bytes(2),
             subCommand: faker.Random.Bytes(2),
-            monitoringTimer: faker.Random.Bytes(2)
+            monitoringTimer: (ushort)0
         );
     }
 

@@ -1,3 +1,27 @@
+## [0.12.0] - 2026-09-28
+### Fixed
+- PLC が応答しない場合に、TCP の非同期要求がタイムアウトせず永久に待ち続ける不具合を修正（`NetworkStream.ReadAsync` は `ReceiveTimeout` を参照しないため）。
+- 同じインスタンスで要求を並行実行（TCP の非同期・UDP）すると、送受信が交錯して応答が入れ替わることがある不具合を修正。要求を1つずつ処理するように変更。
+- タイムアウトや通信エラーの後、次の要求が遅れて届いた古い応答を返す不具合を修正。TCP は接続を閉じ、UDP は同期要求のタイムアウト時にもソケットを作り直すように変更。
+- TCP の接続が拒否された場合に `AggregateException` がスローされ、`TcpClient` が破棄されない不具合を修正。`TcpClient` を破棄し、元の `SocketException` をスローするように変更。
+- `timeoutMilliseconds = 0` を指定すると TCP の接続が必ず失敗する不具合を修正。要求と同じく `0` は無期限として扱う。
+- `timeoutMilliseconds` に 1〜249 を指定すると、すべてのコマンドが `ArgumentOutOfRangeException` になる不具合を修正。監視タイマをタイムアウトから決める（タイムアウトより 250ms 短い 250ms 単位の値。500ms 未満は 0）ように変更し、PLC のエラー応答がクライアント側のタイムアウトより先に届くようにした。
+- `timeoutMilliseconds = 0` を指定すると、UDP の非同期要求が必ずタイムアウトする不具合を修正。TCP・UDP の同期要求と同じく `0` は無期限として扱う。
+- コンストラクタでリモートパスワードの解除に失敗した場合に、接続が閉じられず残る不具合を修正。
+- リモートロックに失敗した場合（切断後など）に `Dispose` がソケットを解放しない不具合、および2回呼ぶと例外になる不具合を修正。
+- 新たに `MonitorRegist` を行った後に古い `MonitorSession` で読み出すと、別の登録の値が黙ってコールバックに渡る不具合を修正（PLC に残るモニタ登録は最後の1つだけのため）。
+
+### Changed
+- TCP のタイムアウト（`timeoutMilliseconds`）を、同期・非同期とも「送信開始から応答の受信完了まで」の要求全体に対する期限に変更（従来は1回の読み込みごと）。
+- TCP でタイムアウト・通信エラーが発生すると接続を閉じ、以降の要求は `IOException` になります。再接続するにはインスタンスを作り直してください。
+- **破壊的変更：** TCP の接続が拒否された場合の例外を、`AggregateException` から `SocketException` に変更。
+- **破壊的変更：** 通信のタイムアウトは、すべて `TimeoutException`（InnerException は `SocketError.TimedOut` の `SocketException`）をスローするように変更。従来は TCP の要求で `IOException`、UDP の要求で `SocketException` だった。
+- `Dispose` は、リモートロックに失敗しても例外をスローせず、接続を必ず解放するように変更。
+- 別の `MonitorRegist` で登録が置き換わった後、または `RemoteReset` などで接続し直した後の `MonitorSession.Read` / `ReadAsync` は、`InvalidOperationException` をスローするように変更。
+
+### Removed
+- **破壊的変更：** `IPlc`・`IPlcTransport`・`BasePlc` の、引数1つの `Request(byte[])` / `RequestAsync(byte[])` を削除（0.5.1 から非推奨）。`IReceiveLengthParser` を受け取るオーバーロードを使用してください。
+
 ## [0.11.0] - 2026-09-28
 ### Added
 - 複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）の `BlockRead(Action<BlockReadBuilder>)` / `BlockWrite(Action<BlockWriteBuilder>)`（および非同期版）を追加。上限（120ブロック、`ProcessorSeries.iQR` は60ブロック、合計960点）を超える場合は自動で分割。
