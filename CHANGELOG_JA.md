@@ -1,4 +1,11 @@
 ## [Unreleased]
+### Added
+- 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。
+- `ReadString` / `WriteString` を Native AOT ビルドでも利用可能に変更。
+
+### Removed
+- **破壊的変更：** 旧ネイティブ関数（`plc_connect`、`plc_close`、`batch_read_*`、`batch_write_*`）を削除。新しい `mcpx_*` 関数を使用してください。旧関数にあった問題（例外でプロセスが終了する、close した接続が残る、全接続が1つのロックで直列化される）は、新しい関数では起きない。
+
 ### Fixed
 - `RemoteReset` の再接続中にインスタンスが破棄された場合に、新しい接続が閉じられず残る不具合を修正。
 

@@ -1,4 +1,11 @@
 ## [Unreleased]
+### Added
+- Added a new native library with a stable C ABI (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`, header `McpXInterop/include/mcpx.h`): `mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`, `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write` for all value types, and library information. Every function returns a status code and reports details (message, PLC end code, socket error) through `mcpx_error`.
+- `ReadString` / `WriteString` are now available in Native AOT builds as well.
+
+### Removed
+- **Breaking:** Removed the old native exports (`plc_connect`, `plc_close`, `batch_read_*`, `batch_write_*`). Use the new `mcpx_*` functions. The problems of the old exports (the process terminating on an exception, closed connections being kept, and all connections being serialized by a single lock) do not occur with the new functions.
+
 ### Fixed
 - Fixed a new connection being left open when the instance was disposed during the reconnection of `RemoteReset`.
 

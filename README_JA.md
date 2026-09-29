@@ -100,12 +100,38 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 - 4Eフレーム（バイナリコード）
 - 4Eフレーム（ASCIIコード）
 
+## ネイティブライブラリ（C ABI）
+McpX を C の関数として公開したネイティブライブラリ（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。
+ヘッダは [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h) です。各関数は状態コード（`MCPX_OK = 0`）を返し、失敗時は `mcpx_error` に詳細（PLCの終了コードを含む）を書き込みます。
+
+```c
+#include "mcpx.h"
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&options);
+options.host = "192.168.12.88";
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, "0", MCPX_TYPE_I16, 10, values, sizeof(values), &err) != MCPX_OK)
+    {
+        printf("%s\n", err.message);
+    }
+    mcpx_close(plc, &err);
+}
+```
+
 ## 今後の予定
 - [x] ~~3Eフレーム（ASCIIコード）対応~~
 - [x] ~~4Eフレーム（バイナリコード）対応~~
 - [x] ~~4Eフレーム（ASCIIコード）対応~~
 - [x] ~~UDP対応~~
 - [x] ~~GX Simulator 対応~~
+- [ ] Python / Node.js ラッパー（ネイティブライブラリ経由で、C# の McpX と同等の使用感） - 進行中
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)

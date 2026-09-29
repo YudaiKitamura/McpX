@@ -101,12 +101,38 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 - 4E frame (binary code)
 - 4E frame (ASCII code)
 
+## Native Library (C ABI)
+A native library (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi).
+The header is [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h). Every function returns a status code (`MCPX_OK = 0`) and writes the details (including the PLC end code) to `mcpx_error` on failure.
+
+```c
+#include "mcpx.h"
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&options);
+options.host = "192.168.12.88";
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, "0", MCPX_TYPE_I16, 10, values, sizeof(values), &err) != MCPX_OK)
+    {
+        printf("%s\n", err.message);
+    }
+    mcpx_close(plc, &err);
+}
+```
+
 ## Roadmap
 - [x] ~~3E frame (ASCII code) support~~
 - [x] ~~4E frame (binary code) support~~
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
 - [x] ~~GX Simulator support~~
+- [ ] Python / Node.js wrappers (same feel as the C# McpX, via the native library) - In progress
 
 ## Changelog
 - [CHANGELOG.md](./CHANGELOG.md)
