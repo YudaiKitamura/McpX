@@ -19,7 +19,7 @@ internal static unsafe class Items
     /// <param name="allowRange">RANGE を許可するか。</param>
     internal static bool TryParse(
         NativeItem* items, nuint count, bool requireAddress, bool allowSingle, bool allowRange,
-        NativeError* err, out ParsedItem[] parsed, out int status)
+        NativeError* err, out ParsedItem[] parsed, out int status, bool requireBuffer = true)
     {
         parsed = [];
         status = (int)McpxStatus.Ok;
@@ -70,13 +70,13 @@ internal static unsafe class Items
                 return false;
             }
 
-            if (item.Buffer == IntPtr.Zero)
+            if (requireBuffer && item.Buffer == IntPtr.Zero)
             {
                 status = Errors.InvalidArgument(err, $"items[{i}]: buffer must not be null.");
                 return false;
             }
 
-            if (item.BufferSize < (nuint)elements * (nuint)size)
+            if (requireBuffer && item.BufferSize < (nuint)elements * (nuint)size)
             {
                 status = Errors.Fail(err, McpxStatus.BufferTooSmall, $"items[{i}]: buffer must be at least {(ulong)elements * (ulong)size} bytes.");
                 return false;

@@ -104,6 +104,15 @@ internal static unsafe class Native
         }
     }
 
+    internal static int MonitorRegister(ulong client, NativeItem* items, nuint count, ulong* session, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, ulong*, NativeError*, int>)&MonitorExports.Register)(client, items, count, session, err);
+
+    internal static int MonitorRead(ulong session, NativeItem* items, nuint count, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeItem*, nuint, NativeError*, int>)&MonitorExports.Read)(session, items, count, err);
+
+    internal static int SessionFree(ulong session, NativeError* err)
+        => ((delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&MonitorExports.Free)(session, err);
+
     internal static int Close(ulong client, NativeError* err)
     {
         var f = (delegate* unmanaged[Cdecl]<ulong, NativeError*, int>)&ClientExports.Close;

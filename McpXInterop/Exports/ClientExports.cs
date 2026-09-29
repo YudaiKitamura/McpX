@@ -138,6 +138,7 @@ internal static unsafe class ClientExports
 
             // 通信中の呼び出しは、ソケットが閉じられて失敗し、Closed を見て MCPX_E_CLOSED を返す
             entry.Closed = true;
+            HandleTable.RemoveSessionsOf(client);
             entry.Client.Dispose();
             return Errors.Ok(err);
         }
