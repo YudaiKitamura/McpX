@@ -82,6 +82,19 @@ jobs:
           clang -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/smoke.c -o smoke -ldl
           ./smoke McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # ビルドしたネイティブライブラリを使い、偽 PLC サーバー（tools/FakePlcServer）に対して Python バインディングをテストする
+      - name: Python tests
+        env:
+          MCPX_LIBRARY_PATH: ${{ github.workspace }}/McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
+        run: |
+          python -m pip install -e "bindings/python[test]"
+          python -m pytest bindings/python -q
+
       - name: Upload native library
         uses: actions/upload-artifact@v4
         with:

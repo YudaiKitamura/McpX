@@ -101,7 +101,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 - 4Eフレーム（ASCIIコード）
 
 ## ネイティブライブラリ（C ABI）
-McpX を C の関数として公開したネイティブライブラリ（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。
+McpX を C の関数として公開したネイティブライブラリ（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。Python からは、C# の McpX と同じ感覚で使えるラッパー（[bindings/python](bindings/python)）を利用できます。
 ヘッダは [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h) です。単一・連続・ランダム・複数ブロックの読み書き、文字列、モニタ、リモート操作に対応し、Windows x64 / Linux x64・arm64 / macOS arm64 向けにビルドできます。各関数は状態コード（`MCPX_OK = 0`）を返し、失敗時は `mcpx_error` に詳細（PLCの終了コードを含む）を書き込みます。
 
 ```c
@@ -131,7 +131,8 @@ if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
 - [x] ~~4Eフレーム（ASCIIコード）対応~~
 - [x] ~~UDP対応~~
 - [x] ~~GX Simulator 対応~~
-- [ ] Python / Node.js ラッパー（ネイティブライブラリ経由で、C# の McpX と同等の使用感） - 進行中
+- [x] ~~Python ラッパー（[bindings/python](bindings/python)）~~
+- [ ] Node.js ラッパー - 進行中
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)

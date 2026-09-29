@@ -2,6 +2,7 @@
 ### Added
 - Added a new native library with a stable C ABI (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`, header `McpXInterop/include/mcpx.h`): `mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`, `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write` for all value types, combined / random access (`mcpx_read_items` / `mcpx_write_items`), multiple block access (`mcpx_block_read` / `mcpx_block_write`), Shift_JIS strings (`mcpx_read_string` / `mcpx_write_string`), monitor sessions (`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`), remote operations (`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`) and library information. Every function returns a status code and reports details (message, PLC end code, socket error) through `mcpx_error`.
 - `ReadString` / `WriteString` are now available in Native AOT builds as well.
+- Added Python bindings (`bindings/python`, package `mcpx`) with the same feel as the C# McpX: single / batch / combined / random / block access, strings, monitor sessions, remote operations, async methods, and exceptions mapped to standard Python exceptions.
 
 ### Removed
 - **Breaking:** Removed the old native exports (`plc_connect`, `plc_close`, `batch_read_*`, `batch_write_*`). Use the new `mcpx_*` functions. The problems of the old exports (the process terminating on an exception, closed connections being kept, and all connections being serialized by a single lock) do not occur with the new functions.

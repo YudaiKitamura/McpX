@@ -102,7 +102,7 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 - 4E frame (ASCII code)
 
 ## Native Library (C ABI)
-A native library (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi).
+A native library (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi). For Python, a wrapper with the same feel as the C# McpX is available ([bindings/python](bindings/python)).
 The header is [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h). It supports single, batch, random and multiple block access, strings, monitoring and remote operations, and can be built for Windows x64 / Linux x64 and arm64 / macOS arm64. Every function returns a status code (`MCPX_OK = 0`) and writes the details (including the PLC end code) to `mcpx_error` on failure.
 
 ```c
@@ -132,7 +132,8 @@ if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
 - [x] ~~GX Simulator support~~
-- [ ] Python / Node.js wrappers (same feel as the C# McpX, via the native library) - In progress
+- [x] ~~Python wrapper ([bindings/python](bindings/python))~~
+- [ ] Node.js wrapper - In progress
 
 ## Changelog
 - [CHANGELOG.md](./CHANGELOG.md)
