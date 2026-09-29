@@ -102,7 +102,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 
 ## ネイティブライブラリ（C ABI）
 McpX を C の関数として公開したネイティブライブラリ（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。
-ヘッダは [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h) です。各関数は状態コード（`MCPX_OK = 0`）を返し、失敗時は `mcpx_error` に詳細（PLCの終了コードを含む）を書き込みます。
+ヘッダは [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h) です。単一・連続・ランダム・複数ブロックの読み書き、文字列、モニタ、リモート操作に対応し、Windows x64 / Linux x64・arm64 / macOS arm64 向けにビルドできます。各関数は状態コード（`MCPX_OK = 0`）を返し、失敗時は `mcpx_error` に詳細（PLCの終了コードを含む）を書き込みます。
 
 ```c
 #include "mcpx.h"

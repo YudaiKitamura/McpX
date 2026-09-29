@@ -35,19 +35,28 @@ jobs:
         run: dotnet test --configuration Release --logger trx
         working-directory: TestMcpXInterop
 
-  # ネイティブライブラリ（C ABI）を Native AOT でビルドし、C のヘッダ検査とスモークテストを行う
+  # ネイティブライブラリ（C ABI）を各 OS・CPU で Native AOT ビルドし、C のヘッダ検査とスモークテストを行う
   aot-publish:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: windows-latest
+            rid: win-x64
+            lib: mcpx.dll
+          - os: ubuntu-22.04
             rid: linux-x64
+            lib: mcpx.so
+          - os: ubuntu-22.04-arm
+            rid: linux-arm64
             lib: mcpx.so
           - os: macos-14
             rid: osx-arm64
             lib: mcpx.dylib
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout repository
@@ -63,10 +72,20 @@ jobs:
 
       - name: Check C header
         run: |
-          cc -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/header_check.c -o header_check
+          clang -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/header_check.c -o header_check
           ./header_check
 
+      # スモークテストは dlopen を使うため Linux / macOS のみ
       - name: Smoke test
+        if: runner.os != 'Windows'
         run: |
-          cc -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/smoke.c -o smoke -ldl
+          clang -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/smoke.c -o smoke -ldl
           ./smoke McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
+
+      - name: Upload native library
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcpx-${{ matrix.rid }}
+          path: |
+            McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
+            McpXInterop/include/mcpx.h

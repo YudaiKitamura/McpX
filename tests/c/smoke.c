@@ -32,6 +32,20 @@ int main(int argc, char** argv)
     LOAD(mcpx_abi_version) LOAD(mcpx_version) LOAD(mcpx_struct_size) LOAD(mcpx_connect_options_init)
     LOAD(mcpx_connect) LOAD(mcpx_close) LOAD(mcpx_batch_read)
 
+    /* すべての関数が公開されていること */
+    const char* exports[] = {
+        "mcpx_simulator_options_init", "mcpx_connect_simulator", "mcpx_set_multi_block",
+        "mcpx_read", "mcpx_write", "mcpx_batch_write",
+        "mcpx_read_items", "mcpx_write_items", "mcpx_block_read", "mcpx_block_write",
+        "mcpx_read_string", "mcpx_write_string",
+        "mcpx_monitor_register", "mcpx_monitor_read", "mcpx_session_free",
+        "mcpx_remote_run", "mcpx_remote_stop", "mcpx_remote_pause", "mcpx_remote_latch_clear", "mcpx_remote_reset",
+    };
+    for (size_t i = 0; i < sizeof(exports) / sizeof(exports[0]); i++)
+    {
+        if (!dlsym(lib, exports[i])) { fprintf(stderr, "missing %s\n", exports[i]); return 1; }
+    }
+
     CHECK(mcpx_abi_version() >> 16 == MCPX_ABI_VERSION >> 16);
     CHECK(mcpx_struct_size(MCPX_STRUCT_ERROR) == sizeof(mcpx_error));
     CHECK(mcpx_struct_size(MCPX_STRUCT_CONNECT_OPTIONS) == sizeof(mcpx_connect_options));

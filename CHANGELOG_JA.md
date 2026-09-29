@@ -1,6 +1,6 @@
 ## [Unreleased]
 ### Added
-- 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。
+- 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、統合・ランダムアクセス（`mcpx_read_items` / `mcpx_write_items`）、複数ブロック一括読み書き（`mcpx_block_read` / `mcpx_block_write`）、Shift_JIS の文字列（`mcpx_read_string` / `mcpx_write_string`）、モニタ（`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`）、リモート操作（`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`）、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。
 - `ReadString` / `WriteString` を Native AOT ビルドでも利用可能に変更。
 
 ### Removed

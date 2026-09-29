@@ -103,7 +103,7 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 
 ## Native Library (C ABI)
 A native library (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi).
-The header is [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h). Every function returns a status code (`MCPX_OK = 0`) and writes the details (including the PLC end code) to `mcpx_error` on failure.
+The header is [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h). It supports single, batch, random and multiple block access, strings, monitoring and remote operations, and can be built for Windows x64 / Linux x64 and arm64 / macOS arm64. Every function returns a status code (`MCPX_OK = 0`) and writes the details (including the PLC end code) to `mcpx_error` on failure.
 
 ```c
 #include "mcpx.h"
