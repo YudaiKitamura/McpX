@@ -1,3 +1,7 @@
+## [Unreleased]
+### Fixed
+- `RemoteReset` の再接続中にインスタンスが破棄された場合に、新しい接続が閉じられず残る不具合を修正。
+
 ## [0.12.0] - 2026-09-28
 ### Fixed
 - PLC が応答しない場合に、TCP の非同期要求がタイムアウトせず永久に待ち続ける不具合を修正（`NetworkStream.ReadAsync` は `ReceiveTimeout` を参照しないため）。

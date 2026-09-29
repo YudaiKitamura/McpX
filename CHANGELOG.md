@@ -1,3 +1,7 @@
+## [Unreleased]
+### Fixed
+- Fixed a new connection being left open when the instance was disposed during the reconnection of `RemoteReset`.
+
 ## [0.12.0] - 2026-09-28
 ### Fixed
 - Fixed async TCP requests never timing out when the PLC does not respond (`NetworkStream.ReadAsync` ignores `ReceiveTimeout`).

@@ -145,4 +145,23 @@ public sealed class TestMcpXLifecycle
 
         Assert.ThrowsException<InvalidOperationException>(() => session.Read());
     }
+
+    [TestMethod]
+    public void TestReconnectAfterDisposeDoesNotLeakTransport()
+    {
+        var created = new List<FakePlcTransport>();
+        var mcpx = new McpX(() =>
+        {
+            var transport = new FakePlcTransport();
+            created.Add(transport);
+            return transport;
+        });
+
+        mcpx.Dispose();
+
+        // RemoteReset の再接続中に Dispose された場合を想定：再接続は失敗し、新しい接続も閉じられること
+        Assert.ThrowsException<ObjectDisposedException>(() => mcpx.Reconnect());
+        Assert.AreEqual(2, created.Count);
+        Assert.IsTrue(created.All(t => t.Disposed));
+    }
 }
