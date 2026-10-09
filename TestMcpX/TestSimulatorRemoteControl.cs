@@ -4,28 +4,35 @@ using McpXLib.Enums;
 namespace TestMcpX;
 
 /// <summary>
-/// GX Simulator3 のリモート操作（RUN / STOP / PAUSE / ラッチクリア / RESET）の結合テスト。
+/// リモート操作（RUN / STOP / PAUSE / ラッチクリア / RESET）の結合テストの共通実装。
 /// </summary>
 /// <remarks>
-/// シミュレータの動作状態を変更し、テスト後は RUN に戻します。ラッチクリアにより、シミュレータのデバイスがクリアされます。<br/>
-/// RESET はシミュレータとの接続が切断されるため、環境変数 <c>MCPX_SIM_RESET=1</c> を指定した場合のみ実行します。<br/>
-/// 実行条件・接続先は <see cref="SimulatorConnection"/> を参照してください。
+/// PLCの動作状態を変更し、テスト後は RUN に戻します。ラッチクリアにより、PLCのラッチデバイスがクリアされます。<br/>
+/// RESET はPLCとの接続が切断されるため、環境変数 <see cref="ResetEnableVar"/> に 1 を指定した場合のみ実行します。
 /// </remarks>
-[TestClass]
-[TestCategory("SimulatorPlc")]
-public sealed class TestSimulatorRemoteControl
+public abstract class RemoteControlTestBase
 {
     // SD203 の b0〜b3: CPUの動作状態（0: RUN、2: STOP、3: PAUSE）
     private const int Run = 0;
     private const int Stop = 2;
     private const int Pause = 3;
 
+    /// <summary>
+    /// 接続先PLCへ接続する。実行条件を満たさない場合は <see cref="Assert.Inconclusive(string)"/> を呼ぶ。
+    /// </summary>
+    protected abstract McpX Connect();
+
+    /// <summary>
+    /// RESET のテストを有効にする環境変数名。
+    /// </summary>
+    protected abstract string ResetEnableVar { get; }
+
     private static int GetState(McpX mcpx) => mcpx.Read<ushort>(Prefix.SD, "203") & 0x000F;
 
     [TestMethod]
     public async Task TestRunStopPause()
     {
-        using var mcpx = SimulatorConnection.Connect();
+        using var mcpx = Connect();
         try
         {
             mcpx.RemoteStop();
@@ -56,7 +63,7 @@ public sealed class TestSimulatorRemoteControl
     [TestMethod]
     public async Task TestLatchClear()
     {
-        using var mcpx = SimulatorConnection.Connect();
+        using var mcpx = Connect();
         try
         {
             mcpx.RemoteStop();
@@ -79,22 +86,46 @@ public sealed class TestSimulatorRemoteControl
     [TestMethod]
     public async Task TestReset()
     {
-        if (Environment.GetEnvironmentVariable("MCPX_SIM_RESET") != "1")
+        if (Environment.GetEnvironmentVariable(ResetEnableVar) != "1")
         {
-            Assert.Inconclusive("RESET のテストは MCPX_SIM_RESET=1 のときのみ実行します。");
+            Assert.Inconclusive($"RESET のテストは {ResetEnableVar}=1 のときのみ実行します。");
         }
 
-        using var mcpx = SimulatorConnection.Connect();
+        using var mcpx = Connect();
 
-        // リセットにより接続が切断されても例外にならず、同じインスタンスで続けて読み書きできること
-        mcpx.RemoteStop();
-        mcpx.RemoteReset();
-        Assert.AreEqual(Run, GetState(mcpx));   // スイッチの状態（RUN）に戻る
-        mcpx.Write(Prefix.D, "9000", (short)4321);
-        Assert.AreEqual((short)4321, mcpx.Read<short>(Prefix.D, "9000"));
+        try
+        {
+            // リセットにより接続が切断されても例外にならず、同じインスタンスで続けて読み書きできること
+            mcpx.RemoteStop();
+            mcpx.RemoteReset();
+            Assert.AreEqual(Run, GetState(mcpx));   // スイッチの状態（RUN）に戻る
+            mcpx.Write(Prefix.D, "9000", (short)4321);
+            Assert.AreEqual((short)4321, mcpx.Read<short>(Prefix.D, "9000"));
 
-        await mcpx.RemoteStopAsync();
-        await mcpx.RemoteResetAsync();
-        Assert.AreEqual(Run, GetState(mcpx));
+            await mcpx.RemoteStopAsync();
+            await mcpx.RemoteResetAsync();
+            Assert.AreEqual(Run, GetState(mcpx));
+        }
+        finally
+        {
+            // RESET が拒否された場合（リモートリセットを許可していない実機など）も STOP のまま残さない
+            mcpx.RemoteRun(force: true);
+        }
     }
+}
+
+/// <summary>
+/// GX Simulator3 のリモート操作の結合テスト。
+/// </summary>
+/// <remarks>
+/// RESET は環境変数 <c>MCPX_SIM_RESET=1</c> を指定した場合のみ実行します。<br/>
+/// 実行条件・接続先は <see cref="SimulatorConnection"/> を参照してください。
+/// </remarks>
+[TestClass]
+[TestCategory("SimulatorPlc")]
+public sealed class TestSimulatorRemoteControl : RemoteControlTestBase
+{
+    protected override McpX Connect() => SimulatorConnection.Connect();
+
+    protected override string ResetEnableVar => "MCPX_SIM_RESET";
 }

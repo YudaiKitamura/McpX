@@ -5,18 +5,14 @@ using McpXLib.Exceptions;
 namespace TestMcpX;
 
 /// <summary>
-/// GX Simulator3（R120CPU）の全デバイス範囲を網羅する結合テスト。
+/// R120CPU（GX Simulator3・iQ-R の実機）の全デバイス範囲を網羅する結合テストの共通実装。
 /// </summary>
 /// <remarks>
 /// 対象デバイスの全点を上書きし、テスト後は0で埋め戻します。<br/>
-/// デバイス点数は R120CPU の既定値（M 12K / B 8K / SB 2K / F 2K / V 2K / T 1K / C 512 / D 18K / W 64K / SW 2K / L 8K）を前提とします。<br/>
+/// デバイス点数は <see cref="DevicePoints"/>（既定は GX Simulator3 の R120CPU：M 12K / B 8K / SB 2K / F 2K / V 2K / T 1K / C 512 / D 18K / W 64K / SW 2K / L 8K）で決まります。<br/>
 /// 点数0の S・ST、およびLT・LC（ライブラリの <see cref="Prefix"/> に未定義）は対象外です。<br/>
-/// 実行条件・接続先は <see cref="SimulatorConnection"/> を参照してください。
-/// <code>
-/// MCPX_SIM_PLC=1 dotnet test TestMcpX --filter TestCategory=SimulatorPlc
-/// </code>
 /// </remarks>
-public abstract class SimulatorDeviceRangeTestBase
+public abstract class DeviceRangeTestBase
 {
     private static readonly Random random = new();
 
@@ -27,7 +23,26 @@ public abstract class SimulatorDeviceRangeTestBase
     // BatchRead/BatchWrite の点数は ushort のため、W（65536点）などは分けて要求する
     private const int ChunkSize = 0x8000;
 
-    private McpX Connect() => SimulatorConnection.Connect(RequestFrame, ProcessorSeries);
+    /// <summary>
+    /// 接続先PLCへ接続する。実行条件を満たさない場合は <see cref="Assert.Inconclusive(string)"/> を呼ぶ。
+    /// </summary>
+    protected abstract McpX Connect();
+
+    /// <summary>
+    /// デバイスごとの点数（TS・TC は TN、CS・CC は CN と同じ点数）。
+    /// </summary>
+    protected virtual IReadOnlyDictionary<Prefix, int> DevicePoints { get; } = new Dictionary<Prefix, int>
+    {
+        [Prefix.D] = 18432, [Prefix.W] = 0x10000, [Prefix.SW] = 0x800, [Prefix.TN] = 1024, [Prefix.CN] = 512,
+        [Prefix.M] = 12288, [Prefix.B] = 0x2000, [Prefix.SB] = 0x800, [Prefix.F] = 2048, [Prefix.V] = 2048, [Prefix.L] = 8192,
+    };
+
+    private int Points(Prefix prefix) => DevicePoints[prefix switch
+    {
+        Prefix.TS or Prefix.TC => Prefix.TN,
+        Prefix.CS or Prefix.CC => Prefix.CN,
+        _ => prefix,
+    }];
 
     private static bool IsHex(Prefix prefix) =>
         prefix is Prefix.B or Prefix.W or Prefix.SB or Prefix.SW;
@@ -64,14 +79,15 @@ public abstract class SimulatorDeviceRangeTestBase
     // ---------------------------------------------------------------
 
     [TestMethod]
-    [DataRow(Prefix.D, 18432, DisplayName = "D0〜D18431")]
-    [DataRow(Prefix.W, 0x10000, DisplayName = "W0〜WFFFF")]
-    [DataRow(Prefix.SW, 0x800, DisplayName = "SW0〜SW7FF")]
-    [DataRow(Prefix.TN, 1024, DisplayName = "TN0〜TN1023")]
-    [DataRow(Prefix.CN, 512, DisplayName = "CN0〜CN511")]
-    public void TestWordDeviceFullRange(Prefix prefix, int points)
+    [DataRow(Prefix.D)]
+    [DataRow(Prefix.W)]
+    [DataRow(Prefix.SW)]
+    [DataRow(Prefix.TN)]
+    [DataRow(Prefix.CN)]
+    public void TestWordDeviceFullRange(Prefix prefix)
     {
         using var mcpx = Connect();
+        var points = Points(prefix);
 
         var values = Enumerable.Range(0, points).Select(_ => (short)random.Next(short.MinValue, short.MaxValue + 1)).ToArray();
         try
@@ -94,19 +110,20 @@ public abstract class SimulatorDeviceRangeTestBase
     // ---------------------------------------------------------------
 
     [TestMethod]
-    [DataRow(Prefix.M, 12288, DisplayName = "M0〜M12287")]
-    [DataRow(Prefix.B, 0x2000, DisplayName = "B0〜B1FFF")]
-    [DataRow(Prefix.SB, 0x800, DisplayName = "SB0〜SB7FF")]
-    [DataRow(Prefix.F, 2048, DisplayName = "F0〜F2047")]
-    [DataRow(Prefix.V, 2048, DisplayName = "V0〜V2047")]
-    [DataRow(Prefix.L, 8192, DisplayName = "L0〜L8191")]
-    [DataRow(Prefix.TS, 1024, DisplayName = "TS0〜TS1023")]
-    [DataRow(Prefix.TC, 1024, DisplayName = "TC0〜TC1023")]
-    [DataRow(Prefix.CS, 512, DisplayName = "CS0〜CS511")]
-    [DataRow(Prefix.CC, 512, DisplayName = "CC0〜CC511")]
-    public void TestBitDeviceFullRange(Prefix prefix, int points)
+    [DataRow(Prefix.M)]
+    [DataRow(Prefix.B)]
+    [DataRow(Prefix.SB)]
+    [DataRow(Prefix.F)]
+    [DataRow(Prefix.V)]
+    [DataRow(Prefix.L)]
+    [DataRow(Prefix.TS)]
+    [DataRow(Prefix.TC)]
+    [DataRow(Prefix.CS)]
+    [DataRow(Prefix.CC)]
+    public void TestBitDeviceFullRange(Prefix prefix)
     {
         using var mcpx = Connect();
+        var points = Points(prefix);
 
         var values = Enumerable.Range(0, points).Select(_ => random.Next(2) == 1).ToArray();
         try
@@ -139,22 +156,23 @@ public abstract class SimulatorDeviceRangeTestBase
     // ---------------------------------------------------------------
 
     [TestMethod]
-    [DataRow(Prefix.D, 18432, false, DisplayName = "D18432")]
-    [DataRow(Prefix.W, 0x10000, false, DisplayName = "W10000")]
-    [DataRow(Prefix.SW, 0x800, false, DisplayName = "SW800")]
-    [DataRow(Prefix.TN, 1024, false, DisplayName = "TN1024")]
-    [DataRow(Prefix.CN, 512, false, DisplayName = "CN512")]
-    [DataRow(Prefix.M, 12288, true, DisplayName = "M12288")]
-    [DataRow(Prefix.B, 0x2000, true, DisplayName = "B2000")]
-    [DataRow(Prefix.SB, 0x800, true, DisplayName = "SB800")]
-    [DataRow(Prefix.F, 2048, true, DisplayName = "F2048")]
-    [DataRow(Prefix.V, 2048, true, DisplayName = "V2048")]
-    [DataRow(Prefix.L, 8192, true, DisplayName = "L8192")]
-    [DataRow(Prefix.TS, 1024, true, DisplayName = "TS1024")]
-    [DataRow(Prefix.CS, 512, true, DisplayName = "CS512")]
-    public void TestOutOfRange(Prefix prefix, int points, bool isBit)
+    [DataRow(Prefix.D, false)]
+    [DataRow(Prefix.W, false)]
+    [DataRow(Prefix.SW, false)]
+    [DataRow(Prefix.TN, false)]
+    [DataRow(Prefix.CN, false)]
+    [DataRow(Prefix.M, true)]
+    [DataRow(Prefix.B, true)]
+    [DataRow(Prefix.SB, true)]
+    [DataRow(Prefix.F, true)]
+    [DataRow(Prefix.V, true)]
+    [DataRow(Prefix.L, true)]
+    [DataRow(Prefix.TS, true)]
+    [DataRow(Prefix.CS, true)]
+    public void TestOutOfRange(Prefix prefix, bool isBit)
     {
         using var mcpx = Connect();
+        var points = Points(prefix);
 
         var end = Address(prefix, points);
         var last = Address(prefix, points - 1);
@@ -172,6 +190,20 @@ public abstract class SimulatorDeviceRangeTestBase
             AssertOutOfRange(() => mcpx.BatchRead<short>(prefix, last, 2), $"{prefix}{last} から2点（末尾をまたぐ）");
         }
     }
+}
+
+/// <summary>
+/// GX Simulator3（R120CPU）の全デバイス範囲テスト。
+/// </summary>
+/// <remarks>
+/// 実行条件・接続先は <see cref="SimulatorConnection"/> を参照してください。
+/// <code>
+/// MCPX_SIM_PLC=1 dotnet test TestMcpX --filter TestCategory=SimulatorPlc
+/// </code>
+/// </remarks>
+public abstract class SimulatorDeviceRangeTestBase : DeviceRangeTestBase
+{
+    protected override McpX Connect() => SimulatorConnection.Connect(RequestFrame, ProcessorSeries);
 }
 
 /// <summary>
