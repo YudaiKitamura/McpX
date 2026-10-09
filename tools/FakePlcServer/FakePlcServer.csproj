@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- 各言語のラッパーのテストで使う、TCP の偽 PLC サーバー（3E フレーム・バイナリ・Q/L 形式） -->
+  <!-- 各言語のラッパーのテストで使う、TCP のダミー PLC サーバー（3E フレーム・バイナリ・Q/L 形式） -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>

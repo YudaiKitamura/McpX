@@ -21,7 +21,7 @@ public sealed unsafe class TestAccess
             Assert.AreEqual((int)McpxStatus.Ok, status, Native.Message(err));
         }
 
-        // 偽 PLC はデバイス番号をそのまま値として返す
+        // ダミー PLC はデバイス番号をそのまま値として返す
         CollectionAssert.AreEqual(new short[] { 100, 101, 102, 103, 104 }, values);
         Assert.AreEqual((int)McpxStatus.Ok, err.Status);
         Assert.AreEqual(string.Empty, Native.Message(err));

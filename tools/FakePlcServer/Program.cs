@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using TestMcpX;
 
-// TCP の偽 PLC サーバー（各言語のラッパーのテスト用）。
+// TCP のダミー PLC サーバー（各言語のラッパーのテスト用）。
 //
 //   dotnet run --project tools/FakePlcServer -- [--end-code 0401=C051]... [--delay-ms 2000]
 //

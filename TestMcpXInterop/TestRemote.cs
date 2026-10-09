@@ -17,7 +17,7 @@ public sealed unsafe class TestRemote
         Assert.AreEqual((int)McpxStatus.Ok, Native.RemoteStop(client, &err), Native.Message(err));
         Assert.AreEqual((int)McpxStatus.Ok, Native.RemotePause(client, 0, &err), Native.Message(err));
         Assert.AreEqual((int)McpxStatus.Ok, Native.RemoteLatchClear(client, &err), Native.Message(err));
-        // 偽のトランスポートは再接続できないため、RESET は送信だけ行う
+        // ダミーのトランスポートは再接続できないため、RESET は送信だけ行う
         Assert.AreEqual((int)McpxStatus.Ok, Native.RemoteReset(client, -1, &err), Native.Message(err));
 
         CollectionAssert.AreEqual(

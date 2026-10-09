@@ -29,7 +29,7 @@ internal static unsafe class Native
 
     internal static byte[] Utf8Z(string text) => Encoding.UTF8.GetBytes(text + "\0");
 
-    // テスト用：偽のトランスポートを使う McpX をハンドル表に登録する
+    // テスト用：ダミーのトランスポートを使う McpX をハンドル表に登録する
     internal static ulong Register(IPlcTransport transport) => HandleTable.Add(new McpX(transport));
 
     internal static int Read(ulong client, Prefix prefix, string address, McpxType type, void* output, nuint size, NativeError* err)

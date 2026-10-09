@@ -1,9 +1,9 @@
 namespace TestMcpX;
 
 /// <summary>
-/// 3Eフレーム(バイナリ)の要求に応答する偽 PLC の中核（Q/L 形式のデバイス指定）。
+/// 3Eフレーム(バイナリ)の要求に応答するダミー PLC の中核（Q/L 形式のデバイス指定）。
 /// 一括読み書き(0401/1401)、ランダム読み書き(0403/1402)、複数ブロック一括読み書き(0406/1406)、モニタ(0801/0802)に応答し、
-/// 受信した要求を記録する。<see cref="FakePlcTransport"/>（C# のテスト）と、TCP の偽 PLC サーバー（他言語のテスト）で共有する。
+/// 受信した要求を記録する。<see cref="FakePlcTransport"/>（C# のテスト）と、TCP のダミー PLC サーバー（他言語のテスト）で共有する。
 /// </summary>
 internal sealed class FakePlcCore
 {
@@ -24,7 +24,7 @@ internal sealed class FakePlcCore
     internal Dictionary<ushort, ushort> EndCodes { get; } = new();
 
     /// <summary>
-    /// 書き込んだ値を保持し、読み込みで返すか（TCP の偽 PLC サーバーで使う）。
+    /// 書き込んだ値を保持し、読み込みで返すか（TCP のダミー PLC サーバーで使う）。
     /// 有効な場合、値はデバイスコードごとに保持し、ビットデバイスをワードで読むと 16 点分のビットを返す。
     /// 未書き込みのワードは、無効な場合と同じく Words の値（未設定は「デバイス番号の下位16ビット」）を返す。
     /// </summary>

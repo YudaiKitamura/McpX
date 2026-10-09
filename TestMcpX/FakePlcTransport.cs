@@ -3,7 +3,7 @@ using McpXLib.Interfaces;
 namespace TestMcpX;
 
 /// <summary>
-/// <see cref="FakePlcCore"/> に要求を渡す偽トランスポート（C# のテスト用）。
+/// <see cref="FakePlcCore"/> に要求を渡すダミートランスポート（C# のテスト用）。
 /// </summary>
 internal sealed class FakePlcTransport : IPlcTransport
 {

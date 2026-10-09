@@ -87,7 +87,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      # ビルドしたネイティブライブラリを使い、偽 PLC サーバー（tools/FakePlcServer）に対して Python バインディングをテストする
+      # ビルドしたネイティブライブラリを使い、ダミー PLC サーバー（tools/FakePlcServer）に対して Python バインディングをテストする
       - name: Python tests
         env:
           MCPX_LIBRARY_PATH: ${{ github.workspace }}/McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}

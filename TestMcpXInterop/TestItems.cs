@@ -36,7 +36,7 @@ public sealed unsafe class TestItems
         CollectionAssert.AreEqual(new short[] { 100, 101, 102 }, list.Values<short>(0));
         Assert.AreEqual((201 << 16) | 200, list.Values<int>(1)[0]);
         CollectionAssert.AreEqual(new byte[] { 0, 1, 0, 1 }, list.Values<byte>(2));
-        // SINGLE のビットはワードで読み bit0 を使う（偽 PLC の M5 のワード値は 5 → bit0 = 1）
+        // SINGLE のビットはワードで読み bit0 を使う（ダミー PLC の M5 のワード値は 5 → bit0 = 1）
         Assert.AreEqual((byte)1, list.Values<byte>(3)[0]);
     }
 
