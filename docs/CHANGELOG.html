@@ -87,8 +87,24 @@
 
         <article data-uid="">
 
-<h2 id="0120---2026-09-28">[0.12.0] - 2026-09-28</h2>
+<h2 id="0130---2026-10-10">[0.13.0] - 2026-10-10</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li>Added a new native library with a stable C ABI (<code>mcpx.dll</code> / <code>mcpx.so</code> / <code>mcpx.dylib</code>, header <code>McpXInterop/include/mcpx.h</code>): <code>mcpx_connect</code> / <code>mcpx_connect_simulator</code> / <code>mcpx_close</code>, <code>mcpx_read</code> / <code>mcpx_write</code> / <code>mcpx_batch_read</code> / <code>mcpx_batch_write</code> for all value types, combined / random access (<code>mcpx_read_items</code> / <code>mcpx_write_items</code>), multiple block access (<code>mcpx_block_read</code> / <code>mcpx_block_write</code>), Shift_JIS strings (<code>mcpx_read_string</code> / <code>mcpx_write_string</code>), monitor sessions (<code>mcpx_monitor_register</code> / <code>mcpx_monitor_read</code> / <code>mcpx_session_free</code>), remote operations (<code>mcpx_remote_run</code> / <code>stop</code> / <code>pause</code> / <code>latch_clear</code> / <code>reset</code>) and library information. Every function returns a status code and reports details (message, PLC end code, socket error) through <code>mcpx_error</code>.</li>
+<li><code>ReadString</code> / <code>WriteString</code> are now available in Native AOT builds as well.</li>
+<li>Added Python bindings (<code>bindings/python</code>, package <code>mcpx</code>) with the same feel as the C# McpX: single / batch / combined / random / block access, strings, monitor sessions, remote operations, async methods, and exceptions mapped to standard Python exceptions.</li>
+<li>Added <code>scripts/gxsim-portforward.ps1</code>, which makes GX Simulator3 (listening only on 127.0.0.1) reachable from other PCs by setting up <code>netsh portproxy</code> and a Windows Firewall rule.</li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><strong>Breaking:</strong> Removed the old native exports (<code>plc_connect</code>, <code>plc_close</code>, <code>batch_read_*</code>, <code>batch_write_*</code>). Use the new <code>mcpx_*</code> functions. The problems of the old exports (the process terminating on an exception, closed connections being kept, and all connections being serialized by a single lock) do not occur with the new functions.</li>
+</ul>
 <h3 id="fixed">Fixed</h3>
+<ul>
+<li>Fixed a new connection being left open when the instance was disposed during the reconnection of <code>RemoteReset</code>.</li>
+</ul>
+<h2 id="0120---2026-09-28">[0.12.0] - 2026-09-28</h2>
+<h3 id="fixed-1">Fixed</h3>
 <ul>
 <li>Fixed async TCP requests never timing out when the PLC does not respond (<code>NetworkStream.ReadAsync</code> ignores <code>ReceiveTimeout</code>).</li>
 <li>Fixed concurrent requests on the same instance (async TCP and UDP) interleaving their packets, which could swap responses between requests. Requests are now processed one at a time.</li>
@@ -110,12 +126,12 @@
 <li><code>Dispose</code> no longer throws when the remote lock fails; the connection is always released.</li>
 <li><code>MonitorSession.Read</code> / <code>ReadAsync</code> now throw <code>InvalidOperationException</code> when the monitor registration has been replaced by another <code>MonitorRegist</code> call, or the connection has been re-established (e.g. by <code>RemoteReset</code>).</li>
 </ul>
-<h3 id="removed">Removed</h3>
+<h3 id="removed-1">Removed</h3>
 <ul>
 <li><strong>Breaking:</strong> Removed the obsolete single-argument <code>Request(byte[])</code> / <code>RequestAsync(byte[])</code> from <code>IPlc</code>, <code>IPlcTransport</code> and <code>BasePlc</code> (deprecated since 0.5.1). Use the overloads that take an <code>IReceiveLengthParser</code>.</li>
 </ul>
 <h2 id="0110---2026-09-28">[0.11.0] - 2026-09-28</h2>
-<h3 id="added">Added</h3>
+<h3 id="added-1">Added</h3>
 <ul>
 <li>Added multiple block batch read / write (commands 0406 / 1406): <code>BlockRead(Action&lt;BlockReadBuilder&gt;)</code> / <code>BlockWrite(Action&lt;BlockWriteBuilder&gt;)</code> and their async versions. Requests exceeding the limits (120 blocks, or 60 for <code>ProcessorSeries.iQR</code>; 960 points) are split automatically.</li>
 <li>Added <code>McpX.UseMultiBlockAccess</code> (and the <code>useMultiBlockAccess</code> constructor parameter of <code>McpX</code> / <code>McpXSimulator</code>). When enabled, <code>Read(Action&lt;ReadBuilder&gt;)</code> / <code>Write(Action&lt;WriteBuilder&gt;)</code> send multiple ranges in one request with multiple block access. Disabled by default, because some targets (e.g. a CPU built-in Ethernet port) do not support it and return error C059. <code>bool</code> ranges on bit devices whose length is not a multiple of 16 are still written per range, so that no other bits are overwritten.</li>
@@ -123,17 +139,17 @@
 <li>Added <code>McProtocolException.ErrorCode</code> to get the error code returned by the PLC.</li>
 </ul>
 <h2 id="0100---2026-09-27">[0.10.0] - 2026-09-27</h2>
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 <ul>
 <li>Added <code>McpXSimulator</code> for connecting to GX Simulator3 by system No. and CPU No. (port <code>5500 + system No. × 10 + CPU No.</code>, TCP / binary, <code>ProcessorSeries.iQR</code> by default), and <code>McpXSimulator.GetPort</code>. Multiple simulators can be connected at the same time by creating an instance for each.</li>
 </ul>
 <h2 id="092---2026-09-27">[0.9.2] - 2026-09-27</h2>
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 <ul>
 <li>Fixed bit random write (<code>RandomWriteBit</code>, and bit devices in <code>RandomWrite</code> / <code>Write(Action&lt;WriteBuilder&gt;)</code>) failing with error C061 when <code>ProcessorSeries.iQR</code> is specified. The set/reset value is now sent as 2 bytes (4 digits in ASCII) for the MELSEC iQ-R subcommand (0003).</li>
 </ul>
 <h2 id="091---2026-09-25">[0.9.1] - 2026-09-25</h2>
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 <ul>
 <li>Fixed <code>BatchRead</code> / <code>BatchWrite</code> with word-sized types on bit devices (e.g. <code>BatchRead&lt;ushort&gt;(Prefix.M, ...)</code>): requests split beyond 960 words started at the wrong device number (advanced by words instead of 16 points per word).</li>
 <li>Fixed <code>BatchRead</code> / <code>BatchWrite</code> silently truncating data when the total exceeded 65535 words.</li>
@@ -142,18 +158,18 @@
 <li>Fixed <code>byte</code> writes sending malformed packets. <code>byte</code> / <code>sbyte</code> now map one element to one word (low byte). <strong>Breaking:</strong> <code>BatchRead&lt;byte&gt;(n)</code> / <code>BatchReadByte(n)</code> now returns <code>n</code> elements instead of <code>2n</code> raw bytes.</li>
 </ul>
 <h2 id="090---2026-09-25">[0.9.0] - 2026-09-25</h2>
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 <ul>
 <li>Added a combined builder API: <code>Read(Action&lt;ReadBuilder&gt;)</code> / <code>Write(Action&lt;WriteBuilder&gt;)</code> (and their async versions). Devices added with a point count (read) or an array (write) use batch access; single devices use random access.</li>
 </ul>
 <h2 id="081---2026-09-25">[0.8.1] - 2026-09-25</h2>
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 <ul>
 <li>Fixed an unobserved faulted task being left behind when a TCP connection attempt timed out, which surfaced later via <code>TaskScheduler.UnobservedTaskException</code> (#41).</li>
 <li>Fixed UDP async requests after a receive timeout: the abandoned pending receive could consume the next request's response, causing cascading timeouts. The UDP socket is now recreated on timeout.</li>
 </ul>
 <h2 id="080---2026-07-15">[0.8.0] - 2026-07-15</h2>
-<h3 id="added-3">Added</h3>
+<h3 id="added-4">Added</h3>
 <ul>
 <li>Added a builder-based random access API: <code>RandomRead</code> / <code>RandomWrite(Action&lt;builder&gt;)</code> (and their async versions) with automatic bit/word/double-word routing, including bit-device support.</li>
 <li>Added a builder-based monitor API: <code>MonitorRegist(Action&lt;MonitorBuilder&gt;)</code> returning a <code>MonitorSession</code> for repeated reads (register once, read many).</li>
@@ -166,38 +182,38 @@
 <ul>
 <li>Deprecated the generic <code>RandomRead</code> / <code>RandomWrite&lt;T1, T2&gt;</code> and the type-specific random overloads (Compat) in favor of the new builder API.</li>
 </ul>
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 <ul>
 <li>Fixed ASCII access-point count encoding for 16 or more points in random read/write and monitor register.</li>
 <li>Fixed random read/write with bit (<code>bool</code>) devices, which previously returned an incorrect element count or produced malformed packets.</li>
 </ul>
 <h2 id="070---2026-06-30">[0.7.0] - 2026-06-30</h2>
-<h3 id="added-4">Added</h3>
+<h3 id="added-5">Added</h3>
 <ul>
 <li>Added support for the MELSEC iQ-R series (device extension specification) via the <code>ProcessorSeries</code> option.</li>
 </ul>
 <h2 id="060---2026-02-01">[0.6.0] - 2026-02-01</h2>
-<h3 id="added-5">Added</h3>
+<h3 id="added-6">Added</h3>
 <ul>
 <li>Made timeout configurable at instance creation.</li>
 </ul>
 <h2 id="055---2025-11-17">[0.5.5] - 2025-11-17</h2>
-<h3 id="fixed-5">Fixed</h3>
+<h3 id="fixed-6">Fixed</h3>
 <ul>
 <li>Fixed In the NativeAOT-compatible McpxInterrop class, corrected BatchWriteBool to call BatchWrite with bool instead of short.</li>
 </ul>
 <h2 id="054---2025-09-03">[0.5.4] - 2025-09-03</h2>
-<h3 id="fixed-6">Fixed</h3>
+<h3 id="fixed-7">Fixed</h3>
 <ul>
 <li>Fixed an issue in the BatchRead method where specifying types larger than 32 bits resulted in an incorrect read count.</li>
 </ul>
 <h2 id="053---2025-08-14">[0.5.3] - 2025-08-14</h2>
-<h3 id="added-6">Added</h3>
+<h3 id="added-7">Added</h3>
 <ul>
 <li>Added VB-compatible, type-specific overloads</li>
 </ul>
 <h2 id="052---2025-07-16">[0.5.2] - 2025-07-16</h2>
-<h3 id="fixed-7">Fixed</h3>
+<h3 id="fixed-8">Fixed</h3>
 <ul>
 <li>Fix bug in hex address conversion.</li>
 </ul>
@@ -207,7 +223,7 @@
 <li>Optimized TCP transport performance.</li>
 </ul>
 <h2 id="050---2024-04-14">[0.5.0] - 2024-04-14</h2>
-<h3 id="added-7">Added</h3>
+<h3 id="added-8">Added</h3>
 <ul>
 <li>Added documentation comments</li>
 </ul>
@@ -217,12 +233,12 @@
 <li>Changed unnecessary <code>public</code> modifiers to <code>internal</code></li>
 </ul>
 <h2 id="041---2024-04-12">[0.4.1] - 2024-04-12</h2>
-<h3 id="fixed-8">Fixed</h3>
+<h3 id="fixed-9">Fixed</h3>
 <ul>
 <li>Fixed a bug where an error would occur in the random read or monitor command if the number of specified word devices was not exactly two.</li>
 </ul>
 <h2 id="040---2024-04-12">[0.4.0] - 2024-04-12</h2>
-<h3 id="added-8">Added</h3>
+<h3 id="added-9">Added</h3>
 <ul>
 <li>Support for 4E frames (binary and ASCII)</li>
 </ul>
@@ -232,18 +248,18 @@
 <li>Improved packet parsing process</li>
 </ul>
 <h2 id="030---2024-04-07">[0.3.0] - 2024-04-07</h2>
-<h3 id="added-9">Added</h3>
+<h3 id="added-10">Added</h3>
 <ul>
 <li>Added string read functionality</li>
 <li>Added string write functionality</li>
 </ul>
 <h2 id="020---2024-04-03">[0.2.0] - 2024-04-03</h2>
-<h3 id="added-10">Added</h3>
+<h3 id="added-11">Added</h3>
 <ul>
 <li>Support for UDP</li>
 </ul>
 <h2 id="010---2024-03-29">[0.1.0] - 2024-03-29</h2>
-<h3 id="added-11">Added</h3>
+<h3 id="added-12">Added</h3>
 <ul>
 <li>Support for 3E frames (ASCII)</li>
 </ul>

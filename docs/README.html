@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.12.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.13.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -264,6 +264,28 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 <li>4E frame (binary code)</li>
 <li>4E frame (ASCII code)</li>
 </ul>
+<h2 id="native-library-c-abi">Native Library (C ABI)</h2>
+<p>A native library (<code>mcpx.dll</code> / <code>mcpx.so</code> / <code>mcpx.dylib</code>) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi). For Python, a wrapper with the same feel as the C# McpX is available (<a href="bindings/python">bindings/python</a>).
+The header is <a href="McpXInterop/include/mcpx.h">McpXInterop/include/mcpx.h</a>. It supports single, batch, random and multiple block access, strings, monitoring and remote operations, and can be built for Windows x64 / Linux x64 and arm64 / macOS arm64. Every function returns a status code (<code>MCPX_OK = 0</code>) and writes the details (including the PLC end code) to <code>mcpx_error</code> on failure.</p>
+<pre><code class="lang-c">#include &quot;mcpx.h&quot;
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&amp;options);
+options.host = &quot;192.168.12.88&quot;;
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&amp;options, &amp;plc, &amp;err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, &quot;0&quot;, MCPX_TYPE_I16, 10, values, sizeof(values), &amp;err) != MCPX_OK)
+    {
+        printf(&quot;%s\n&quot;, err.message);
+    }
+    mcpx_close(plc, &amp;err);
+}
+</code></pre>
 <h2 id="roadmap">Roadmap</h2>
 <ul>
 <li>[x] <del>3E frame (ASCII code) support</del></li>
@@ -271,6 +293,8 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 <li>[x] <del>4E frame (ASCII code) support</del></li>
 <li>[x] <del>UDP support</del></li>
 <li>[x] <del>GX Simulator support</del></li>
+<li>[x] <del>Python wrapper (<a href="bindings/python">bindings/python</a>)</del></li>
+<li>[ ] Node.js wrapper - In progress</li>
 </ul>
 <h2 id="changelog">Changelog</h2>
 <ul>

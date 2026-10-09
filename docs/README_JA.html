@@ -91,7 +91,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.12.0-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.13.0-blue">
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet">
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple">
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo">
@@ -262,6 +262,28 @@ int port = McpXSimulator.GetPort(systemNo: 2);                        // 5521
 <li>4Eフレーム（バイナリコード）</li>
 <li>4Eフレーム（ASCIIコード）</li>
 </ul>
+<h2 id="ネイティブライブラリc-abi">ネイティブライブラリ（C ABI）</h2>
+<p>McpX を C の関数として公開したネイティブライブラリ（<code>mcpx.dll</code> / <code>mcpx.so</code> / <code>mcpx.dylib</code>）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。Python からは、C# の McpX と同じ感覚で使えるラッパー（<a href="bindings/python">bindings/python</a>）を利用できます。
+ヘッダは <a href="McpXInterop/include/mcpx.h">McpXInterop/include/mcpx.h</a> です。単一・連続・ランダム・複数ブロックの読み書き、文字列、モニタ、リモート操作に対応し、Windows x64 / Linux x64・arm64 / macOS arm64 向けにビルドできます。各関数は状態コード（<code>MCPX_OK = 0</code>）を返し、失敗時は <code>mcpx_error</code> に詳細（PLCの終了コードを含む）を書き込みます。</p>
+<pre><code class="lang-c">#include &quot;mcpx.h&quot;
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&amp;options);
+options.host = &quot;192.168.12.88&quot;;
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&amp;options, &amp;plc, &amp;err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, &quot;0&quot;, MCPX_TYPE_I16, 10, values, sizeof(values), &amp;err) != MCPX_OK)
+    {
+        printf(&quot;%s\n&quot;, err.message);
+    }
+    mcpx_close(plc, &amp;err);
+}
+</code></pre>
 <h2 id="今後の予定">今後の予定</h2>
 <ul>
 <li>[x] <del>3Eフレーム（ASCIIコード）対応</del></li>
@@ -269,6 +291,8 @@ int port = McpXSimulator.GetPort(systemNo: 2);                        // 5521
 <li>[x] <del>4Eフレーム（ASCIIコード）対応</del></li>
 <li>[x] <del>UDP対応</del></li>
 <li>[x] <del>GX Simulator 対応</del></li>
+<li>[x] <del>Python ラッパー（<a href="bindings/python">bindings/python</a>）</del></li>
+<li>[ ] Node.js ラッパー - 進行中</li>
 </ul>
 <h2 id="変更履歴">変更履歴</h2>
 <ul>

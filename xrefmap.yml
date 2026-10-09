@@ -828,6 +828,19 @@ references:
   commentId: T:McpXLib.Mcp
   fullName: McpXLib.Mcp
   nameWithType: Mcp
+- uid: McpXLib.Mcp.Dispose
+  name: Dispose()
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Dispose
+  commentId: M:McpXLib.Mcp.Dispose
+  fullName: McpXLib.Mcp.Dispose()
+  nameWithType: Mcp.Dispose()
+- uid: McpXLib.Mcp.Dispose*
+  name: Dispose
+  href: api/McpXLib.Mcp.html#McpXLib_Mcp_Dispose_
+  commentId: Overload:McpXLib.Mcp.Dispose
+  isSpec: "True"
+  fullName: McpXLib.Mcp.Dispose
+  nameWithType: Mcp.Dispose
 - uid: McpXLib.Mcp.IsAscii
   name: IsAscii
   href: api/McpXLib.Mcp.html#McpXLib_Mcp_IsAscii
