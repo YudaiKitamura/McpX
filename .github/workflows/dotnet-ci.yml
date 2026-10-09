@@ -68,7 +68,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Publish AOT
-        run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -r ${{ matrix.rid }} /p:PublishAot=true
+        run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -r ${{ matrix.rid }} -p:PublishAot=true
 
       - name: Check C header
         run: |
