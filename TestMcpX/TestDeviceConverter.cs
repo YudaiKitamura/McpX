@@ -263,6 +263,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -280,6 +281,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -358,6 +360,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -404,6 +407,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY
         );
@@ -455,6 +459,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -472,6 +477,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -507,6 +513,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
@@ -524,6 +531,7 @@ public sealed class TestDeviceConverter
             Prefix.B,
             Prefix.W,
             Prefix.SB,
+            Prefix.SW,
             Prefix.DX,
             Prefix.DY 
         );
