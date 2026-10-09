@@ -2,7 +2,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
-  <img alt="Version" src="https://img.shields.io/badge/version-0.12.0-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.13.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -101,12 +101,39 @@ Communication is TCP / binary code only (GX Simulator3 does not respond to ASCII
 - 4E frame (binary code)
 - 4E frame (ASCII code)
 
+## Native Library (C ABI)
+A native library (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`) that exposes McpX as C functions. It does not require the .NET runtime and can be used from any language with an FFI, such as Python (ctypes) and Node.js (koffi). For Python, a wrapper with the same feel as the C# McpX is available ([bindings/python](bindings/python)).
+The header is [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h). It supports single, batch, random and multiple block access, strings, monitoring and remote operations, and can be built for Windows x64 / Linux x64 and arm64 / macOS arm64. Every function returns a status code (`MCPX_OK = 0`) and writes the details (including the PLC end code) to `mcpx_error` on failure.
+
+```c
+#include "mcpx.h"
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&options);
+options.host = "192.168.12.88";
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, "0", MCPX_TYPE_I16, 10, values, sizeof(values), &err) != MCPX_OK)
+    {
+        printf("%s\n", err.message);
+    }
+    mcpx_close(plc, &err);
+}
+```
+
 ## Roadmap
 - [x] ~~3E frame (ASCII code) support~~
 - [x] ~~4E frame (binary code) support~~
 - [x] ~~4E frame (ASCII code) support~~
 - [x] ~~UDP support~~
 - [x] ~~GX Simulator support~~
+- [x] ~~Python wrapper ([bindings/python](bindings/python))~~
+- [ ] Node.js wrapper - In progress
 
 ## Changelog
 - [CHANGELOG.md](./CHANGELOG.md)

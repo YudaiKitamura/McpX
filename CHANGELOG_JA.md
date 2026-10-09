@@ -1,3 +1,16 @@
+## [0.13.0] - 2026-10-10
+### Added
+- 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、統合・ランダムアクセス（`mcpx_read_items` / `mcpx_write_items`）、複数ブロック一括読み書き（`mcpx_block_read` / `mcpx_block_write`）、Shift_JIS の文字列（`mcpx_read_string` / `mcpx_write_string`）、モニタ（`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`）、リモート操作（`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`）、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。
+- `ReadString` / `WriteString` を Native AOT ビルドでも利用可能に変更。
+- C# の McpX と同じ感覚で使える Python バインディングを追加（`bindings/python`、パッケージ名 `mcpx`）。単一・連続・統合・ランダム・複数ブロックの読み書き、文字列、モニタ、リモート操作、非同期メソッドに対応し、例外は Python 標準の例外でも捕まえられる。
+- 127.0.0.1 でしか待ち受けない GX Simulator3 に、他の PC から接続できるようにするスクリプト `scripts/gxsim-portforward.ps1` を追加（`netsh portproxy` と Windows ファイアウォールの受信許可を設定）。
+
+### Removed
+- **破壊的変更：** 旧ネイティブ関数（`plc_connect`、`plc_close`、`batch_read_*`、`batch_write_*`）を削除。新しい `mcpx_*` 関数を使用してください。旧関数にあった問題（例外でプロセスが終了する、close した接続が残る、全接続が1つのロックで直列化される）は、新しい関数では起きない。
+
+### Fixed
+- `RemoteReset` の再接続中にインスタンスが破棄された場合に、新しい接続が閉じられず残る不具合を修正。
+
 ## [0.12.0] - 2026-09-28
 ### Fixed
 - PLC が応答しない場合に、TCP の非同期要求がタイムアウトせず永久に待ち続ける不具合を修正（`NetworkStream.ReadAsync` は `ReceiveTimeout` を参照しないため）。

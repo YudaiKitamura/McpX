@@ -488,3 +488,10 @@ _site/
 
 # Document directory
 docs/
+# Language bindings
+bindings/python/src/mcpx/_native/
+bindings/python/.venv/
+bindings/python/**/*.egg-info/
+bindings/python/build/
+bindings/python/dist/
+.pytest_cache/

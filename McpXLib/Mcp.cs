@@ -83,6 +83,10 @@ public class Mcp : BasePlc, IPlc
     // 再接続用のトランスポート生成処理（トランスポートを直接指定した場合は null）
     private readonly Func<IPlcTransport>? transportFactory;
 
+    // 破棄とトランスポートの差し替えを排他し、破棄後に再接続した接続が残らないようにする。
+    private readonly object transportLock = new();
+    private bool disposed;
+
     // PLC に残るモニタ登録は最後の1つだけのため、登録のたびに世代を進めて古い MonitorSession を検出する。
     // 登録と世代の更新、世代の確認とモニタ読み出しを、それぞれ monitorGate の内側で一まとめに行う。
     private readonly SemaphoreSlim monitorGate = new(1, 1);
@@ -207,6 +211,21 @@ public class Mcp : BasePlc, IPlc
         );
     }
 
+    /// <summary>
+    /// インスタンス破棄
+    /// </summary>
+    /// <remarks>
+    /// 通信トランスポートを解放します。
+    /// </remarks>
+    public override void Dispose()
+    {
+        lock (transportLock)
+        {
+            disposed = true;
+            base.Dispose();
+        }
+    }
+
     // トランスポートを直接指定した場合は再接続できない
     internal bool CanReconnect => transportFactory != null;
 
@@ -218,7 +237,20 @@ public class Mcp : BasePlc, IPlc
             throw new InvalidOperationException("This instance cannot reconnect.");
         }
 
-        ReplaceTransport(transportFactory());
+        // 接続（最大でタイムアウト時間かかる）はロックの外で行う
+        var newTransport = transportFactory();
+
+        lock (transportLock)
+        {
+            if (disposed)
+            {
+                // RemoteReset の再接続中に Dispose された場合、新しい接続を残さない
+                newTransport.Dispose();
+                throw new ObjectDisposedException(GetType().Name);
+            }
+
+            ReplaceTransport(newTransport);
+        }
 
         // 新しい接続には PLC のモニタ登録が引き継がれないため、既存の MonitorSession を無効にする
         monitorGate.Wait();

@@ -2,7 +2,7 @@
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
-  <img alt="Version" src="https://img.shields.io/badge/version-0.12.0-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.13.0-blue" />
   <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
   <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
   <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
@@ -100,12 +100,39 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 - 4Eフレーム（バイナリコード）
 - 4Eフレーム（ASCIIコード）
 
+## ネイティブライブラリ（C ABI）
+McpX を C の関数として公開したネイティブライブラリ（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`）です。.NET ランタイムは不要で、Python（ctypes）や Node.js（koffi）など、FFI を持つ言語から利用できます。Python からは、C# の McpX と同じ感覚で使えるラッパー（[bindings/python](bindings/python)）を利用できます。
+ヘッダは [McpXInterop/include/mcpx.h](McpXInterop/include/mcpx.h) です。単一・連続・ランダム・複数ブロックの読み書き、文字列、モニタ、リモート操作に対応し、Windows x64 / Linux x64・arm64 / macOS arm64 向けにビルドできます。各関数は状態コード（`MCPX_OK = 0`）を返し、失敗時は `mcpx_error` に詳細（PLCの終了コードを含む）を書き込みます。
+
+```c
+#include "mcpx.h"
+
+mcpx_connect_options options;
+mcpx_connect_options_init(&options);
+options.host = "192.168.12.88";
+options.port = 10000;
+
+mcpx_error err = { .struct_size = sizeof(mcpx_error) };
+mcpx_client_t plc;
+if (mcpx_connect(&options, &plc, &err) == MCPX_OK)
+{
+    int16_t values[10];
+    if (mcpx_batch_read(plc, MCPX_PREFIX_D, "0", MCPX_TYPE_I16, 10, values, sizeof(values), &err) != MCPX_OK)
+    {
+        printf("%s\n", err.message);
+    }
+    mcpx_close(plc, &err);
+}
+```
+
 ## 今後の予定
 - [x] ~~3Eフレーム（ASCIIコード）対応~~
 - [x] ~~4Eフレーム（バイナリコード）対応~~
 - [x] ~~4Eフレーム（ASCIIコード）対応~~
 - [x] ~~UDP対応~~
 - [x] ~~GX Simulator 対応~~
+- [x] ~~Python ラッパー（[bindings/python](bindings/python)）~~
+- [ ] Node.js ラッパー - 進行中
 
 ## 変更履歴
 - [CHANGELOG_JA.md](./CHANGELOG_JA.md)

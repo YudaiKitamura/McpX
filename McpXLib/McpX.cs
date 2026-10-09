@@ -1353,7 +1353,6 @@ public partial class McpX : Mcp
         await ExecuteRandomWriteAsync(builder.random);
     }
 
-#if !AOT
     /// <summary>
     /// 文字列読み込み
     /// </summary>
@@ -1427,7 +1426,6 @@ public partial class McpX : Mcp
     {
         await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
     }
-#endif
 
     /// <summary>
     /// インスタンス破棄

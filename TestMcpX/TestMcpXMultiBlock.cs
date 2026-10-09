@@ -211,7 +211,7 @@ public sealed class TestMcpXMultiBlock
     }
 
     /// <summary>
-    /// 3Eフレーム(バイナリ)・Q/L形式の 0401 / 1401 / 0406 / 1406 に応答する偽トランスポート。
+    /// 3Eフレーム(バイナリ)・Q/L形式の 0401 / 1401 / 0406 / 1406 に応答するダミートランスポート。
     /// </summary>
     private sealed class FakeMultiBlockTransport : IPlcTransport
     {

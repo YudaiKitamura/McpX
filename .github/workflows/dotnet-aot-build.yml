@@ -37,12 +37,15 @@ jobs:
 
       - name: Rename Linux binary
         run: |
-          mv McpXInterop/bin/Release/net9.0/linux-x64/native/McpXInterop.so McpXInterop-linux-x64.so
+          mv McpXInterop/bin/Release/net9.0/linux-x64/native/mcpx.so mcpx-${{ github.ref_name }}-linux-x64.so
+          cp McpXInterop/include/mcpx.h mcpx-${{ github.ref_name }}.h
 
       - name: Upload AOT Linux Binary
         uses: softprops/action-gh-release@v1
         with:
-          files: McpXInterop-linux-x64.so
+          files: |
+            mcpx-${{ github.ref_name }}-linux-x64.so
+            mcpx-${{ github.ref_name }}.h
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -63,14 +66,14 @@ jobs:
         run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -f net9.0 -r win-x64 /p:PublishAot=true
 
       - name: Rename Windows binary
-        run: Rename-Item -Path "McpXInterop.dll" -NewName "McpXInterop-win-x64.dll"
+        run: Rename-Item -Path "mcpx.dll" -NewName "mcpx-${{ github.ref_name }}-win-x64.dll"
         working-directory: McpXInterop\bin\Release\net9.0\win-x64\native
         shell: pwsh
 
       - name: Upload AOT Windows Binary
         uses: softprops/action-gh-release@v1
         with:
-          files: McpXInterop/bin/Release/net9.0/win-x64/native/McpXInterop-win-x64.dll
+          files: McpXInterop/bin/Release/net9.0/win-x64/native/mcpx-${{ github.ref_name }}-win-x64.dll
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
