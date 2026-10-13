@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AssemblyName>TestMcpX</AssemblyName>
     <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <!-- 実機・シミュレータの結合テストが同じ PLC を同時に書き換えないよう、TFM ごとに順に実行する -->
+    <TestTfmsInParallel>false</TestTfmsInParallel>
   </PropertyGroup>
 
   <ItemGroup>
