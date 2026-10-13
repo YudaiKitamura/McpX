@@ -7,6 +7,9 @@
 - Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.
 - Added `McpXException`, the base class of `DeviceAddressException`, `McProtocolException` and `ReceivePacketException`. The exceptions now have the standard constructors, including one with an inner exception.
 - Added access to other stations and to the other CPUs of a multiple CPU system: `McpXOptions.Route` takes a `McpXRoute` (network No., PC No., request destination module I/O No. and station No.), and `McpXRoute.ForCpu(cpuNo)` targets CPU No. 1 to 4. `McpX.Route` returns the route in use.
+- Added the `net10.0` target framework.
+- The NuGet package now has a symbol package (`.snupkg`), Source Link and an icon.
+- Each release now attaches the native library for win-x64, linux-x64, linux-arm64 and osx-arm64 (previously win-x64 and linux-x64 only), and is published to NuGet from CI.
 
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
@@ -21,6 +24,7 @@
 - Calling a communication method after `Dispose` now throws `ObjectDisposedException` (previously `IOException` over TCP).
 - **Breaking:** `BatchWrite` / `BatchWriteAsync` no longer return the written values (they returned a copy of the argument).
 - **Breaking:** The lengths of `BatchRead`, `ReadString`, `ReadBuilder.Add` and `BlockReadBuilder.Add` are now `int` instead of `ushort`. A negative length throws `ArgumentOutOfRangeException`. The length parameter of `ReadString` is renamed to `wordLength`.
+- The native library (C ABI) is now built with .NET 10. The C ABI is unchanged.
 
 ### Fixed
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.

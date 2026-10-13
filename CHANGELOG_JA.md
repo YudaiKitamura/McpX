@@ -7,6 +7,9 @@
 - `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。
 - `DeviceAddressException`、`McProtocolException`、`ReceivePacketException` の基底クラス `McpXException` を追加。各例外に、原因となった例外を指定するものを含む標準のコンストラクタを追加。
 - 他局と、マルチCPUシステムの別の号機へのアクセスを追加。`McpXOptions.Route` に `McpXRoute`（ネットワーク番号、PC番号、要求先ユニットI/O番号、要求先ユニット局番号）を指定します。`McpXRoute.ForCpu(cpuNo)` で号機（1〜4）を指定できます。使用中の経路は `McpX.Route` で取得できます。
+- 対象フレームワークに `net10.0` を追加。
+- NuGet パッケージにシンボルパッケージ（`.snupkg`）、Source Link、アイコンを追加。
+- リリースに、win-x64・linux-x64・linux-arm64・osx-arm64 のネイティブライブラリを添付するように変更（従来は win-x64 と linux-x64 のみ）。NuGet への公開も CI から行います。
 
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
@@ -21,6 +24,7 @@
 - `Dispose` の後に通信するメソッドを呼び出すと `ObjectDisposedException` をスローするように変更（TCP では `IOException` でした）。
 - **破壊的変更：** `BatchWrite` / `BatchWriteAsync` が書き込んだ値（引数のコピー）を返さないように変更。
 - **破壊的変更：** `BatchRead`、`ReadString`、`ReadBuilder.Add`、`BlockReadBuilder.Add` の点数を `ushort` から `int` に変更。負の値は `ArgumentOutOfRangeException` をスローします。`ReadString` の点数の引数名は `wordLength` に変更。
+- ネイティブライブラリ（C ABI）を .NET 10 でビルドするように変更。C ABI に変更はありません。
 
 ### Fixed
 - UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。

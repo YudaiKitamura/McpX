@@ -1,0 +1,19 @@
+<Project>
+
+  <!-- McpXLib・McpXInterop（ネイティブライブラリ）で共通のバージョン -->
+  <PropertyGroup>
+    <Version>0.13.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- CI では、ビルド結果がビルド環境のパスに依存しないようにする（SourceLink・決定論的ビルド） -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>
