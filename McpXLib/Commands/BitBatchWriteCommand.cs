@@ -5,12 +5,11 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-internal sealed class BitBatchWriteCommand : IPlcCommand<bool>
+internal sealed class BitBatchWriteCommand : PlcCommandBase<bool>
 {
     internal const ushort MIN_BIT_LENGTH = 1;
     internal const ushort MAX_BIT_LENGTH = 7168;
     private readonly ushort bitLength;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     internal BitBatchWriteCommand(Prefix prefix, string address, bool[] values, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
     {
@@ -34,45 +33,9 @@ internal sealed class BitBatchWriteCommand : IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Bit
-        );
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, DeviceAccessMode.Bit);
 
-        responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public bool Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Bit
-        );
-
-        responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
-    }
+    protected override bool Parse(byte[] responseContent)
+        => true;
 }

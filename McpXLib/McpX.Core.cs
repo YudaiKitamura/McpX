@@ -98,34 +98,22 @@ public partial class McpX : IPlc
 
     internal async Task RemoteUnlockAsync(string password)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new RemoteUnlockCommand(password, monitoringTimer),
-            this
-        );
+        await new RemoteUnlockCommand(password, monitoringTimer).ExecuteAsync(this);
     }
 
     internal void RemoteUnlock(string password)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new RemoteUnlockCommand(password, monitoringTimer),
-            this
-        );
+        new RemoteUnlockCommand(password, monitoringTimer).Execute(this);
     }
 
     internal async Task RemoteLockAsync(string password)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new RemoteLockCommand(password, monitoringTimer),
-            this
-        );
+        await new RemoteLockCommand(password, monitoringTimer).ExecuteAsync(this);
     }
 
     internal void RemoteLock(string password)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new RemoteLockCommand(password, monitoringTimer),
-            this
-        );
+        new RemoteLockCommand(password, monitoringTimer).Execute(this);
     }
 
     // 通信トランスポートを解放する（リモートロックは送らない）。
@@ -180,166 +168,112 @@ public partial class McpX : IPlc
 
     internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(create(monitoringTimer), this);
+        await create(monitoringTimer).ExecuteAsync(this);
     }
 
     internal void RemoteOperation(Func<ushort, RemoteOperationCommand> create)
     {
-        new PlcCommandHandler<bool>().Execute(create(monitoringTimer), this);
+        create(monitoringTimer).Execute(this);
     }
 
     internal async Task<ushort[][]> MultiBlockReadAsync(DeviceBlock[] blocks)
     {
-        return await new PlcCommandHandler<ushort[][]>().ExecuteAsync(
-            new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries),
-            this
-        );
+        return await new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal ushort[][] MultiBlockRead(DeviceBlock[] blocks)
     {
-        return new PlcCommandHandler<ushort[][]>().Execute(
-            new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries),
-            this
-        );
+        return new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task MultiBlockWriteAsync(DeviceBlock[] blocks)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries),
-            this
-        );
+        await new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal void MultiBlockWrite(DeviceBlock[] blocks)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries),
-            this
-        );
+        new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task<bool[]> BitBatchReadAsync(Prefix prefix, string address, ushort bitLength)
     {
-        return await new PlcCommandHandler<bool[]>().ExecuteAsync(
-            new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries),
-            this
-        );
+        return await new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal bool[] BitBatchRead(Prefix prefix, string address, ushort bitLength)
     {
-        return new PlcCommandHandler<bool[]>().Execute(
-            new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries),
-            this
-        );
+        return new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task BitBatchWriteAsync(Prefix prefix, string address, bool[]values)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries),
-            this
-        );
+        await new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal void BitBatchWrite(Prefix prefix, string address, bool[]values)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries),
-            this
-        );
+        new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries).Execute(this);
     }
     
     // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
     internal async Task<T[]> WordBatchReadAsync<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
-        return await new PlcCommandHandler<T[]>().ExecuteAsync(
-            new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries),
-            this
-        );
+        return await new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
     internal T[] WordBatchRead<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
     {
-        return new PlcCommandHandler<T[]>().Execute(
-            new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries),
-            this
-        );
+        return new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task WordBatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries),
-            this
-        );
+        await new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal void WordBatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
-        new PlcCommandHandler<bool>().Execute(
-            new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries),
-            this
-        );
+        new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task<(T1[] wordValues, T2[] doubleValues)> WordRandomReadAsync<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        return await new PlcCommandHandler<(T1[], T2[])>().ExecuteAsync(
-            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        return await new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal (T1[] wordValues, T2[] doubleValues) WordRandomRead<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        return new PlcCommandHandler<(T1[], T2[])>().Execute(
-            new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        return new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task WordRandomWriteAsync<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries),
-            this
-        );
+        await new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices)
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        new PlcCommandHandler<bool>().Execute(
-            new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries),
-            this
-        );
+        new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task BitRandomWriteAsync((Prefix prefix, string address, bool value)[] bitDevices)
     {
-        await new PlcCommandHandler<bool>().ExecuteAsync(
-            new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries),
-            this
-        );
+        await new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     internal void BitRandomWrite((Prefix prefix, string address, bool value)[] bitDevices)
     {
-        new PlcCommandHandler<bool>().Execute(
-            new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries),
-            this
-        );
+        new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries).Execute(this);
     }
 
     /// <summary>
@@ -355,7 +289,7 @@ public partial class McpX : IPlc
         {
             // 送信した時点で PLC の登録は置き換わりうるため、登録が失敗しても古いセッションは無効にする
             monitorGeneration++;
-            new PlcCommandHandler<bool>().Execute(command, this);
+            command.Execute(this);
             return monitorGeneration;
         }
         finally
@@ -372,7 +306,7 @@ public partial class McpX : IPlc
         try
         {
             monitorGeneration++;
-            await new PlcCommandHandler<bool>().ExecuteAsync(command, this);
+            await command.ExecuteAsync(this);
             return monitorGeneration;
         }
         finally
@@ -425,17 +359,11 @@ public partial class McpX : IPlc
 
     private async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        return await new PlcCommandHandler<(ushort[], uint[])>().ExecuteAsync(
-            new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        return await new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this);
     }
 
     private (ushort[] wordValues, uint[] doubleValues) Monitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        return new PlcCommandHandler<(ushort[], uint[])>().Execute(
-            new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
-            this
-        );
+        return new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).Execute(this);
     }
 }

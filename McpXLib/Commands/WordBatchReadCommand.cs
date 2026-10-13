@@ -5,13 +5,12 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
+internal sealed class WordBatchReadCommand<T> : PlcCommandBase<T[]>
     where T : unmanaged
 {
     internal const ushort MIN_WORD_LENGTH = 1;
     internal const ushort MAX_WORD_LENGTH = 960;
     private readonly ushort wordLength;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     internal WordBatchReadCommand(Prefix prefix, string address, ushort wordLength, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q)
     {
@@ -35,45 +34,11 @@ internal sealed class WordBatchReadCommand<T> : IPlcCommand<T[]>
         }
     }
 
-    public async Task<T[]> ExecuteAsync(IPlc plc)
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, DeviceAccessMode.Word);
+
+    protected override T[] Parse(byte[] responseContent)
     {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Word
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
         return DeviceConverter.ConvertValueArray<T>(responseContent);
-    }
-
-    public T[] Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Word
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return DeviceConverter.ConvertValueArray<T>(responseContent);
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
     }
 }

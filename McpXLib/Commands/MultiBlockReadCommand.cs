@@ -11,14 +11,13 @@ namespace McpXLib.Commands;
 /// <remarks>
 /// 応答はワードデバイスのブロック、ビットデバイスのブロックの順に格納されるため、指定順に並べ直して返す。
 /// </remarks>
-internal sealed class MultiBlockReadCommand : IPlcCommand<ushort[][]>
+internal sealed class MultiBlockReadCommand : PlcCommandBase<ushort[][]>
 {
     internal const int MAX_POINTS = 960;
 
     private readonly DeviceBlock[] blocks;
     private readonly DeviceBlock[] wordBlocks;
     private readonly DeviceBlock[] bitBlocks;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     // ワードデバイスブロック数+ビットデバイスブロック数の上限（Q/L: 120、iQ-R: 60）
     internal static int GetMaxBlockCount(ProcessorSeries series)
@@ -55,33 +54,11 @@ internal sealed class MultiBlockReadCommand : IPlcCommand<ushort[][]>
         }
     }
 
-    public async Task<ushort[][]> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Word
-        );
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, DeviceAccessMode.Word);
 
-        return ToBlockWords(responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        ));
-    }
-
-    public ushort[][] Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Word
-        );
-
-        return ToBlockWords(responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        ));
-    }
+    protected override ushort[][] Parse(byte[] responseContent)
+        => ToBlockWords(responseContent);
 
     // 応答データ（ワードブロック→ビットブロックの順）を、指定したブロックの順に分ける
     private ushort[][] ToBlockWords(byte[] content)
@@ -101,15 +78,5 @@ internal sealed class MultiBlockReadCommand : IPlcCommand<ushort[][]>
         }
 
         return blocks.Select(b => result[b]).ToArray();
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
     }
 }

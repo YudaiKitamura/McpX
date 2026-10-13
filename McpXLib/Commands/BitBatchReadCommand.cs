@@ -5,12 +5,11 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
+internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
 {
     internal const ushort MIN_BIT_LENGTH = 1;
     internal const ushort MAX_BIT_LENGTH = 7168;
     private readonly ushort bitLength;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     internal BitBatchReadCommand(Prefix prefix, string address, ushort bitLength, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
     {
@@ -34,19 +33,11 @@ internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         }
     }
 
-    public async Task<bool[]> ExecuteAsync(IPlc plc)
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, DeviceAccessMode.Bit);
+
+    protected override bool[] Parse(byte[] responseContent)
     {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Bit
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
         // MEMO:
         //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
         if (bitLength % 2 != 0) 
@@ -57,40 +48,5 @@ internal sealed class BitBatchReadCommand : IPlcCommand<bool[]>
         }
 
         return DeviceConverter.ConvertValueArray<bool>(responseContent);
-    }
-
-    public bool[] Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            DeviceAccessMode.Bit
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        // MEMO:
-        //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
-        if (bitLength % 2 != 0) 
-        {
-            var responseContentList = responseContent.ToList();
-            responseContentList.RemoveAt(responseContent.Count() - 1);
-            responseContent = responseContentList.ToArray();
-        }
-
-        return DeviceConverter.ConvertValueArray<bool>(responseContent);
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
     }
 }

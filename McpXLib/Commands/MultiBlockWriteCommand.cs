@@ -8,12 +8,11 @@ namespace McpXLib.Commands;
 /// <summary>
 /// 複数ブロック一括書込み（コマンド: 1406）
 /// </summary>
-internal sealed class MultiBlockWriteCommand : IPlcCommand<bool>
+internal sealed class MultiBlockWriteCommand : PlcCommandBase<bool>
 {
     internal const int MAX_POINTS = 960;
 
     private readonly DeviceBlock[] blocks;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     // (ブロック数の合計×係数)+(デバイス点数の合計) ≦ 960 の係数（Q/L: 4、iQ-R: 9）
     internal static int GetBlockCost(ProcessorSeries series)
@@ -56,43 +55,6 @@ internal sealed class MultiBlockWriteCommand : IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-
-        responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public bool Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-
-        responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
-    }
+    protected override bool Parse(byte[] responseContent)
+        => true;
 }

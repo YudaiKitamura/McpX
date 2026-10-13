@@ -1,0 +1,74 @@
+using McpXLib.Builders;
+using McpXLib.Interfaces;
+using McpXLib.Utils;
+
+namespace McpXLib.Commands;
+
+/// <summary>
+/// コマンドの共通処理（要求の組み立て・送信・応答の解析）
+/// </summary>
+/// <remarks>
+/// 派生クラスはコンストラクタで <see cref="commandPacketBuilder"/> を設定し、
+/// 応答の解析方法（<see cref="CreateResponseSelector"/>）と応答データの変換（<see cref="Parse"/>）だけを実装する。
+/// </remarks>
+internal abstract class PlcCommandBase<T> : IPlcCommand<T>
+{
+    protected CommandPacketBuilder commandPacketBuilder = null!;
+
+    /// <summary>
+    /// 応答の解析に使うセレクタを生成します。既定は応答データを持たないコマンド用です。
+    /// </summary>
+    protected virtual ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber);
+
+    /// <summary>
+    /// 応答データ（ヘッダ・終了コードを除いた部分）を戻り値に変換します。
+    /// </summary>
+    protected abstract T Parse(byte[] responseContent);
+
+    public T Execute(IPlc plc)
+    {
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = CreateResponseSelector(plc, requestFrameSelector.GetSerialNumber());
+
+        return Parse(responseFrameSelector.ParsePacket(
+            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
+        ));
+    }
+
+    public async Task<T> ExecuteAsync(IPlc plc)
+    {
+        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
+        var responseFrameSelector = CreateResponseSelector(plc, requestFrameSelector.GetSerialNumber());
+
+        return Parse(responseFrameSelector.ParsePacket(
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
+        ));
+    }
+
+    public byte[] ToBinaryBytes()
+    {
+        return commandPacketBuilder.ToBinaryBytes();
+    }
+
+    public byte[] ToAsciiBytes()
+    {
+        return commandPacketBuilder.ToAsciiBytes();
+    }
+
+    /// <summary>
+    /// ワード・ダブルワードを並べた応答データを、それぞれの型の配列に分けます（ランダム読出し・モニタ用）。
+    /// </summary>
+    protected static (T1[] wordValues, T2[] doubleValues) SplitWordAndDoubleWord<T1, T2>(byte[] responseContent, int wordLength, int doubleWordLength)
+        where T1 : unmanaged
+        where T2 : unmanaged
+    {
+        int wordBytes = wordLength * DeviceConverter.GetWordLength<T1>() * 2;
+        int doubleWordBytes = doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2;
+
+        return (
+            wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent.Take(wordBytes).ToArray()),
+            doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent.Skip(wordBytes).Take(doubleWordBytes).ToArray())
+        );
+    }
+}

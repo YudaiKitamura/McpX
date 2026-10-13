@@ -4,9 +4,8 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-internal sealed class RemoteLockCommand : IPlcCommand<bool>
+internal sealed class RemoteLockCommand : PlcCommandBase<bool>
 {
-    private readonly CommandPacketBuilder commandPacketBuilder;
     
     internal RemoteLockCommand(string password, ushort monitoringTimer = 0)
     {
@@ -18,43 +17,6 @@ internal sealed class RemoteLockCommand : IPlcCommand<bool>
         );
     }
 
-    public async Task<bool> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-        
-        responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public bool Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-        
-        responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
-    }
+    protected override bool Parse(byte[] responseContent)
+        => true;
 }
