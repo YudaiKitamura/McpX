@@ -39,6 +39,9 @@ public sealed class MonitorSession
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <exception cref="InvalidOperationException">このセッションの作成後に別のモニタ登録（MonitorRegister）が行われ、PLC の登録が置き換わっている場合にスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Read()
     {
         var (rawWords, rawDoubleWords) = mcpX.MonitorRegistered(generation, wordAddresses, doubleWordAddresses);
@@ -52,6 +55,9 @@ public sealed class MonitorSession
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <exception cref="InvalidOperationException">このセッションの作成後に別のモニタ登録（MonitorRegister）が行われ、PLC の登録が置き換わっている場合にスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task ReadAsync(CancellationToken cancellationToken = default)
     {
         var (rawWords, rawDoubleWords) = await mcpX.MonitorRegisteredAsync(generation, wordAddresses, doubleWordAddresses, cancellationToken).ConfigureAwait(false);

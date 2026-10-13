@@ -31,9 +31,11 @@ internal abstract class PlcCommandBase<T> : IPlcCommand<T>
         var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
         var responseFrameSelector = CreateResponseSelector(plc, requestFrameSelector.GetSerialNumber());
 
-        return Parse(responseFrameSelector.ParsePacket(
+        var responseContent = responseFrameSelector.ParsePacket(
             plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        ));
+        );
+
+        return ResponseFrameSelector.WrapInvalidPacket(() => Parse(responseContent));
     }
 
     public async Task<T> ExecuteAsync(IPlc plc, CancellationToken cancellationToken)
@@ -41,9 +43,11 @@ internal abstract class PlcCommandBase<T> : IPlcCommand<T>
         var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
         var responseFrameSelector = CreateResponseSelector(plc, requestFrameSelector.GetSerialNumber());
 
-        return Parse(responseFrameSelector.ParsePacket(
+        var responseContent = responseFrameSelector.ParsePacket(
             await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector, cancellationToken).ConfigureAwait(false)
-        ));
+        );
+
+        return ResponseFrameSelector.WrapInvalidPacket(() => Parse(responseContent));
     }
 
     public byte[] ToBinaryBytes()

@@ -5,6 +5,7 @@
 - `McpXOptions` と、ファクトリ `McpX.Connect` / `McpX.ConnectAsync` を追加（既定の設定で接続する `Connect(host, port)` も追加）。`ConnectAsync` は、接続とリモートパスワードの解除をスレッドを止めずに行います。
 - `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
 - `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。
+- `DeviceAddressException`、`McProtocolException`、`ReceivePacketException` の基底クラス `McpXException` を追加。各例外に、原因となった例外を指定するものを含む標準のコンストラクタを追加。
 
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
@@ -23,6 +24,7 @@
 ### Fixed
 - UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。
 - UDP 交信で、ヘッダの応答データ長と長さが一致しない応答を受け取る不具合を修正。`ReceivePacketException` をスローします。
+- 壊れた応答（短い応答、ASCII 交信で16進以外の文字を含む応答）で、ドキュメントにない `ArgumentException` / `FormatException` / `IndexOutOfRangeException` がスローされる不具合を修正。元の例外を原因として持つ `ReceivePacketException` をスローします。
 
 ### Removed
 - **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。

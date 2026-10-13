@@ -7,12 +7,25 @@ using McpXLib.Interfaces;
 namespace McpXLib;
 
 /// <summary>
-/// MCプロトコル拡張クラス
+/// MCプロトコル交信クラス
 /// </summary>
 /// <remarks>
-/// MCプロトコルでPLCと交信するクラスです。デバイスアクセス点数の上限を超える要求は、自動的に分割して送信します。<br/>
-/// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
-/// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
+/// MCプロトコルでPLCと交信するクラスです。<see cref="Connect(McpXOptions)"/> / <see cref="ConnectAsync(McpXOptions, CancellationToken)"/> で接続します。
+/// デバイスアクセス点数の上限を超える要求は、自動的に分割して送信します。<br/>
+/// <br/>
+/// <b>型引数</b><br/>
+/// 読み書きの型 <c>T</c> には、<c>bool</c>、<c>short</c>、<c>ushort</c>、<c>int</c>、<c>uint</c>、<c>float</c>、<c>long</c>、<c>ulong</c>、<c>double</c>、<c>byte</c>、<c>sbyte</c> を指定できます
+/// （<c>byte</c> / <c>sbyte</c> は1ワードに1つ）。ランダムアクセス・モニタ（点数を指定しないビルダーの登録）で指定できるのは、
+/// <c>bool</c>、<c>short</c>、<c>ushort</c>、<c>int</c>、<c>uint</c>、<c>float</c> です。それ以外の型は <see cref="NotSupportedException"/> をスローします。<br/>
+/// <br/>
+/// <b>例外</b><br/>
+/// 通信が指定したタイムアウト時間内に完了しない場合は <see cref="TimeoutException"/>、PLCがエラーコードを返した場合は <see cref="Exceptions.McProtocolException"/>、
+/// 応答が不正な場合は <see cref="Exceptions.ReceivePacketException"/> をスローします（独自の例外は <see cref="Exceptions.McpXException"/> の派生クラスです）。
+/// TCP 交信でタイムアウト・通信エラー・キャンセルが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（接続し直してください）。<br/>
+/// <br/>
+/// <b>スレッドセーフ</b><br/>
+/// 同じインスタンスへの要求は、複数のスレッド・タスクから同時に呼び出せます（1つずつ順に送信します）。
+/// ただし、複数の要求に分かれる操作（点数の多い連続アクセスなど）の途中に、他の要求が割り込むことがあります。
 /// </remarks> 
 public sealed partial class McpX : IDisposable, IAsyncDisposable
 {
@@ -194,6 +207,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T Read<T>(Prefix prefix, string address) where T : unmanaged
     {
@@ -217,6 +233,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T> ReadAsync<T>(Prefix prefix, string address, CancellationToken cancellationToken = default) where T : unmanaged
     {
@@ -244,6 +263,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T[] BatchRead<T>(Prefix prefix, string address, int length) where T : unmanaged
     {
@@ -279,6 +301,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, int length, CancellationToken cancellationToken = default) where T : unmanaged
     {
@@ -309,6 +334,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Write<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
         WriteChunk(prefix, address, new[] { value });
@@ -332,6 +360,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task WriteAsync<T>(Prefix prefix, string address, T value, CancellationToken cancellationToken = default) where T : unmanaged
     {
         await WriteChunkAsync(prefix, address, new[] { value }, cancellationToken).ConfigureAwait(false);
@@ -355,6 +386,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void BatchWrite<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
         ThrowIfNull(values);
@@ -383,6 +417,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task BatchWriteAsync<T>(Prefix prefix, string address, T[] values, CancellationToken cancellationToken = default) where T : unmanaged
     {
         ThrowIfNull(values);
@@ -631,6 +668,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RandomRead(Action<RandomReadBuilder> build)
     {
         var builder = new RandomReadBuilder();
@@ -674,6 +714,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task RandomReadAsync(Action<RandomReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomReadBuilder();
@@ -717,6 +760,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RandomWrite(Action<RandomWriteBuilder> build)
     {
         var builder = new RandomWriteBuilder();
@@ -750,6 +796,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task RandomWriteAsync(Action<RandomWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomWriteBuilder();
@@ -786,6 +835,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
     public MonitorSession MonitorRegister(Action<MonitorBuilder> build)
     {
@@ -815,6 +867,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
     public async Task<MonitorSession> MonitorRegisterAsync(Action<MonitorBuilder> build, CancellationToken cancellationToken = default)
     {
@@ -846,6 +901,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Read(Action<ReadBuilder> build)
     {
         var builder = new ReadBuilder();
@@ -879,6 +937,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task ReadAsync(Action<ReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new ReadBuilder();
@@ -914,6 +975,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Write(Action<WriteBuilder> build)
     {
         var builder = new WriteBuilder();
@@ -946,6 +1010,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task WriteAsync(Action<WriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new WriteBuilder();
@@ -980,6 +1047,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public string ReadString(Prefix prefix, string address, int wordLength)
     {
@@ -1004,6 +1074,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public async Task<string> ReadStringAsync(Prefix prefix, string address, int wordLength, CancellationToken cancellationToken = default)
     {
@@ -1029,6 +1102,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void WriteString(Prefix prefix, string address, string value, bool includeNullTerminator = true)
     {
         BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator));
@@ -1052,6 +1128,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public async Task WriteStringAsync(Prefix prefix, string address, string value, bool includeNullTerminator = true, CancellationToken cancellationToken = default)
     {
         await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator), cancellationToken).ConfigureAwait(false);

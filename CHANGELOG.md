@@ -5,6 +5,7 @@
 - Added `McpXOptions` and the `McpX.Connect` / `McpX.ConnectAsync` factories (also `Connect(host, port)` for the default settings). `ConnectAsync` connects and unlocks the remote password without blocking a thread.
 - `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
 - Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.
+- Added `McpXException`, the base class of `DeviceAddressException`, `McProtocolException` and `ReceivePacketException`. The exceptions now have the standard constructors, including one with an inner exception.
 
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
@@ -23,6 +24,7 @@
 ### Fixed
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
 - Fixed UDP requests accepting a response whose length does not match the response data length in its header. It now throws `ReceivePacketException`.
+- Fixed malformed responses (too short, or non-hexadecimal characters in ASCII mode) throwing undocumented `ArgumentException` / `FormatException` / `IndexOutOfRangeException`. They now throw `ReceivePacketException` with the original exception as the inner exception.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.
