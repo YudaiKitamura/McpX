@@ -81,7 +81,7 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 | **一括書込み**          | 複数のデバイスに配列で指定した値を一括書き込みします。        | `BatchWrite<T>(Prefix prefix, string address, T[] values)`  | `BatchWriteAsync<T>(Prefix prefix, string address, T[] values)`  |
 | **ランダム読出し**       | 非連続デバイス（ビット／ワード／ダブルワード）を読み出します。   | `RandomRead(Action<RandomReadBuilder> build)`   | `RandomReadAsync(Action<RandomReadBuilder> build)`        |
 | **ランダム書込み**       | 非連続デバイス（ビット／ワード／ダブルワード）へ書き込みます。   | `RandomWrite(Action<RandomWriteBuilder> build)` | `RandomWriteAsync(Action<RandomWriteBuilder> build)`      |
-| **モニタ登録**           | モニタ対象デバイスを登録し、`MonitorSession` を返します。    | `MonitorRegist(Action<MonitorBuilder> build)`   | `MonitorRegistAsync(Action<MonitorBuilder> build)`        |
+| **モニタ登録**           | モニタ対象デバイスを登録し、`MonitorSession` を返します。    | `MonitorRegister(Action<MonitorBuilder> build)`   | `MonitorRegisterAsync(Action<MonitorBuilder> build)`        |
 | **モニタ読み取り**        | 返却されたセッション経由で登録済みデバイスの最新値を読み出します。 | `MonitorSession.Read()`                    | `MonitorSession.ReadAsync()`                              |
 | **統合読み込み**          | 範囲指定（点数あり）と単一指定のデバイスをまとめて読み込みます。範囲は連続アクセス（`UseMultiBlockAccess` を有効にすると、範囲が複数あれば複数ブロック一括読出し）、単一はランダムアクセスで読み込みます。 | `Read(Action<ReadBuilder> build)`   | `ReadAsync(Action<ReadBuilder> build)`   |
 | **統合書き込み**          | 範囲指定（配列）と単一指定のデバイスにまとめて書き込みます。配列は連続アクセス（`UseMultiBlockAccess` を有効にすると、範囲が複数あれば複数ブロック一括書込み）、単一値はランダムアクセスで書き込みます。 | `Write(Action<WriteBuilder> build)` | `WriteAsync(Action<WriteBuilder> build)` |

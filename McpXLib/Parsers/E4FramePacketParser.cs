@@ -1,4 +1,4 @@
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Enums;
 using McpXLib.Interfaces;
 

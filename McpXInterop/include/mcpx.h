@@ -228,7 +228,7 @@ mcpx_status_t mcpx_write_string(mcpx_client_t client, uint8_t prefix, const char
 
 /* ---- モニタ ---- */
 
-/* SINGLE の項目をモニタ登録し、セッションのハンドルを out に返す（McpX.MonitorRegist）。
+/* SINGLE の項目をモニタ登録し、セッションのハンドルを out に返す（McpX.MonitorRegister）。
  * 登録時の buffer は使わない。別の登録や再接続を行うと、既存のセッションは MCPX_E_INVALID_OPERATION になる。 */
 mcpx_status_t mcpx_monitor_register(mcpx_client_t client, const mcpx_item* items, size_t count, mcpx_session_t* out, mcpx_error* err);
 

@@ -148,8 +148,8 @@ public sealed class TestMcpXBatchAccess
         CollectionAssert.AreEqual(new byte[] { 1, 0, 2, 0, 3, 0 }, transport.Requests[2].Data);
 
         CollectionAssert.AreEqual(new byte[] { 0xAB, 0xFF }, mcpx.BatchRead<byte>(Prefix.D, "10", 2));
-        Assert.AreEqual((sbyte)-1, mcpx.ReadSByte(Prefix.D, "11"));
-        Assert.AreEqual((byte)0xAB, mcpx.ReadByte(Prefix.D, "10"));
+        Assert.AreEqual((sbyte)-1, mcpx.Read<sbyte>(Prefix.D, "11"));
+        Assert.AreEqual((byte)0xAB, mcpx.Read<byte>(Prefix.D, "10"));
     }
 
     [TestMethod]

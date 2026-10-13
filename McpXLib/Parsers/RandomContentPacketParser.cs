@@ -1,5 +1,5 @@
 using System.Text;
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 using McpXLib.Utils;
@@ -26,7 +26,7 @@ internal class RandomContentPacketParser : BaseContentPacketParser
         //  ASCIIの場合は、一度、バイナリに変換して処理を行う為、半分のパケット数になる
         if (bytes.Length != (!IsAscii ? Length : Length / 2)) 
         {
-            throw new RecivePacketException("Received packet had an invalid content.");
+            throw new ReceivePacketException("Received packet had an invalid content.");
         }
     }
 

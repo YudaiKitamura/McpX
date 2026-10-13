@@ -1,4 +1,4 @@
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Enums;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
@@ -24,7 +24,7 @@ internal class SubHeaderPacketParser : BasePacketParser
     {
         if (!subHeader.SequenceEqual(requestFrame == RequestFrame.E3 ? new byte[] { 0xD0, 0x00 } : new byte[] { 0xD4, 0x00 })) 
         {
-            throw new RecivePacketException("Received packet had an invalid subheader.");
+            throw new ReceivePacketException("Received packet had an invalid subheader.");
         }
     }
 }

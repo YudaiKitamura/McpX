@@ -4,10 +4,6 @@ using McpXLib.Utils;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 
-// 新しいビルダーAPIは、後方互換のため残している旧ランダムAPI([Obsolete])を内部的に利用するため、
-// このファイル内での CS0618(古い形式のメンバー使用) 警告は抑制する。外部利用者には引き続き警告が出る。
-#pragma warning disable CS0618
-
 namespace McpXLib;
 
 /// <summary>
@@ -44,7 +40,7 @@ public partial class McpX : Mcp
     /// </param>
     /// <exception cref="TimeoutException">指定したタイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
     /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpX(
         string ip,
@@ -133,7 +129,7 @@ public partial class McpX : Mcp
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T Read<T>(Prefix prefix, string address) where T : unmanaged
@@ -170,7 +166,7 @@ public partial class McpX : Mcp
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレス</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T> ReadAsync<T>(Prefix prefix, string address) where T : unmanaged
@@ -215,7 +211,7 @@ public partial class McpX : Mcp
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T[] BatchRead<T>(Prefix prefix, string address, ushort length) where T : unmanaged
@@ -290,7 +286,7 @@ public partial class McpX : Mcp
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, ushort length) where T : unmanaged
@@ -362,7 +358,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void Write<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
@@ -400,7 +396,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task WriteAsync<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
@@ -438,7 +434,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns><c>values</c>の値をそのまま返します。</returns>
     public T[] BatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
@@ -503,7 +499,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns><c>values</c>の値をそのまま返します。</returns>
     public async Task<T[]> BatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
@@ -553,453 +549,128 @@ public partial class McpX : Mcp
         }
     }
 
+    // ---------------------------------------------------------------
+    // ランダムアクセスの分割送信（ビルダーAPIの内部実装）
+    // ---------------------------------------------------------------
+
     /// <summary>
-    /// ランダムデバイス読み込み
+    /// ワード／ダブルワードのランダム読み出しを、点数上限ごとに分割して実行します。
     /// </summary>
-    /// <remarks>
-    /// 指定したデバイスの値をPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位で読み込むデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位で読み込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
-    public (T1[] wordValues, T2[] doubleValues) RandomRead<T1, T2>((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private (ushort[] words, uint[] doubleWords) RandomReadWords((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
-        {
-            T1[] wv = typeof(T1) == typeof(bool)
-                ? (T1[])(object)RandomReadBit(wordAddresses)
-                : RandomRead<T1, ushort>(wordAddresses, Array.Empty<(Prefix, string)>()).wordValues;
-            T2[] dv = typeof(T2) == typeof(bool)
-                ? (T2[])(object)RandomReadBit(doubleWordAddresses)
-                : RandomRead<ushort, T2>(Array.Empty<(Prefix, string)>(), doubleWordAddresses).doubleValues;
-            return (wv, dv);
-        }
+        var allWords = new List<ushort>();
+        var allDoubleWords = new List<uint>();
 
-        List<T1> allWordValues = new List<T1>();
-        List<T2> allDoubleValues = new List<T2>();
-
-        int maxWordLength = WordRandomReadCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
+        int maxWordLength = WordRandomReadCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
         int wordIndex = 0, doubleIndex = 0;
         while (wordIndex < wordAddresses.Length || doubleIndex < doubleWordAddresses.Length)
         {
             var wordBatch = wordAddresses.Skip(wordIndex).Take(maxWordLength).ToArray();
             var doubleBatch = doubleWordAddresses.Skip(doubleIndex).Take(maxWordLength - wordBatch.Length).ToArray();
 
-            if (wordBatch.Length + doubleBatch.Length == 0)
-                break;
+            var (words, doubleWords) = WordRandomRead<ushort, uint>(wordBatch, doubleBatch);
 
-            var (wordValues, doubleValues) = WordRandomRead<T1, T2>(wordBatch, doubleBatch);
-
-            allWordValues.AddRange(wordValues);
-            allDoubleValues.AddRange(doubleValues);
+            allWords.AddRange(words);
+            allDoubleWords.AddRange(doubleWords);
 
             wordIndex += wordBatch.Length;
             doubleIndex += doubleBatch.Length;
         }
 
-        return (allWordValues.ToArray(), allDoubleValues.ToArray());
+        return (allWords.ToArray(), allDoubleWords.ToArray());
     }
 
-    /// <summary>
-    /// ランダムデバイス読み込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定したデバイスの値を非同期でPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位で読み込むデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位で読み込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
-    public async Task<(T1[] wordValues, T2[] doubleValues)> RandomReadAsync<T1, T2>((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private async Task<(ushort[] words, uint[] doubleWords)> RandomReadWordsAsync((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
-        {
-            T1[] wv = typeof(T1) == typeof(bool)
-                ? (T1[])(object)await RandomReadBitAsync(wordAddresses)
-                : (await RandomReadAsync<T1, ushort>(wordAddresses, Array.Empty<(Prefix, string)>())).wordValues;
-            T2[] dv = typeof(T2) == typeof(bool)
-                ? (T2[])(object)await RandomReadBitAsync(doubleWordAddresses)
-                : (await RandomReadAsync<ushort, T2>(Array.Empty<(Prefix, string)>(), doubleWordAddresses)).doubleValues;
-            return (wv, dv);
-        }
+        var allWords = new List<ushort>();
+        var allDoubleWords = new List<uint>();
 
-        List<T1> allWordValues = new List<T1>();
-        List<T2> allDoubleValues = new List<T2>();
-
-        int maxWordLength = WordRandomReadCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
+        int maxWordLength = WordRandomReadCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
         int wordIndex = 0, doubleIndex = 0;
         while (wordIndex < wordAddresses.Length || doubleIndex < doubleWordAddresses.Length)
         {
             var wordBatch = wordAddresses.Skip(wordIndex).Take(maxWordLength).ToArray();
             var doubleBatch = doubleWordAddresses.Skip(doubleIndex).Take(maxWordLength - wordBatch.Length).ToArray();
 
-            if (wordBatch.Length + doubleBatch.Length == 0)
-                break;
+            var (words, doubleWords) = await WordRandomReadAsync<ushort, uint>(wordBatch, doubleBatch);
 
-            var (wordValues, doubleValues) = await WordRandomReadAsync<T1, T2>(wordBatch, doubleBatch);
-
-            allWordValues.AddRange(wordValues);
-            allDoubleValues.AddRange(doubleValues);
+            allWords.AddRange(words);
+            allDoubleWords.AddRange(doubleWords);
 
             wordIndex += wordBatch.Length;
             doubleIndex += doubleBatch.Length;
         }
 
-        return (allWordValues.ToArray(), allDoubleValues.ToArray());
+        return (allWords.ToArray(), allDoubleWords.ToArray());
     }
 
     /// <summary>
-    /// ランダムデバイス書き込み
+    /// ワード／ダブルワードのランダム書き込みを、点数上限ごとに分割して実行します。
     /// </summary>
-    /// <remarks>
-    /// 指定したデバイスに対し、値をPLCへ書き込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordDevices">
-    /// 16ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <param name="doubleWordDevices">
-    /// 32ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
-    public void RandomWrite<T1, T2>(
-        (Prefix prefix, string address, T1 value)[] wordDevices,
-        (Prefix prefix, string address, T2 value)[] doubleWordDevices)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private void RandomWriteWords((Prefix prefix, string address, ushort value)[] wordDevices, (Prefix prefix, string address, uint value)[] doubleWordDevices)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
+        foreach (var (wordBatch, doubleWordBatch) in SplitRandomWrite(wordDevices, doubleWordDevices))
         {
-            if (typeof(T1) == typeof(bool))
-                RandomWriteBit(wordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                RandomWrite<T1, ushort>(wordDevices, Array.Empty<(Prefix, string, ushort)>());
-
-            if (typeof(T2) == typeof(bool))
-                RandomWriteBit(doubleWordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                RandomWrite<ushort, T2>(Array.Empty<(Prefix, string, ushort)>(), doubleWordDevices);
-
-            return;
-        }
-
-        int maxSize = WordRandomWriteCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
-        int wordSize = WordRandomWriteCommand<T1, T2>.WORD_SIZE;
-        int doubleWordSize = WordRandomWriteCommand<T1, T2>.DOUBLE_WORD_SIZE;
-
-        List<(Prefix prefix, string address, T1 value)> wordList = wordDevices.ToList();
-        List<(Prefix prefix, string address, T2 value)> doubleWordList = doubleWordDevices.ToList();
-
-        while (wordList.Count > 0 || doubleWordList.Count > 0)
-        {
-            List<(Prefix prefix, string address, T1 value)> wordBatch = new();
-            List<(Prefix prefix, string address, T2 value)> doubleWordBatch = new();
-
-            int batchSize = 0;
-
-            while (wordList.Count > 0)
-            {
-                var item = wordList[0];
-                if (batchSize + wordSize > maxSize) break;
-                wordBatch.Add(item);
-                wordList.RemoveAt(0);
-                batchSize += wordSize;
-            }
-
-            while (doubleWordList.Count > 0)
-            {
-                var item = doubleWordList[0];
-                if (batchSize + doubleWordSize > maxSize) break;
-                doubleWordBatch.Add(item);
-                doubleWordList.RemoveAt(0);
-                batchSize += doubleWordSize;
-            }
-
-            if (wordBatch.Count > 0 || doubleWordBatch.Count > 0)
-            {
-                WordRandomWrite(wordBatch.ToArray(), doubleWordBatch.ToArray());
-            }
+            WordRandomWrite(wordBatch, doubleWordBatch);
         }
     }
 
-    /// <summary>
-    /// ランダムデバイス書き込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定したデバイスに対し、値を非同期でPLCへ書き込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordDevices">
-    /// 16ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <param name="doubleWordDevices">
-    /// 32ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
-    public async Task RandomWriteAsync<T1, T2>(
-        (Prefix prefix, string address, T1 value)[] wordDevices,
-        (Prefix prefix, string address, T2 value)[] doubleWordDevices)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private async Task RandomWriteWordsAsync((Prefix prefix, string address, ushort value)[] wordDevices, (Prefix prefix, string address, uint value)[] doubleWordDevices)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
+        foreach (var (wordBatch, doubleWordBatch) in SplitRandomWrite(wordDevices, doubleWordDevices))
         {
-            if (typeof(T1) == typeof(bool))
-                await RandomWriteBitAsync(wordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                await RandomWriteAsync<T1, ushort>(wordDevices, Array.Empty<(Prefix, string, ushort)>());
-
-            if (typeof(T2) == typeof(bool))
-                await RandomWriteBitAsync(doubleWordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                await RandomWriteAsync<ushort, T2>(Array.Empty<(Prefix, string, ushort)>(), doubleWordDevices);
-
-            return;
-        }
-
-        int maxSize = WordRandomWriteCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
-        int wordSize = WordRandomWriteCommand<T1, T2>.WORD_SIZE;
-        int doubleWordSize = WordRandomWriteCommand<T1, T2>.DOUBLE_WORD_SIZE;
-
-        List<(Prefix prefix, string address, T1 value)> wordList = wordDevices.ToList();
-        List<(Prefix prefix, string address, T2 value)> doubleWordList = doubleWordDevices.ToList();
-
-        while (wordList.Count > 0 || doubleWordList.Count > 0)
-        {
-            List<(Prefix prefix, string address, T1 value)> wordBatch = new();
-            List<(Prefix prefix, string address, T2 value)> doubleWordBatch = new();
-
-            int batchSize = 0;
-
-            while (wordList.Count > 0)
-            {
-                var item = wordList[0];
-                if (batchSize + wordSize > maxSize) break;
-                wordBatch.Add(item);
-                wordList.RemoveAt(0);
-                batchSize += wordSize;
-            }
-
-            while (doubleWordList.Count > 0)
-            {
-                var item = doubleWordList[0];
-                if (batchSize + doubleWordSize > maxSize) break;
-                doubleWordBatch.Add(item);
-                doubleWordList.RemoveAt(0);
-                batchSize += doubleWordSize;
-            }
-
-            if (wordBatch.Count > 0 || doubleWordBatch.Count > 0)
-            {
-                await WordRandomWriteAsync(wordBatch.ToArray(), doubleWordBatch.ToArray());
-            }
+            await WordRandomWriteAsync(wordBatch, doubleWordBatch);
         }
     }
 
     /// <summary>
-    /// ランダムビットデバイス読み込み
+    /// ランダム書き込みの対象を、1回の要求に収まる点数ごとに分割します（ワードを先に詰め、残りにダブルワードを詰める）。
     /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスのON/OFFをPLCから読み込みます。<br/>
-    /// MCプロトコルにはビット単位のランダム読み出しコマンドが存在しないため、内部的には各ビットデバイスを
-    /// ワードアクセス（16点単位）で読み出し、先頭ビット(bit0)を抽出して返します。
-    /// </remarks>
-    /// <param name="bitAddresses">
-    /// 読み込み対象のビットデバイスアドレスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>PLCから読み込んだ各ビットデバイスのON(<c>true</c>)/OFF(<c>false</c>)を配列で返します。</returns>
-    [Obsolete("Use RandomRead(b => b.Add<bool>(prefix, address, ...)) builder overload instead.")]
-    public bool[] RandomReadBit((Prefix prefix, string address)[] bitAddresses)
+    private List<((Prefix prefix, string address, ushort value)[] words, (Prefix prefix, string address, uint value)[] doubleWords)> SplitRandomWrite(
+        (Prefix prefix, string address, ushort value)[] wordDevices,
+        (Prefix prefix, string address, uint value)[] doubleWordDevices)
     {
-        var result = new List<bool>();
+        int maxSize = WordRandomWriteCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
+        int wordSize = WordRandomWriteCommand<ushort, uint>.WORD_SIZE;
+        int doubleWordSize = WordRandomWriteCommand<ushort, uint>.DOUBLE_WORD_SIZE;
 
-        int maxWordLength = WordRandomReadCommand<ushort, ushort>.GetMaxWordLength(ProcessorSeries);
-        for (int i = 0; i < bitAddresses.Length; i += maxWordLength)
+        var batches = new List<((Prefix, string, ushort)[], (Prefix, string, uint)[])>();
+        int wordIndex = 0, doubleIndex = 0;
+        while (wordIndex < wordDevices.Length || doubleIndex < doubleWordDevices.Length)
         {
-            var chunk = bitAddresses.Skip(i).Take(maxWordLength).ToArray();
-            var (words, _) = WordRandomRead<ushort, ushort>(chunk, Array.Empty<(Prefix, string)>());
-            result.AddRange(words.Select(w => (w & 0x0001) != 0));
+            int wordCount = Math.Min(wordDevices.Length - wordIndex, maxSize / wordSize);
+            int doubleCount = Math.Min(doubleWordDevices.Length - doubleIndex, (maxSize - wordCount * wordSize) / doubleWordSize);
+
+            batches.Add((
+                wordDevices.Skip(wordIndex).Take(wordCount).ToArray(),
+                doubleWordDevices.Skip(doubleIndex).Take(doubleCount).ToArray()
+            ));
+
+            wordIndex += wordCount;
+            doubleIndex += doubleCount;
         }
 
-        return result.ToArray();
+        return batches;
     }
 
     /// <summary>
-    /// ランダムビットデバイス読み込み（非同期）
+    /// ビット単位のランダム書き込み（コマンド:1402 / サブコマンド:0001）を、点数上限ごとに分割して実行します。
     /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスのON/OFFを非同期でPLCから読み込みます。<br/>
-    /// MCプロトコルにはビット単位のランダム読み出しコマンドが存在しないため、内部的には各ビットデバイスを
-    /// ワードアクセス（16点単位）で読み出し、先頭ビット(bit0)を抽出して返します。
-    /// </remarks>
-    /// <param name="bitAddresses">
-    /// 読み込み対象のビットデバイスアドレスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>PLCから読み込んだ各ビットデバイスのON(<c>true</c>)/OFF(<c>false</c>)を配列で返します。</returns>
-    [Obsolete("Use RandomReadAsync(b => b.Add<bool>(prefix, address, ...)) builder overload instead.")]
-    public async Task<bool[]> RandomReadBitAsync((Prefix prefix, string address)[] bitAddresses)
-    {
-        var result = new List<bool>();
-
-        int maxWordLength = WordRandomReadCommand<ushort, ushort>.GetMaxWordLength(ProcessorSeries);
-        for (int i = 0; i < bitAddresses.Length; i += maxWordLength)
-        {
-            var chunk = bitAddresses.Skip(i).Take(maxWordLength).ToArray();
-            var (words, _) = await WordRandomReadAsync<ushort, ushort>(chunk, Array.Empty<(Prefix, string)>());
-            result.AddRange(words.Select(w => (w & 0x0001) != 0));
-        }
-
-        return result.ToArray();
-    }
-
-    /// <summary>
-    /// ランダムビットデバイス書き込み
-    /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスに対し、ON/OFFをビット単位でPLCへ書き込みます。<br/>
-    /// MCプロトコルのビット単位ランダム書き込み（コマンド:1402 / サブコマンド:0001）を使用します。
-    /// </remarks>
-    /// <param name="bitDevices">
-    /// 書き込み対象のビットデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込むON(<c>true</c>)/OFF(<c>false</c>)を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use RandomWrite(b => b.Add<bool>(prefix, address, value)) builder overload instead.")]
-    public void RandomWriteBit((Prefix prefix, string address, bool value)[] bitDevices)
+    private void RandomWriteBits((Prefix prefix, string address, bool value)[] bitDevices)
     {
         int maxBitLength = BitRandomWriteCommand.GetMaxBitLength(ProcessorSeries);
         for (int i = 0; i < bitDevices.Length; i += maxBitLength)
         {
-            var chunk = bitDevices.Skip(i).Take(maxBitLength).ToArray();
-            BitRandomWrite(chunk);
+            BitRandomWrite(bitDevices.Skip(i).Take(maxBitLength).ToArray());
         }
     }
 
-    /// <summary>
-    /// ランダムビットデバイス書き込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスに対し、ON/OFFをビット単位で非同期でPLCへ書き込みます。<br/>
-    /// MCプロトコルのビット単位ランダム書き込み（コマンド:1402 / サブコマンド:0001）を使用します。
-    /// </remarks>
-    /// <param name="bitDevices">
-    /// 書き込み対象のビットデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込むON(<c>true</c>)/OFF(<c>false</c>)を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use RandomWriteAsync(b => b.Add<bool>(prefix, address, value)) builder overload instead.")]
-    public async Task RandomWriteBitAsync((Prefix prefix, string address, bool value)[] bitDevices)
+    private async Task RandomWriteBitsAsync((Prefix prefix, string address, bool value)[] bitDevices)
     {
         int maxBitLength = BitRandomWriteCommand.GetMaxBitLength(ProcessorSeries);
         for (int i = 0; i < bitDevices.Length; i += maxBitLength)
         {
-            var chunk = bitDevices.Skip(i).Take(maxBitLength).ToArray();
-            await BitRandomWriteAsync(chunk);
+            await BitRandomWriteAsync(bitDevices.Skip(i).Take(maxBitLength).ToArray());
         }
     }
 
@@ -1014,7 +685,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RandomRead(Action<RandomReadBuilder> build)
     {
@@ -1033,7 +704,7 @@ public partial class McpX : Mcp
             return;
         }
 
-        var (rawWords, rawDoubleWords) = RandomRead<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = RandomReadWords(wordAddresses, doubleWordAddresses);
 
         for (int i = 0; i < builder.wordEntries.Count; i++)
         {
@@ -1056,7 +727,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task RandomReadAsync(Action<RandomReadBuilder> build)
     {
@@ -1075,7 +746,7 @@ public partial class McpX : Mcp
             return;
         }
 
-        var (rawWords, rawDoubleWords) = await RandomReadAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = await RandomReadWordsAsync(wordAddresses, doubleWordAddresses);
 
         for (int i = 0; i < builder.wordEntries.Count; i++)
         {
@@ -1099,7 +770,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RandomWrite(Action<RandomWriteBuilder> build)
     {
@@ -1112,12 +783,12 @@ public partial class McpX : Mcp
     {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
-            RandomWrite<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
+            RandomWriteWords(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
         }
 
         if (builder.bitDevices.Count > 0)
         {
-            RandomWriteBit(builder.bitDevices.ToArray());
+            RandomWriteBits(builder.bitDevices.ToArray());
         }
     }
 
@@ -1131,7 +802,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task RandomWriteAsync(Action<RandomWriteBuilder> build)
     {
@@ -1144,12 +815,12 @@ public partial class McpX : Mcp
     {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
-            await RandomWriteAsync<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
+            await RandomWriteWordsAsync(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
         }
 
         if (builder.bitDevices.Count > 0)
         {
-            await RandomWriteBitAsync(builder.bitDevices.ToArray());
+            await RandomWriteBitsAsync(builder.bitDevices.ToArray());
         }
     }
 
@@ -1167,10 +838,10 @@ public partial class McpX : Mcp
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
-    public MonitorSession MonitorRegist(Action<MonitorBuilder> build)
+    public MonitorSession MonitorRegister(Action<MonitorBuilder> build)
     {
         var builder = new MonitorBuilder();
         build(builder);
@@ -1195,10 +866,10 @@ public partial class McpX : Mcp
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
-    public async Task<MonitorSession> MonitorRegistAsync(Action<MonitorBuilder> build)
+    public async Task<MonitorSession> MonitorRegisterAsync(Action<MonitorBuilder> build)
     {
         var builder = new MonitorBuilder();
         build(builder);
@@ -1226,7 +897,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void Read(Action<ReadBuilder> build)
     {
@@ -1260,7 +931,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task ReadAsync(Action<ReadBuilder> build)
     {
@@ -1297,7 +968,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void Write(Action<WriteBuilder> build)
     {
@@ -1330,7 +1001,7 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task WriteAsync(Action<WriteBuilder> build)
     {
@@ -1363,7 +1034,7 @@ public partial class McpX : Mcp
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="length">読み込みデバイス点数を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public string ReadString(Prefix prefix, string address, ushort length)
@@ -1383,7 +1054,7 @@ public partial class McpX : Mcp
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="length">読み込みデバイス点数を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public async Task<string> ReadStringAsync(Prefix prefix, string address, ushort length)
@@ -1403,7 +1074,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void WriteString(Prefix prefix, string address, string value)
     {
@@ -1420,7 +1091,7 @@ public partial class McpX : Mcp
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task WriteStringAsync(Prefix prefix, string address, string value)
     {

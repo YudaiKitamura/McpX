@@ -255,7 +255,7 @@ public abstract class PlcIntegrationTestBase
         using var mcpx = Connect();
 
         short ms = 0; int mi = 0; bool mbit = false;
-        var session = mcpx.MonitorRegist(b => b
+        var session = mcpx.MonitorRegister(b => b
             .Add<short>(Prefix.D, "180", v => ms = v)
             .Add<int>(Prefix.D, "182", v => mi = v)
             .Add<bool>(Prefix.M, "160", v => mbit = v));

@@ -94,7 +94,7 @@ internal sealed class MultiBlockReadCommand : IPlcCommand<ushort[][]>
         {
             if (index + block.Points > words.Length)
             {
-                throw new Exceptions.RecivePacketException("Received packet had an invalid content.");
+                throw new Exceptions.ReceivePacketException("Received packet had an invalid content.");
             }
             result[block] = words.Skip(index).Take(block.Points).ToArray();
             index += block.Points;

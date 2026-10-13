@@ -148,7 +148,7 @@ internal static unsafe class BuilderDispatch
         }
     }
 
-    // ---- モニタ登録（MonitorRegist）。SINGLE のみ ----
+    // ---- モニタ登録（MonitorRegister）。SINGLE のみ ----
 
     /// <summary>
     /// モニタ登録します。読み出した値はセッションの作業領域（scratch の offset から型のサイズ分）に書き込まれます。

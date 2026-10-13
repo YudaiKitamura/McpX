@@ -53,7 +53,7 @@ public class TestTcpPlcTransport
         return (port, cts);
     }
 
-    private (int Port, CancellationTokenSource Cts) StartReciveTimeoutEchoServer()
+    private (int Port, CancellationTokenSource Cts) StartReceiveTimeoutEchoServer()
     {
         var listener = new TcpListener(IPAddress.Loopback, 0);
         listener.Start();
@@ -160,7 +160,7 @@ public class TestTcpPlcTransport
     [TestMethod]
     public void TestException()
     {
-        var (port, cts) = StartReciveTimeoutEchoServer();
+        var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = Assert.ThrowsException<TimeoutException>(() => {
             using var plc = new TestPlc("127.0.0.1", port);
@@ -199,7 +199,7 @@ public class TestTcpPlcTransport
     [TestMethod]
     public async Task TestExceptionAsync()
     {
-        var (port, cts) = StartReciveTimeoutEchoServer();
+        var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             using var plc = new TestPlc("127.0.0.1", port);

@@ -21,7 +21,7 @@ public partial class McpX
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
     /// <param name="clearMode">RUN時にクリアするデバイスメモリの範囲を指定します。（デフォルトは、クリアしない:<c>RemoteRunClearMode.None</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RemoteRun(bool force = false, RemoteRunClearMode clearMode = RemoteRunClearMode.None)
         => RemoteOperation(timer => RemoteOperationCommand.Run(force, clearMode, timer));
@@ -34,7 +34,7 @@ public partial class McpX
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
     /// <param name="clearMode">RUN時にクリアするデバイスメモリの範囲を指定します。（デフォルトは、クリアしない:<c>RemoteRunClearMode.None</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public Task RemoteRunAsync(bool force = false, RemoteRunClearMode clearMode = RemoteRunClearMode.None)
         => RemoteOperationAsync(timer => RemoteOperationCommand.Run(force, clearMode, timer));
@@ -45,7 +45,7 @@ public partial class McpX
     /// <remarks>
     /// 接続先のCPUユニットをSTOP状態にします（コマンド: 1002）。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RemoteStop()
         => RemoteOperation(timer => RemoteOperationCommand.Stop(timer));
@@ -56,7 +56,7 @@ public partial class McpX
     /// <remarks>
     /// 接続先のCPUユニットをSTOP状態にします（コマンド: 1002）。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public Task RemoteStopAsync()
         => RemoteOperationAsync(timer => RemoteOperationCommand.Stop(timer));
@@ -69,7 +69,7 @@ public partial class McpX
     /// CPUユニットのスイッチがRUNの場合に実行できます。スイッチがSTOPの場合、コマンドは正常完了しますがPAUSE状態になりません。
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RemotePause(bool force = false)
         => RemoteOperation(timer => RemoteOperationCommand.Pause(force, timer));
@@ -81,7 +81,7 @@ public partial class McpX
     /// 詳細は <see cref="RemotePause(bool)"/> を参照してください。
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public Task RemotePauseAsync(bool force = false)
         => RemoteOperationAsync(timer => RemoteOperationCommand.Pause(force, timer));
@@ -93,7 +93,7 @@ public partial class McpX
     /// 接続先のCPUユニットに対してラッチクリアを実行します（コマンド: 1005）。ラッチ範囲のデバイスもクリアされます。<br/>
     /// CPUユニットをSTOP状態にしてから実行してください。他の外部機器からリモートSTOP/PAUSE中の場合は、エラーになります。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void RemoteLatchClear()
         => RemoteOperation(timer => RemoteOperationCommand.LatchClear(timer));
@@ -104,7 +104,7 @@ public partial class McpX
     /// <remarks>
     /// 詳細は <see cref="RemoteLatchClear()"/> を参照してください。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public Task RemoteLatchClearAsync()
         => RemoteOperationAsync(timer => RemoteOperationCommand.LatchClear(timer));
@@ -123,7 +123,7 @@ public partial class McpX
     /// <param name="reconnectTimeoutMilliseconds">
     /// リセット後に接続し直すまでの最大待ち時間（ミリ秒）を指定します。<c>0</c>を指定した場合は、接続し直しません。（デフォルトは、30秒です。）
     /// </param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートRESETが許可されていない場合など）に例外をスローします。</exception>
     /// <exception cref="TimeoutException">待ち時間内に接続し直せなかった場合に例外をスローします。</exception>
     public void RemoteReset(int reconnectTimeoutMilliseconds = DEFAULT_RECONNECT_TIMEOUT)
@@ -171,7 +171,7 @@ public partial class McpX
     /// <param name="reconnectTimeoutMilliseconds">
     /// リセット後に接続し直すまでの最大待ち時間（ミリ秒）を指定します。<c>0</c>を指定した場合は、接続し直しません。（デフォルトは、30秒です。）
     /// </param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートRESETが許可されていない場合など）に例外をスローします。</exception>
     /// <exception cref="TimeoutException">待ち時間内に接続し直せなかった場合に例外をスローします。</exception>
     public async Task RemoteResetAsync(int reconnectTimeoutMilliseconds = DEFAULT_RECONNECT_TIMEOUT)

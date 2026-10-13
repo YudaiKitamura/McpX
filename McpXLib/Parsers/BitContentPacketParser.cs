@@ -1,5 +1,5 @@
 using System.Text;
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 
@@ -26,7 +26,7 @@ internal class BitContentPacketParser : BaseContentPacketParser
 
         if (bytes.Length != length) 
         {
-            throw new RecivePacketException("Received packet had an invalid content.");
+            throw new ReceivePacketException("Received packet had an invalid content.");
         }
     }
 

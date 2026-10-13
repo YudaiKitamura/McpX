@@ -93,7 +93,7 @@ public sealed class TestRemoteOperationCommand
     public async Task TestResetIgnoresDisconnect()
     {
         // リセットによる切断・タイムアウトは例外にしない
-        foreach (Exception error in new Exception[] { new IOException("Connection closed unexpectedly"), new TimeoutException("Recive Timeout"), new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.TimedOut) })
+        foreach (Exception error in new Exception[] { new IOException("Connection closed unexpectedly"), new TimeoutException("Receive Timeout"), new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.TimedOut) })
         {
             using var mcpx = new McpX(new StubTransport(() => throw error));
             mcpx.RemoteReset();

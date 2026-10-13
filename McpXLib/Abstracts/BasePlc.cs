@@ -1,6 +1,6 @@
 using McpXLib.Interfaces;
 
-namespace McpXLib.Abstructs;
+namespace McpXLib.Abstracts;
 
 /// <summary>
 /// PLC通信抽象クラス

@@ -1,5 +1,5 @@
 using McpXLib.Enums;
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Commands;
 using McpXLib.Builders;
 using McpXLib.Interfaces;
@@ -429,56 +429,6 @@ public class Mcp : BasePlc, IPlc
     }
 
     /// <summary>
-    /// デバイスモニター登録（非同期）
-    /// </summary>
-    /// <remarks>
-    /// モニターするデバイスを非同期でPLCに登録します。
-    /// </remarks>
-    /// <param name="wordAddresses">
-    /// 16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位でモニターするデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="ArgumentException">モニター登録のデバイス範囲を超過した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task MonitorRegistAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
-    {
-        await RegisterMonitorAsync(wordAddresses, doubleWordAddresses);
-    }
-
-    /// <summary>
-    /// デバイスモニター登録
-    /// </summary>
-    /// <remarks>
-    /// モニターするデバイスをPLCに登録します。
-    /// </remarks>
-    /// <param name="wordAddresses">
-    /// 16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位でモニターするデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="ArgumentException">モニター登録のデバイス範囲を超過した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public void MonitorRegist((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
-    {
-        RegisterMonitor(wordAddresses, doubleWordAddresses);
-    }
-
-    /// <summary>
     /// モニタ登録を行い、登録後の世代を返します。
     /// </summary>
     internal int RegisterMonitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
@@ -527,7 +477,7 @@ public class Mcp : BasePlc, IPlc
         try
         {
             ThrowIfStaleMonitor(generation);
-            return Monitor<ushort, uint>(wordAddresses, doubleWordAddresses);
+            return Monitor(wordAddresses, doubleWordAddresses);
         }
         finally
         {
@@ -541,7 +491,7 @@ public class Mcp : BasePlc, IPlc
         try
         {
             ThrowIfStaleMonitor(generation);
-            return await MonitorAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
+            return await MonitorAsync(wordAddresses, doubleWordAddresses);
         }
         finally
         {
@@ -554,93 +504,23 @@ public class Mcp : BasePlc, IPlc
         if (generation != monitorGeneration)
         {
             throw new InvalidOperationException(
-                "This MonitorSession is no longer valid because the monitor registration was replaced by another MonitorRegist call."
+                "This MonitorSession is no longer valid because the monitor registration was replaced by another MonitorRegister call."
             );
         }
     }
 
-    /// <summary>
-    /// デバイスモニター（非同期）
-    /// </summary>
-    /// <remarks>
-    /// モニター登録したデバイスの値を非同期でPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位でモニターするデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="ArgumentException">モニター登録のデバイス範囲を超過した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    public async Task<(T1[] wordValues, T2[] doubleValues)> MonitorAsync<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        return await new PlcCommandHandler<(T1[], T2[])>().ExecuteAsync(
-            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
+        return await new PlcCommandHandler<(ushort[], uint[])>().ExecuteAsync(
+            new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
             this
         );
     }
 
-    /// <summary>
-    /// デバイスモニター
-    /// </summary>
-    /// <remarks>
-    /// モニター登録したデバイスの値をPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位でモニターするデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位でモニターするデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:モニター対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:モニター対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="ArgumentException">モニター登録のデバイス範囲を超過した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    public (T1[] wordValues, T2[] doubleValues) Monitor<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private (ushort[] wordValues, uint[] doubleValues) Monitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
-        return new PlcCommandHandler<(T1[], T2[])>().Execute(
-            new MonitorCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
+        return new PlcCommandHandler<(ushort[], uint[])>().Execute(
+            new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries),
             this
         );
     }

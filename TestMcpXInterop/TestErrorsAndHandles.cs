@@ -57,7 +57,7 @@ public sealed unsafe class TestErrorsAndHandles
             (new InvalidOperationException("x"), McpxStatus.InvalidOperation, 0),
             (new ArgumentException("x"), McpxStatus.InvalidArgument, 0),
             (new NotSupportedException("x"), McpxStatus.Unsupported, 0),
-            (new McpXLib.Exceptions.RecivePacketException("x"), McpxStatus.ReceivePacket, 0),
+            (new McpXLib.Exceptions.ReceivePacketException("x"), McpxStatus.ReceivePacket, 0),
             (new FormatException("x"), McpxStatus.Internal, 0),
         ];
 

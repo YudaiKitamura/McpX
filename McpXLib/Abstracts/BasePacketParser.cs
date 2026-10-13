@@ -2,7 +2,7 @@ using System.Text;
 using McpXLib.Interfaces;
 using McpXLib.Utils;
 
-namespace McpXLib.Abstructs;
+namespace McpXLib.Abstracts;
 
 internal abstract class BasePacketParser : IPacketParser
 {

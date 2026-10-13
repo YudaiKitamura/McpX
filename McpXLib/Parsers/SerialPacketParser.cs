@@ -1,4 +1,4 @@
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 
@@ -23,7 +23,7 @@ internal class SerialPacketParser : BasePacketParser, IPacketParser
     {
         if (BitConverter.ToUInt16(bytes, 0) != serialNumber) 
         {
-            throw new RecivePacketException("Received packet had an invalid serial number.");
+            throw new ReceivePacketException("Received packet had an invalid serial number.");
         }
     }
 }

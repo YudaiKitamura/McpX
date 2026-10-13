@@ -42,7 +42,7 @@ public sealed class McpXSimulator : McpX
     /// 統合アクセスで、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。詳細は <see cref="McpX.UseMultiBlockAccess"/> を参照してください。）
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">システムNo.または号機No.が範囲外の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public McpXSimulator(
         int systemNo = 1,

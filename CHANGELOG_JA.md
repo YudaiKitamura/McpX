@@ -1,3 +1,15 @@
+## [Unreleased]
+### Changed
+- **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
+- **破壊的変更：** `RecivePacketException` を `ReceivePacketException` に名前変更。
+- **破壊的変更：** 名前空間 `McpXLib.Abstructs` を `McpXLib.Abstracts` に名前変更。
+
+### Removed
+- **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。
+- **破壊的変更：** 非推奨のランダムアクセスメソッド `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` とその非同期版を削除。`RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)` を使用してください。
+- **破壊的変更：** タプル形式のモニタメソッド `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` とその非同期版を削除。`MonitorRegister(Action<MonitorBuilder>)` と、戻り値の `MonitorSession` を使用してください。
+- **破壊的変更：** 使用されていない `PlcDuplicationException` を削除。
+
 ## [0.13.0] - 2026-10-10
 ### Added
 - 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、統合・ランダムアクセス（`mcpx_read_items` / `mcpx_write_items`）、複数ブロック一括読み書き（`mcpx_block_read` / `mcpx_block_write`）、Shift_JIS の文字列（`mcpx_read_string` / `mcpx_write_string`）、モニタ（`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`）、リモート操作（`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`）、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。

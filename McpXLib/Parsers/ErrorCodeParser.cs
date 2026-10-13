@@ -1,4 +1,4 @@
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 

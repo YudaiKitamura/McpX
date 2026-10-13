@@ -40,7 +40,7 @@ public class TestUdpPlcTransport
         return (port, cts);
     }
 
-    private (int Port, CancellationTokenSource Cts) StartReciveTimeoutEchoServer()
+    private (int Port, CancellationTokenSource Cts) StartReceiveTimeoutEchoServer()
     {
         var udpClient = new UdpClient(0);
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
@@ -171,7 +171,7 @@ public class TestUdpPlcTransport
     [TestMethod]
     public void TestException()
     {
-        var (port, cts) = StartReciveTimeoutEchoServer();
+        var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = Assert.ThrowsException<TimeoutException>(() => {
             using var plc = new TestPlc("127.0.0.1", port);
@@ -212,7 +212,7 @@ public class TestUdpPlcTransport
     [TestMethod]
     public async Task TestExceptionAsync()
     {
-        var (port, cts) = StartReciveTimeoutEchoServer();
+        var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             using var plc = new TestPlc("127.0.0.1", port);

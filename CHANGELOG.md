@@ -1,3 +1,15 @@
+## [Unreleased]
+### Changed
+- **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
+- **Breaking:** Renamed `RecivePacketException` to `ReceivePacketException`.
+- **Breaking:** Renamed the namespace `McpXLib.Abstructs` to `McpXLib.Abstracts`.
+
+### Removed
+- **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.
+- **Breaking:** Removed the obsolete random access methods `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` and their async versions. Use `RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)`.
+- **Breaking:** Removed the tuple-based monitor methods `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` and their async versions. Use `MonitorRegister(Action<MonitorBuilder>)` and the returned `MonitorSession`.
+- **Breaking:** Removed the unused `PlcDuplicationException`.
+
 ## [0.13.0] - 2026-10-10
 ### Added
 - Added a new native library with a stable C ABI (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`, header `McpXInterop/include/mcpx.h`): `mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`, `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write` for all value types, combined / random access (`mcpx_read_items` / `mcpx_write_items`), multiple block access (`mcpx_block_read` / `mcpx_block_write`), Shift_JIS strings (`mcpx_read_string` / `mcpx_write_string`), monitor sessions (`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`), remote operations (`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`) and library information. Every function returns a status code and reports details (message, PLC end code, socket error) through `mcpx_error`.
