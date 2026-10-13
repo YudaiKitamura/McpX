@@ -1,3 +1,4 @@
+using McpXLib.Exceptions;
 using System.Net;
 using System.Net.Sockets;
 using Bogus;
@@ -106,12 +107,6 @@ public class TestUdpPlcTransport
         return (port, cts);
     }
 
-    private class TestPlc : UdpPlcTransport
-    {
-        public TestPlc(string ip, int port) : base(ip, port, 5000) { }
-        public TestPlc(string ip, int port, ushort timeout) : base(ip, port, timeout) { }
-    }
-
     private class DummyReceiveLengthParser : IReceiveLengthParser
     {
         ushort headerLength;
@@ -138,7 +133,7 @@ public class TestUdpPlcTransport
     public void TestRequest()
     {   
         var (port, cts) = StartEchoServer();
-        using var plc = new TestPlc("127.0.0.1", port);
+        using var plc = UdpPlcTransport.Create("127.0.0.1", port, 5000);
 
         ushort contentLength = faker.Random.UShort(min: 100, max: 1024); // 上限値は送信バッファのサイズに合わせる必要がある　var buffer = new byte[1024]
         byte[] headerBytes = faker.Random.Bytes(7);
@@ -155,7 +150,7 @@ public class TestUdpPlcTransport
     public async Task TestRequestAsync()
     {
         var (port, cts) = StartEchoServer();
-        using var plc = new TestPlc("127.0.0.1", port);
+        using var plc = UdpPlcTransport.Create("127.0.0.1", port, 5000);
 
         ushort contentLength = faker.Random.UShort(min: 100, max: 1024); // 上限値は送信バッファのサイズに合わせる必要がある　var buffer = new byte[1024]
         byte[] headerBytes = faker.Random.Bytes(7);
@@ -163,7 +158,7 @@ public class TestUdpPlcTransport
         byte[] contentBytes = faker.Random.Bytes(contentLength);
 
         byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-        CollectionAssert.AreEqual(sendData, await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength)));
+        CollectionAssert.AreEqual(sendData, await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None));
 
         cts.Cancel();
     }
@@ -174,7 +169,7 @@ public class TestUdpPlcTransport
         var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = Assert.ThrowsException<TimeoutException>(() => {
-            using var plc = new TestPlc("127.0.0.1", port);
+            using var plc = UdpPlcTransport.Create("127.0.0.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -193,7 +188,7 @@ public class TestUdpPlcTransport
 
         var ex2 = Assert.ThrowsException<TimeoutException>(() => {
             // 実在しない、テスト用IPアドレス
-            using var plc = new TestPlc("192.0.2.1", port);
+            using var plc = UdpPlcTransport.Create("192.0.2.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -215,7 +210,7 @@ public class TestUdpPlcTransport
         var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
-            using var plc = new TestPlc("127.0.0.1", port);
+            using var plc = UdpPlcTransport.Create("127.0.0.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -223,7 +218,7 @@ public class TestUdpPlcTransport
             byte[] contentBytes = faker.Random.Bytes(contentLength);
 
             byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
+            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None);
         });
 
         Assert.IsInstanceOfType<TimeoutException>(ex);
@@ -232,7 +227,7 @@ public class TestUdpPlcTransport
 
         var ex2 = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             // 実在しない、テスト用IPアドレス
-            using var plc = new TestPlc("192.0.2.1", port);;
+            using var plc = UdpPlcTransport.Create("192.0.2.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -240,7 +235,7 @@ public class TestUdpPlcTransport
             byte[] contentBytes = faker.Random.Bytes(contentLength);
 
             byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
+            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None);
         });
         
         Assert.IsInstanceOfType<TimeoutException>(ex2);
@@ -254,15 +249,29 @@ public class TestUdpPlcTransport
     public async Task TestRequestAsyncAfterTimeout()
     {
         var (port, cts) = StartSkipFirstEchoServer();
-        using var plc = new TestPlc("127.0.0.1", port, 500);
-        var parser = new DummyReceiveLengthParser(0, 0);
+        using var plc = UdpPlcTransport.Create("127.0.0.1", port, 500);
+        var parser = new DummyReceiveLengthParser(0, 16);
 
         byte[] firstData = faker.Random.Bytes(16);
-        await Assert.ThrowsExceptionAsync<TimeoutException>(async () => await plc.RequestAsync(firstData, parser));
+        await Assert.ThrowsExceptionAsync<TimeoutException>(async () => await plc.RequestAsync(firstData, parser, CancellationToken.None));
 
         // タイムアウトした受信が次の応答を横取りしないこと
         byte[] secondData = faker.Random.Bytes(16);
-        CollectionAssert.AreEqual(secondData, await plc.RequestAsync(secondData, parser));
+        CollectionAssert.AreEqual(secondData, await plc.RequestAsync(secondData, parser, CancellationToken.None));
+
+        cts.Cancel();
+    }
+
+    [TestMethod]
+    public async Task TestRequestLengthMismatch()
+    {
+        var (port, cts) = StartEchoServer();
+        using var plc = UdpPlcTransport.Create("127.0.0.1", port, 5000);
+
+        // ヘッダに書かれた応答データ長とデータグラムの長さが一致しない場合は ReceivePacketException
+        byte[] data = faker.Random.Bytes(16);
+        Assert.ThrowsException<ReceivePacketException>(() => plc.Request(data, new DummyReceiveLengthParser(0, 8)));
+        await Assert.ThrowsExceptionAsync<ReceivePacketException>(() => plc.RequestAsync(data, new DummyReceiveLengthParser(0, 32), CancellationToken.None));
 
         cts.Cancel();
     }

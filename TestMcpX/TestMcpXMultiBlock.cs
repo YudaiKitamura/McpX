@@ -356,7 +356,7 @@ public sealed class TestMcpXMultiBlock
             return [0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, .. BitConverter.GetBytes((ushort)(content.Length + 2)), .. BitConverter.GetBytes(endCode), .. content];
         }
 
-        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
             => Task.FromResult(Request(packet, receiveLengthParser));
 
         [Obsolete]

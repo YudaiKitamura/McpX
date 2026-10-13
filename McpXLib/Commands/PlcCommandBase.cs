@@ -36,13 +36,13 @@ internal abstract class PlcCommandBase<T> : IPlcCommand<T>
         ));
     }
 
-    public async Task<T> ExecuteAsync(IPlc plc)
+    public async Task<T> ExecuteAsync(IPlc plc, CancellationToken cancellationToken)
     {
         var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
         var responseFrameSelector = CreateResponseSelector(plc, requestFrameSelector.GetSerialNumber());
 
         return Parse(responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
+            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector, cancellationToken).ConfigureAwait(false)
         ));
     }
 

@@ -110,14 +110,14 @@ public sealed class TestTransportReliability
     {
         var (port, cts) = StartTcpServer(SlowEcho);
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 5000);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
 
         var tasks = Enumerable.Range(0, 20).Select(i =>
         {
             var packet = Packet($"request-{i:D2}");
             // 同期と非同期を混在させる
             Task<byte[]> task = i % 2 == 0
-                ? transport.RequestAsync(packet, parser)
+                ? transport.RequestAsync(packet, parser, CancellationToken.None)
                 : Task.Run(() => transport.Request(packet, parser));
             return task.ContinueWith(t => (packet, response: t.Result));
         }).ToArray();
@@ -160,13 +160,13 @@ public sealed class TestTransportReliability
             }
         });
 
-        using var transport = new UdpPlcTransport("127.0.0.1", port, 5000);
+        using var transport = UdpPlcTransport.Create("127.0.0.1", port, 5000);
 
         var tasks = Enumerable.Range(0, 20).Select(i =>
         {
             var packet = Packet($"request-{i:D2}");
             Task<byte[]> task = i % 2 == 0
-                ? transport.RequestAsync(packet, parser)
+                ? transport.RequestAsync(packet, parser, CancellationToken.None)
                 : Task.Run(() => transport.Request(packet, parser));
             return task.ContinueWith(t => (packet, response: t.Result));
         }).ToArray();
@@ -202,10 +202,10 @@ public sealed class TestTransportReliability
     {
         var (port, cts) = StartTcpServer(NoResponse);
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 500);
 
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
-        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("no-response"), parser));
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("no-response"), parser, CancellationToken.None));
         elapsed.Stop();
 
         AssertTimedOut(ex);
@@ -218,7 +218,7 @@ public sealed class TestTransportReliability
     {
         var (port, cts) = StartTcpServer(TrickleEcho);
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 500);
 
         // 応答は 2 + 10 バイト = 約 2.4 秒かかるが、期限 500ms で打ち切られること
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
@@ -235,10 +235,10 @@ public sealed class TestTransportReliability
     {
         var (port, cts) = StartTcpServer(TrickleEcho);
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 500);
 
         var elapsed = System.Diagnostics.Stopwatch.StartNew();
-        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("0123456789"), parser));
+        var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("0123456789"), parser, CancellationToken.None));
         elapsed.Stop();
 
         AssertTimedOut(ex);
@@ -267,13 +267,13 @@ public sealed class TestTransportReliability
         int requests = 0;
         var (port, cts) = StartTcpServer(FirstResponseDelayedEcho(() => Interlocked.Increment(ref requests)));
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 500);
 
-        await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("first"), parser));
+        await Assert.ThrowsExceptionAsync<TimeoutException>(() => transport.RequestAsync(Packet("first"), parser, CancellationToken.None));
 
         // 遅れて届いた1回目の応答を2回目の応答として返さず、例外になること
         await Task.Delay(500);
-        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("second"), parser));
+        var ex = await Assert.ThrowsExceptionAsync<IOException>(() => transport.RequestAsync(Packet("second"), parser, CancellationToken.None));
         StringAssert.Contains(ex.Message, "closed");
         Assert.ThrowsException<IOException>(() => transport.Request(Packet("third"), parser));
 
@@ -287,7 +287,7 @@ public sealed class TestTransportReliability
     {
         var (port, cts) = StartTcpServer(FirstResponseDelayedEcho(() => { }));
         using var _ = cts;
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 500);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 500);
 
         Assert.ThrowsException<TimeoutException>(() => transport.Request(Packet("first"), parser));
 
@@ -329,7 +329,7 @@ public sealed class TestTransportReliability
             }
         });
 
-        using var transport = new UdpPlcTransport("127.0.0.1", port, 500);
+        using var transport = UdpPlcTransport.Create("127.0.0.1", port, 500);
 
         var ex = Assert.ThrowsException<TimeoutException>(() => transport.Request(Packet("first"), parser));
         AssertTimedOut(ex);
@@ -351,7 +351,7 @@ public sealed class TestTransportReliability
         listener.Stop();
 
         // AggregateException に包まれず、SocketException がそのままスローされること
-        var ex = Assert.ThrowsException<SocketException>(() => new TcpPlcTransport("127.0.0.1", port, 5000));
+        var ex = Assert.ThrowsException<SocketException>(() => TcpPlcTransport.Connect("127.0.0.1", port, 5000));
         Assert.AreEqual(SocketError.ConnectionRefused, ex.SocketErrorCode);
     }
 
@@ -363,11 +363,11 @@ public sealed class TestTransportReliability
         using var _ = cts;
 
         // timeout = 0 でも接続でき（無期限）、要求も完了すること
-        using var transport = new TcpPlcTransport("127.0.0.1", port, 0);
+        using var transport = TcpPlcTransport.Connect("127.0.0.1", port, 0);
         var packet = Packet("zero-timeout");
 
         CollectionAssert.AreEqual(packet, transport.Request(packet, parser));
-        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser));
+        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser, CancellationToken.None));
     }
 
     [TestMethod]
@@ -399,10 +399,10 @@ public sealed class TestTransportReliability
         });
 
         // timeout = 0 でも同期・非同期とも応答を待って完了すること（無期限）
-        using var transport = new UdpPlcTransport("127.0.0.1", port, 0);
+        using var transport = UdpPlcTransport.Create("127.0.0.1", port, 0);
         var packet = Packet("zero-timeout");
 
         CollectionAssert.AreEqual(packet, transport.Request(packet, parser));
-        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser));
+        CollectionAssert.AreEqual(packet, await transport.RequestAsync(packet, parser, CancellationToken.None));
     }
 }

@@ -69,7 +69,7 @@ public partial class McpX : IPlc
 
     private static Func<IPlcTransport> CreateTransportFactory(string ip, int port, ushort timeout, bool isUdp)
     {
-        return () => isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : new Transports.TcpPlcTransport(ip, port, timeout);
+        return () => isUdp ? Transports.UdpPlcTransport.Create(ip, port, timeout) : Transports.TcpPlcTransport.Connect(ip, port, timeout);
     }
 
     /// <summary>
@@ -91,14 +91,14 @@ public partial class McpX : IPlc
         return transport.Request(packet, receiveLengthParser);
     }
 
-    async Task<byte[]> IPlc.RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    Task<byte[]> IPlc.RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
     {
-        return await transport.RequestAsync(packet, receiveLengthParser);
+        return transport.RequestAsync(packet, receiveLengthParser, cancellationToken);
     }
 
-    internal async Task RemoteUnlockAsync(string password)
+    internal async Task RemoteUnlockAsync(string password, CancellationToken cancellationToken)
     {
-        await new RemoteUnlockCommand(password, monitoringTimer).ExecuteAsync(this);
+        await new RemoteUnlockCommand(password, monitoringTimer).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void RemoteUnlock(string password)
@@ -106,9 +106,9 @@ public partial class McpX : IPlc
         new RemoteUnlockCommand(password, monitoringTimer).Execute(this);
     }
 
-    internal async Task RemoteLockAsync(string password)
+    internal async Task RemoteLockAsync(string password, CancellationToken cancellationToken)
     {
-        await new RemoteLockCommand(password, monitoringTimer).ExecuteAsync(this);
+        await new RemoteLockCommand(password, monitoringTimer).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void RemoteLock(string password)
@@ -166,9 +166,9 @@ public partial class McpX : IPlc
         }
     }
 
-    internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create)
+    internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create, CancellationToken cancellationToken)
     {
-        await create(monitoringTimer).ExecuteAsync(this);
+        await create(monitoringTimer).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void RemoteOperation(Func<ushort, RemoteOperationCommand> create)
@@ -176,9 +176,9 @@ public partial class McpX : IPlc
         create(monitoringTimer).Execute(this);
     }
 
-    internal async Task<ushort[][]> MultiBlockReadAsync(DeviceBlock[] blocks)
+    internal async Task<ushort[][]> MultiBlockReadAsync(DeviceBlock[] blocks, CancellationToken cancellationToken)
     {
-        return await new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this);
+        return await new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal ushort[][] MultiBlockRead(DeviceBlock[] blocks)
@@ -186,9 +186,9 @@ public partial class McpX : IPlc
         return new MultiBlockReadCommand(blocks, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task MultiBlockWriteAsync(DeviceBlock[] blocks)
+    internal async Task MultiBlockWriteAsync(DeviceBlock[] blocks, CancellationToken cancellationToken)
     {
-        await new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this);
+        await new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void MultiBlockWrite(DeviceBlock[] blocks)
@@ -196,9 +196,9 @@ public partial class McpX : IPlc
         new MultiBlockWriteCommand(blocks, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task<bool[]> BitBatchReadAsync(Prefix prefix, string address, ushort bitLength)
+    internal async Task<bool[]> BitBatchReadAsync(Prefix prefix, string address, ushort bitLength, CancellationToken cancellationToken)
     {
-        return await new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries).ExecuteAsync(this);
+        return await new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal bool[] BitBatchRead(Prefix prefix, string address, ushort bitLength)
@@ -206,9 +206,9 @@ public partial class McpX : IPlc
         return new BitBatchReadCommand(prefix, address, bitLength, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task BitBatchWriteAsync(Prefix prefix, string address, bool[]values)
+    internal async Task BitBatchWriteAsync(Prefix prefix, string address, bool[]values, CancellationToken cancellationToken)
     {
-        await new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this);
+        await new BitBatchWriteCommand(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void BitBatchWrite(Prefix prefix, string address, bool[]values)
@@ -217,9 +217,9 @@ public partial class McpX : IPlc
     }
     
     // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
-    internal async Task<T[]> WordBatchReadAsync<T>(Prefix prefix, string address, ushort wordLength) where T : unmanaged
+    internal async Task<T[]> WordBatchReadAsync<T>(Prefix prefix, string address, ushort wordLength, CancellationToken cancellationToken) where T : unmanaged
     {
-        return await new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries).ExecuteAsync(this);
+        return await new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     // wordLength は T 型の要素数（送信ワード数は WordBatchReadCommand 内で GetWordLength<T>() 倍される）。
@@ -228,9 +228,9 @@ public partial class McpX : IPlc
         return new WordBatchReadCommand<T>(prefix, address, wordLength, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task WordBatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
+    internal async Task WordBatchWriteAsync<T>(Prefix prefix, string address, T[]values, CancellationToken cancellationToken) where T : unmanaged
     {
-        await new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this);
+        await new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void WordBatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
@@ -238,11 +238,11 @@ public partial class McpX : IPlc
         new WordBatchWriteCommand<T>(prefix, address, values, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task<(T1[] wordValues, T2[] doubleValues)> WordRandomReadAsync<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
+    internal async Task<(T1[] wordValues, T2[] doubleValues)> WordRandomReadAsync<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses, CancellationToken cancellationToken) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        return await new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this);
+        return await new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal (T1[] wordValues, T2[] doubleValues) WordRandomRead<T1,T2>((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses) 
@@ -252,11 +252,11 @@ public partial class McpX : IPlc
         return new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task WordRandomWriteAsync<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices) 
+    internal async Task WordRandomWriteAsync<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices, CancellationToken cancellationToken) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        await new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).ExecuteAsync(this);
+        await new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices)
@@ -266,9 +266,9 @@ public partial class McpX : IPlc
         new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task BitRandomWriteAsync((Prefix prefix, string address, bool value)[] bitDevices)
+    internal async Task BitRandomWriteAsync((Prefix prefix, string address, bool value)[] bitDevices, CancellationToken cancellationToken)
     {
-        await new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries).ExecuteAsync(this);
+        await new BitRandomWriteCommand(bitDevices, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     internal void BitRandomWrite((Prefix prefix, string address, bool value)[] bitDevices)
@@ -298,15 +298,15 @@ public partial class McpX : IPlc
         }
     }
 
-    internal async Task<int> RegisterMonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    internal async Task<int> RegisterMonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses, CancellationToken cancellationToken)
     {
         var command = new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
 
-        await monitorGate.WaitAsync();
+        await monitorGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             monitorGeneration++;
-            await command.ExecuteAsync(this);
+            await command.ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
             return monitorGeneration;
         }
         finally
@@ -333,13 +333,13 @@ public partial class McpX : IPlc
         }
     }
 
-    internal async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorRegisteredAsync(int generation, (Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    internal async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorRegisteredAsync(int generation, (Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses, CancellationToken cancellationToken)
     {
-        await monitorGate.WaitAsync();
+        await monitorGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             ThrowIfStaleMonitor(generation);
-            return await MonitorAsync(wordAddresses, doubleWordAddresses);
+            return await MonitorAsync(wordAddresses, doubleWordAddresses, cancellationToken).ConfigureAwait(false);
         }
         finally
         {
@@ -357,9 +357,9 @@ public partial class McpX : IPlc
         }
     }
 
-    private async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
+    private async Task<(ushort[] wordValues, uint[] doubleValues)> MonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses, CancellationToken cancellationToken)
     {
-        return await new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this);
+        return await new MonitorCommand<ushort, uint>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
     private (ushort[] wordValues, uint[] doubleValues) Monitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)

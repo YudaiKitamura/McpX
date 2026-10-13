@@ -23,7 +23,7 @@ internal sealed class FakePlcTransport : IPlcTransport
 
     public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => Core.Handle(packet);
 
-    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
         => Task.FromResult(Request(packet, receiveLengthParser));
 
     public void Dispose()

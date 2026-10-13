@@ -1,10 +1,18 @@
 ## [Unreleased]
+### Added
+- すべての非同期メソッド（`MonitorSession.ReadAsync` を含む）に `CancellationToken` 引数を追加。通信中にキャンセルした場合は、タイムアウトと同じく TCP の接続を閉じます。
+- UDP 交信で、IP アドレスに加えてホスト名を指定できるように変更。
+
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
 - **破壊的変更：** `RecivePacketException` を `ReceivePacketException` に名前変更。
 - **破壊的変更：** 名前空間 `McpXLib.Abstructs` を `McpXLib.Abstracts` に名前変更。
 - **破壊的変更：** `McpX` の `IsAscii`、`RequestFrame`、`ProcessorSeries` を読み取り専用に変更。インスタンスの生成時に決まります。
 - **破壊的変更：** ビルダークラス（`ReadBuilder`、`RandomReadBuilder`、`MonitorBuilder` など）を直接生成できないように変更。`McpX` のメソッドに渡されるものを使用してください。
+
+### Fixed
+- UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。
+- UDP 交信で、ヘッダの応答データ長と長さが一致しない応答を受け取る不具合を修正。`ReceivePacketException` をスローします。
 
 ### Removed
 - **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。

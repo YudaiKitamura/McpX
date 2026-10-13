@@ -72,9 +72,9 @@ public sealed class TestWordBatchWriteCommand
             0x00, 0x00,                     // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
         
-        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
+        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
     }
 
     [TestMethod]

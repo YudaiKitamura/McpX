@@ -49,15 +49,16 @@ public partial class McpX
     /// 詳細は <see cref="BlockRead(Action{BlockReadBuilder})"/> を参照してください。
     /// </remarks>
     /// <param name="build">読み込むデバイス範囲とコールバックを登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ArgumentException">複数ブロックで読み込めない指定（ワードデバイスへの <c>bool</c>）の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task BlockReadAsync(Action<BlockReadBuilder> build)
+    public async Task BlockReadAsync(Action<BlockReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockReadBuilder();
         build(builder);
-        await ExecuteBlockReadAsync(builder.entries);
+        await ExecuteBlockReadAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -90,15 +91,16 @@ public partial class McpX
     /// 詳細は <see cref="BlockWrite(Action{BlockWriteBuilder})"/> を参照してください。
     /// </remarks>
     /// <param name="build">書き込むデバイス範囲と値を登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ArgumentException">複数ブロックで書き込めない指定の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task BlockWriteAsync(Action<BlockWriteBuilder> build)
+    public async Task BlockWriteAsync(Action<BlockWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockWriteBuilder();
         build(builder);
-        await ExecuteBlockWriteAsync(builder.entries);
+        await ExecuteBlockWriteAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 
     // 1リクエスト分のブロック。entryIndex の範囲の、offset（点）から Block.Points 点分。
@@ -196,13 +198,13 @@ public partial class McpX
         }
     }
 
-    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries)
+    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries, CancellationToken cancellationToken)
     {
         var buffers = entries.Select(e => new ushort[e.Points]).ToArray();
 
         foreach (var request in PackReadBlocks(entries))
         {
-            var words = await MultiBlockReadAsync(request.Select(c => c.Block).ToArray());
+            var words = await MultiBlockReadAsync(request.Select(c => c.Block).ToArray(), cancellationToken).ConfigureAwait(false);
             CopyToBuffers(request, words, buffers);
         }
 
@@ -228,11 +230,11 @@ public partial class McpX
         }
     }
 
-    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries)
+    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries, CancellationToken cancellationToken)
     {
         foreach (var request in PackWriteBlocks(entries))
         {
-            await MultiBlockWriteAsync(request.Select(c => c.Block).ToArray());
+            await MultiBlockWriteAsync(request.Select(c => c.Block).ToArray(), cancellationToken).ConfigureAwait(false);
         }
     }
 }

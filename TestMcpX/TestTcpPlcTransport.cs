@@ -96,11 +96,6 @@ public class TestTcpPlcTransport
         return (port, cts);
     }
 
-    private class TestPlc : TcpPlcTransport
-    {
-        public TestPlc(string ip, int port) : base(ip, port, 5000) { }
-    }
-
     private class DummyReceiveLengthParser : IReceiveLengthParser
     {
         ushort headerLength;
@@ -127,7 +122,7 @@ public class TestTcpPlcTransport
     public void TestRequest()
     {
         var (port, cts) = StartEchoServer();
-        using var plc = new TestPlc("127.0.0.1", port);
+        using var plc = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
 
         ushort contentLength = faker.Random.UShort(min: 100, max: 1024); // 上限値は送信バッファのサイズに合わせる必要がある　var buffer = new byte[1024]
         byte[] headerBytes = faker.Random.Bytes(7);
@@ -144,7 +139,7 @@ public class TestTcpPlcTransport
     public async Task TestRequestAsync()
     {
         var (port, cts) = StartEchoServer();
-        using var plc = new TestPlc("127.0.0.1", port);
+        using var plc = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
 
         ushort contentLength = faker.Random.UShort(min: 100, max: 1024); // 上限値は送信バッファのサイズに合わせる必要がある　var buffer = new byte[1024]
         byte[] headerBytes = faker.Random.Bytes(7);
@@ -152,7 +147,7 @@ public class TestTcpPlcTransport
         byte[] contentBytes = faker.Random.Bytes(contentLength);
 
         byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-        CollectionAssert.AreEqual(sendData, await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength)));
+        CollectionAssert.AreEqual(sendData, await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None));
 
         cts.Cancel();
     }
@@ -163,7 +158,7 @@ public class TestTcpPlcTransport
         var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = Assert.ThrowsException<TimeoutException>(() => {
-            using var plc = new TestPlc("127.0.0.1", port);
+            using var plc = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -181,7 +176,7 @@ public class TestTcpPlcTransport
 
         var ex2 = Assert.ThrowsException<TimeoutException>(() => {
             // 実在しない、テスト用IPアドレス
-            using var plc = new TestPlc("192.0.2.1", port);
+            using var plc = TcpPlcTransport.Connect("192.0.2.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -202,7 +197,7 @@ public class TestTcpPlcTransport
         var (port, cts) = StartReceiveTimeoutEchoServer();
 
         var ex = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
-            using var plc = new TestPlc("127.0.0.1", port);
+            using var plc = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -210,7 +205,7 @@ public class TestTcpPlcTransport
             byte[] contentBytes = faker.Random.Bytes(contentLength);
 
             byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
+            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None);
         });
 
         // メッセージは OS により異なる（Linux: Connection timed out / macOS: Operation timed out）ため、エラー種別で判定する
@@ -218,7 +213,7 @@ public class TestTcpPlcTransport
 
         var ex2 = await Assert.ThrowsExceptionAsync<TimeoutException>(async () => {
             // 実在しない、テスト用IPアドレス
-            using var plc = new TestPlc("192.0.2.1", port);;
+            using var plc = TcpPlcTransport.Connect("192.0.2.1", port, 5000);
             
             ushort contentLength = faker.Random.UShort(min: 100, max: 1024);
             byte[] headerBytes = faker.Random.Bytes(7);
@@ -226,12 +221,37 @@ public class TestTcpPlcTransport
             byte[] contentBytes = faker.Random.Bytes(contentLength);
 
             byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
-            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength));
+            await plc.RequestAsync(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength), CancellationToken.None);
         });
         
         Assert.IsInstanceOfType<TimeoutException>(ex2);
         Assert.AreEqual("Connection Timeout", ex2.Message);
         
         cts.Cancel();
+    }
+
+    [TestMethod]
+    public async Task TestRequestAsyncCancel()
+    {
+        var (port, cts) = StartReceiveTimeoutEchoServer();
+        using var plc = TcpPlcTransport.Connect("127.0.0.1", port, 5000);
+        var parser = new DummyReceiveLengthParser(9, 2);
+
+        using var cancel = new CancellationTokenSource(200);
+        await Assert.ThrowsExceptionAsync<OperationCanceledException>(() => plc.RequestAsync(faker.Random.Bytes(11), parser, cancel.Token));
+
+        // キャンセルした要求の応答が後から届く可能性があるため、接続は閉じられている
+        await Assert.ThrowsExceptionAsync<IOException>(() => plc.RequestAsync(faker.Random.Bytes(11), parser, CancellationToken.None));
+
+        cts.Cancel();
+    }
+
+    [TestMethod]
+    public async Task TestConnectAsyncCancel()
+    {
+        using var cancel = new CancellationTokenSource(200);
+
+        // 実在しない、テスト用IPアドレス（接続が完了しない）
+        await Assert.ThrowsExceptionAsync<OperationCanceledException>(() => TcpPlcTransport.ConnectAsync("192.0.2.1", 5000, 5000, cancel.Token));
     }
 }

@@ -82,10 +82,10 @@ public sealed class TestRemoteOperationCommand
         plc.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
         byte[] response = [0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00];
         plc.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(response);
-        plc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(response);
+        plc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(response);
 
         Assert.IsTrue(RemoteOperationCommand.Stop().Execute(plc.Object));
-        Assert.IsTrue(await RemoteOperationCommand.Run(false, RemoteRunClearMode.None).ExecuteAsync(plc.Object));
+        Assert.IsTrue(await RemoteOperationCommand.Run(false, RemoteRunClearMode.None).ExecuteAsync(plc.Object, CancellationToken.None));
     }
 
     [TestMethod]
@@ -180,7 +180,7 @@ public sealed class TestRemoteOperationCommand
 
         public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => respond();
 
-        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser) => Task.FromResult(respond());
+        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken) => Task.FromResult(respond());
 
         [Obsolete]
         public byte[] Request(byte[] packet) => throw new NotSupportedException();

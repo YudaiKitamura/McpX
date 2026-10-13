@@ -48,12 +48,13 @@ public sealed class MonitorSession
     /// <summary>
     /// 登録済みのデバイスの値を非同期でPLCから読み出し(コマンド: 0802)、各コールバックへ変換済みの値を渡します。
     /// </summary>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <exception cref="InvalidOperationException">このセッションの作成後に別のモニタ登録（MonitorRegister）が行われ、PLC の登録が置き換わっている場合にスローします。</exception>
-    public async Task ReadAsync()
+    public async Task ReadAsync(CancellationToken cancellationToken = default)
     {
-        var (rawWords, rawDoubleWords) = await mcpX.MonitorRegisteredAsync(generation, wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = await mcpX.MonitorRegisteredAsync(generation, wordAddresses, doubleWordAddresses, cancellationToken).ConfigureAwait(false);
         Dispatch(rawWords, rawDoubleWords);
     }
 

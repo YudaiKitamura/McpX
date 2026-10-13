@@ -93,21 +93,21 @@ public sealed class TestWordRandomReadCommand
             0x04, 0x00, 0x00, 0x00,         // Value4
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
         short[] wordDeviceExpected = [
             1,
             2,
         ];
 
-        CollectionAssert.AreEqual(wordDeviceExpected, (await command.ExecuteAsync(plcMock.Object)).wordValues);
+        CollectionAssert.AreEqual(wordDeviceExpected, (await command.ExecuteAsync(plcMock.Object, CancellationToken.None)).wordValues);
 
         int[] doubleDeviceExpected = [
             3,
             4,
         ];
 
-        CollectionAssert.AreEqual(doubleDeviceExpected, (await command.ExecuteAsync(plcMock.Object)).doubleValues);
+        CollectionAssert.AreEqual(doubleDeviceExpected, (await command.ExecuteAsync(plcMock.Object, CancellationToken.None)).doubleValues);
     }
 
     [TestMethod]

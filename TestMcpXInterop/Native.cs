@@ -179,7 +179,7 @@ internal sealed class BlockingTransport(TimeSpan? timeout = null) : IPlcTranspor
         throw new TimeoutException("The request timed out.", new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.TimedOut));
     }
 
-    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
+    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
         => Task.Run(() => Request(packet, receiveLengthParser));
 
     public void Dispose() => released.Set();
@@ -192,7 +192,7 @@ internal sealed class ThrowingTransport(Func<Exception> create) : IPlcTransport
 {
     public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => throw create();
 
-    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser) => throw create();
+    public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken) => throw create();
 
     public void Dispose()
     {

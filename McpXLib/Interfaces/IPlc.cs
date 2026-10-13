@@ -10,5 +10,5 @@ internal interface IPlc
     
     byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser);
     
-    Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser);
+    Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken);
 }

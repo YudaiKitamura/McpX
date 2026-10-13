@@ -89,7 +89,7 @@ public sealed class TestBitBatchReadAsciiCommand
             0x30,                                                       // Value6
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
         bool[] deviceExpected = [
             false,
@@ -100,7 +100,7 @@ public sealed class TestBitBatchReadAsciiCommand
             false
         ];
 
-        CollectionAssert.AreEqual(deviceExpected, await command.ExecuteAsync(plcMock.Object));
+        CollectionAssert.AreEqual(deviceExpected, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
     }
 
     [TestMethod]

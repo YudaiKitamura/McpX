@@ -19,7 +19,7 @@ public sealed class WriteBuilder
 
     // 範囲指定（連続アクセス）のエントリ。登録順に実行する。
     // block は複数ブロック一括書込み（1406）でまとめる場合の情報（まとめられない指定は null）。
-    internal readonly List<(Action<McpX> write, Func<McpX, Task> writeAsync, BlockWriteEntry? block)> batchEntries = new();
+    internal readonly List<(Action<McpX> write, Func<McpX, CancellationToken, Task> writeAsync, BlockWriteEntry? block)> batchEntries = new();
 
     /// <summary>
     /// ランダムアクセスで書き込むデバイスと値を追加します。
@@ -54,7 +54,7 @@ public sealed class WriteBuilder
     {
         batchEntries.Add((
             m => m.BatchWrite(prefix, address, values),
-            m => m.BatchWriteAsync(prefix, address, values),
+            (m, cancellationToken) => m.BatchWriteAsync(prefix, address, values, cancellationToken),
             BlockWriteEntry.TryCreate(prefix, address, values)
         ));
         return this;

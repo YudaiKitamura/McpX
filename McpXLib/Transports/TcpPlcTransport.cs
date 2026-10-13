@@ -12,22 +12,27 @@ internal class TcpPlcTransport : IPlcTransport
     // 同期・非同期の要求を1つずつ処理する（送受信の交錯を防ぐ）。
     private readonly SemaphoreSlim gate = new(1, 1);
     // 1要求（送信開始〜応答受信完了）の期限（ミリ秒）。0 は無期限。
-    private readonly ushort timeout;
-    // タイムアウト・通信エラーで接続を閉じたか。閉じた後は応答がずれるため再利用しない。
+    private readonly int timeout;
+    // タイムアウト・通信エラー・キャンセルで接続を閉じたか。閉じた後は応答がずれるため再利用しない。
     // 要求中の読み書きは gate の内側で行う（gate の取得・解放で最新の値が見えるため volatile は不要）。
     private bool broken;
 
-    internal TcpPlcTransport(string ip, int port, ushort timeout)
+    private TcpPlcTransport(TcpClient client, int timeout)
     {
+        this.client = client;
         this.timeout = timeout;
-        client = new TcpClient();
-        client.SendTimeout = timeout;
-        client.ReceiveTimeout = timeout;
+        stream = client.GetStream();
+    }
 
-        var task = client.ConnectAsync(ip, port);
+    /// <summary>
+    /// 接続します。<paramref name="timeout"/>（ミリ秒、0 は無期限）以内に接続できない場合は <see cref="TimeoutException"/> をスローします。
+    /// </summary>
+    internal static TcpPlcTransport Connect(string host, int port, int timeout)
+    {
+        var client = CreateClient(timeout);
+        var task = client.ConnectAsync(host, port);
 
         // Task.Wait は接続失敗時に AggregateException をスローして後始末を飛ばすため、WaitAny で完了だけを待つ。
-        // timeout が 0 の場合は、要求と同じく無期限とする。
         if (Task.WaitAny([task], timeout == 0 ? Timeout.Infinite : timeout) != 0)
         {
             task.ObserveException();
@@ -42,7 +47,35 @@ internal class TcpPlcTransport : IPlcTransport
             task.GetAwaiter().GetResult();
         }
 
-        stream = client.GetStream();
+        return new TcpPlcTransport(client, timeout);
+    }
+
+    /// <summary>
+    /// 非同期で接続します。期限切れは <see cref="TimeoutException"/>、キャンセルは <see cref="OperationCanceledException"/> になります。
+    /// </summary>
+    internal static async Task<TcpPlcTransport> ConnectAsync(string host, int port, int timeout, CancellationToken cancellationToken)
+    {
+        var client = CreateClient(timeout);
+        try
+        {
+            await WaitAsync(client.ConnectAsync(host, port), timeout, Stopwatch.StartNew(), cancellationToken, "Connection Timeout").ConfigureAwait(false);
+        }
+        catch
+        {
+            client.Dispose();
+            throw;
+        }
+
+        return new TcpPlcTransport(client, timeout);
+    }
+
+    private static TcpClient CreateClient(int timeout)
+    {
+        return new TcpClient
+        {
+            SendTimeout = timeout,
+            ReceiveTimeout = timeout,
+        };
     }
 
     public void Dispose()
@@ -60,14 +93,18 @@ internal class TcpPlcTransport : IPlcTransport
             {
                 var elapsed = Stopwatch.StartNew();
 
-                stream.WriteTimeout = GetRemaining(elapsed);
+                stream.WriteTimeout = GetRemaining(timeout, elapsed);
                 stream.Write(packet, 0, packet.Length);
 
-                var headerBytes = GetReceivePacket(contentLength.GetHeaderLength(), elapsed);
+                int headerLength = contentLength.GetHeaderLength();
+                var header = new byte[headerLength];
+                ReadExactly(header, 0, headerLength, elapsed);
 
-                var length = contentLength.ParseContentLength(headerBytes);
+                var response = new byte[headerLength + contentLength.ParseContentLength(header)];
+                Array.Copy(header, response, headerLength);
+                ReadExactly(response, headerLength, response.Length - headerLength, elapsed);
 
-                return headerBytes.Concat(GetReceivePacket(length, elapsed)).ToArray();
+                return response;
             }
             catch (IOException ex) when (ex.InnerException is SocketException { SocketErrorCode: SocketError.TimedOut } inner)
             {
@@ -88,9 +125,9 @@ internal class TcpPlcTransport : IPlcTransport
         }
     }
 
-    public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser contentLength)
+    public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser contentLength, CancellationToken cancellationToken)
     {
-        await gate.WaitAsync();
+        await gate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             ThrowIfBroken();
@@ -98,17 +135,21 @@ internal class TcpPlcTransport : IPlcTransport
             {
                 var elapsed = Stopwatch.StartNew();
 
-                await WithDeadlineAsync(stream.WriteAsync(packet, 0, packet.Length), elapsed);
+                await WaitAsync(stream.WriteAsync(packet, 0, packet.Length), timeout, elapsed, cancellationToken).ConfigureAwait(false);
 
-                var headerBytes = await GetReceivePacketAsync(contentLength.GetHeaderLength(), elapsed);
+                int headerLength = contentLength.GetHeaderLength();
+                var header = new byte[headerLength];
+                await ReadExactlyAsync(header, 0, headerLength, elapsed, cancellationToken).ConfigureAwait(false);
 
-                var length = contentLength.ParseContentLength(headerBytes);
+                var response = new byte[headerLength + contentLength.ParseContentLength(header)];
+                Array.Copy(header, response, headerLength);
+                await ReadExactlyAsync(response, headerLength, response.Length - headerLength, elapsed, cancellationToken).ConfigureAwait(false);
 
-                return headerBytes.Concat(await GetReceivePacketAsync(length, elapsed)).ToArray();
+                return response;
             }
             catch
             {
-                // 打ち切った受信が後から応答を読み込むこともあるため、接続を閉じる。
+                // 打ち切った受信が後から応答を読み込むこともあるため、接続を閉じる（キャンセルした場合も同じ）。
                 Break();
                 throw;
             }
@@ -134,57 +175,42 @@ internal class TcpPlcTransport : IPlcTransport
         client.Dispose();
     }
 
-    private byte[] GetReceivePacket(int expectedLength, Stopwatch elapsed)
+    private void ReadExactly(byte[] buffer, int offset, int count, Stopwatch elapsed)
     {
-        var memoryStream = new MemoryStream();
-        var buffer = new byte[1024];
-        int totalRead = 0;
-
-        while (totalRead < expectedLength)
+        while (count > 0)
         {
             // 1回の Read ごとではなく、要求全体の残り時間で待つ。
-            stream.ReadTimeout = GetRemaining(elapsed);
-            int bytesRead = stream.Read(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead));
+            stream.ReadTimeout = GetRemaining(timeout, elapsed);
+            int bytesRead = stream.Read(buffer, offset, count);
             if (bytesRead == 0)
             {
                 throw new IOException("Connection closed unexpectedly");
             }
 
-            memoryStream.Write(buffer, 0, bytesRead);
-            totalRead += bytesRead;
+            offset += bytesRead;
+            count -= bytesRead;
         }
-
-        return memoryStream.ToArray();
     }
 
-    private async Task<byte[]> GetReceivePacketAsync(int expectedLength, Stopwatch elapsed)
+    private async Task ReadExactlyAsync(byte[] buffer, int offset, int count, Stopwatch elapsed, CancellationToken cancellationToken)
     {
-        var memoryStream = new MemoryStream();
-        var buffer = new byte[1024];
-        int totalRead = 0;
-
-        while (totalRead < expectedLength)
+        while (count > 0)
         {
-            int bytesRead = await WithDeadlineAsync(
-                stream.ReadAsync(buffer, 0, Math.Min(buffer.Length, expectedLength - totalRead)),
-                elapsed
-            );
+            int bytesRead = await WaitAsync(stream.ReadAsync(buffer, offset, count), timeout, elapsed, cancellationToken).ConfigureAwait(false);
             if (bytesRead == 0)
             {
                 throw new IOException("Connection closed unexpectedly");
             }
 
-            memoryStream.Write(buffer, 0, bytesRead);
-            totalRead += bytesRead;
+            offset += bytesRead;
+            count -= bytesRead;
         }
-
-        return memoryStream.ToArray();
     }
 
     /// <summary>
-    /// 要求全体の残り時間（ミリ秒）を返します。無期限の場合は <see cref="Timeout.Infinite"/>。
+    /// 期限（<paramref name="elapsed"/> の開始から <paramref name="timeout"/> ミリ秒）までの残り時間を返します。無期限の場合は <see cref="Timeout.Infinite"/>。
     /// </summary>
-    private int GetRemaining(Stopwatch elapsed)
+    private static int GetRemaining(int timeout, Stopwatch elapsed)
     {
         if (timeout == 0)
         {
@@ -201,39 +227,40 @@ internal class TcpPlcTransport : IPlcTransport
     }
 
     /// <summary>
-    /// 非同期の送受信を要求全体の期限内で待ちます。
+    /// 非同期の接続・送受信を、期限内かつキャンセルされるまで待ちます。
     /// </summary>
     /// <remarks>
-    /// <see cref="NetworkStream"/> の非同期 I/O は ReceiveTimeout / SendTimeout を見ないため、期限切れを WhenAny で判定する。
-    /// （netstandard2.0 でも同じ挙動にするため、キャンセルトークンには頼らない）
+    /// <see cref="NetworkStream"/> の非同期 I/O は ReceiveTimeout / SendTimeout を見ないため、期限切れとキャンセルを WhenAny で判定する。
+    /// （netstandard2.0 でも同じ挙動にするため、I/O へのキャンセルトークンには頼らない）
     /// </remarks>
-    private async Task WithDeadlineAsync(Task task, Stopwatch elapsed)
+    private static async Task WaitAsync(Task task, int timeout, Stopwatch elapsed, CancellationToken cancellationToken, string message = TimeoutMessage)
     {
-        int remaining = GetRemaining(elapsed);
-        if (remaining == Timeout.Infinite)
+        int remaining = GetRemaining(timeout, elapsed);
+        if (remaining == Timeout.Infinite && !cancellationToken.CanBeCanceled)
         {
-            await task;
+            await task.ConfigureAwait(false);
             return;
         }
 
-        using var cts = new CancellationTokenSource();
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var delay = Task.Delay(remaining, cts.Token);
 
-        if (await Task.WhenAny(task, delay) != task)
+        if (await Task.WhenAny(task, delay).ConfigureAwait(false) != task)
         {
             // 打ち切った送受信が後で失敗しても UnobservedTaskException にならないようにする
             task.ObserveException();
-            throw CreateTimeoutException();
+            cancellationToken.ThrowIfCancellationRequested();
+            throw new TimeoutException(message, new SocketException((int)SocketError.TimedOut));
         }
 
         cts.Cancel();
-        await task;
+        await task.ConfigureAwait(false);
     }
 
-    private async Task<T> WithDeadlineAsync<T>(Task<T> task, Stopwatch elapsed)
+    private static async Task<T> WaitAsync<T>(Task<T> task, int timeout, Stopwatch elapsed, CancellationToken cancellationToken)
     {
-        await WithDeadlineAsync((Task)task, elapsed);
-        return await task;
+        await WaitAsync((Task)task, timeout, elapsed, cancellationToken).ConfigureAwait(false);
+        return await task.ConfigureAwait(false);
     }
 
     private const string TimeoutMessage = "The request timed out.";

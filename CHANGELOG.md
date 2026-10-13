@@ -1,10 +1,18 @@
 ## [Unreleased]
+### Added
+- Added a `CancellationToken` parameter to every async method (including `MonitorSession.ReadAsync`). Cancelling a request in progress closes the TCP connection, as a timeout does.
+- UDP connections now accept a host name as well as an IP address.
+
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
 - **Breaking:** Renamed `RecivePacketException` to `ReceivePacketException`.
 - **Breaking:** Renamed the namespace `McpXLib.Abstructs` to `McpXLib.Abstracts`.
 - **Breaking:** `IsAscii`, `RequestFrame` and `ProcessorSeries` on `McpX` are now read-only. They are fixed when the instance is created.
 - **Breaking:** The builder classes (`ReadBuilder`, `RandomReadBuilder`, `MonitorBuilder`, etc.) can no longer be created directly; they are passed to the `McpX` methods.
+
+### Fixed
+- Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
+- Fixed UDP requests accepting a response whose length does not match the response data length in its header. It now throws `ReceivePacketException`.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.

@@ -20,7 +20,7 @@ public sealed class ReadBuilder
 
     // 範囲指定（連続アクセス）のエントリ。登録順に実行する。
     // block は複数ブロック一括読出し（0406）でまとめる場合の情報（まとめられない指定は null）。
-    internal readonly List<(Action<McpX> read, Func<McpX, Task> readAsync, BlockReadEntry? block)> batchEntries = new();
+    internal readonly List<(Action<McpX> read, Func<McpX, CancellationToken, Task> readAsync, BlockReadEntry? block)> batchEntries = new();
 
     /// <summary>
     /// ランダムアクセスで読み込むデバイスと、読み取り後に値を受け取るコールバックを追加します。
@@ -56,7 +56,7 @@ public sealed class ReadBuilder
     {
         batchEntries.Add((
             m => onRead(m.BatchRead<T>(prefix, address, length)),
-            async m => onRead(await m.BatchReadAsync<T>(prefix, address, length)),
+            async (m, cancellationToken) => onRead(await m.BatchReadAsync<T>(prefix, address, length, cancellationToken).ConfigureAwait(false)),
             BlockReadEntry.TryCreate(prefix, address, length, onRead)
         ));
         return this;
