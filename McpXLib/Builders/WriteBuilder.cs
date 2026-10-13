@@ -48,7 +48,7 @@ public sealed class WriteBuilder
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
-    /// <param name="values">書き込む値を配列で指定します。</param>
+    /// <param name="values">書き込む値を配列で指定します。値はこのメソッドの呼び出し時点で取り込むため、呼び出し後に配列を変更しても書き込む値は変わりません。</param>
     /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T[] values) where T : unmanaged
@@ -58,10 +58,12 @@ public sealed class WriteBuilder
             throw new ArgumentNullException(nameof(values));
         }
 
+        // 連続アクセスと複数ブロック（Add の時点で変換する）で、書き込む値をそろえるためにコピーする
+        var snapshot = (T[])values.Clone();
         batchEntries.Add((
-            m => m.BatchWrite(prefix, address, values),
-            (m, cancellationToken) => m.BatchWriteAsync(prefix, address, values, cancellationToken),
-            BlockWriteEntry.TryCreate(prefix, address, values)
+            m => m.BatchWrite(prefix, address, snapshot),
+            (m, cancellationToken) => m.BatchWriteAsync(prefix, address, snapshot, cancellationToken),
+            BlockWriteEntry.TryCreate(prefix, address, snapshot)
         ));
         return this;
     }

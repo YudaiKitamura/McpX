@@ -196,4 +196,28 @@ public sealed class TestMcpXBatchAccess
         Assert.AreEqual(0, mcpx.BatchRead<short>(Prefix.D, "0", 0).Length);
         Assert.AreEqual(0, transport.Requests.Count);
     }
+
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public void TestWriteBuilderTakesValuesAtAdd(bool useMultiBlockAccess)
+    {
+        var transport = new FakePlcTransport(stateful: true);
+        using var mcpx = new McpX(transport) { UseMultiBlockAccess = useMultiBlockAccess };
+
+        // Add の後に配列を変更しても、Add の時点の値を書き込む（複数ブロックの有無で変わらない）
+        short[] first = [1, 2];
+        short[] second = [3, 4];
+        mcpx.Write(b =>
+        {
+            b.Add(Prefix.D, "0", first);
+            b.Add(Prefix.D, "100", second);
+            first[0] = 99;
+            second[0] = 99;
+        });
+
+        Assert.AreEqual(useMultiBlockAccess ? (ushort)0x1406 : (ushort)0x1401, transport.Requests[^1].Command);
+        CollectionAssert.AreEqual(new short[] { 1, 2 }, mcpx.BatchRead<short>(Prefix.D, "0", 2));
+        CollectionAssert.AreEqual(new short[] { 3, 4 }, mcpx.BatchRead<short>(Prefix.D, "100", 2));
+    }
 }

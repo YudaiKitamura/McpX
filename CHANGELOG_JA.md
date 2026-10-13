@@ -38,6 +38,7 @@
 - **破壊的変更：** ワードデバイスへの `bool` は、送信前に `ArgumentException` をスローするように変更。
 - ビルダーを使うメソッドと `Add` で、ビルダーの処理・コールバック・値の配列が null の場合に `ArgumentNullException` を、アドレスが null の場合に `DeviceAddressException` をスローするように変更。
 - 複数のスレッドから要求した場合に、4E フレームのシリアル番号の採番がアトミックでない不具合を修正。
+- `WriteBuilder.Add(T[])` で、複数ブロックを使わない場合は書き込み時点の配列の値を、使う場合は `Add` 時点の値を書き込んでいた不具合を修正。常に `Add` 時点の値を書き込みます。
 
 ### Removed
 - **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。

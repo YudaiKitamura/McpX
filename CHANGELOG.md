@@ -38,6 +38,7 @@
 - **Breaking:** `bool` on a word device now throws `ArgumentException` before sending.
 - The builder methods and `Add` now throw `ArgumentNullException` for a null builder action, callback or value array, and a null address throws `DeviceAddressException`.
 - Fixed the 4E frame serial number not being assigned atomically when requests are sent from several threads.
+- Fixed `WriteBuilder.Add(T[])` writing the values at the time of the write without multiple block access, but at the time of `Add` with it. It now always takes the values at `Add`.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.
