@@ -65,6 +65,8 @@ internal static class RandomAccessKindResolver
         switch (Resolve<T>())
         {
             case RandomAccessKind.Bit:
+                // ワードデバイスの bool は、単一・一括アクセスやランダム書き込みと同じく送信前に拒否する
+                DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
                 wordEntries.Add((prefix, address, raw => onRead((T)(object)((raw & 0x0001) != 0))));
                 break;
             case RandomAccessKind.Word:

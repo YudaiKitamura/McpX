@@ -35,7 +35,7 @@
 - netstandard2.0 版を使う .NET Core / .NET のアプリで、Shift_JIS が登録されず `ReadString` / `WriteString` が失敗する不具合を修正。netstandard2.0 版で `System.Text.Encoding.CodePages` を参照します。
 - ASCII コード交信のビット単位の一括読出し・書込みを 7168点ごとに分割しており、Ethernet ユニットの ASCII コードの上限（3584点）を超える不具合を修正。
 - `ProcessorSeries.Q` で FFFFFF を超えるアドレスが、デバイスコードで上書きされて壊れる不具合を修正。`DeviceAddressException` をスローします。ASCII のデバイス番号が6桁（`ProcessorSeries.iQR` は8桁）を超える場合も同じです。
-- ワードデバイスへの `bool`（`Read<bool>(Prefix.D, ...)`、`RandomWriteBuilder.Add<bool>` など）は、PLC が C05C を返す前に、送信前に `ArgumentException` をスローするように変更。
+- **破壊的変更：** ワードデバイスへの `bool` は、送信前に `ArgumentException` をスローするように変更。
 - ビルダーを使うメソッドと `Add` で、ビルダーの処理・コールバック・値の配列が null の場合に `ArgumentNullException` を、アドレスが null の場合に `DeviceAddressException` をスローするように変更。
 - 複数のスレッドから要求した場合に、4E フレームのシリアル番号の採番がアトミックでない不具合を修正。
 

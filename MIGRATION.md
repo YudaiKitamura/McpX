@@ -125,6 +125,6 @@ session.Read();   // repeat as needed
 | Builders (`ReadBuilder`, ...) cannot be created with `new` | Use the builder passed to the `McpX` method |
 | `PlcDuplicationException` removed | Remove `catch` clauses |
 | Calling a method after `Dispose` throws `ObjectDisposedException` (was `IOException` over TCP) | Catch `ObjectDisposedException` if you relied on it |
-| `bool` on a word device throws `ArgumentException` before sending (was `McProtocolException` C05C) | Use a word type such as `short`, or a bit device |
+| `bool` on a word device throws `ArgumentException` before sending (was `McProtocolException` C05C, or bit 0 of the word for random read / monitor) | Use a word type such as `short`, or a bit device. To read a bit of a word, read `ushort` and test the bit |
 | Q/L addresses above FFFFFF throw `DeviceAddressException` | Use `ProcessorSeries.iQR` for such addresses |
 | .NET Framework 4.6.2 or later is required for the netstandard2.0 build | Update from 4.6.1 |

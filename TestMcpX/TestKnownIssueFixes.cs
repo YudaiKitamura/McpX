@@ -41,6 +41,9 @@ public sealed class TestKnownIssueFixes
         Assert.ThrowsException<ArgumentException>(() => mcpx.BatchRead<bool>(Prefix.W, "0", 16));
         Assert.ThrowsException<ArgumentException>(() => mcpx.BatchWrite(Prefix.R, "0", new[] { true }));
         Assert.ThrowsException<ArgumentException>(() => mcpx.RandomWrite(b => b.Add(Prefix.D, "0", true)));
+        Assert.ThrowsException<ArgumentException>(() => mcpx.RandomRead(b => b.Add<bool>(Prefix.D, "0", _ => { })));
+        Assert.ThrowsException<ArgumentException>(() => mcpx.MonitorRegister(b => b.Add<bool>(Prefix.W, "0", _ => { })));
+        Assert.ThrowsException<ArgumentException>(() => mcpx.Read(b => b.Add<bool>(Prefix.R, "0", _ => { })));
         Assert.AreEqual(0, transport.Requests.Count);
 
         // ビットデバイスへの bool は送信する

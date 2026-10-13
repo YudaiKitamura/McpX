@@ -125,6 +125,6 @@ session.Read();   // 必要なだけ繰り返す
 | ビルダー（`ReadBuilder` など）を `new` で生成できない | `McpX` のメソッドに渡されるビルダーを使用してください |
 | `PlcDuplicationException` を削除 | `catch` を削除してください |
 | `Dispose` の後の呼び出しが `ObjectDisposedException` をスローする（TCP は `IOException` でした） | 依存していた場合は `ObjectDisposedException` を捕捉してください |
-| ワードデバイスへの `bool` が、送信前に `ArgumentException` をスローする（PLC の C05C による `McProtocolException` でした） | `short` などのワードの型を使うか、ビットデバイスを指定してください |
+| ワードデバイスへの `bool` が、送信前に `ArgumentException` をスローする（PLC の C05C による `McProtocolException`、ランダム読み出し・モニタではワードの bit0 でした） | `short` などのワードの型を使うか、ビットデバイスを指定してください。ワードの特定のビットを読む場合は、`ushort` で読んでビットを取り出してください |
 | Q/L で FFFFFF を超えるアドレスが `DeviceAddressException` をスローする | そのアドレスには `ProcessorSeries.iQR` を使用してください |
 | netstandard2.0 版は .NET Framework 4.6.2 以降が必要 | 4.6.1 から更新してください |
