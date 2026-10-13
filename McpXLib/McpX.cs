@@ -139,22 +139,7 @@ public partial class McpX : IDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T Read<T>(Prefix prefix, string address) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
-        {
-            return (T)(object)BitBatchRead(
-                prefix: prefix,
-                address: address,
-                bitLength: 1
-            ).First();
-        }
-        else
-        {    
-            return WordBatchRead<T>(
-                prefix: prefix,
-                address: address,
-                wordLength: 1
-            ).First();
-        }
+        return ReadChunk<T>(prefix, address, 1)[0];
     }
 
     /// <summary>
@@ -176,26 +161,7 @@ public partial class McpX : IDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T> ReadAsync<T>(Prefix prefix, string address) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
-        {
-            var bitValues = await BitBatchReadAsync(
-                prefix: prefix,
-                address: address,
-                bitLength: 1
-            );
-
-            return (T)(object)bitValues.First();
-        }
-        else
-        {    
-            var wordValues = await WordBatchReadAsync<T>(
-                prefix: prefix,
-                address: address,
-                wordLength: 1
-            );
-
-            return (T)(object)wordValues.First();
-        }
+        return (await ReadChunkAsync<T>(prefix, address, 1))[0];
     }
 
     /// <summary>
@@ -221,56 +187,13 @@ public partial class McpX : IDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T[] BatchRead<T>(Prefix prefix, string address, ushort length) where T : unmanaged
     {
-        var values = new List<T>();
-
-        if (typeof(T) == typeof(bool))
+        var values = new T[length];
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
-            ushort maxLengh = BitBatchReadCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int bitLength = Math.Min(maxLengh, length - offset);
-
-                if (bitLength == 0) break;
-
-                values.AddRange(
-                    (T[])(object)BitBatchRead(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        bitLength: (ushort)bitLength
-                    )
-                );
-            }
-
-            return values.ToArray();
-
+            ReadChunk<T>(prefix, chunkAddress, count).CopyTo(values, offset);
         }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * length;
-            ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int readLength = Math.Min(maxLengh, wordLength - offset);
-
-                if (readLength == 0) break;
-
-                values.AddRange(
-                    WordBatchRead<T>(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                        wordLength: (ushort)(readLength / wordSize)
-                    )
-                );
-            }
-
-            return values.ToArray();
-        }
+        return values;
     }
 
     /// <summary>
@@ -296,56 +219,13 @@ public partial class McpX : IDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, ushort length) where T : unmanaged
     {
-        var values = new List<T>();
-
-        if (typeof(T) == typeof(bool))
+        var values = new T[length];
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
-            ushort maxLengh = BitBatchReadCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int bitLength = Math.Min(maxLengh, length - offset);
-
-                if (bitLength == 0) break;
-
-                values.AddRange(
-                    (T[])(object) await BitBatchReadAsync(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        bitLength: (ushort)bitLength
-                    )
-                );
-            }
-
-            return values.ToArray();
-
+            (await ReadChunkAsync<T>(prefix, chunkAddress, count)).CopyTo(values, offset);
         }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * length;
-            ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int readLength = Math.Min(maxLengh, wordLength - offset);
-
-                if (readLength == 0) break;
-
-                values.AddRange(
-                    await WordBatchReadAsync<T>(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                        wordLength: (ushort)(readLength / wordSize)
-                    )
-                );
-            }
-
-            return values.ToArray();
-        }
+        return values;
     }
 
     /// <summary>
@@ -367,23 +247,7 @@ public partial class McpX : IDisposable
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public void Write<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
-        T[] values = [value];
-        if (typeof(T) == typeof(bool))
-        {
-            BitBatchWrite(
-                prefix: prefix,
-                address: address,
-                values: (bool[])(object)values
-            );
-        }
-        else
-        {
-            WordBatchWrite<T>(
-                prefix: prefix,
-                address: address,
-                values: values
-            );
-        }
+        WriteChunk(prefix, address, new[] { value });
     }
     
     /// <summary>
@@ -405,23 +269,7 @@ public partial class McpX : IDisposable
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     public async Task WriteAsync<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
-        T[] values = [value];
-        if (typeof(T) == typeof(bool))
-        {
-            await BitBatchWriteAsync(
-                prefix: prefix,
-                address: address,
-                values: (bool[])(object)values
-            );
-        }
-        else
-        {
-            await WordBatchWriteAsync<T>(
-                prefix: prefix,
-                address: address,
-                values: values
-            );
-        }
+        await WriteChunkAsync(prefix, address, new[] { value });
     }
 
     /// <summary>
@@ -444,49 +292,12 @@ public partial class McpX : IDisposable
     /// <returns><c>values</c>の値をそのまま返します。</returns>
     public T[] BatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
         {
-            ushort maxLengh = BitBatchWriteCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= values.Length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, values.Length - offset);
-                
-                if (length == 0) break;
-
-                BitBatchWrite(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                    values: (bool[])(object)values.Skip(offset).Take(length).ToArray()
-                );
-            }
-
-            return values.ToArray();
+            WriteChunk(prefix, chunkAddress, Slice(values, offset, count));
         }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * values.Length;
-            ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, wordLength - offset);
-
-                if (length == 0) break;
-
-                WordBatchWrite<T>(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                    values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
-                );
-            }
-
-            return values.ToArray();
-        }
+        return values.ToArray();
     }
 
     /// <summary>
@@ -509,48 +320,96 @@ public partial class McpX : IDisposable
     /// <returns><c>values</c>の値をそのまま返します。</returns>
     public async Task<T[]> BatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
     {
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
+        {
+            await WriteChunkAsync(prefix, chunkAddress, Slice(values, offset, count));
+        }
+
+        return values.ToArray();
+    }
+
+    // ---------------------------------------------------------------
+    // 連続アクセスの分割送信
+    // ---------------------------------------------------------------
+
+    /// <summary>
+    /// 連続アクセスを、1回の要求に収まる範囲に分割します。
+    /// </summary>
+    /// <returns>各要求の先頭アドレスと、<typeparamref name="T"/> 型の要素単位の位置・個数。</returns>
+    private static List<(string address, int offset, int count)> SplitBatch<T>(Prefix prefix, string address, int length) where T : unmanaged
+    {
+        int maxCount;
+        int pointsPerElement;
         if (typeof(T) == typeof(bool))
         {
-            ushort maxLengh = BitBatchWriteCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= values.Length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, values.Length - offset);
-                
-                if (length == 0) break;
-
-                await BitBatchWriteAsync(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                    values: (bool[])(object)values.Skip(offset).Take(length).ToArray()
-                );
-            }
-
-            return values.ToArray();
+            maxCount = BitBatchReadCommand.MAX_BIT_LENGTH;
+            pointsPerElement = 1;
         }
         else
         {
             int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * values.Length;
-            ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
+            maxCount = WordBatchReadCommand<T>.MAX_WORD_LENGTH / wordSize;
             // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
+            pointsPerElement = wordSize * (DeviceConverter.IsBitDevice(prefix) ? 16 : 1);
+        }
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, wordLength - offset);
+        var chunks = new List<(string, int, int)>();
+        for (int offset = 0; offset < length; offset += maxCount)
+        {
+            chunks.Add((
+                DeviceConverter.GetOffsetAddress(prefix, address, offset * pointsPerElement),
+                offset,
+                Math.Min(maxCount, length - offset)
+            ));
+        }
 
-                if (length == 0) break;
+        return chunks;
+    }
 
-                await WordBatchWriteAsync<T>(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                    values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
-                );
-            }
+    private static T[] Slice<T>(T[] values, int offset, int count)
+    {
+        var slice = new T[count];
+        Array.Copy(values, offset, slice, 0, count);
+        return slice;
+    }
 
-            return values.ToArray();
+    // 1回の要求（ビット単位またはワード単位の一括読出し）で読み込む。
+    private T[] ReadChunk<T>(Prefix prefix, string address, int count) where T : unmanaged
+    {
+        return typeof(T) == typeof(bool)
+            ? (T[])(object)BitBatchRead(prefix, address, (ushort)count)
+            : WordBatchRead<T>(prefix, address, (ushort)count);
+    }
+
+    private async Task<T[]> ReadChunkAsync<T>(Prefix prefix, string address, int count) where T : unmanaged
+    {
+        return typeof(T) == typeof(bool)
+            ? (T[])(object)await BitBatchReadAsync(prefix, address, (ushort)count)
+            : await WordBatchReadAsync<T>(prefix, address, (ushort)count);
+    }
+
+    // 1回の要求（ビット単位またはワード単位の一括書込み）で書き込む。
+    private void WriteChunk<T>(Prefix prefix, string address, T[] values) where T : unmanaged
+    {
+        if (typeof(T) == typeof(bool))
+        {
+            BitBatchWrite(prefix, address, (bool[])(object)values);
+        }
+        else
+        {
+            WordBatchWrite(prefix, address, values);
+        }
+    }
+
+    private async Task WriteChunkAsync<T>(Prefix prefix, string address, T[] values) where T : unmanaged
+    {
+        if (typeof(T) == typeof(bool))
+        {
+            await BitBatchWriteAsync(prefix, address, (bool[])(object)values);
+        }
+        else
+        {
+            await WordBatchWriteAsync(prefix, address, values);
         }
     }
 
@@ -909,12 +768,10 @@ public partial class McpX : IDisposable
         var builder = new ReadBuilder();
         build(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            ExecuteBlockRead(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            ExecuteBlockRead(blocks);
         }
 
         foreach (var entry in remaining)
@@ -943,12 +800,10 @@ public partial class McpX : IDisposable
         var builder = new ReadBuilder();
         build(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            await ExecuteBlockReadAsync(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            await ExecuteBlockReadAsync(blocks);
         }
 
         foreach (var entry in remaining)
@@ -980,12 +835,10 @@ public partial class McpX : IDisposable
         var builder = new WriteBuilder();
         build(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            ExecuteBlockWrite(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            ExecuteBlockWrite(blocks);
         }
 
         foreach (var entry in remaining)
@@ -1013,12 +866,10 @@ public partial class McpX : IDisposable
         var builder = new WriteBuilder();
         build(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            await ExecuteBlockWriteAsync(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            await ExecuteBlockWriteAsync(blocks);
         }
 
         foreach (var entry in remaining)

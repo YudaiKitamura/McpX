@@ -111,8 +111,19 @@ public partial class McpX
         internal int Offset { get; } = offset;
     }
 
-    // 統合アクセスで複数ブロックを使うか（まとめる範囲が2つ以上の場合のみ効果がある）
-    private bool CanUseMultiBlock(int entryCount) => UseMultiBlockAccess && entryCount >= 2;
+    // 統合アクセスの連続アクセスを、複数ブロックでまとめて送る分と、個別に送る分に分ける。
+    // 複数ブロックを使うのは、有効でまとめられる範囲が2つ以上ある場合のみ（1つでは効果がない）。
+    private (List<TBlock> blocks, List<TEntry> remaining) SplitForMultiBlock<TEntry, TBlock>(List<TEntry> entries, Func<TEntry, TBlock?> getBlock)
+        where TBlock : class
+    {
+        var blocks = entries.Select(getBlock).OfType<TBlock>().ToList();
+        if (!UseMultiBlockAccess || blocks.Count < 2)
+        {
+            return (new List<TBlock>(), entries);
+        }
+
+        return (blocks, entries.Where(e => getBlock(e) == null).ToList());
+    }
 
     // 範囲を maxPoints 点ごとのブロックに分け、上限に収まるようにリクエストへ詰める。
     // ビットデバイスは1点=16デバイス分のため、分割時の先頭アドレスを16倍進める。
