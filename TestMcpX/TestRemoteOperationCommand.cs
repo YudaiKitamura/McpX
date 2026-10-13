@@ -167,11 +167,11 @@ public sealed class TestRemoteOperationCommand
             return new StubTransport(() => throw new IOException("Connection closed unexpectedly"));
         });
 
-        var ex = Assert.ThrowsException<TimeoutException>(() => mcpx.RemoteReset(reconnectTimeoutMilliseconds: 1500));
+        var ex = Assert.ThrowsException<TimeoutException>(() => mcpx.RemoteReset(TimeSpan.FromMilliseconds(1500)));
         Assert.IsInstanceOfType<System.Net.Sockets.SocketException>(ex.InnerException);
 
-        // 0 を指定した場合は接続し直さない
-        mcpx.RemoteReset(reconnectTimeoutMilliseconds: 0);
+        // TimeSpan.Zero を指定した場合は接続し直さない
+        mcpx.RemoteReset(TimeSpan.Zero);
     }
 
     private sealed class StubTransport(Func<byte[]> respond) : IPlcTransport

@@ -25,8 +25,8 @@ public sealed class TestSimulatorMultiSystem
         using var sim2 = SimulatorConnection.Connect(systemNoVar: "MCPX_SIM2_SYSTEM_NO", defaultSystemNo: 2, cpuNoVar: "MCPX_SIM2_CPU_NO", defaultCpuNo: 1);
 
         Assert.AreNotEqual(
-            McpXSimulator.GetPort(sim1.SystemNo, sim1.CpuNo),
-            McpXSimulator.GetPort(sim2.SystemNo, sim2.CpuNo),
+            McpXSimulator.GetPort(PlcIntegrationTestBase.GetEnvironmentInt("MCPX_SIM_SYSTEM_NO", 1), PlcIntegrationTestBase.GetEnvironmentInt("MCPX_SIM_CPU_NO", 1)),
+            McpXSimulator.GetPort(PlcIntegrationTestBase.GetEnvironmentInt("MCPX_SIM2_SYSTEM_NO", 2), PlcIntegrationTestBase.GetEnvironmentInt("MCPX_SIM2_CPU_NO", 1)),
             "1台目と2台目に同じシミュレータが指定されています。");
 
         var original = (Word1: sim1.Read<short>(Prefix.D, WordAddress), Bit1: sim1.Read<bool>(Prefix.M, BitAddress),

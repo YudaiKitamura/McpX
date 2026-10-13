@@ -36,7 +36,10 @@ public partial class McpX : IPlc
     private IPlcTransport transport;
 
     // 再接続用のトランスポート生成処理（トランスポートを直接指定した場合は null）
-    private readonly Func<IPlcTransport>? transportFactory;
+    private readonly Transports.TransportFactory? transportFactory;
+
+    // リモートパスワード（指定した場合は、接続時に解除し、破棄時にロックする）
+    private readonly string? password;
 
     // 破棄とトランスポートの差し替えを排他し、破棄後に再接続した接続が残らないようにする。
     private readonly object transportLock = new();
@@ -47,29 +50,26 @@ public partial class McpX : IPlc
     private readonly SemaphoreSlim monitorGate = new(1, 1);
     private int monitorGeneration;
 
-    // transport と transportFactory はどちらか一方を指定する（transportFactory を指定した場合は再接続できる）。
+    // transportFactory を指定した場合は、RemoteReset の後に再接続できる。
     private McpX(
-        IPlcTransport? transport,
-        Func<IPlcTransport>? transportFactory,
-        ushort timeout,
+        IPlcTransport transport,
+        Transports.TransportFactory? transportFactory,
+        int timeout,
         bool isAscii,
         RequestFrame requestFrame,
         ProcessorSeries processorSeries,
+        string? password,
         IPacketBuilder? route = null
     )
     {
         this.transportFactory = transportFactory;
-        this.transport = transport ?? transportFactory?.Invoke() ?? throw new ArgumentNullException(nameof(transport));
+        this.transport = transport ?? throw new ArgumentNullException(nameof(transport));
+        this.password = password;
         this.isAscii = isAscii;
         this.requestFrame = requestFrame;
         this.processorSeries = processorSeries;
         this.route = route ?? new RoutePacketBuilder();
         this.monitoringTimer = ToMonitoringTimer(timeout);
-    }
-
-    private static Func<IPlcTransport> CreateTransportFactory(string ip, int port, ushort timeout, bool isUdp)
-    {
-        return () => isUdp ? Transports.UdpPlcTransport.Create(ip, port, timeout) : Transports.TcpPlcTransport.Connect(ip, port, timeout);
     }
 
     /// <summary>
@@ -80,20 +80,31 @@ public partial class McpX : IPlc
     /// タイムアウトより 250ms 短い 250ms 単位の値にする（例：5000ms → 4750ms）。
     /// 500ms 未満は 0（PLC 側は無限待ち）とし、クライアント側のタイムアウトで打ち切る。
     /// </remarks>
-    private static ushort ToMonitoringTimer(ushort timeout)
+    private static ushort ToMonitoringTimer(int timeout)
     {
-        int monitoringTimer = timeout / 250 * 250 - 250;
+        // 監視タイマは ushort（ミリ秒）で扱うため、上限は 65500ms とする
+        int monitoringTimer = Math.Min(timeout, ushort.MaxValue) / 250 * 250 - 250;
         return (ushort)Math.Max(0, monitoringTimer);
     }
 
     byte[] IPlc.Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
+        ThrowIfDisposed();
         return transport.Request(packet, receiveLengthParser);
     }
 
     Task<byte[]> IPlc.RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
     {
+        ThrowIfDisposed();
         return transport.RequestAsync(packet, receiveLengthParser, cancellationToken);
+    }
+
+    private void ThrowIfDisposed()
+    {
+        if (transportDisposed)
+        {
+            throw new ObjectDisposedException(nameof(McpX));
+        }
     }
 
     internal async Task RemoteUnlockAsync(string password, CancellationToken cancellationToken)
@@ -138,8 +149,21 @@ public partial class McpX : IPlc
         }
 
         // 接続（最大でタイムアウト時間かかる）はロックの外で行う
-        var newTransport = transportFactory();
+        ReplaceTransport(transportFactory.Create());
+    }
 
+    internal async Task ReconnectAsync(CancellationToken cancellationToken)
+    {
+        if (transportFactory == null)
+        {
+            throw new InvalidOperationException("This instance cannot reconnect.");
+        }
+
+        ReplaceTransport(await transportFactory.CreateAsync(cancellationToken).ConfigureAwait(false));
+    }
+
+    private void ReplaceTransport(IPlcTransport newTransport)
+    {
         lock (transportLock)
         {
             if (transportDisposed)

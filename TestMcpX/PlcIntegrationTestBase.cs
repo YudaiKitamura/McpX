@@ -50,7 +50,7 @@ public abstract class PlcIntegrationTestBase
         EnsureEnabled(enableVar);
 
         var ip = Environment.GetEnvironmentVariable(ipVar) ?? defaultIp;
-        return new McpX(ip, GetEnvironmentInt(portVar, defaultPort));
+        return McpX.Connect(ip, GetEnvironmentInt(portVar, defaultPort));
     }
 
     private static T[] RandomValues<T>(int length, Func<T> next) => Enumerable.Range(0, length).Select(_ => next()).ToArray();

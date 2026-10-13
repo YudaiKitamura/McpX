@@ -2,6 +2,8 @@
 ### Added
 - Added a `CancellationToken` parameter to every async method (including `MonitorSession.ReadAsync`). Cancelling a request in progress closes the TCP connection, as a timeout does.
 - UDP connections now accept a host name as well as an IP address.
+- Added `McpXOptions` and the `McpX.Connect` / `McpX.ConnectAsync` factories (also `Connect(host, port)` for the default settings). `ConnectAsync` connects and unlocks the remote password without blocking a thread.
+- `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
 
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
@@ -9,6 +11,11 @@
 - **Breaking:** Renamed the namespace `McpXLib.Abstructs` to `McpXLib.Abstracts`.
 - **Breaking:** `IsAscii`, `RequestFrame` and `ProcessorSeries` on `McpX` are now read-only. They are fixed when the instance is created.
 - **Breaking:** The builder classes (`ReadBuilder`, `RandomReadBuilder`, `MonitorBuilder`, etc.) can no longer be created directly; they are passed to the `McpX` methods.
+- **Breaking:** `McpX` can no longer be created with `new`. Use `McpX.Connect(new McpXOptions { ... })` or `McpX.ConnectAsync`. The timeout is now a `TimeSpan` (`McpXOptions.Timeout`, default 5 s, `Timeout.InfiniteTimeSpan` for no timeout) and is no longer limited to 65,535 ms.
+- **Breaking:** `McpXSimulator` is now a static class. Use `McpXSimulator.Connect(systemNo, cpuNo, host)` / `ConnectAsync`, or `McpXSimulator.CreateOptions` to change other settings. The `SystemNo` / `CpuNo` properties were removed.
+- **Breaking:** `McpX` is now sealed.
+- **Breaking:** `RemoteReset` / `RemoteResetAsync` take the reconnection timeout as a `TimeSpan?` (default 30 s, `TimeSpan.Zero` to skip reconnecting). `RemoteResetAsync` now reconnects without blocking a thread.
+- Calling a communication method after `Dispose` now throws `ObjectDisposedException` (previously `IOException` over TCP).
 
 ### Fixed
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.

@@ -14,70 +14,118 @@ namespace McpXLib;
 /// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
 /// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
 /// </remarks> 
-public partial class McpX : IDisposable
+public sealed partial class McpX : IDisposable, IAsyncDisposable
 {
-    private readonly string? password;
-    private bool disposed;
+    // 0: 未破棄、1: 破棄済み（Dispose / DisposeAsync を一度だけ実行する）
+    private int disposed;
 
     /// <summary>
-    /// インスタンス初期化
+    /// 接続
     /// </summary>
     /// <remarks>
-    /// PLCのパラメータ設定に合わせたPLCの接続情報を指定します。<br/>
-    /// 必要に応じて、リモートロックの解除を行います。
+    /// 指定した設定でPLCに接続します。リモートパスワードを指定した場合は、接続後にリモートパスワードを解除します。<br/>
+    /// 使用後は <see cref="Dispose"/> または <see cref="DisposeAsync"/> で接続を閉じてください。
     /// </remarks>
-    /// <param name="ip">PLCのIPアドレスを指定します。</param>
-    /// <param name="port">PLCのポートを指定します。</param>
-    /// <param name="password">PLCのリモートパスワードを指定します。（リモートパスワードを設定している場合に指定してください。）</param>
-    /// <param name="isAscii">ASCIIコードによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、バイナリ交信:<c>false</c>です。）</param>
-    /// <param name="isUdp">UDPによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、TCP交信:<c>false</c>です。）</param>
-    /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
-    /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
-    /// <param name="processorSeries">PLCのシリーズを指定します。MELSEC iQ-Rシリーズへ拡張デバイス指定で交信する場合に<c>ProcessorSeries.iQR</c>を指定します。（デフォルトは、MELSEC-Q/Lシリーズ:<c>ProcessorSeries.Q</c>です。）</param>
-    /// <param name="useMultiBlockAccess">
-    /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。
-    /// 接続先が対応している場合のみ指定してください。（デフォルトは、<c>false</c>です。詳細は <see cref="UseMultiBlockAccess"/> を参照してください。）
-    /// </param>
-    /// <exception cref="TimeoutException">指定したタイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <param name="options">接続設定を指定します。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">接続設定が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
     /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public McpX(
-        string ip,
-        int port,
-        string? password = null,
-        bool isAscii = false,
-        bool isUdp = false,
-        RequestFrame requestFrame = RequestFrame.E3,
-        ushort timeoutMilliseconds = 5000,
-        ProcessorSeries processorSeries = ProcessorSeries.Q,
-        bool useMultiBlockAccess = false
-    ) : this (
-        transport: null,
-        transportFactory: CreateTransportFactory(ip, port, timeoutMilliseconds, isUdp),
-        timeout: timeoutMilliseconds,
-        isAscii: isAscii,
-        requestFrame: requestFrame,
-        processorSeries: processorSeries
-    )
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートパスワードの解除に失敗した場合など）に例外をスローします。</exception>
+    public static McpX Connect(McpXOptions options)
     {
-        this.password = password;
-        UseMultiBlockAccess = useMultiBlockAccess;
-        UnlockOrRelease();
+        if (options == null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        int timeout = options.Validate();
+        var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
+        var mcpx = new McpX(factory.Create(), factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password)
+        {
+            UseMultiBlockAccess = options.UseMultiBlockAccess,
+        };
+        mcpx.UnlockOrRelease();
+        return mcpx;
     }
+
+    /// <summary>
+    /// 接続
+    /// </summary>
+    /// <remarks>
+    /// 指定したIPアドレス（またはホスト名）とポート番号のPLCに、既定の設定（TCP・バイナリコード・3Eフレーム・MELSEC-Q/Lシリーズ）で接続します。
+    /// 設定を変える場合は <see cref="Connect(McpXOptions)"/> を使用してください。
+    /// </remarks>
+    /// <param name="host">PLCのIPアドレスまたはホスト名を指定します。</param>
+    /// <param name="port">PLCのポート番号を指定します。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentException">接続先が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    public static McpX Connect(string host, int port)
+        => Connect(new McpXOptions { Host = host, Port = port });
+
+    /// <summary>
+    /// 接続（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Connect(McpXOptions)"/> を参照してください。
+    /// </remarks>
+    /// <param name="options">接続設定を指定します。</param>
+    /// <param name="cancellationToken">接続をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">接続設定が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートパスワードの解除に失敗した場合など）に例外をスローします。</exception>
+    public static async Task<McpX> ConnectAsync(McpXOptions options, CancellationToken cancellationToken = default)
+    {
+        if (options == null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        int timeout = options.Validate();
+        var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
+        var transport = await factory.CreateAsync(cancellationToken).ConfigureAwait(false);
+        var mcpx = new McpX(transport, factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password)
+        {
+            UseMultiBlockAccess = options.UseMultiBlockAccess,
+        };
+        await mcpx.UnlockOrReleaseAsync(cancellationToken).ConfigureAwait(false);
+        return mcpx;
+    }
+
+    /// <summary>
+    /// 接続（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Connect(string, int)"/> を参照してください。
+    /// </remarks>
+    /// <param name="host">PLCのIPアドレスまたはホスト名を指定します。</param>
+    /// <param name="port">PLCのポート番号を指定します。</param>
+    /// <param name="cancellationToken">接続をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentException">接続先が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    public static Task<McpX> ConnectAsync(string host, int port, CancellationToken cancellationToken = default)
+        => ConnectAsync(new McpXOptions { Host = host, Port = port }, cancellationToken);
 
     // テスト用：再接続できるよう、トランスポートの生成処理を指定して生成する。
     internal McpX(
         Func<IPlcTransport> transportFactory,
         ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : this (
-        transport: null,
-        transportFactory: transportFactory,
-        timeout: 5000,
-        isAscii: false,
-        requestFrame: RequestFrame.E3,
-        processorSeries: processorSeries
-    )
+    ) : this(Transports.TransportFactory.From(transportFactory), processorSeries)
+    {
+    }
+
+    private McpX(Transports.TransportFactory factory, ProcessorSeries processorSeries)
+        : this(factory.Create(), factory, 5000, false, RequestFrame.E3, processorSeries, null)
     {
     }
 
@@ -87,16 +135,8 @@ public partial class McpX : IDisposable
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         ushort timeoutMilliseconds = 5000,
         string? password = null
-    ) : this (
-        transport: transport,
-        transportFactory: null,
-        timeout: timeoutMilliseconds,
-        isAscii: false,
-        requestFrame: RequestFrame.E3,
-        processorSeries: processorSeries
-    )
+    ) : this(transport, null, timeoutMilliseconds, false, RequestFrame.E3, processorSeries, password)
     {
-        this.password = password;
         UnlockOrRelease();
     }
 
@@ -115,6 +155,24 @@ public partial class McpX : IDisposable
         catch
         {
             // this.Dispose() はリモートロックを送るため、トランスポートだけを閉じる
+            DisposeTransport();
+            throw;
+        }
+    }
+
+    private async Task UnlockOrReleaseAsync(CancellationToken cancellationToken)
+    {
+        if (password == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await RemoteUnlockAsync(password, cancellationToken).ConfigureAwait(false);
+        }
+        catch
+        {
             DisposeTransport();
             throw;
         }
@@ -969,20 +1027,20 @@ public partial class McpX : IDisposable
     /// インスタンス破棄
     /// </summary>
     /// <remarks>
-    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。<br/>
-    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず解放します。2回目以降の呼び出しは何もしません。
+    /// 接続を閉じます。リモートパスワードを指定している場合は、閉じる前にPLCのリモートロックを実行します。<br/>
+    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず閉じます。2回目以降の呼び出しは何もしません。<br/>
+    /// 破棄した後に通信するメソッドを呼び出すと <see cref="ObjectDisposedException"/> をスローします。
     /// </remarks>
     public void Dispose()
     {
-        if (disposed)
+        if (Interlocked.Exchange(ref disposed, 1) != 0)
         {
             return;
         }
-        disposed = true;
 
         try
         {
-            if (password != null) 
+            if (password != null)
             {
                 RemoteLock(password);
             }
@@ -990,6 +1048,36 @@ public partial class McpX : IDisposable
         catch
         {
             // 接続が切れている場合などはロックを送れない。Dispose からは例外をスローしない（.NET の指針）。
+        }
+        finally
+        {
+            DisposeTransport();
+        }
+    }
+
+    /// <summary>
+    /// インスタンス破棄（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Dispose"/> を参照してください。リモートロックを非同期で送信します。
+    /// </remarks>
+    public async ValueTask DisposeAsync()
+    {
+        if (Interlocked.Exchange(ref disposed, 1) != 0)
+        {
+            return;
+        }
+
+        try
+        {
+            if (password != null)
+            {
+                await RemoteLockAsync(password, CancellationToken.None).ConfigureAwait(false);
+            }
+        }
+        catch
+        {
+            // Dispose と同じく、ロックに失敗しても例外はスローしない。
         }
         finally
         {

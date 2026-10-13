@@ -33,7 +33,7 @@ internal static class RealIQRConnection
         {
             try
             {
-                return new McpX(ip, port, isUdp: isUdp, requestFrame: requestFrame, processorSeries: processorSeries);
+                return McpX.Connect(new McpXOptions { Host = ip, Port = port, IsUdp = isUdp, RequestFrame = requestFrame, ProcessorSeries = processorSeries });
             }
             catch (SocketException ex) when (ex.SocketErrorCode == SocketError.ConnectionRefused && DateTime.UtcNow < deadline)
             {

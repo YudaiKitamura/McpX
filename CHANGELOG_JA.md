@@ -2,6 +2,8 @@
 ### Added
 - すべての非同期メソッド（`MonitorSession.ReadAsync` を含む）に `CancellationToken` 引数を追加。通信中にキャンセルした場合は、タイムアウトと同じく TCP の接続を閉じます。
 - UDP 交信で、IP アドレスに加えてホスト名を指定できるように変更。
+- `McpXOptions` と、ファクトリ `McpX.Connect` / `McpX.ConnectAsync` を追加（既定の設定で接続する `Connect(host, port)` も追加）。`ConnectAsync` は、接続とリモートパスワードの解除をスレッドを止めずに行います。
+- `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
 
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
@@ -9,6 +11,11 @@
 - **破壊的変更：** 名前空間 `McpXLib.Abstructs` を `McpXLib.Abstracts` に名前変更。
 - **破壊的変更：** `McpX` の `IsAscii`、`RequestFrame`、`ProcessorSeries` を読み取り専用に変更。インスタンスの生成時に決まります。
 - **破壊的変更：** ビルダークラス（`ReadBuilder`、`RandomReadBuilder`、`MonitorBuilder` など）を直接生成できないように変更。`McpX` のメソッドに渡されるものを使用してください。
+- **破壊的変更：** `McpX` を `new` で生成できないように変更。`McpX.Connect(new McpXOptions { ... })` または `McpX.ConnectAsync` を使用してください。タイムアウトは `TimeSpan`（`McpXOptions.Timeout`、既定 5秒、無期限は `Timeout.InfiniteTimeSpan`）で指定し、65,535ms の上限をなくしました。
+- **破壊的変更：** `McpXSimulator` を静的クラスに変更。`McpXSimulator.Connect(systemNo, cpuNo, host)` / `ConnectAsync`、または他の設定を変える場合は `McpXSimulator.CreateOptions` を使用してください。`SystemNo` / `CpuNo` プロパティは削除しました。
+- **破壊的変更：** `McpX` を sealed に変更。
+- **破壊的変更：** `RemoteReset` / `RemoteResetAsync` の再接続の待ち時間を `TimeSpan?`（既定 30秒、`TimeSpan.Zero` で再接続しない）で指定するように変更。`RemoteResetAsync` は、スレッドを止めずに再接続します。
+- `Dispose` の後に通信するメソッドを呼び出すと `ObjectDisposedException` をスローするように変更（TCP では `IOException` でした）。
 
 ### Fixed
 - UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。

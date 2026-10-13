@@ -39,17 +39,19 @@ public sealed class TestMcpXSimulator
         listener.Start();
         try
         {
-            using var simulator = new McpXSimulator(systemNo: 9, cpuNo: 4);
+            using var simulator = McpXSimulator.Connect(systemNo: 9, cpuNo: 4);
 
-            Assert.AreEqual(9, simulator.SystemNo);
-            Assert.AreEqual(4, simulator.CpuNo);
             Assert.AreEqual(ProcessorSeries.iQR, simulator.ProcessorSeries);
             Assert.AreEqual(RequestFrame.E3, simulator.RequestFrame);
             Assert.IsFalse(simulator.IsAscii);
 
             Assert.IsFalse(simulator.UseMultiBlockAccess);
 
-            using var e4 = new McpXSimulator(9, 4, requestFrame: RequestFrame.E4, processorSeries: ProcessorSeries.Q, useMultiBlockAccess: true);
+            var options = McpXSimulator.CreateOptions(9, 4);
+            options.RequestFrame = RequestFrame.E4;
+            options.ProcessorSeries = ProcessorSeries.Q;
+            options.UseMultiBlockAccess = true;
+            using var e4 = McpX.Connect(options);
             Assert.AreEqual(RequestFrame.E4, e4.RequestFrame);
             Assert.AreEqual(ProcessorSeries.Q, e4.ProcessorSeries);
             Assert.IsTrue(e4.UseMultiBlockAccess);
@@ -64,6 +66,7 @@ public sealed class TestMcpXSimulator
     public void TestConnectOutOfRange()
     {
         // 範囲外は接続前に例外（接続タイムアウトを待たない）
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new McpXSimulator(cpuNo: 5, timeoutMilliseconds: 60000));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => McpXSimulator.Connect(cpuNo: 5));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => McpXSimulator.CreateOptions(systemNo: 0));
     }
 }
