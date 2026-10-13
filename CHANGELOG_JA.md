@@ -25,6 +25,8 @@
 - **破壊的変更：** `BatchWrite` / `BatchWriteAsync` が書き込んだ値（引数のコピー）を返さないように変更。
 - **破壊的変更：** `BatchRead`、`ReadString`、`ReadBuilder.Add`、`BlockReadBuilder.Add` の点数を `ushort` から `int` に変更。負の値は `ArgumentOutOfRangeException` をスローします。`ReadString` の点数の引数名は `wordLength` に変更。
 - ネイティブライブラリ（C ABI）を .NET 10 でビルドするように変更。C ABI に変更はありません。
+- **破壊的変更：** netstandard2.0 版は、追加した依存パッケージのため .NET Framework 4.6.2 以降が必要です（従来は 4.6.1）。
+- 0.x からの移行方法は [MIGRATION_JA.md](MIGRATION_JA.md) を参照してください。
 
 ### Fixed
 - UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。

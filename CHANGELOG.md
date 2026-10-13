@@ -25,6 +25,8 @@
 - **Breaking:** `BatchWrite` / `BatchWriteAsync` no longer return the written values (they returned a copy of the argument).
 - **Breaking:** The lengths of `BatchRead`, `ReadString`, `ReadBuilder.Add` and `BlockReadBuilder.Add` are now `int` instead of `ushort`. A negative length throws `ArgumentOutOfRangeException`. The length parameter of `ReadString` is renamed to `wordLength`.
 - The native library (C ABI) is now built with .NET 10. The C ABI is unchanged.
+- **Breaking:** The netstandard2.0 build requires .NET Framework 4.6.2 or later (previously 4.6.1), because of its new dependencies.
+- See [MIGRATION.md](MIGRATION.md) for how to migrate from 0.x.
 
 ### Fixed
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
