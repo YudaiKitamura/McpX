@@ -7,7 +7,8 @@ namespace McpXLib.Utils;
 internal class RequestFrameSelector 
 {
     private readonly RequestPacketBuilder requestPacketBuilder;
-    private static int uniqSerialNumber;
+    // 4E フレームのシリアル番号の採番（全インスタンス共通。ushort に収まる下位16ビットを使う）
+    private static int nextSerialNumber = -1;
     private ushort serialNumber;
     private IPlc plc;
 
@@ -15,19 +16,13 @@ internal class RequestFrameSelector
     {
         this.plc = plc;
 
-        serialNumber = (ushort)uniqSerialNumber;
+        serialNumber = (ushort)Interlocked.Increment(ref nextSerialNumber);
 
         requestPacketBuilder = new RequestPacketBuilder(
             subHeaderPacketBuilder: this.plc.RequestFrame == RequestFrame.E3 ? new SubHeaderPacketBuilder() : new SubHeader4EPacketBuilder(serialNumber),
             routePacketBuilder: this.plc.Route,
             commandPacketBuilder: commandPacketBuilder
         );
-
-        var current = Interlocked.Increment(ref uniqSerialNumber);
-        if (current > ushort.MaxValue)
-        {
-            Interlocked.Exchange(ref uniqSerialNumber, ushort.MinValue);
-        }
     }
 
     internal byte[] GetRequestPacket()

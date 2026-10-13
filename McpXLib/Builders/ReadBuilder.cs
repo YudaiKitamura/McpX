@@ -52,9 +52,15 @@ public sealed class ReadBuilder
     /// <param name="length">読み込み対象の要素数（<c>T</c>型の要素数）を指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T[]</c>を受け取るコールバックを指定します。</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public ReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
+        if (onRead == null)
+        {
+            throw new ArgumentNullException(nameof(onRead));
+        }
+
         if (length < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(length), length, "Length must not be negative.");

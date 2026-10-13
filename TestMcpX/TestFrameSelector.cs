@@ -31,11 +31,11 @@ public sealed class TestFrameSelector
 
     private void ResetSerialNumber()
     {
-        // MEMO:
-        //  PrivateなuniqSerialNumberをリフレクションを使用してリセットする
+        // private の nextSerialNumber をリフレクションでリセットする（次に採番されるシリアル番号が 0 になる）
         var type = typeof(RequestFrameSelector);
-        var field = type.GetField("uniqSerialNumber", BindingFlags.Static | BindingFlags.NonPublic);
-        field?.SetValue(null, 0);
+        var field = type.GetField("nextSerialNumber", BindingFlags.Static | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("nextSerialNumber was not found.");
+        field.SetValue(null, -1);
     }
 
     [TestMethod]

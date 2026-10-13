@@ -9,6 +9,8 @@ internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
 {
     internal const ushort MIN_BIT_LENGTH = 1;
     internal const ushort MAX_BIT_LENGTH = 7168;
+    // Ethernet（E71）の ASCII コード交信では、ビット単位の一括読出し・書込みは 3584点まで
+    internal const ushort MAX_ASCII_BIT_LENGTH = 3584;
     private readonly ushort bitLength;
 
     internal BitBatchReadCommand(Prefix prefix, string address, ushort bitLength, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()

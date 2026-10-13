@@ -49,9 +49,15 @@ public sealed class WriteBuilder
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込む値を配列で指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
+        if (values == null)
+        {
+            throw new ArgumentNullException(nameof(values));
+        }
+
         batchEntries.Add((
             m => m.BatchWrite(prefix, address, values),
             (m, cancellationToken) => m.BatchWriteAsync(prefix, address, values, cancellationToken),

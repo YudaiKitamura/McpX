@@ -148,8 +148,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         ushort timeoutMilliseconds = 5000,
         string? password = null,
-        McpXRoute? route = null
-    ) : this(transport, null, timeoutMilliseconds, false, RequestFrame.E3, processorSeries, password, route)
+        McpXRoute? route = null,
+        bool isAscii = false
+    ) : this(transport, null, timeoutMilliseconds, isAscii, RequestFrame.E3, processorSeries, password, route)
     {
         UnlockOrRelease();
     }
@@ -438,13 +439,15 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 連続アクセスを、1回の要求に収まる範囲に分割します。
     /// </summary>
     /// <returns>各要求の先頭アドレスと、<typeparamref name="T"/> 型の要素単位の位置・個数。</returns>
-    private static List<(string address, int offset, int count)> SplitBatch<T>(Prefix prefix, string address, int length) where T : unmanaged
+    private List<(string address, int offset, int count)> SplitBatch<T>(Prefix prefix, string address, int length) where T : unmanaged
     {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+
         int maxCount;
         int pointsPerElement;
         if (typeof(T) == typeof(bool))
         {
-            maxCount = BitBatchReadCommand.MAX_BIT_LENGTH;
+            maxCount = IsAscii ? BitBatchReadCommand.MAX_ASCII_BIT_LENGTH : BitBatchReadCommand.MAX_BIT_LENGTH;
             pointsPerElement = 1;
         }
         else
@@ -494,6 +497,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     // 1回の要求（ビット単位またはワード単位の一括読出し）で読み込む。
     private T[] ReadChunk<T>(Prefix prefix, string address, int count) where T : unmanaged
     {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
         return typeof(T) == typeof(bool)
             ? (T[])(object)BitBatchRead(prefix, address, (ushort)count)
             : WordBatchRead<T>(prefix, address, (ushort)count);
@@ -501,6 +505,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
 
     private async Task<T[]> ReadChunkAsync<T>(Prefix prefix, string address, int count, CancellationToken cancellationToken) where T : unmanaged
     {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
         return typeof(T) == typeof(bool)
             ? (T[])(object)await BitBatchReadAsync(prefix, address, (ushort)count, cancellationToken).ConfigureAwait(false)
             : await WordBatchReadAsync<T>(prefix, address, (ushort)count, cancellationToken).ConfigureAwait(false);
@@ -509,6 +514,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     // 1回の要求（ビット単位またはワード単位の一括書込み）で書き込む。
     private void WriteChunk<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
         if (typeof(T) == typeof(bool))
         {
             BitBatchWrite(prefix, address, (bool[])(object)values);
@@ -521,6 +527,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
 
     private async Task WriteChunkAsync<T>(Prefix prefix, string address, T[] values, CancellationToken cancellationToken) where T : unmanaged
     {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
         if (typeof(T) == typeof(bool))
         {
             await BitBatchWriteAsync(prefix, address, (bool[])(object)values, cancellationToken).ConfigureAwait(false);
@@ -675,7 +682,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public void RandomRead(Action<RandomReadBuilder> build)
     {
         var builder = new RandomReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteRandomRead(builder);
     }
 
@@ -721,7 +728,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public async Task RandomReadAsync(Action<RandomReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         await ExecuteRandomReadAsync(builder, cancellationToken).ConfigureAwait(false);
     }
 
@@ -767,7 +774,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public void RandomWrite(Action<RandomWriteBuilder> build)
     {
         var builder = new RandomWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteRandomWrite(builder);
     }
 
@@ -803,7 +810,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public async Task RandomWriteAsync(Action<RandomWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         await ExecuteRandomWriteAsync(builder, cancellationToken).ConfigureAwait(false);
     }
 
@@ -843,7 +850,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public MonitorSession MonitorRegister(Action<MonitorBuilder> build)
     {
         var builder = new MonitorBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
@@ -875,7 +882,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public async Task<MonitorSession> MonitorRegisterAsync(Action<MonitorBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new MonitorBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
@@ -908,7 +915,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public void Read(Action<ReadBuilder> build)
     {
         var builder = new ReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
         if (blocks.Count > 0)
@@ -944,7 +951,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public async Task ReadAsync(Action<ReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new ReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
         if (blocks.Count > 0)
@@ -982,7 +989,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public void Write(Action<WriteBuilder> build)
     {
         var builder = new WriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
         if (blocks.Count > 0)
@@ -1017,7 +1024,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     public async Task WriteAsync(Action<WriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new WriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
         if (blocks.Count > 0)

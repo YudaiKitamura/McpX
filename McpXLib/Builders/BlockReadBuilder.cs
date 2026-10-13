@@ -31,9 +31,15 @@ public sealed class BlockReadBuilder
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が1未満の場合にスローします。</exception>
     /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <exception cref="NotSupportedException">非対応の型を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public BlockReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
+        if (onRead == null)
+        {
+            throw new ArgumentNullException(nameof(onRead));
+        }
+
         if (length < 1)
         {
             throw new ArgumentOutOfRangeException(nameof(length), length, "Length must be at least 1.");

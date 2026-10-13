@@ -26,6 +26,12 @@
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
 - Fixed UDP requests accepting a response whose length does not match the response data length in its header. It now throws `ReceivePacketException`.
 - Fixed malformed responses (too short, or non-hexadecimal characters in ASCII mode) throwing undocumented `ArgumentException` / `FormatException` / `IndexOutOfRangeException`. They now throw `ReceivePacketException` with the original exception as the inner exception.
+- Fixed `ReadString` / `WriteString` failing on .NET Core / .NET apps that use the netstandard2.0 build, because Shift_JIS was not registered. The netstandard2.0 build now references `System.Text.Encoding.CodePages`.
+- Fixed bit batch read / write in ASCII mode being split into requests of 7168 points, which exceeds the limit of 3584 points for Ethernet modules in ASCII mode.
+- Fixed addresses above FFFFFF for `ProcessorSeries.Q` being silently corrupted by the device code. They now throw `DeviceAddressException`, as do ASCII device numbers longer than 6 digits (8 for `ProcessorSeries.iQR`).
+- `bool` on a word device (e.g. `Read<bool>(Prefix.D, ...)`, `RandomWriteBuilder.Add<bool>`) now throws `ArgumentException` before sending, instead of the PLC returning C05C.
+- The builder methods and `Add` now throw `ArgumentNullException` for a null builder action, callback or value array, and a null address throws `DeviceAddressException`.
+- Fixed the 4E frame serial number not being assigned atomically when requests are sent from several threads.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.

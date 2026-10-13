@@ -46,9 +46,10 @@
     <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  <!-- netstandard2.0 には IAsyncDisposable がないため -->
+  <!-- netstandard2.0 には IAsyncDisposable と Shift_JIS（コードページ）のエンコーディングがないため -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

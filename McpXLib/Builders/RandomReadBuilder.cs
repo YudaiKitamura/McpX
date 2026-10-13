@@ -34,9 +34,15 @@ public sealed class RandomReadBuilder
     /// <param name="address">読み込み対象のアドレスを指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T</c>を受け取るコールバックを指定します。</param>
     /// <exception cref="NotSupportedException">ランダムアクセス非対応の型（<c>long</c>,<c>double</c> など）を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public RandomReadBuilder Add<T>(Prefix prefix, string address, Action<T> onRead) where T : unmanaged
     {
+        if (onRead == null)
+        {
+            throw new ArgumentNullException(nameof(onRead));
+        }
+
         switch (RandomAccessKindResolver.Resolve<T>())
         {
             case RandomAccessKind.Bit:

@@ -40,7 +40,7 @@ public partial class McpX
     public void BlockRead(Action<BlockReadBuilder> build)
     {
         var builder = new BlockReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteBlockRead(builder.entries);
     }
 
@@ -63,7 +63,7 @@ public partial class McpX
     public async Task BlockReadAsync(Action<BlockReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         await ExecuteBlockReadAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 
@@ -88,7 +88,7 @@ public partial class McpX
     public void BlockWrite(Action<BlockWriteBuilder> build)
     {
         var builder = new BlockWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteBlockWrite(builder.entries);
     }
 
@@ -111,7 +111,7 @@ public partial class McpX
     public async Task BlockWriteAsync(Action<BlockWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         await ExecuteBlockWriteAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 

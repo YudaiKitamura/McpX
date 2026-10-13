@@ -29,9 +29,8 @@ internal static class DeviceConverter
 
     private static Encoding CreateShiftJis()
     {
-#if !NETSTANDARD2_0
+        // .NET Core 以降・netstandard2.0（System.Text.Encoding.CodePages）とも、Shift_JIS はプロバイダの登録が必要
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
         return Encoding.GetEncoding("shift_jis");
     }
 
@@ -179,6 +178,10 @@ internal static class DeviceConverter
         }
 
         // Q/L デバイス指定: [アドレス3バイト][デバイスコード1バイト]
+        if (decAddress > 0xFFFFFF)
+        {
+            throw new DeviceAddressException($"{prefix}{address} is out of range for MELSEC-Q/L device specification (up to FFFFFF). Use ProcessorSeries.iQR to access it.");
+        }
         bytes[3] = (byte)prefix;
         return bytes;
     }
@@ -189,6 +192,14 @@ internal static class DeviceConverter
         {
             throw new DeviceAddressException($"{prefix}{address} is invalid.");
         }
+
+        // 先頭の 0 を除いた桁数で、ASCII のデバイス番号の桁数（Q/L: 6桁、iQ-R: 8桁）に収まるかを確認する
+        int digits = Math.Max(1, address.TrimStart('0').Length);
+        if (digits > (series == ProcessorSeries.iQR ? 8 : 6))
+        {
+            throw new DeviceAddressException($"{prefix}{address} is out of range for {(series == ProcessorSeries.iQR ? "MELSEC iQ-R" : "MELSEC-Q/L")} device specification.");
+        }
+        address = address.TrimStart('0').PadLeft(1, '0');
 
         if (series == ProcessorSeries.iQR)
         {
@@ -229,7 +240,7 @@ internal static class DeviceConverter
         {
             if (uint.Parse(address) + offset < 0) 
             {
-                throw new OverflowException($"Prefix:{prefix} Address:{address} Offet:{offset}");
+                throw new OverflowException($"Prefix:{prefix} Address:{address} Offset:{offset}");
             }
             nextDeviceDecAddress = (uint)(uint.Parse(address) + offset);
             return nextDeviceDecAddress.ToString();
@@ -239,7 +250,7 @@ internal static class DeviceConverter
             uint decAddress = Convert.ToUInt32(address, 16);
             if (decAddress + offset < 0) 
             {
-                throw new OverflowException($"Prefix:{prefix} Address:{address} DecAddress:{decAddress} Offet:{offset}");
+                throw new OverflowException($"Prefix:{prefix} Address:{address} DecAddress:{decAddress} Offset:{offset}");
             }
             nextDeviceDecAddress = (uint)(decAddress + offset);
             return nextDeviceDecAddress.ToString("X"); 
@@ -314,6 +325,11 @@ internal static class DeviceConverter
 
     private static bool ValidateAddress(Prefix prefix, string address) 
     {
+        if (address == null)
+        {
+            return false;
+        }
+
         if (!IsHexDevice(prefix))
         {
             return uint.TryParse(address, out _);
@@ -321,6 +337,17 @@ internal static class DeviceConverter
         else
         {
             return Regex.IsMatch(address, @"^[0-9A-Fa-f]+$");
+        }
+    }
+
+    /// <summary>
+    /// <c>bool</c>（ビット単位のアクセス）をワードデバイスに指定した場合に例外をスローします（PLC はエラーコード C05C を返すため、送信前に検出する）。
+    /// </summary>
+    internal static void ThrowIfBitOnWordDevice<T>(Prefix prefix)
+    {
+        if (typeof(T) == typeof(bool) && !IsBitDevice(prefix))
+        {
+            throw new ArgumentException($"bool cannot be used with the word device {prefix}. Use a word type such as short, or a bit device.", nameof(prefix));
         }
     }
 
