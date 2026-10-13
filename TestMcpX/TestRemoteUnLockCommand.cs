@@ -13,8 +13,7 @@ public sealed class TestRemoteUnLockCommand
     public TestRemoteUnLockCommand()
     {
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketBuilder();
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
     }
 
     [TestMethod]

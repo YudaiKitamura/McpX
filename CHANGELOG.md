@@ -3,12 +3,16 @@
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
 - **Breaking:** Renamed `RecivePacketException` to `ReceivePacketException`.
 - **Breaking:** Renamed the namespace `McpXLib.Abstructs` to `McpXLib.Abstracts`.
+- **Breaking:** `IsAscii`, `RequestFrame` and `ProcessorSeries` on `McpX` are now read-only. They are fixed when the instance is created.
+- **Breaking:** The builder classes (`ReadBuilder`, `RandomReadBuilder`, `MonitorBuilder`, etc.) can no longer be created directly; they are passed to the `McpX` methods.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.
 - **Breaking:** Removed the obsolete random access methods `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` and their async versions. Use `RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)`.
 - **Breaking:** Removed the tuple-based monitor methods `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` and their async versions. Use `MonitorRegister(Action<MonitorBuilder>)` and the returned `MonitorSession`.
 - **Breaking:** Removed the unused `PlcDuplicationException`.
+- **Breaking:** Removed the public base classes `Mcp` and `BasePlc` (merged into `McpX`), including the raw packet methods `Request` / `RequestAsync` and the `Route` property.
+- **Breaking:** The interfaces in `McpXLib.Interfaces` (`IPlc`, `IPlcCommand<T>`, `IPlcTransport`, etc.) are now internal.
 
 ## [0.13.0] - 2026-10-10
 ### Added

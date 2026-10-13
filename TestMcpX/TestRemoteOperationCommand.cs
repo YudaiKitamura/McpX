@@ -79,8 +79,7 @@ public sealed class TestRemoteOperationCommand
     public async Task TestExecute()
     {
         var plc = new Mock<IPlc>();
-        plc.SetupProperty(x => x.Route);
-        plc.Object.Route = new RoutePacketBuilder();
+        plc.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
         byte[] response = [0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00];
         plc.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(response);
         plc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(response);

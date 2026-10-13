@@ -2,11 +2,11 @@ using McpXLib.Enums;
 
 namespace McpXLib.Interfaces;
 
-public interface IPlc 
+internal interface IPlc 
 {
-    bool IsAscii { get; set; }
-    IPacketBuilder Route { get; set; }
-    RequestFrame RequestFrame { get; set; }
+    bool IsAscii { get; }
+    IPacketBuilder Route { get; }
+    RequestFrame RequestFrame { get; }
     
     byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser);
     

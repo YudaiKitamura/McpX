@@ -1,6 +1,6 @@
 namespace McpXLib.Interfaces;
 
-public interface IRequestPacketBuilder : IPacketBuilder
+internal interface IRequestPacketBuilder : IPacketBuilder
 {
     IPacketBuilder SubHeaderPacketBuilder { get; }
     IPacketBuilder RoutePacketBuilder { get; }

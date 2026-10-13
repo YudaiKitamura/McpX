@@ -11,6 +11,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class WriteBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal WriteBuilder() { }
+
     // 単一指定（ランダムアクセス）のエントリ。
     internal readonly RandomWriteBuilder random = new();
 

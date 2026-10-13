@@ -1,121 +1,75 @@
 using McpXLib.Enums;
-using McpXLib.Abstracts;
 using McpXLib.Commands;
 using McpXLib.Builders;
 using McpXLib.Interfaces;
-using McpXLib.Exceptions;
 
 namespace McpXLib;
 
-/// <summary>
-/// MCプロトコル実装クラス（コマンド追加以外は、<see cref="McpX"/>クラスを使用してください。）
-/// </summary>
-public class Mcp : BasePlc, IPlc
+// MCプロトコルの各コマンドを送受信する内部実装（旧 Mcp / BasePlc）。
+public partial class McpX : IPlc
 {
     /// <summary>
-    /// ASCIIコードによる交信を行う場合に<c>true</c>を指定します。
+    /// ASCIIコードで交信する場合は<c>true</c>、バイナリコードの場合は<c>false</c>です。
     /// </summary>
-    public bool IsAscii
-    { 
-        get 
-        {
-            return isAscii;
-        }
-        set 
-        {
-            isAscii = value; 
-        }
-    }
-    
-    /// <summary>
-    /// アクセス経路を指定します。
-    /// </summary>
-    public IPacketBuilder Route
-    {
-        get
-        {
-            return route;
-        }
-        set
-        {
-            route = value;
-        }
-    }
+    public bool IsAscii => isAscii;
 
     /// <summary>
-    /// フレーム（データ交信電文）の種類を指定します。
+    /// フレーム（データ交信電文）の種類です。
     /// </summary>
-    public RequestFrame RequestFrame
-    {
-        get
-        {
-            return requestFrame;
-        }
-        set
-        {
-            requestFrame = value;
-        }
-    }
+    public RequestFrame RequestFrame => requestFrame;
 
     /// <summary>
-    /// PLCのシリーズ（デバイス指定フォーマット）を指定します。
+    /// PLCのシリーズ（デバイス指定フォーマット）です。
     /// </summary>
-    public ProcessorSeries ProcessorSeries
-    {
-        get
-        {
-            return processorSeries;
-        }
-        set
-        {
-            processorSeries = value;
-        }
-    }
+    public ProcessorSeries ProcessorSeries => processorSeries;
 
-    private bool isAscii;
-    private IPacketBuilder route;
-    private RequestFrame requestFrame;
-    private ProcessorSeries processorSeries;
+    IPacketBuilder IPlc.Route => route;
+
+    private readonly bool isAscii;
+    private readonly IPacketBuilder route;
+    private readonly RequestFrame requestFrame;
+    private readonly ProcessorSeries processorSeries;
 
     // 各コマンドの監視タイマ（ミリ秒）。0 は PLC 側で無限待ち。
     private readonly ushort monitoringTimer;
+
+    private IPlcTransport transport;
 
     // 再接続用のトランスポート生成処理（トランスポートを直接指定した場合は null）
     private readonly Func<IPlcTransport>? transportFactory;
 
     // 破棄とトランスポートの差し替えを排他し、破棄後に再接続した接続が残らないようにする。
     private readonly object transportLock = new();
-    private bool disposed;
+    private bool transportDisposed;
 
     // PLC に残るモニタ登録は最後の1つだけのため、登録のたびに世代を進めて古い MonitorSession を検出する。
     // 登録と世代の更新、世代の確認とモニタ読み出しを、それぞれ monitorGate の内側で一まとめに行う。
     private readonly SemaphoreSlim monitorGate = new(1, 1);
     private int monitorGeneration;
 
-    internal Mcp(
-        IPlcTransport transport,
+    // transport と transportFactory はどちらか一方を指定する（transportFactory を指定した場合は再接続できる）。
+    private McpX(
+        IPlcTransport? transport,
+        Func<IPlcTransport>? transportFactory,
         ushort timeout,
-        IPacketBuilder? route = null,
-        bool isAscii = false,
-        RequestFrame requestFrame = RequestFrame.E3,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : base (
-        transport
+        bool isAscii,
+        RequestFrame requestFrame,
+        ProcessorSeries processorSeries,
+        IPacketBuilder? route = null
     )
     {
+        this.transportFactory = transportFactory;
+        this.transport = transport ?? transportFactory?.Invoke() ?? throw new ArgumentNullException(nameof(transport));
         this.isAscii = isAscii;
         this.requestFrame = requestFrame;
         this.processorSeries = processorSeries;
+        this.route = route ?? new RoutePacketBuilder();
         this.monitoringTimer = ToMonitoringTimer(timeout);
+    }
 
-        if (route != null) 
-        {
-            this.route = route;
-        }
-        else
-        {
-            this.route = new RoutePacketBuilder();
-        }
+    private static Func<IPlcTransport> CreateTransportFactory(string ip, int port, ushort timeout, bool isUdp)
+    {
+        return () => isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : new Transports.TcpPlcTransport(ip, port, timeout);
     }
 
     /// <summary>
@@ -132,51 +86,14 @@ public class Mcp : BasePlc, IPlc
         return (ushort)Math.Max(0, monitoringTimer);
     }
 
-    internal Mcp(
-        Func<IPlcTransport> transportFactory,
-        ushort timeout,
-        IPacketBuilder? route = null,
-        bool isAscii = false,
-        RequestFrame requestFrame = RequestFrame.E3,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : this (
-        transport: transportFactory(),
-        timeout: timeout,
-        route: route,
-        isAscii: isAscii,
-        requestFrame: requestFrame,
-        processorSeries: processorSeries
-    )
+    byte[] IPlc.Request(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        this.transportFactory = transportFactory;
+        return transport.Request(packet, receiveLengthParser);
     }
 
-    internal Mcp(
-        string ip,
-        int port,
-        ushort timeout,
-        bool isUdp = false,
-        IPacketBuilder? route = null,
-        bool isAscii = false,
-        RequestFrame requestFrame = RequestFrame.E3,
-        ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : this (
-        transportFactory: () => isUdp ? new Transports.UdpPlcTransport(ip, port, timeout) : (IPlcTransport)new Transports.TcpPlcTransport(ip, port, timeout),
-        route: route,
-        isAscii: isAscii,
-        requestFrame: requestFrame,
-        processorSeries: processorSeries,
-        timeout: timeout
-    )
+    async Task<byte[]> IPlc.RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser)
     {
-        if (route != null) 
-        {
-            this.route = route;
-        }
-        else
-        {
-            this.route = new RoutePacketBuilder();
-        }
+        return await transport.RequestAsync(packet, receiveLengthParser);
     }
 
     internal async Task RemoteUnlockAsync(string password)
@@ -211,18 +128,13 @@ public class Mcp : BasePlc, IPlc
         );
     }
 
-    /// <summary>
-    /// インスタンス破棄
-    /// </summary>
-    /// <remarks>
-    /// 通信トランスポートを解放します。
-    /// </remarks>
-    public override void Dispose()
+    // 通信トランスポートを解放する（リモートロックは送らない）。
+    private void DisposeTransport()
     {
         lock (transportLock)
         {
-            disposed = true;
-            base.Dispose();
+            transportDisposed = true;
+            transport.Dispose();
         }
     }
 
@@ -242,14 +154,16 @@ public class Mcp : BasePlc, IPlc
 
         lock (transportLock)
         {
-            if (disposed)
+            if (transportDisposed)
             {
                 // RemoteReset の再接続中に Dispose された場合、新しい接続を残さない
                 newTransport.Dispose();
                 throw new ObjectDisposedException(GetType().Name);
             }
 
-            ReplaceTransport(newTransport);
+            var oldTransport = transport;
+            transport = newTransport;
+            oldTransport.Dispose();
         }
 
         // 新しい接続には PLC のモニタ登録が引き継がれないため、既存の MonitorSession を無効にする

@@ -10,11 +10,11 @@ namespace McpXLib;
 /// MCプロトコル拡張クラス
 /// </summary>
 /// <remarks>
-/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。<br/>
+/// MCプロトコルでPLCと交信するクラスです。デバイスアクセス点数の上限を超える要求は、自動的に分割して送信します。<br/>
 /// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
 /// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
 /// </remarks> 
-public partial class McpX : Mcp
+public partial class McpX : IDisposable
 {
     private readonly string? password;
     private bool disposed;
@@ -52,14 +52,13 @@ public partial class McpX : Mcp
         ushort timeoutMilliseconds = 5000,
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         bool useMultiBlockAccess = false
-    ) : base (
-        ip: ip,
-        port: port,
+    ) : this (
+        transport: null,
+        transportFactory: CreateTransportFactory(ip, port, timeoutMilliseconds, isUdp),
+        timeout: timeoutMilliseconds,
         isAscii: isAscii,
-        isUdp: isUdp,
         requestFrame: requestFrame,
-        processorSeries: processorSeries,
-        timeout: timeoutMilliseconds
+        processorSeries: processorSeries
     )
     {
         this.password = password;
@@ -71,9 +70,12 @@ public partial class McpX : Mcp
     internal McpX(
         Func<IPlcTransport> transportFactory,
         ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : base (
+    ) : this (
+        transport: null,
         transportFactory: transportFactory,
         timeout: 5000,
+        isAscii: false,
+        requestFrame: RequestFrame.E3,
         processorSeries: processorSeries
     )
     {
@@ -85,9 +87,12 @@ public partial class McpX : Mcp
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         ushort timeoutMilliseconds = 5000,
         string? password = null
-    ) : base (
+    ) : this (
         transport: transport,
+        transportFactory: null,
         timeout: timeoutMilliseconds,
+        isAscii: false,
+        requestFrame: RequestFrame.E3,
         processorSeries: processorSeries
     )
     {
@@ -110,7 +115,7 @@ public partial class McpX : Mcp
         catch
         {
             // this.Dispose() はリモートロックを送るため、トランスポートだけを閉じる
-            base.Dispose();
+            DisposeTransport();
             throw;
         }
     }
@@ -1105,7 +1110,7 @@ public partial class McpX : Mcp
     /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。<br/>
     /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず解放します。2回目以降の呼び出しは何もしません。
     /// </remarks>
-    public override void Dispose()
+    public void Dispose()
     {
         if (disposed)
         {
@@ -1126,7 +1131,7 @@ public partial class McpX : Mcp
         }
         finally
         {
-            base.Dispose();
+            DisposeTransport();
         }
     }
 }

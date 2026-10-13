@@ -1,6 +1,6 @@
 namespace McpXLib.Interfaces;
 
-public interface IPayloadBuilder
+internal interface IPayloadBuilder
 {
     void AppendPayload(List<byte> packets, bool isAscii);
 }

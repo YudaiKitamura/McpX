@@ -13,6 +13,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class RandomWriteBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal RandomWriteBuilder() { }
+
     internal readonly List<(Prefix prefix, string address, ushort value)> wordDevices = new();
     internal readonly List<(Prefix prefix, string address, uint value)> doubleWordDevices = new();
     internal readonly List<(Prefix prefix, string address, bool value)> bitDevices = new();

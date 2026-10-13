@@ -14,6 +14,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class RandomReadBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal RandomReadBuilder() { }
+
     // ワードアクセス（1点=1ワード）で読み出すエントリ。ビットデバイスもワードとして読み、bit0 を抽出する。
     internal readonly List<(Prefix prefix, string address, Action<ushort> apply)> wordEntries = new();
 

@@ -3,12 +3,16 @@
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
 - **破壊的変更：** `RecivePacketException` を `ReceivePacketException` に名前変更。
 - **破壊的変更：** 名前空間 `McpXLib.Abstructs` を `McpXLib.Abstracts` に名前変更。
+- **破壊的変更：** `McpX` の `IsAscii`、`RequestFrame`、`ProcessorSeries` を読み取り専用に変更。インスタンスの生成時に決まります。
+- **破壊的変更：** ビルダークラス（`ReadBuilder`、`RandomReadBuilder`、`MonitorBuilder` など）を直接生成できないように変更。`McpX` のメソッドに渡されるものを使用してください。
 
 ### Removed
 - **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。
 - **破壊的変更：** 非推奨のランダムアクセスメソッド `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` とその非同期版を削除。`RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)` を使用してください。
 - **破壊的変更：** タプル形式のモニタメソッド `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` とその非同期版を削除。`MonitorRegister(Action<MonitorBuilder>)` と、戻り値の `MonitorSession` を使用してください。
 - **破壊的変更：** 使用されていない `PlcDuplicationException` を削除。
+- **破壊的変更：** 公開基底クラス `Mcp` と `BasePlc` を削除（`McpX` に統合）。生パケットを送る `Request` / `RequestAsync` と `Route` プロパティも削除。
+- **破壊的変更：** `McpXLib.Interfaces` のインターフェース（`IPlc`、`IPlcCommand<T>`、`IPlcTransport` など）を internal に変更。
 
 ## [0.13.0] - 2026-10-10
 ### Added

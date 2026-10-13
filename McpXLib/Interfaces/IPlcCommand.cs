@@ -1,8 +1,8 @@
 namespace McpXLib.Interfaces;
 
 
-public interface IPlcCommand<T> : IPacketBuilder
+internal interface IPlcCommand<T> : IPacketBuilder
 {
-    public Task<T> ExecuteAsync(IPlc plc);
-    public T Execute(IPlc plc);
+    Task<T> ExecuteAsync(IPlc plc);
+    T Execute(IPlc plc);
 }

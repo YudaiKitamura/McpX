@@ -1,6 +1,6 @@
 namespace McpXLib.Interfaces;
 
-public interface IPacketParser
+internal interface IPacketParser
 {
     byte[] ParsePacket(byte[] bytes);
 

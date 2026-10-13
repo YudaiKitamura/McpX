@@ -12,6 +12,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class ReadBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal ReadBuilder() { }
+
     // 単一指定（ランダムアクセス）のエントリ。
     internal readonly RandomReadBuilder random = new();
 

@@ -34,10 +34,8 @@ public sealed class TestMultiBlockCommand
     private static Mock<IPlc> CreatePlc(bool isAscii)
     {
         var plc = new Mock<IPlc>();
-        plc.SetupProperty(x => x.Route);
-        plc.SetupProperty(x => x.IsAscii);
-        plc.Object.Route = new RoutePacketBuilder();
-        plc.Object.IsAscii = isAscii;
+        plc.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plc.SetupGet(x => x.IsAscii).Returns(isAscii);
         return plc;
     }
 

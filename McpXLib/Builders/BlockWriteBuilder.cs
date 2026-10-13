@@ -11,6 +11,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class BlockWriteBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal BlockWriteBuilder() { }
+
     internal readonly List<BlockWriteEntry> entries = new();
 
     /// <summary>

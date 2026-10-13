@@ -17,10 +17,8 @@ public sealed class TestWordBatchReadAsciiCommand
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.SetupProperty(x => x.IsAscii);
-        plcMock.Object.Route = new RoutePacketBuilder();
-        plcMock.Object.IsAscii = true;
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plcMock.SetupGet(x => x.IsAscii).Returns(true);
     }
 
     [TestMethod]
