@@ -22,7 +22,7 @@
   <PropertyGroup>
     <PackageId>McpX</PackageId>
     <Authors>Yudai Kitamura</Authors>
-    <Copyright>Copyright (c) 2024-2026 Yudai Kitamura</Copyright>
+    <Copyright>Copyright (c) 2025-2026 Yudai Kitamura</Copyright>
     <Description>MC protocol communication library for Mitsubishi PLC(三菱PLC用MCプロトコル通信ライブラリ)</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
