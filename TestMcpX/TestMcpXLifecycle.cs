@@ -1,6 +1,7 @@
 using McpXLib;
 using McpXLib.Enums;
 using McpXLib.Exceptions;
+using McpXLib.Interfaces;
 
 namespace TestMcpX;
 
@@ -151,5 +152,63 @@ public sealed class TestMcpXLifecycle
         Assert.ThrowsException<ObjectDisposedException>(() => mcpx.Reconnect());
         Assert.AreEqual(2, created.Count);
         Assert.IsTrue(created.All(t => t.Disposed));
+    }
+
+    [TestMethod]
+    public async Task TestRemoteResetAsyncInvalidatesMonitorSession()
+    {
+        using var mcpx = new McpX(() => new FakePlcTransport());
+        var session = await mcpx.MonitorRegisterAsync(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        await mcpx.RemoteResetAsync(TimeSpan.FromSeconds(5));
+
+        // 再接続した接続には PLC のモニタ登録が引き継がれないため、古いセッションは無効
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => session.ReadAsync());
+    }
+
+    [TestMethod]
+    public async Task TestRemoteResetAsyncWaitsForMonitorRead()
+    {
+        // 1本目の接続は、モニタ（0802）の応答を release まで保留する
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var first = new HoldMonitorTransport(release.Task);
+        int created = 0;
+        using var mcpx = new McpX(() => created++ == 0 ? first : new FakePlcTransport());
+        var session = await mcpx.MonitorRegisterAsync(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        // モニタ読み出しの途中で RemoteResetAsync を実行する
+        var read = session.ReadAsync();
+        var reset = mcpx.RemoteResetAsync(TimeSpan.FromSeconds(10));
+
+        // 再接続（約1秒後）はモニタ読み出しが終わるのを待つ
+        await Task.Delay(1500);
+        Assert.IsFalse(reset.IsCompleted);
+
+        // 読み出しが終われば、RemoteResetAsync も完了し、古いセッションは無効になる
+        release.SetResult(true);
+        await read;
+        await reset.WaitAsync(TimeSpan.FromSeconds(5));
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => session.ReadAsync());
+    }
+
+    // モニタ（0802）の応答だけを、指定したタスクの完了まで保留するトランスポート
+    private sealed class HoldMonitorTransport(Task hold) : IPlcTransport
+    {
+        private readonly FakePlcTransport inner = new();
+
+        public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => inner.Request(packet, receiveLengthParser);
+
+        public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
+        {
+            if (BitConverter.ToUInt16(packet, 11) == 0x0802)
+            {
+                await hold;
+            }
+            return inner.Request(packet, receiveLengthParser);
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }

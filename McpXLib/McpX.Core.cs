@@ -156,6 +156,16 @@ public partial class McpX : IPlc
 
         // 接続（最大でタイムアウト時間かかる）はロックの外で行う
         ReplaceTransport(transportFactory.Create());
+
+        monitorGate.Wait();
+        try
+        {
+            InvalidateMonitorSessions();
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
     }
 
     internal async Task ReconnectAsync(CancellationToken cancellationToken)
@@ -166,6 +176,18 @@ public partial class McpX : IPlc
         }
 
         ReplaceTransport(await transportFactory.CreateAsync(cancellationToken).ConfigureAwait(false));
+
+        // 接続を差し替えた後は、キャンセルされても世代を必ず進める（古い MonitorSession を残さない）。
+        // モニタ読み出し中はゲートが解放されるまで待つが、スレッドは止めない。
+        await monitorGate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            InvalidateMonitorSessions();
+        }
+        finally
+        {
+            monitorGate.Release();
+        }
     }
 
     private void ReplaceTransport(IPlcTransport newTransport)
@@ -183,17 +205,12 @@ public partial class McpX : IPlc
             transport = newTransport;
             oldTransport.Dispose();
         }
+    }
 
-        // 新しい接続には PLC のモニタ登録が引き継がれないため、既存の MonitorSession を無効にする
-        monitorGate.Wait();
-        try
-        {
-            monitorGeneration++;
-        }
-        finally
-        {
-            monitorGate.Release();
-        }
+    // 新しい接続には PLC のモニタ登録が引き継がれないため、既存の MonitorSession を無効にする（monitorGate の内側で呼ぶ）。
+    private void InvalidateMonitorSessions()
+    {
+        monitorGeneration++;
     }
 
     internal async Task RemoteOperationAsync(Func<ushort, RemoteOperationCommand> create, CancellationToken cancellationToken)
