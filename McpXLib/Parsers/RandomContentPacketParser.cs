@@ -30,7 +30,7 @@ internal class RandomContentPacketParser : BaseContentPacketParser
         }
     }
 
-    internal override byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    internal override byte[] ConvertAsciiBytesToBinaryBytes(byte[] bytes)
     {
         var asciiHex = Encoding.ASCII.GetString(bytes.Take(wordLength * 4).ToArray());
         var wordDeviceBytes = DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / 2)

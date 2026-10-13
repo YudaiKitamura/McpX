@@ -24,7 +24,7 @@ internal abstract class BasePacketParser : IPacketParser
         byte[] parseBytes = GetBinaryBytes(bytes);
         if (IsAscii)
         {
-            parseBytes = ConvertAsciiBytesToBinalyBytes(parseBytes);
+            parseBytes = ConvertAsciiBytesToBinaryBytes(parseBytes);
         }
 
         Validation(parseBytes);
@@ -56,7 +56,7 @@ internal abstract class BasePacketParser : IPacketParser
         return bytes.Skip(GetIndex()).Take(GetLength()).ToArray();
     }
 
-    internal virtual byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    internal virtual byte[] ConvertAsciiBytesToBinaryBytes(byte[] bytes)
     {
         var asciiHex = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
         

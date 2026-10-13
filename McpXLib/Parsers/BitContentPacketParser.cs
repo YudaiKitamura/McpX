@@ -30,7 +30,7 @@ internal class BitContentPacketParser : BaseContentPacketParser
         }
     }
 
-    internal override byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    internal override byte[] ConvertAsciiBytesToBinaryBytes(byte[] bytes)
     {
         var asciiHex = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
         
