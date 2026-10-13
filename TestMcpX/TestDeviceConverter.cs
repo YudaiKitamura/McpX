@@ -238,7 +238,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
-    public void ToByteAddress_ShuldThrowExceptionForInvalidHexDevice()
+    public void ToByteAddress_ShouldThrowExceptionForInvalidHexDevice()
     {
         Prefix hexPrefix = faker.PickRandom(
             Prefix.X,
@@ -255,7 +255,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
-    public void ToByteAddress_ShuldThrowExceptionForInvalidDecDevice1()
+    public void ToByteAddress_ShouldThrowExceptionForInvalidDecDevice1()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -273,7 +273,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
-    public void ToByteAddress_ShuldThrowExceptionForInvalidDecDevice2()
+    public void ToByteAddress_ShouldThrowExceptionForInvalidDecDevice2()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -290,7 +290,7 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
-    public void ToByteAddress_ShuldConvertHexDeviceToByte()
+    public void ToByteAddress_ShouldConvertHexDeviceToByte()
     {
         Prefix hexPrefix = faker.PickRandom(
             Prefix.X,
@@ -312,7 +312,7 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
-    public void ToByteAddress_ShuldConvertHexDeviceToByte2()
+    public void ToByteAddress_ShouldConvertHexDeviceToByte2()
     {
         Prefix hexPrefix = faker.PickRandom(
             Prefix.X,
@@ -352,7 +352,7 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
-    public void ToByteAddress_ShuldConvertDecDeviceToByte()
+    public void ToByteAddress_ShouldConvertDecDeviceToByte()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -451,7 +451,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
-    public void GetOffsetAddress_ShuldThrowExceptionForInvalidDecDevice1()
+    public void GetOffsetAddress_ShouldThrowExceptionForInvalidDecDevice1()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -469,7 +469,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(DeviceAddressException))]
-    public void GetOffsetAddress_ShuldThrowExceptionForInvalidDecDevice2()
+    public void GetOffsetAddress_ShouldThrowExceptionForInvalidDecDevice2()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -487,7 +487,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(OverflowException))]
-    public void GetOffsetAddress_ShuldThrowExceptionForNegativeOffset1()
+    public void GetOffsetAddress_ShouldThrowExceptionForNegativeOffset1()
     {
         Prefix hexPrefix = faker.PickRandom(
             Prefix.X,
@@ -505,7 +505,7 @@ public sealed class TestDeviceConverter
 
     [TestMethod]
     [ExpectedException(typeof(OverflowException))]
-    public void GetOffsetAddress_ShuldThrowExceptionForNegativeOffset2()
+    public void GetOffsetAddress_ShouldThrowExceptionForNegativeOffset2()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -523,7 +523,7 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
-    public void GetOffsetAddress_ShuldDecAddressOffset()
+    public void GetOffsetAddress_ShouldDecAddressOffset()
     {
         Prefix decPrefix = faker.PickRandomWithout(
             Prefix.X,
@@ -546,7 +546,7 @@ public sealed class TestDeviceConverter
     }
 
     [TestMethod]
-    public void GetOffsetAddress_ShuldHexAddressOffset()
+    public void GetOffsetAddress_ShouldHexAddressOffset()
     {
         Prefix hexPrefix = faker.PickRandom(
             Prefix.X,

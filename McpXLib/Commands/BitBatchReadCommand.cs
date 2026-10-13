@@ -17,7 +17,7 @@ internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
     {
         this.bitLength = bitLength;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x04],
@@ -27,7 +27,7 @@ internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         if (bitLength < MIN_BIT_LENGTH || bitLength > MAX_BIT_LENGTH)
         {

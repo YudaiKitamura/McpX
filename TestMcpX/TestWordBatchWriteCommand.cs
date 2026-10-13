@@ -25,7 +25,7 @@ public sealed class TestWordBatchWriteCommand
     {
         var command = new WordBatchWriteCommand<short>(Prefix.D, "0", [1, 2, 3, 4, 5, 6]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x18, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x01, 0x14, 0x00, 0x00,         // Command
@@ -40,7 +40,7 @@ public sealed class TestWordBatchWriteCommand
             0x06, 0x00,                     // Device Value1
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]

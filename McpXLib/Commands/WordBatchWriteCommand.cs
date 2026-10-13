@@ -16,7 +16,7 @@ internal sealed class WordBatchWriteCommand<T> : PlcCommandBase<bool>
     {
         wordLength = (ushort)(values.Length * DeviceConverter.GetWordLength<T>());
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x14],
@@ -26,7 +26,7 @@ internal sealed class WordBatchWriteCommand<T> : PlcCommandBase<bool>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         if (wordLength < MIN_WORD_LENGTH || wordLength > MAX_WORD_LENGTH)
         {

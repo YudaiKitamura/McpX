@@ -20,7 +20,7 @@ internal sealed class BitRandomWriteCommand : PlcCommandBase<bool>
         bitLength = bitDevices.Length;
         this.series = series;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x02, 0x14],
@@ -30,7 +30,7 @@ internal sealed class BitRandomWriteCommand : PlcCommandBase<bool>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         var maxBitLength = GetMaxBitLength(series);
         if (bitLength < MIN_BIT_LENGTH || bitLength > maxBitLength)

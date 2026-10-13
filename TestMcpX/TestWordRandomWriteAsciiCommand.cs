@@ -35,7 +35,7 @@ public sealed class TestWordRandomWriteAsciiCommand
             ]
         );
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x34, 0x38,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x34, 0x30, 0x32,                                     // Command
@@ -56,7 +56,7 @@ public sealed class TestWordRandomWriteAsciiCommand
             0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x34,             // Device Value4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]

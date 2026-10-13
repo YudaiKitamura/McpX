@@ -15,7 +15,7 @@ internal sealed class BitBatchWriteCommand : PlcCommandBase<bool>
     {
         bitLength = (ushort)values.Length;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x14],
@@ -25,7 +25,7 @@ internal sealed class BitBatchWriteCommand : PlcCommandBase<bool>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         if (bitLength < MIN_BIT_LENGTH || bitLength > MAX_BIT_LENGTH)
         {

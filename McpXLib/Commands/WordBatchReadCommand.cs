@@ -16,7 +16,7 @@ internal sealed class WordBatchReadCommand<T> : PlcCommandBase<T[]>
     {
         this.wordLength = wordLength;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x04],
@@ -26,7 +26,7 @@ internal sealed class WordBatchReadCommand<T> : PlcCommandBase<T[]>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         if (wordLength < MIN_WORD_LENGTH || wordLength > MAX_WORD_LENGTH)
         {

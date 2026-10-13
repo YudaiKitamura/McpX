@@ -855,7 +855,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
-        // モニタ登録は分割不可。点数上限を超えると MonitorRegistCommand が例外をスローする。
+        // モニタ登録は分割不可。点数上限を超えると MonitorRegisterCommand が例外をスローする。
         int generation = RegisterMonitor(wordAddresses, doubleWordAddresses);
 
         return new MonitorSession(this, builder, generation);

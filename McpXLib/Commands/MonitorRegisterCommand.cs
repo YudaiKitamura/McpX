@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-internal sealed class MonitorRegistCommand : PlcCommandBase<bool>
+internal sealed class MonitorRegisterCommand : PlcCommandBase<bool>
 {
     internal const int MIN_WORD_LENGTH = 1;
     internal const int MAX_WORD_LENGTH = 192;
@@ -17,13 +17,13 @@ internal sealed class MonitorRegistCommand : PlcCommandBase<bool>
     internal static int GetMaxWordLength(ProcessorSeries series)
         => series == ProcessorSeries.iQR ? 96 : MAX_WORD_LENGTH;
 
-    internal MonitorRegistCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
+    internal MonitorRegisterCommand((Prefix, string)[] wordDevices, (Prefix, string)[] doubleWordDevices, ushort monitoringTimer = 0, ProcessorSeries series = ProcessorSeries.Q) : base()
     {
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
         this.series = series;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x01, 0x08],
@@ -33,7 +33,7 @@ internal sealed class MonitorRegistCommand : PlcCommandBase<bool>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         var maxWordLength = GetMaxWordLength(series);
         var totalLength = wordLength + doubleWordLength;

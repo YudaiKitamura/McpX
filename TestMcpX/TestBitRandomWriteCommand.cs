@@ -30,7 +30,7 @@ public sealed class TestBitRandomWriteCommand
             ]
         );
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x11, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x02, 0x14, 0x01, 0x00,         // Command + SubCommand
@@ -43,7 +43,7 @@ public sealed class TestBitRandomWriteCommand
             0x01,                           // Set/Reset2 (ON)
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -57,7 +57,7 @@ public sealed class TestBitRandomWriteCommand
             series: ProcessorSeries.iQR
         );
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x17, 0x00,                                 // Content Length
             0x00, 0x00,                                 // Monitoring Timer
             0x02, 0x14, 0x03, 0x00,                     // Command + SubCommand (iQ-R bit = 0003)
@@ -68,7 +68,7 @@ public sealed class TestBitRandomWriteCommand
             0x01, 0x00,                                 // Set/Reset2 (ON, iQ-R = 2Byte)
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]

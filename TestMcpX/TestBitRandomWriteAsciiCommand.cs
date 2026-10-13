@@ -31,7 +31,7 @@ public sealed class TestBitRandomWriteAsciiCommand
             ]
         );
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x32, 0x32,                         // Content Length "0022"
             0x30, 0x30, 0x30, 0x30,                         // Monitoring Timer "0000"
             0x31, 0x34, 0x30, 0x32,                         // Command "1402"
@@ -43,7 +43,7 @@ public sealed class TestBitRandomWriteAsciiCommand
             0x30, 0x31,                                     // Set/Reset2 "01" (ON)
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     // Regression: bit access points >= 16 must be encoded as exactly 2 hex chars ("10"), not "010".

@@ -29,7 +29,7 @@ internal sealed class MultiBlockReadCommand : PlcCommandBase<ushort[][]>
         wordBlocks = blocks.Where(b => !b.IsBitDevice).ToArray();
         bitBlocks = blocks.Where(b => b.IsBitDevice).ToArray();
 
-        ValidatePramater(series);
+        ValidateParameters(series);
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x06, 0x04],
@@ -39,7 +39,7 @@ internal sealed class MultiBlockReadCommand : PlcCommandBase<ushort[][]>
         );
     }
 
-    private void ValidatePramater(ProcessorSeries series)
+    private void ValidateParameters(ProcessorSeries series)
     {
         int maxBlockCount = GetMaxBlockCount(series);
         if (blocks.Length < 1 || blocks.Length > maxBlockCount)

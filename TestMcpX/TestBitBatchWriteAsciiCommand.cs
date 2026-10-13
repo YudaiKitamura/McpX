@@ -26,7 +26,7 @@ public sealed class TestBitBatchWriteAsciiCommand
     {
         var command = new BitBatchWriteCommand(Prefix.M, "0", [true, false, true, true]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x31, 0x43,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x34, 0x30, 0x31,                                     // Command
@@ -40,7 +40,7 @@ public sealed class TestBitBatchWriteAsciiCommand
             0x31,                                                       // Value4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]

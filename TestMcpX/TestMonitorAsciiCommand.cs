@@ -26,14 +26,14 @@ public sealed class TestMonitorAsciiCommand
     {
         var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x30, 0x43,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x30, 0x38, 0x30, 0x32,                                     // Command
             0x30, 0x30, 0x30, 0x30,                                     // SubCommand
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]

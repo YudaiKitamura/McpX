@@ -64,7 +64,7 @@ public sealed class TestMcpXLifecycle
         Assert.AreEqual(1, transport.Requests.Count(r => r.Command == REMOTE_LOCK));
     }
 
-    private const ushort MONITOR_REGIST = 0x0801;
+    private const ushort MONITOR_REGISTER = 0x0801;
     private const ushort MONITOR = 0x0802;
 
     [TestMethod]
@@ -93,7 +93,7 @@ public sealed class TestMcpXLifecycle
     }
 
     [TestMethod]
-    public void TestFailedMonitorRegistInvalidatesSession()
+    public void TestFailedMonitorRegisterInvalidatesSession()
     {
         var transport = new FakePlcTransport();
         using var mcpx = new McpX(transport);
@@ -101,14 +101,14 @@ public sealed class TestMcpXLifecycle
         var session = mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "100", _ => { }));
 
         // 送信後に失敗した登録でも、PLC の登録が置き換わった可能性があるため古いセッションは無効にする
-        transport.EndCodes[MONITOR_REGIST] = 0xC059;
+        transport.EndCodes[MONITOR_REGISTER] = 0xC059;
         Assert.ThrowsException<McProtocolException>(() => mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "200", _ => { })));
 
         Assert.ThrowsException<InvalidOperationException>(() => session.Read());
     }
 
     [TestMethod]
-    public void TestInvalidMonitorRegistKeepsSession()
+    public void TestInvalidMonitorRegisterKeepsSession()
     {
         var transport = new FakePlcTransport();
         using var mcpx = new McpX(transport);

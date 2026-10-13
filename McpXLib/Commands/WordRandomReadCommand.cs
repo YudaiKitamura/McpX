@@ -24,7 +24,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : PlcCommandBase<(T1[] wordV
         doubleWordLength = doubleWordDevices.Length;
         this.series = series;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x03, 0x04],
@@ -34,7 +34,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : PlcCommandBase<(T1[] wordV
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         var maxWordLength = GetMaxWordLength(series);
         var totalLength = wordLength + doubleWordLength;

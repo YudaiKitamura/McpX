@@ -6,11 +6,11 @@ using Moq;
 namespace TestMcpX;
 
 [TestClass]
-public sealed class TestRemoteUnLockCommand
+public sealed class TestRemoteUnlockCommand
 {
     private Mock<IPlc> plcMock;
 
-    public TestRemoteUnLockCommand()
+    public TestRemoteUnlockCommand()
     {
         plcMock = new Mock<IPlc>();
         plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
@@ -21,7 +21,7 @@ public sealed class TestRemoteUnLockCommand
     {
         var command = new RemoteUnlockCommand("pass");
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x0C, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x30, 0x16, 0x00, 0x00,         // Command
@@ -29,7 +29,7 @@ public sealed class TestRemoteUnLockCommand
             0x70, 0x61, 0x73, 0x73,         // Password ASCII
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]

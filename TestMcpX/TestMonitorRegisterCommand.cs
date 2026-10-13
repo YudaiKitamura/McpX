@@ -8,12 +8,12 @@ using McpXLib.Builders;
 namespace TestMcpX;
 
 [TestClass]
-public sealed class TestMonitorRegistCommand
+public sealed class TestMonitorRegisterCommand
 {
     private readonly Faker faker;
     private Mock<IPlc> plcMock;
 
-    public TestMonitorRegistCommand()
+    public TestMonitorRegisterCommand()
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
@@ -23,9 +23,9 @@ public sealed class TestMonitorRegistCommand
     [TestMethod]
     public void TestToBytes()
     {
-        var command = new MonitorRegistCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x18, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x01, 0x08, 0x00, 0x00,         // Command
@@ -41,13 +41,13 @@ public sealed class TestMonitorRegistCommand
             0xA8,                           // Device Prefix4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
     public void TestExecute()
     {
-        var command = new MonitorRegistCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] recivePackets = [
             0xD0, 0x00,                     // Sub Header
@@ -64,7 +64,7 @@ public sealed class TestMonitorRegistCommand
     [TestMethod]
     public async Task TestExecuteAsync()
     {
-        var command = new MonitorRegistCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
 
         byte[] recivePackets = [
             0xD0, 0x00,                     // Sub Header
@@ -82,41 +82,41 @@ public sealed class TestMonitorRegistCommand
     public void TestException()
     {
         var ex = Assert.ThrowsException<ArgumentException>(() => {
-            _ = new MonitorRegistCommand([], []);
+            _ = new MonitorRegisterCommand([], []);
         });
         
         Assert.IsInstanceOfType<ArgumentException>(ex);
 
         ex = Assert.ThrowsException<ArgumentException>(() => {
-            var wordAddresses = Enumerable.Range(0, MonitorRegistCommand.MAX_WORD_LENGTH + 1)
+            var wordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH + 1)
                 .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
                 .ToArray();
 
-            _ = new MonitorRegistCommand(wordAddresses, []);
+            _ = new MonitorRegisterCommand(wordAddresses, []);
         });
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
 
         ex = Assert.ThrowsException<ArgumentException>(() => {
-            var doubleWordAddresses = Enumerable.Range(0, MonitorRegistCommand.MAX_WORD_LENGTH + 1)
+            var doubleWordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH + 1)
                 .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
                 .ToArray();
 
-            _ = new MonitorRegistCommand([], doubleWordAddresses);
+            _ = new MonitorRegisterCommand([], doubleWordAddresses);
         });
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
 
         ex = Assert.ThrowsException<ArgumentException>(() => {
-            var wordAddresses = Enumerable.Range(0, MonitorRegistCommand.MAX_WORD_LENGTH / 2)
+            var wordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH / 2)
                 .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
                 .ToArray();
 
-            var doubleWordAddresses = Enumerable.Range(0, MonitorRegistCommand.MAX_WORD_LENGTH / 2 + 1)
+            var doubleWordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH / 2 + 1)
                 .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
                 .ToArray();
 
-            _ = new MonitorRegistCommand(wordAddresses, doubleWordAddresses);
+            _ = new MonitorRegisterCommand(wordAddresses, doubleWordAddresses);
         });
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
@@ -125,7 +125,7 @@ public sealed class TestMonitorRegistCommand
     [TestMethod]
     public void TestExceptionIqr()
     {
-        int iqrMax = MonitorRegistCommand.GetMaxWordLength(ProcessorSeries.iQR);
+        int iqrMax = MonitorRegisterCommand.GetMaxWordLength(ProcessorSeries.iQR);
         Assert.AreEqual(96, iqrMax);
 
         // iQ-R: total over 96 points throws (no packet split for monitor register).
@@ -134,7 +134,7 @@ public sealed class TestMonitorRegistCommand
                 .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
                 .ToArray();
 
-            _ = new MonitorRegistCommand(wordAddresses, [], 0, ProcessorSeries.iQR);
+            _ = new MonitorRegisterCommand(wordAddresses, [], 0, ProcessorSeries.iQR);
         });
 
         Assert.IsInstanceOfType<ArgumentException>(ex);
@@ -144,6 +144,6 @@ public sealed class TestMonitorRegistCommand
             .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
             .ToArray();
 
-        _ = new MonitorRegistCommand(okAddresses, [], 0, ProcessorSeries.iQR);
+        _ = new MonitorRegisterCommand(okAddresses, [], 0, ProcessorSeries.iQR);
     }
 }

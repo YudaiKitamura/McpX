@@ -21,7 +21,7 @@ public sealed class TestRemoteLockCommand
     {
         var command = new RemoteLockCommand("pass");
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x0C, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x31, 0x16, 0x00, 0x00,         // Command
@@ -29,7 +29,7 @@ public sealed class TestRemoteLockCommand
             0x70, 0x61, 0x73, 0x73,         // Password ASCII
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]

@@ -25,13 +25,13 @@ public sealed class TestMonitorCommand
     {
         var command = new MonitorCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x06, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x02, 0x08, 0x00, 0x00,         // Command
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]

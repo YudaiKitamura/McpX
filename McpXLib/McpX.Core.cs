@@ -282,18 +282,18 @@ public partial class McpX : IPlc
         return new WordRandomReadCommand<T1, T2>(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries).Execute(this);
     }
 
-    internal async Task WordRandomWriteAsync<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices, CancellationToken cancellationToken) 
+    internal async Task WordRandomWriteAsync<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices, CancellationToken cancellationToken) 
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        await new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
+        await new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWordDevices, monitoringTimer, processorSeries).ExecuteAsync(this, cancellationToken).ConfigureAwait(false);
     }
 
-    internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWorsDevices)
+    internal void WordRandomWrite<T1,T2>((Prefix prefix, string address, T1 value)[] wordDevices, (Prefix prefix, string address, T2 value)[] doubleWordDevices)
         where T1 : unmanaged
         where T2 : unmanaged
     {
-        new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWorsDevices, monitoringTimer, processorSeries).Execute(this);
+        new WordRandomWriteCommand<T1, T2>(wordDevices, doubleWordDevices, monitoringTimer, processorSeries).Execute(this);
     }
 
     internal async Task BitRandomWriteAsync((Prefix prefix, string address, bool value)[] bitDevices, CancellationToken cancellationToken)
@@ -312,7 +312,7 @@ public partial class McpX : IPlc
     internal int RegisterMonitor((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses)
     {
         // 点数などの検証はコマンド生成時に行われる（検証エラーでは PLC の登録は変わらないため世代も進めない）
-        var command = new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
+        var command = new MonitorRegisterCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
 
         monitorGate.Wait();
         try
@@ -330,7 +330,7 @@ public partial class McpX : IPlc
 
     internal async Task<int> RegisterMonitorAsync((Prefix, string)[] wordAddresses, (Prefix, string)[] doubleWordAddresses, CancellationToken cancellationToken)
     {
-        var command = new MonitorRegistCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
+        var command = new MonitorRegisterCommand(wordAddresses, doubleWordAddresses, monitoringTimer, processorSeries);
 
         await monitorGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try

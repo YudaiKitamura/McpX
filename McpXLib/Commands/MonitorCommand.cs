@@ -18,17 +18,12 @@ internal sealed class MonitorCommand<T1, T2> : PlcCommandBase<(T1[] wordValues, 
         wordLength = wordDevices.Length;
         doubleWordLength = doubleWordDevices.Length;
 
-        ValidatePramater();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x02, 0x08],
             subCommand: DeviceConverter.ToSubCommand([0x00, 0x00], series),
             monitoringTimer: monitoringTimer
         );
-    }
-
-    internal void ValidatePramater()
-    {
     }
 
     protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)

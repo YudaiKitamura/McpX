@@ -26,7 +26,7 @@ public sealed class TestWordRandomReadAsciiCommand
     {
         var command = new WordRandomReadCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x33, 0x30,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x30, 0x34, 0x30, 0x33,                                     // Command
@@ -43,7 +43,7 @@ public sealed class TestWordRandomReadAsciiCommand
             0x30, 0x30, 0x30, 0x30, 0x30, 0x34,                         // Device Address 4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]

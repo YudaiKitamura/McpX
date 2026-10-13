@@ -22,7 +22,7 @@ internal sealed class MultiBlockWriteCommand : PlcCommandBase<bool>
     {
         this.blocks = blocks;
 
-        ValidatePramater(series);
+        ValidateParameters(series);
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x06, 0x14],
@@ -35,7 +35,7 @@ internal sealed class MultiBlockWriteCommand : PlcCommandBase<bool>
         );
     }
 
-    private void ValidatePramater(ProcessorSeries series)
+    private void ValidateParameters(ProcessorSeries series)
     {
         int maxBlockCount = MultiBlockReadCommand.GetMaxBlockCount(series);
         if (blocks.Length < 1 || blocks.Length > maxBlockCount)

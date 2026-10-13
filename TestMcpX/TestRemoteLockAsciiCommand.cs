@@ -22,7 +22,7 @@ public sealed class TestRemoteLockAsciiCommand
     {
         var command = new RemoteLockCommand("pass");
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x31, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x36, 0x33, 0x31,                                     // Command
@@ -31,7 +31,7 @@ public sealed class TestRemoteLockAsciiCommand
             0x70, 0x61, 0x73, 0x73,                                     // Password ASCII
         ]; 
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]

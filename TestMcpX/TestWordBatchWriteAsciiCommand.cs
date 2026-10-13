@@ -26,7 +26,7 @@ public sealed class TestWordBatchWriteAsciiCommand
     {
         var command = new WordBatchWriteCommand<short>(Prefix.D, "0", [1, 2, 3, 4, 5, 6]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x33, 0x30,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x34, 0x30, 0x31,                                     // Command
@@ -42,7 +42,7 @@ public sealed class TestWordBatchWriteAsciiCommand
             0x30, 0x30, 0x30, 0x36,                                     // Value6
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
