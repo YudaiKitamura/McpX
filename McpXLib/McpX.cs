@@ -240,12 +240,14 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 指定された型<c>T</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。<br/>
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
-    public T[] BatchRead<T>(Prefix prefix, string address, ushort length) where T : unmanaged
+    public T[] BatchRead<T>(Prefix prefix, string address, int length) where T : unmanaged
     {
+        ThrowIfNegative(length);
         var values = new T[length];
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
@@ -273,12 +275,14 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
-    public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, ushort length, CancellationToken cancellationToken = default) where T : unmanaged
+    public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, int length, CancellationToken cancellationToken = default) where T : unmanaged
     {
+        ThrowIfNegative(length);
         var values = new T[length];
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
@@ -347,18 +351,17 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns><c>values</c>の値をそのまま返します。</returns>
-    public T[] BatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
+    public void BatchWrite<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
+        ThrowIfNull(values);
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
         {
             WriteChunk(prefix, chunkAddress, Slice(values, offset, count));
         }
-
-        return values.ToArray();
     }
 
     /// <summary>
@@ -376,18 +379,17 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns><c>values</c>の値をそのまま返します。</returns>
-    public async Task<T[]> BatchWriteAsync<T>(Prefix prefix, string address, T[]values, CancellationToken cancellationToken = default) where T : unmanaged
+    public async Task BatchWriteAsync<T>(Prefix prefix, string address, T[] values, CancellationToken cancellationToken = default) where T : unmanaged
     {
+        ThrowIfNull(values);
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
         {
             await WriteChunkAsync(prefix, chunkAddress, Slice(values, offset, count), cancellationToken).ConfigureAwait(false);
         }
-
-        return values.ToArray();
     }
 
     // ---------------------------------------------------------------
@@ -426,6 +428,22 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         }
 
         return chunks;
+    }
+
+    private static void ThrowIfNegative(int length)
+    {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Length must not be negative.");
+        }
+    }
+
+    private static void ThrowIfNull<T>(T[] values)
+    {
+        if (values == null)
+        {
+            throw new ArgumentNullException(nameof(values));
+        }
     }
 
     private static T[] Slice<T>(T[] values, int offset, int count)
@@ -816,8 +834,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </summary>
     /// <remarks>
     /// 連続デバイスと非連続デバイスを、1つのビルダーでまとめて読み込みます。<br/>
-    /// <paramref name="build"/> 内で、点数を指定した <see cref="ReadBuilder.Add{T}(Prefix, string, ushort, Action{T[]})"/> は
-    /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, ushort)"/>）、点数を指定しない
+    /// <paramref name="build"/> 内で、点数を指定した <see cref="ReadBuilder.Add{T}(Prefix, string, int, Action{T[]})"/> は
+    /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, int)"/>）、点数を指定しない
     /// <see cref="ReadBuilder.Add{T}(Prefix, string, Action{T})"/> はランダムアクセス
     /// （<see cref="RandomRead(Action{RandomReadBuilder})"/>）で読み込まれます。<br/>
     /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。<br/>
@@ -955,15 +973,18 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
-    /// <param name="length">読み込みデバイス点数を指定します。</param>
+    /// <param name="wordLength">
+    /// 読み込むワード数（デバイス点数）を指定します。1ワードに2バイト（半角2文字、全角1文字）が入ります。<br/>
+    /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
+    /// </param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
-    public string ReadString(Prefix prefix, string address, ushort length)
+    public string ReadString(Prefix prefix, string address, int wordLength)
     {
         return DeviceConverter.ConvertString(
-            BatchRead<ushort>(prefix, address, length).SelectMany(BitConverter.GetBytes).ToArray()
+            BatchRead<ushort>(prefix, address, wordLength).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 
@@ -975,16 +996,19 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
-    /// <param name="length">読み込みデバイス点数を指定します。</param>
+    /// <param name="wordLength">
+    /// 読み込むワード数（デバイス点数）を指定します。1ワードに2バイト（半角2文字、全角1文字）が入ります。<br/>
+    /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
+    /// </param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
-    public async Task<string> ReadStringAsync(Prefix prefix, string address, ushort length, CancellationToken cancellationToken = default)
+    public async Task<string> ReadStringAsync(Prefix prefix, string address, int wordLength, CancellationToken cancellationToken = default)
     {
         return DeviceConverter.ConvertString(
-            (await BatchReadAsync<ushort>(prefix, address, length, cancellationToken).ConfigureAwait(false)).SelectMany(BitConverter.GetBytes).ToArray()
+            (await BatchReadAsync<ushort>(prefix, address, wordLength, cancellationToken).ConfigureAwait(false)).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 
@@ -997,12 +1021,17 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
+    /// <param name="includeNullTerminator">
+    /// 文字列の後に終端の 0x00 を書き込む場合は<c>true</c>を指定します。（デフォルトは、<c>true</c>です。）<br/>
+    /// 終端は、文字列のバイト数が偶数の場合は次のワード（1ワード分）、奇数の場合は最後のワードの上位バイトに書き込みます。
+    /// <c>false</c>の場合、奇数バイトの最後のワードの上位バイトは 0x00 になります。
+    /// </param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public void WriteString(Prefix prefix, string address, string value)
+    public void WriteString(Prefix prefix, string address, string value, bool includeNullTerminator = true)
     {
-        BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
+        BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator));
     }
 
     /// <summary>
@@ -1014,13 +1043,18 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
+    /// <param name="includeNullTerminator">
+    /// 文字列の後に終端の 0x00 を書き込む場合は<c>true</c>を指定します。（デフォルトは、<c>true</c>です。）<br/>
+    /// 終端は、文字列のバイト数が偶数の場合は次のワード（1ワード分）、奇数の場合は最後のワードの上位バイトに書き込みます。
+    /// <c>false</c>の場合、奇数バイトの最後のワードの上位バイトは 0x00 になります。
+    /// </param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task WriteStringAsync(Prefix prefix, string address, string value, CancellationToken cancellationToken = default)
+    public async Task WriteStringAsync(Prefix prefix, string address, string value, bool includeNullTerminator = true, CancellationToken cancellationToken = default)
     {
-        await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value), cancellationToken).ConfigureAwait(false);
+        await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator), cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>

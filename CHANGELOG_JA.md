@@ -4,6 +4,7 @@
 - UDP 交信で、IP アドレスに加えてホスト名を指定できるように変更。
 - `McpXOptions` と、ファクトリ `McpX.Connect` / `McpX.ConnectAsync` を追加（既定の設定で接続する `Connect(host, port)` も追加）。`ConnectAsync` は、接続とリモートパスワードの解除をスレッドを止めずに行います。
 - `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
+- `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。
 
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
@@ -16,6 +17,8 @@
 - **破壊的変更：** `McpX` を sealed に変更。
 - **破壊的変更：** `RemoteReset` / `RemoteResetAsync` の再接続の待ち時間を `TimeSpan?`（既定 30秒、`TimeSpan.Zero` で再接続しない）で指定するように変更。`RemoteResetAsync` は、スレッドを止めずに再接続します。
 - `Dispose` の後に通信するメソッドを呼び出すと `ObjectDisposedException` をスローするように変更（TCP では `IOException` でした）。
+- **破壊的変更：** `BatchWrite` / `BatchWriteAsync` が書き込んだ値（引数のコピー）を返さないように変更。
+- **破壊的変更：** `BatchRead`、`ReadString`、`ReadBuilder.Add`、`BlockReadBuilder.Add` の点数を `ushort` から `int` に変更。負の値は `ArgumentOutOfRangeException` をスローします。`ReadString` の点数の引数名は `wordLength` に変更。
 
 ### Fixed
 - UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。

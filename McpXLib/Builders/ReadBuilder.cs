@@ -6,7 +6,7 @@ namespace McpXLib;
 /// 連続／ランダム統合デバイス読み込みのリクエストビルダー。
 /// </summary>
 /// <remarks>
-/// 点数を指定した <see cref="Add{T}(Prefix, string, ushort, Action{T[]})"/> は連続アクセス（一括読み込み）、
+/// 点数を指定した <see cref="Add{T}(Prefix, string, int, Action{T[]})"/> は連続アクセス（一括読み込み）、
 /// 点数を指定しない <see cref="Add{T}(Prefix, string, Action{T})"/> はランダムアクセスで読み込まれます。<br/>
 /// 読み取り完了後、各コールバックに変換済みの値が渡されます。
 /// </remarks>
@@ -51,9 +51,15 @@ public sealed class ReadBuilder
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="length">読み込み対象の要素数（<c>T</c>型の要素数）を指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T[]</c>を受け取るコールバックを指定します。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
-    public ReadBuilder Add<T>(Prefix prefix, string address, ushort length, Action<T[]> onRead) where T : unmanaged
+    public ReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Length must not be negative.");
+        }
+
         batchEntries.Add((
             m => onRead(m.BatchRead<T>(prefix, address, length)),
             async (m, cancellationToken) => onRead(await m.BatchReadAsync<T>(prefix, address, length, cancellationToken).ConfigureAwait(false)),

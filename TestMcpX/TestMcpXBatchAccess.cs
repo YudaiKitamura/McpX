@@ -163,4 +163,37 @@ public sealed class TestMcpXBatchAccess
         Assert.AreEqual("ABC", mcpx.ReadString(Prefix.D, "0", 2));
         Assert.AreEqual("ABC", await mcpx.ReadStringAsync(Prefix.D, "0", 2));
     }
+
+    [TestMethod]
+    public async Task TestWriteStringNullTerminator()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        // 偶数バイト：終端ありは次のワードに 0x0000、終端なしは文字列のワードだけ
+        mcpx.WriteString(Prefix.D, "0", "AB");
+        CollectionAssert.AreEqual(new byte[] { 0x41, 0x42, 0x00, 0x00 }, transport.Requests[^1].Data);
+        await mcpx.WriteStringAsync(Prefix.D, "0", "AB", includeNullTerminator: false);
+        CollectionAssert.AreEqual(new byte[] { 0x41, 0x42 }, transport.Requests[^1].Data);
+
+        // 奇数バイト：最後のワードの上位バイトは、どちらの場合も 0x00
+        mcpx.WriteString(Prefix.D, "0", "ABC", includeNullTerminator: false);
+        CollectionAssert.AreEqual(new byte[] { 0x41, 0x42, 0x43, 0x00 }, transport.Requests[^1].Data);
+    }
+
+    [TestMethod]
+    public async Task TestInvalidArguments()
+    {
+        var transport = new FakePlcTransport();
+        using var mcpx = new McpX(transport);
+
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => mcpx.BatchRead<short>(Prefix.D, "0", -1));
+        await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => mcpx.BatchReadAsync<short>(Prefix.D, "0", -1));
+        Assert.ThrowsException<ArgumentNullException>(() => mcpx.BatchWrite<short>(Prefix.D, "0", null!));
+        await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => mcpx.BatchWriteAsync<short>(Prefix.D, "0", null!));
+
+        // 0 点の読み込みは、要求を送らずに空の配列を返す
+        Assert.AreEqual(0, mcpx.BatchRead<short>(Prefix.D, "0", 0).Length);
+        Assert.AreEqual(0, transport.Requests.Count);
+    }
 }

@@ -28,11 +28,17 @@ public sealed class BlockReadBuilder
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="length">読み込み対象の要素数（<c>T</c>型の要素数）を指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T[]</c>を受け取るコールバックを指定します。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が1未満の場合にスローします。</exception>
     /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <exception cref="NotSupportedException">非対応の型を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
-    public BlockReadBuilder Add<T>(Prefix prefix, string address, ushort length, Action<T[]> onRead) where T : unmanaged
+    public BlockReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
+        if (length < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Length must be at least 1.");
+        }
+
         entries.Add(BlockReadEntry.TryCreate(prefix, address, length, onRead)
             ?? throw new ArgumentException($"{typeof(T)} cannot be read from {prefix} with multiple block access.", nameof(prefix)));
         return this;
@@ -53,7 +59,7 @@ internal sealed class BlockReadEntry(Prefix prefix, string address, int points, 
     internal Action<ushort[]> OnWords { get; } = onWords;
 
     // 複数ブロックで読み込めない指定（ワードデバイスへの bool）は null
-    internal static BlockReadEntry? TryCreate<T>(Prefix prefix, string address, ushort length, Action<T[]> onRead) where T : unmanaged
+    internal static BlockReadEntry? TryCreate<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
         if (typeof(T) == typeof(bool))
         {

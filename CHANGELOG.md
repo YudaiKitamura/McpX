@@ -4,6 +4,7 @@
 - UDP connections now accept a host name as well as an IP address.
 - Added `McpXOptions` and the `McpX.Connect` / `McpX.ConnectAsync` factories (also `Connect(host, port)` for the default settings). `ConnectAsync` connects and unlocks the remote password without blocking a thread.
 - `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
+- Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.
 
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
@@ -16,6 +17,8 @@
 - **Breaking:** `McpX` is now sealed.
 - **Breaking:** `RemoteReset` / `RemoteResetAsync` take the reconnection timeout as a `TimeSpan?` (default 30 s, `TimeSpan.Zero` to skip reconnecting). `RemoteResetAsync` now reconnects without blocking a thread.
 - Calling a communication method after `Dispose` now throws `ObjectDisposedException` (previously `IOException` over TCP).
+- **Breaking:** `BatchWrite` / `BatchWriteAsync` no longer return the written values (they returned a copy of the argument).
+- **Breaking:** The lengths of `BatchRead`, `ReadString`, `ReadBuilder.Add` and `BlockReadBuilder.Add` are now `int` instead of `ushort`. A negative length throws `ArgumentOutOfRangeException`. The length parameter of `ReadString` is renamed to `wordLength`.
 
 ### Fixed
 - Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
