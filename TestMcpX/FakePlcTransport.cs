@@ -7,7 +7,13 @@ namespace TestMcpX;
 /// </summary>
 internal sealed class FakePlcTransport : IPlcTransport
 {
-    internal FakePlcCore Core { get; } = new();
+    internal FakePlcCore Core { get; }
+
+    /// <param name="stateful">書き込んだ値を保持し、読み込みで返す場合に <c>true</c>（<see cref="FakePlcCore.Stateful"/>）。</param>
+    internal FakePlcTransport(bool stateful = false)
+    {
+        Core = new FakePlcCore { Stateful = stateful };
+    }
 
     internal List<FakePlcCore.RecordedRequest> Requests => Core.Requests;
 
