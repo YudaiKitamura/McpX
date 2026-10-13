@@ -140,6 +140,18 @@ internal static unsafe class Native
         return f(options, output, err);
     }
 
+    internal static int ConnectSimulator(NativeSimulatorOptions* options, ulong* output, NativeError* err)
+    {
+        var f = (delegate* unmanaged[Cdecl]<NativeSimulatorOptions*, ulong*, NativeError*, int>)&ClientExports.ConnectSimulator;
+        return f(options, output, err);
+    }
+
+    internal static int SetMultiBlock(ulong client, byte enable, NativeError* err)
+    {
+        var f = (delegate* unmanaged[Cdecl]<ulong, byte, NativeError*, int>)&ClientExports.SetMultiBlock;
+        return f(client, enable, err);
+    }
+
     internal static void ConnectOptionsInit(NativeConnectOptions* options)
     {
         var f = (delegate* unmanaged[Cdecl]<NativeConnectOptions*, void>)&LibraryExports.ConnectOptionsInit;

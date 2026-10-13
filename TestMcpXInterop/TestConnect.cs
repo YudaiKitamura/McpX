@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using McpXNative;
+using TestMcpX;
 
 namespace TestMcpXInterop;
 
@@ -109,6 +110,58 @@ public sealed unsafe class TestConnect
             Assert.AreEqual((int)McpxStatus.ConnectionRefused, Connect(Options(host, port), out var client, out var err));
             Assert.AreEqual(0UL, client);
             Assert.AreEqual((int)SocketError.ConnectionRefused, err.SocketError);
+        }
+    }
+
+    [TestMethod]
+    public void TestConnectSimulator()
+    {
+        // システム9・号機4 = 5594 で待ち受け、既定のホスト（127.0.0.1）で接続できること
+        var listener = new TcpListener(IPAddress.Loopback, McpXLib.McpXSimulator.GetPort(9, 4));
+        listener.Start();
+        try
+        {
+            var options = default(NativeSimulatorOptions);
+            Native.SimulatorOptionsInit(&options);
+            options.SystemNo = 9;
+            options.CpuNo = 4;
+
+            var err = Native.NewError();
+            ulong client = 0;
+            Assert.AreEqual((int)McpxStatus.Ok, Native.ConnectSimulator(&options, &client, &err), Native.Message(err));
+            Assert.AreEqual(McpXLib.Enums.ProcessorSeries.iQR, HandleTable.Get(client)!.Client.ProcessorSeries);
+            Assert.AreEqual((int)McpxStatus.Ok, Native.Close(client, &err));
+
+            // 範囲外の号機No.は接続せずに InvalidArgument
+            options.CpuNo = 5;
+            client = 12345;
+            Assert.AreEqual((int)McpxStatus.InvalidArgument, Native.ConnectSimulator(&options, &client, &err));
+            Assert.AreEqual(0UL, client);
+        }
+        finally
+        {
+            listener.Stop();
+        }
+    }
+
+    [TestMethod]
+    public void TestSetMultiBlock()
+    {
+        ulong client = Native.Register(new FakePlcTransport());
+        var err = Native.NewError();
+        try
+        {
+            Assert.IsFalse(HandleTable.Get(client)!.Client.UseMultiBlockAccess);
+            Assert.AreEqual((int)McpxStatus.Ok, Native.SetMultiBlock(client, 1, &err));
+            Assert.IsTrue(HandleTable.Get(client)!.Client.UseMultiBlockAccess);
+            Assert.AreEqual((int)McpxStatus.Ok, Native.SetMultiBlock(client, 0, &err));
+            Assert.IsFalse(HandleTable.Get(client)!.Client.UseMultiBlockAccess);
+
+            Assert.AreEqual((int)McpxStatus.InvalidHandle, Native.SetMultiBlock(0xDEAD, 1, &err));
+        }
+        finally
+        {
+            Native.Close(client, &err);
         }
     }
 }
