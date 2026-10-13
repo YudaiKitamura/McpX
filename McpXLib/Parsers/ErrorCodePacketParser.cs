@@ -1,6 +1,5 @@
 using McpXLib.Abstracts;
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
@@ -9,7 +8,7 @@ internal class ErrorCodePacketParser : BasePacketParser
     internal override int BinaryLength => 2;
     internal override int AsciiLength => 4;
 
-    internal ErrorCodePacketParser(IPacketParser? prevPacketParser = null, bool isAscii = false) : base(
+    internal ErrorCodePacketParser(BasePacketParser? prevPacketParser = null, bool isAscii = false) : base(
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: true

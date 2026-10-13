@@ -1,5 +1,4 @@
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 
 namespace McpXLib.Abstracts;
 
@@ -22,7 +21,7 @@ internal class BaseContentPacketParser : BasePacketParser
         }
     }
 
-    internal BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
+    internal BaseContentPacketParser(BasePacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: isReverse

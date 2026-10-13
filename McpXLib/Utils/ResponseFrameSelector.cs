@@ -37,7 +37,7 @@ internal class ResponseFrameSelector : IReceiveLengthParser
     {
     }
 
-    private ResponseFrameSelector(IPlc plc, ushort serialNumber, Func<IPacketParser, bool, BaseContentPacketParser>? createContentParser)
+    private ResponseFrameSelector(IPlc plc, ushort serialNumber, Func<BasePacketParser, bool, BaseContentPacketParser>? createContentParser)
     {
         packetParser = new FramePacketParser(
             plc,

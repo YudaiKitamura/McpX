@@ -1,18 +1,17 @@
 using System.Text;
-using McpXLib.Interfaces;
 using McpXLib.Utils;
 
 namespace McpXLib.Abstracts;
 
-internal abstract class BasePacketParser : IPacketParser
+internal abstract class BasePacketParser
 {
     internal bool IsAscii;
-    internal IPacketParser? PrevPacketParser;
+    internal BasePacketParser? PrevPacketParser;
     internal bool? IsReverse;
     internal abstract int BinaryLength { get; }
     internal abstract int AsciiLength { get; }
 
-    internal BasePacketParser(bool isAscii = false, IPacketParser? prevPacketParser = null, bool? isReverse = null)
+    internal BasePacketParser(bool isAscii = false, BasePacketParser? prevPacketParser = null, bool? isReverse = null)
     {
         IsAscii = isAscii;
         PrevPacketParser = prevPacketParser;

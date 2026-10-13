@@ -21,13 +21,13 @@ internal sealed class FramePacketParser : IReceiveLengthParser
     /// <param name="plc">交信の設定（フレーム、ASCII / バイナリ）</param>
     /// <param name="serialNumber">要求のシリアル番号（4E フレームのみ。3E フレームは null）</param>
     /// <param name="createContentParser">応答データの解析を生成する処理（応答データがないコマンドは null）。引数は直前の解析と ASCII か否か。</param>
-    internal FramePacketParser(IPlc plc, ushort? serialNumber, Func<IPacketParser, bool, BaseContentPacketParser>? createContentParser)
+    internal FramePacketParser(IPlc plc, ushort? serialNumber, Func<BasePacketParser, bool, BaseContentPacketParser>? createContentParser)
     {
         bool isAscii = plc.IsAscii;
 
         subHeaderPacketParser = new SubHeaderPacketParser(requestFrame: plc.RequestFrame, isAscii: isAscii);
 
-        IPacketParser beforeRoute = subHeaderPacketParser;
+        BasePacketParser beforeRoute = subHeaderPacketParser;
         if (serialNumber is ushort serial)
         {
             serialPacketParser = new SerialPacketParser(serialNumber: serial, prevPacketParser: subHeaderPacketParser, isAscii: isAscii);

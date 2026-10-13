@@ -1,12 +1,11 @@
 using McpXLib.Abstracts;
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
 internal class BitContentPacketParser : BaseContentPacketParser
 {
-    internal BitContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    internal BitContentPacketParser(BasePacketParser prevPacketParser, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser
     )

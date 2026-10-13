@@ -11,7 +11,7 @@ namespace McpXLib.Commands;
 /// 派生クラスはコンストラクタで <see cref="commandPacketBuilder"/> を設定し、
 /// 応答の解析方法（<see cref="CreateResponseSelector"/>）と応答データの変換（<see cref="Parse"/>）だけを実装する。
 /// </remarks>
-internal abstract class PlcCommandBase<T> : IPlcCommand<T>
+internal abstract class PlcCommandBase<T> : IPacketBuilder
 {
     protected CommandPacketBuilder commandPacketBuilder = null!;
 

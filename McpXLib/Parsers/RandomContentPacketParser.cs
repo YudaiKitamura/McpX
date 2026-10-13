@@ -1,6 +1,5 @@
 using McpXLib.Abstracts;
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 using McpXLib.Utils;
 
 namespace McpXLib.Parsers;
@@ -10,7 +9,7 @@ internal class RandomContentPacketParser : BaseContentPacketParser
     private int wordLength;
     private int doubleWordLength;
 
-    internal RandomContentPacketParser(IPacketParser prevPacketParser, int wordLength, int doubleWordLength, bool isAscii = false) : base (
+    internal RandomContentPacketParser(BasePacketParser prevPacketParser, int wordLength, int doubleWordLength, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser
     )

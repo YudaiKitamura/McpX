@@ -2,12 +2,8 @@ using McpXLib.Interfaces;
 
 namespace McpXLib.Builders;
 
-internal class RequestPacketBuilder(IPacketBuilder subHeaderPacketBuilder, IPacketBuilder routePacketBuilder, IPacketBuilder commandPacketBuilder) : IRequestPacketBuilder
+internal class RequestPacketBuilder(IPacketBuilder subHeaderPacketBuilder, IPacketBuilder routePacketBuilder, IPacketBuilder commandPacketBuilder) : IPacketBuilder
 {
-    public IPacketBuilder SubHeaderPacketBuilder => subHeaderPacketBuilder;
-    public IPacketBuilder RoutePacketBuilder => routePacketBuilder;
-    public IPacketBuilder CommandPacketBuilder => commandPacketBuilder;
-
     public byte[] ToAsciiBytes()
     {
         List<byte> packets = new List<byte>();
