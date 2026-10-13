@@ -34,6 +34,13 @@ internal static class DeviceConverter
         return Encoding.GetEncoding("shift_jis");
     }
 
+    /// <summary>
+    /// 応答データ（リトルエンディアン）を <typeparamref name="T"/> の配列に変換します。
+    /// </summary>
+    /// <remarks>
+    /// <c>bool</c> は1点1バイト（解析済みの値）、<c>byte</c> / <c>sbyte</c> は1要素1ワード（下位バイトが値）、
+    /// それ以外の数値型はワード数分のバイトをそのまま並べたものとして、要素ごとのボックス化をせずにまとめてコピーする。
+    /// </remarks>
     internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
         int byteLength = typeof(T) != typeof(bool) ? GetWordLength<T>() * 2 : 1;
@@ -42,31 +49,39 @@ internal static class DeviceConverter
             throw new ArgumentException("Byte array is not the correct length.");
         }
 
-        var length = bytes.Length / byteLength;
-        var values = new T[length];
-        var type = typeof(T);
+        int length = bytes.Length / byteLength;
 
-        for (int i = 0; i < length; i++)
+        if (typeof(T) == typeof(bool))
         {
-            int offset = i * byteLength;
-            object value;
-            if (type == typeof(bool)) value = bytes[offset] != 0;
-            else if (type == typeof(short)) value = BitConverter.ToInt16(bytes, offset);
-            else if (type == typeof(ushort)) value = BitConverter.ToUInt16(bytes, offset);
-            else if (type == typeof(int)) value = BitConverter.ToInt32(bytes, offset);
-            else if (type == typeof(uint)) value = BitConverter.ToUInt32(bytes, offset);
-            else if (type == typeof(float)) value = BitConverter.ToSingle(bytes, offset);
-            else if (type == typeof(double)) value = BitConverter.ToDouble(bytes, offset);
-            else if (type == typeof(long)) value = BitConverter.ToInt64(bytes, offset);
-            else if (type == typeof(ulong)) value = BitConverter.ToUInt64(bytes, offset);
-            // byte / sbyte は1要素=1ワード。ワードの下位バイトを値とする。
-            else if (type == typeof(byte)) value = bytes[offset];
-            else if (type == typeof(sbyte)) value = (sbyte)bytes[offset];
-            else throw new NotSupportedException($"Type {type} is not supported.");
-
-            values[i] = (T)value;
+            var bits = new bool[length];
+            for (int i = 0; i < length; i++)
+            {
+                bits[i] = bytes[i] != 0;
+            }
+            return (T[])(object)bits;
         }
 
+        if (typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
+        {
+            // 1要素=1ワード。ワードの下位バイトを値とする（byte[] と sbyte[] は同じ表現のため、byte[] で作って変換する）
+            var lowBytes = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                lowBytes[i] = bytes[i * 2];
+            }
+            return typeof(T) == typeof(byte) ? (T[])(object)lowBytes : (T[])(object)ToSBytes(lowBytes);
+        }
+
+        // short / ushort / int / uint / float / long / ulong / double：バイト列をそのまま値の配列にコピーする
+        var values = new T[length];
+        Buffer.BlockCopy(bytes, 0, values, 0, bytes.Length);
+        return values;
+    }
+
+    private static sbyte[] ToSBytes(byte[] bytes)
+    {
+        var values = new sbyte[bytes.Length];
+        Buffer.BlockCopy(bytes, 0, values, 0, bytes.Length);
         return values;
     }
 
@@ -100,15 +115,52 @@ internal static class DeviceConverter
         throw new NotSupportedException($"Type {typeof(T)} is not supported.");
     }
 
+    /// <summary>
+    /// <typeparamref name="T"/> の配列を、書き込みデータ（リトルエンディアン）に変換します。
+    /// </summary>
+    /// <remarks>
+    /// <see cref="ConvertValueArray{T}(byte[])"/> の逆変換。<c>byte</c> は下位バイトに値・上位バイトに 0、
+    /// <c>sbyte</c> は16ビットに符号拡張した1ワードとする。
+    /// </remarks>
     internal static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
-        int size = typeof(T) == typeof(bool) ? 1 : GetWordLength<T>() * 2;
-        var bytes = new byte[values.Length * size];
-        for (int i = 0; i < values.Length; i++)
+        if (typeof(T) == typeof(bool))
         {
-            Buffer.BlockCopy(StructToBytes(values[i]), 0, bytes, i * size, size);
+            var bits = (bool[])(object)values;
+            var bitBytes = new byte[bits.Length];
+            for (int i = 0; i < bits.Length; i++)
+            {
+                bitBytes[i] = bits[i] ? (byte)0x01 : (byte)0x00;
+            }
+            return bitBytes;
         }
 
+        if (typeof(T) == typeof(byte))
+        {
+            var source = (byte[])(object)values;
+            var words = new byte[source.Length * 2];
+            for (int i = 0; i < source.Length; i++)
+            {
+                words[i * 2] = source[i];
+            }
+            return words;
+        }
+
+        if (typeof(T) == typeof(sbyte))
+        {
+            var source = (sbyte[])(object)values;
+            var words = new byte[source.Length * 2];
+            for (int i = 0; i < source.Length; i++)
+            {
+                words[i * 2] = (byte)source[i];
+                words[i * 2 + 1] = source[i] < 0 ? (byte)0xFF : (byte)0x00;
+            }
+            return words;
+        }
+
+        // short / ushort / int / uint / float / long / ulong / double：値の配列をそのままバイト列にコピーする
+        var bytes = new byte[values.Length * GetWordLength<T>() * 2];
+        Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
         return bytes;
     }
 

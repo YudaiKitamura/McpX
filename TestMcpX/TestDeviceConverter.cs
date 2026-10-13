@@ -568,4 +568,43 @@ public sealed class TestDeviceConverter
             $"{hexPrefix} {address.ToString("X")} {offset}"
         );
     }
+
+    // 値の配列 ⇔ バイト列の変換が、1値ずつの変換（StructToBytes）と一致し、往復で元に戻ること
+    private static void AssertRoundTrip<T>(params T[] values) where T : unmanaged
+    {
+        var expected = values.SelectMany(v => DeviceConverter.StructToBytes(v)).ToArray();
+        var bytes = DeviceConverter.ConvertByteValueArray(values);
+
+        CollectionAssert.AreEqual(expected, bytes, typeof(T).Name);
+        CollectionAssert.AreEqual(values, DeviceConverter.ConvertValueArray<T>(bytes), typeof(T).Name);
+    }
+
+    [TestMethod]
+    public void TestConvertArraysMatchSingleValueConversion()
+    {
+        var random = new Random(1);
+        T[] Randoms<T>(Func<T> next) => Enumerable.Range(0, 100).Select(_ => next()).ToArray();
+
+        AssertRoundTrip(Randoms(() => random.Next(2) == 1));
+        AssertRoundTrip(Randoms(() => (short)random.Next(short.MinValue, short.MaxValue + 1)).Concat([short.MinValue, short.MaxValue, (short)-1]).ToArray());
+        AssertRoundTrip(Randoms(() => (ushort)random.Next(0, ushort.MaxValue + 1)).Concat([ushort.MinValue, ushort.MaxValue]).ToArray());
+        AssertRoundTrip(Randoms(() => random.Next(int.MinValue, int.MaxValue)).Concat([int.MinValue, int.MaxValue, -1]).ToArray());
+        AssertRoundTrip(Randoms(() => (uint)random.NextInt64(0, uint.MaxValue)).Concat([uint.MinValue, uint.MaxValue]).ToArray());
+        AssertRoundTrip(Randoms(() => random.NextInt64()).Concat([long.MinValue, long.MaxValue, -1L]).ToArray());
+        AssertRoundTrip(Randoms(() => (ulong)random.NextInt64()).Concat([ulong.MinValue, ulong.MaxValue]).ToArray());
+        AssertRoundTrip(Randoms(() => (float)(random.NextDouble() * 2e6 - 1e6)).Concat([float.MinValue, float.MaxValue, float.Epsilon, -0.5f]).ToArray());
+        AssertRoundTrip(Randoms(() => random.NextDouble() * 2e12 - 1e12).Concat([double.MinValue, double.MaxValue, double.Epsilon, -0.5]).ToArray());
+
+        // byte は下位バイトに値・上位バイトに 0、sbyte は16ビットに符号拡張した1ワード
+        AssertRoundTrip(Randoms(() => (byte)random.Next(256)).Concat([byte.MinValue, byte.MaxValue]).ToArray());
+        AssertRoundTrip(Randoms(() => (sbyte)random.Next(-128, 128)).Concat([sbyte.MinValue, sbyte.MaxValue, (sbyte)-1]).ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0xFF, 0xFF, 0x7F, 0x00 }, DeviceConverter.ConvertByteValueArray(new sbyte[] { -1, 127 }));
+
+        // 応答の byte / sbyte は、ワードの下位バイトだけを使う（上位バイトの値は無視する）
+        CollectionAssert.AreEqual(new byte[] { 0xAB, 0x01 }, DeviceConverter.ConvertValueArray<byte>([0xAB, 0x12, 0x01, 0xFF]));
+        CollectionAssert.AreEqual(new sbyte[] { -1, 1 }, DeviceConverter.ConvertValueArray<sbyte>([0xFF, 0x00, 0x01, 0xFF]));
+
+        // 長さが型のバイト数の倍数でない場合は ArgumentException（応答の解析では ReceivePacketException に変換される）
+        Assert.ThrowsException<ArgumentException>(() => DeviceConverter.ConvertValueArray<int>([0x01, 0x02, 0x03]));
+    }
 }
