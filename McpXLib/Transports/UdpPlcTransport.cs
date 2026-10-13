@@ -56,7 +56,7 @@ internal class UdpPlcTransport : IPlcTransport
         return new UdpClient();
     }
 
-    // 遅れて届いた応答を次の要求が受け取らないよう、ソケットを作り直す。
+    // 失敗した要求の応答が遅れて届いても次の要求が受け取らないよう、ソケットを作り直す（新しい送信元ポートになる）。
     private void RecreateClient()
     {
         lock (socketLock)
@@ -79,7 +79,6 @@ internal class UdpPlcTransport : IPlcTransport
         long remaining = timeout - elapsed.ElapsedMilliseconds;
         if (remaining <= 0)
         {
-            RecreateClient();
             throw new TimeoutException(TimeoutMessage, new SocketException((int)SocketError.TimedOut));
         }
 
@@ -103,7 +102,6 @@ internal class UdpPlcTransport : IPlcTransport
             }
             catch (SocketException ex) when (ex.SocketErrorCode == SocketError.TimedOut)
             {
-                RecreateClient();
                 throw new TimeoutException(TimeoutMessage, ex);
             }
 
@@ -124,28 +122,34 @@ internal class UdpPlcTransport : IPlcTransport
         // timeout が 0 の場合は、同期版や TCP と同じく無期限とする
         var delayTask = Task.Delay(timeout == 0 ? Timeout.Infinite : Math.Max(0, timeout - (int)elapsed.ElapsedMilliseconds), cts.Token);
 
-        while (true)
+        try
         {
-            var receiveTask = udp.ReceiveAsync();
-            var completed = await Task.WhenAny(receiveTask, delayTask).ConfigureAwait(false);
-
-            if (completed == delayTask)
+            while (true)
             {
-                // 保留中の受信が次の応答を横取りしないよう、ソケットを作り直す
-                receiveTask.ObserveException();
-                RecreateClient();
-                cancellationToken.ThrowIfCancellationRequested();
-                throw new TimeoutException(TimeoutMessage, new SocketException((int)SocketError.TimedOut));
-            }
+                var receiveTask = udp.ReceiveAsync();
+                var completed = await Task.WhenAny(receiveTask, delayTask).ConfigureAwait(false);
 
-            var result = await receiveTask.ConfigureAwait(false);
+                if (completed == delayTask)
+                {
+                    // 保留中の受信は、ソケットの作り直し（呼び出し元）で打ち切られる
+                    receiveTask.ObserveException();
+                    cancellationToken.ThrowIfCancellationRequested();
+                    throw new TimeoutException(TimeoutMessage, new SocketException((int)SocketError.TimedOut));
+                }
 
-            // 接続先以外から届いたデータグラムは無視する
-            if (result.RemoteEndPoint.Equals(remoteEndPoint))
-            {
-                cts.Cancel();
-                return Validate(result.Buffer, receiveLengthParser);
+                var result = await receiveTask.ConfigureAwait(false);
+
+                // 接続先以外から届いたデータグラムは無視する
+                if (result.RemoteEndPoint.Equals(remoteEndPoint))
+                {
+                    return Validate(result.Buffer, receiveLengthParser);
+                }
             }
+        }
+        finally
+        {
+            // 受信エラー・不正な応答で抜けた場合も、待機用のタイマーを止める
+            cts.Cancel();
         }
     }
 
@@ -182,7 +186,16 @@ internal class UdpPlcTransport : IPlcTransport
         gate.Wait();
         try
         {
-            return SendReceive(packet, receiveLengthParser);
+            try
+            {
+                return SendReceive(packet, receiveLengthParser);
+            }
+            catch
+            {
+                // タイムアウト・受信エラー・不正な応答のいずれでも、応答が遅れて届く可能性があるため作り直す
+                RecreateClient();
+                throw;
+            }
         }
         finally
         {
@@ -195,7 +208,16 @@ internal class UdpPlcTransport : IPlcTransport
         await gate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            return await SendReceiveAsync(packet, receiveLengthParser, cancellationToken).ConfigureAwait(false);
+            try
+            {
+                return await SendReceiveAsync(packet, receiveLengthParser, cancellationToken).ConfigureAwait(false);
+            }
+            catch
+            {
+                // タイムアウト・キャンセル・受信エラー・不正な応答のいずれでも、応答が遅れて届く可能性があるため作り直す
+                RecreateClient();
+                throw;
+            }
         }
         finally
         {

@@ -40,6 +40,7 @@
 - Fixed the 4E frame serial number not being assigned atomically when requests are sent from several threads.
 - Fixed `WriteBuilder.Add(T[])` writing the values at the time of the write without multiple block access, but at the time of `Add` with it. It now always takes the values at `Add`.
 - Fixed a response with less data than requested (but a consistent header) making `Read<T>` throw `IndexOutOfRangeException` and `BatchRead` return zero-filled values. The read commands now check the data length against the requested points and throw `ReceivePacketException`.
+- Fixed a UDP request that failed other than by a timeout (a receive error, an invalid response or cancellation) keeping its socket, so the late reply to it could be returned to the next request. The socket is now recreated after every failed request.
 
 ### Removed
 - **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.

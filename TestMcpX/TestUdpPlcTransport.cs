@@ -275,4 +275,72 @@ public class TestUdpPlcTransport
 
         cts.Cancel();
     }
+
+    // 1回目の要求には「長さの不正な応答」をすぐに返し、少し遅れて「正しい長さの応答（0xEE）」を返す。2回目以降はエコーする。
+    private (int Port, CancellationTokenSource Cts) StartLateReplyServer()
+    {
+        var udpClient = new UdpClient(0);
+        int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
+        var cts = new CancellationTokenSource();
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var isFirst = true;
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    var result = await udpClient.ReceiveAsync(cts.Token);
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                        await udpClient.SendAsync(new byte[] { 0x00, 0x00 }, 2, result.RemoteEndPoint);
+                        await Task.Delay(300, cts.Token);
+                        await udpClient.SendAsync(new byte[] { 0xEE, 0xEE, 0xEE, 0xEE }, 4, result.RemoteEndPoint);
+                        continue;
+                    }
+                    await udpClient.SendAsync(result.Buffer, result.Buffer.Length, result.RemoteEndPoint);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // キャンセル時は終了
+            }
+            finally
+            {
+                udpClient.Close();
+            }
+        }, cts.Token);
+
+        return (port, cts);
+    }
+
+    [TestMethod]
+    public async Task TestLateReplyAfterFailedRequest()
+    {
+        foreach (var isAsync in new[] { false, true })
+        {
+            var (port, cts) = StartLateReplyServer();
+            using var plc = UdpPlcTransport.Create("127.0.0.1", port, 2000);
+            var parser = new DummyReceiveLengthParser(0, 4);
+
+            byte[] first = [0x01, 0x01, 0x01, 0x01];
+            byte[] second = [0x02, 0x02, 0x02, 0x02];
+            if (isAsync)
+            {
+                await Assert.ThrowsExceptionAsync<ReceivePacketException>(() => plc.RequestAsync(first, parser, CancellationToken.None));
+            }
+            else
+            {
+                Assert.ThrowsException<ReceivePacketException>(() => plc.Request(first, parser));
+            }
+
+            // 失敗した要求の応答が遅れて届いても、次の要求は自分の応答を受け取る（ソケットを作り直しているため）
+            await Task.Delay(500);
+            var response = isAsync ? await plc.RequestAsync(second, parser, CancellationToken.None) : plc.Request(second, parser);
+            CollectionAssert.AreEqual(second, response, isAsync ? "async" : "sync");
+
+            cts.Cancel();
+        }
+    }
 }
