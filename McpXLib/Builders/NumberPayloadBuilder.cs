@@ -12,12 +12,10 @@ internal class NumberPayloadBuilder(params (uint value, int byteLength)[] number
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
+        var writer = new PacketWriter(packets, isAscii);
         foreach (var (value, byteLength) in numbers)
         {
-            var bytes = BitConverter.GetBytes(value).Take(byteLength).ToArray();
-            packets.AddRange(isAscii
-                ? CommandPacketBuilder.BinaryBytesToAsciiBytes(bytes, isReverse: true)
-                : bytes);
+            writer.Number(value, byteLength);
         }
     }
 }

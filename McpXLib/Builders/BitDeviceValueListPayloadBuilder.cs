@@ -9,41 +9,15 @@ internal class BitDeviceValueListPayloadBuilder((Prefix prefix, string address, 
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
-        if (isAscii)
+        var writer = new PacketWriter(packets, isAscii, series);
+        writer.Byte((byte)bitDevices.Length);
+
+        // セット/リセット指定は Q/L 形式（サブコマンド0001）が1バイト、iQ-R 形式（サブコマンド0003）が2バイト。
+        int setResetSize = series == ProcessorSeries.iQR ? 2 : 1;
+        foreach (var (prefix, address, value) in bitDevices)
         {
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: new[] { (byte)bitDevices.Length },
-                isReverse: false
-            ));
-
-            foreach (var bitDevice in bitDevices)
-            {
-                packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(bitDevice.prefix, bitDevice.address, series)
-                ));
-
-                packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                    binaryBytes: ToSetResetBytes(bitDevice.value),
-                    isReverse: true
-                ));
-            }
+            writer.Device(prefix, address);
+            writer.Number(value ? 1u : 0u, setResetSize);
         }
-        else
-        {
-            packets.Add((byte)bitDevices.Length);
-
-            foreach (var bitDevice in bitDevices)
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(bitDevice.prefix, bitDevice.address, series));
-                packets.AddRange(ToSetResetBytes(bitDevice.value));
-            }
-        }
-    }
-
-    // セット/リセット指定は Q/L 形式（サブコマンド0001）が1バイト、iQ-R 形式（サブコマンド0003）が2バイト。
-    private byte[] ToSetResetBytes(bool value)
-    {
-        byte setReset = value ? (byte)0x01 : (byte)0x00;
-        return series == ProcessorSeries.iQR ? [setReset, 0x00] : [setReset];
     }
 }
