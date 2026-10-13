@@ -44,9 +44,7 @@ internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
         //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
         if (bitLength % 2 != 0) 
         {
-            var responseContentList = responseContent.ToList();
-            responseContentList.RemoveAt(responseContent.Count() - 1);
-            responseContent = responseContentList.ToArray();
+            Array.Resize(ref responseContent, responseContent.Length - 1);
         }
 
         return DeviceConverter.ConvertValueArray<bool>(responseContent);

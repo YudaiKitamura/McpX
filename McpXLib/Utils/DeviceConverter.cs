@@ -44,54 +44,27 @@ internal static class DeviceConverter
 
         var length = bytes.Length / byteLength;
         var values = new T[length];
+        var type = typeof(T);
 
-        for (int i = 0; i < length; i++) 
+        for (int i = 0; i < length; i++)
         {
-            if (typeof(T) == typeof(bool)) 
-            {
-                values[i] = (T)(object)BitConverter.ToBoolean(bytes.Skip(i).Take(1).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(short)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt16(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(ushort)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt16(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(int)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt32(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(uint)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt32(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(float)) 
-            {
-                values[i] = (T)(object)BitConverter.ToSingle(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(double)) 
-            {
-                values[i] = (T)(object)BitConverter.ToDouble(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(long)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt64(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(ulong)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt64(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(byte)) 
-            {
-                // 1要素=1ワード。ワードの下位バイトを値とする。
-                values[i] = (T)(object)bytes[i * byteLength];
-            }
-            else if (typeof(T) == typeof(sbyte)) 
-            {
-                values[i] = (T)(object)(sbyte)bytes[i * byteLength];
-            }
+            int offset = i * byteLength;
+            object value;
+            if (type == typeof(bool)) value = bytes[offset] != 0;
+            else if (type == typeof(short)) value = BitConverter.ToInt16(bytes, offset);
+            else if (type == typeof(ushort)) value = BitConverter.ToUInt16(bytes, offset);
+            else if (type == typeof(int)) value = BitConverter.ToInt32(bytes, offset);
+            else if (type == typeof(uint)) value = BitConverter.ToUInt32(bytes, offset);
+            else if (type == typeof(float)) value = BitConverter.ToSingle(bytes, offset);
+            else if (type == typeof(double)) value = BitConverter.ToDouble(bytes, offset);
+            else if (type == typeof(long)) value = BitConverter.ToInt64(bytes, offset);
+            else if (type == typeof(ulong)) value = BitConverter.ToUInt64(bytes, offset);
+            // byte / sbyte は1要素=1ワード。ワードの下位バイトを値とする。
+            else if (type == typeof(byte)) value = bytes[offset];
+            else if (type == typeof(sbyte)) value = (sbyte)bytes[offset];
+            else throw new NotSupportedException($"Type {type} is not supported.");
+
+            values[i] = (T)value;
         }
 
         return values;
@@ -129,13 +102,14 @@ internal static class DeviceConverter
 
     internal static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
-        var bytes = new List<byte>();
-        foreach (var value in values) 
+        int size = typeof(T) == typeof(bool) ? 1 : GetWordLength<T>() * 2;
+        var bytes = new byte[values.Length * size];
+        for (int i = 0; i < values.Length; i++)
         {
-            bytes.AddRange(StructToBytes(value));
+            Buffer.BlockCopy(StructToBytes(values[i]), 0, bytes, i * size, size);
         }
 
-        return bytes.ToArray();
+        return bytes;
     }
 
     internal static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
