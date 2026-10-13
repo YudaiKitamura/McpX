@@ -39,6 +39,7 @@ internal sealed class WordBatchReadCommand<T> : PlcCommandBase<T[]>
 
     protected override T[] Parse(byte[] responseContent)
     {
+        ThrowIfLengthMismatch(responseContent, wordLength * DeviceConverter.GetWordLength<T>() * 2);
         return DeviceConverter.ConvertValueArray<T>(responseContent);
     }
 }

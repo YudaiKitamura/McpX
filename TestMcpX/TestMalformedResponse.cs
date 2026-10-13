@@ -1,3 +1,4 @@
+using McpXLib;
 using McpXLib.Builders;
 using McpXLib.Commands;
 using McpXLib.Enums;
@@ -76,5 +77,75 @@ public sealed class TestMalformedResponse
         var ex = Assert.ThrowsException<McProtocolException>(() => command.Execute(plc.Object));
         Assert.AreEqual((ushort)0xC059, ex.ErrorCode);
         Assert.IsInstanceOfType<McpXException>(ex);
+    }
+
+    // 3E フレーム（バイナリ）の正常応答（終了コード 0000）に、応答データ data を付ける
+    private static byte[] BinaryResponse(params byte[] data)
+    {
+        var header = new byte[] { 0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00 };
+        var length = BitConverter.GetBytes((ushort)(data.Length + 2));
+        return [.. header, .. length, 0x00, 0x00, .. data];
+    }
+
+    [TestMethod]
+    public async Task TestShortWordBatchResponse()
+    {
+        // 応答データなし（ヘッダの長さとは一致する正しい形式）で、1点の読み込み
+        var empty = CreatePlc(isAscii: false, BinaryResponse());
+        Assert.ThrowsException<ReceivePacketException>(() => new WordBatchReadCommand<short>(Prefix.D, "0", 1).Execute(empty.Object));
+        await Assert.ThrowsExceptionAsync<ReceivePacketException>(() => new WordBatchReadCommand<short>(Prefix.D, "0", 1).ExecuteAsync(empty.Object, CancellationToken.None));
+
+        // 10点の読み込みに、2点分の応答データ
+        var shortData = CreatePlc(isAscii: false, BinaryResponse(0x01, 0x00, 0x02, 0x00));
+        Assert.ThrowsException<ReceivePacketException>(() => new WordBatchReadCommand<short>(Prefix.D, "0", 10).Execute(shortData.Object));
+    }
+
+    [TestMethod]
+    public void TestShortBitBatchResponse()
+    {
+        // 4点（2バイト）の読み込みに、2点（1バイト）の応答データ
+        var plc = CreatePlc(isAscii: false, BinaryResponse(0x11));
+        Assert.ThrowsException<ReceivePacketException>(() => new BitBatchReadCommand(Prefix.M, "0", 4).Execute(plc.Object));
+
+        // 3点（奇数）の読み込みは、2バイト（4点分）の応答で正常
+        var odd = CreatePlc(isAscii: false, BinaryResponse(0x10, 0x10));
+        CollectionAssert.AreEqual(new[] { true, false, true }, new BitBatchReadCommand(Prefix.M, "0", 3).Execute(odd.Object));
+    }
+
+    [TestMethod]
+    public void TestShortRandomAndMonitorResponse()
+    {
+        (Prefix, string)[] words = [(Prefix.D, "0"), (Prefix.D, "1")];
+        (Prefix, string)[] doubleWords = [(Prefix.D, "10")];
+
+        // ワード2点 + ダブルワード1点（8バイト）の読み込みに、ワード1点分（2バイト）の応答データ
+        var plc = CreatePlc(isAscii: false, BinaryResponse(0x01, 0x00));
+        Assert.ThrowsException<ReceivePacketException>(() => new WordRandomReadCommand<ushort, uint>(words, doubleWords).Execute(plc.Object));
+        Assert.ThrowsException<ReceivePacketException>(() => new MonitorCommand<ushort, uint>(words, doubleWords).Execute(plc.Object));
+    }
+
+    [TestMethod]
+    public async Task TestShortResponseThroughMcpX()
+    {
+        // 終了コードだけの応答（応答データなし）
+        using var mcpx = new McpX(new FixedResponseTransport(BinaryResponse()));
+
+        // IndexOutOfRangeException や、0 で埋めた配列ではなく ReceivePacketException
+        Assert.ThrowsException<ReceivePacketException>(() => mcpx.Read<short>(Prefix.D, "0"));
+        Assert.ThrowsException<ReceivePacketException>(() => mcpx.BatchRead<short>(Prefix.D, "0", 10));
+        await Assert.ThrowsExceptionAsync<ReceivePacketException>(() => mcpx.RandomReadAsync(b => b.Add<short>(Prefix.D, "0", _ => { })));
+    }
+
+    // 常に同じ応答を返すトランスポート
+    private sealed class FixedResponseTransport(byte[] response) : IPlcTransport
+    {
+        public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => response;
+
+        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
+            => Task.FromResult(response);
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -40,6 +40,9 @@ internal sealed class BitBatchReadCommand : PlcCommandBase<bool[]>
 
     protected override bool[] Parse(byte[] responseContent)
     {
+        // 応答は2点で1バイト（解析後は1点1バイト）のため、奇数点の場合は1点分多い
+        ThrowIfLengthMismatch(responseContent, bitLength + bitLength % 2);
+
         // MEMO:
         //  読出しビット数が奇数の場合、余分な4ビットを含む1バイトをクリア
         if (bitLength % 2 != 0) 

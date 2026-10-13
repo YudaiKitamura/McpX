@@ -1,4 +1,5 @@
 using McpXLib.Builders;
+using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 using McpXLib.Utils;
 
@@ -69,10 +70,25 @@ internal abstract class PlcCommandBase<T> : IPacketBuilder
     {
         int wordBytes = wordLength * DeviceConverter.GetWordLength<T1>() * 2;
         int doubleWordBytes = doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2;
+        ThrowIfLengthMismatch(responseContent, wordBytes + doubleWordBytes);
 
         return (
             wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent.Take(wordBytes).ToArray()),
             doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent.Skip(wordBytes).Take(doubleWordBytes).ToArray())
         );
+    }
+
+    /// <summary>
+    /// 応答データの長さが、要求した点数から決まる長さと一致しない場合に <see cref="ReceivePacketException"/> をスローします。
+    /// </summary>
+    /// <remarks>
+    /// 応答のヘッダに書かれた長さとの一致は解析時に確認済みのため、ここでは「要求した点数分のデータがあるか」を確認する。
+    /// </remarks>
+    protected static void ThrowIfLengthMismatch(byte[] responseContent, int expectedLength)
+    {
+        if (responseContent.Length != expectedLength)
+        {
+            throw new ReceivePacketException($"Received packet had {responseContent.Length} bytes of data, but {expectedLength} bytes were expected.");
+        }
     }
 }

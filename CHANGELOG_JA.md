@@ -39,6 +39,7 @@
 - ビルダーを使うメソッドと `Add` で、ビルダーの処理・コールバック・値の配列が null の場合に `ArgumentNullException` を、アドレスが null の場合に `DeviceAddressException` をスローするように変更。
 - 複数のスレッドから要求した場合に、4E フレームのシリアル番号の採番がアトミックでない不具合を修正。
 - `WriteBuilder.Add(T[])` で、複数ブロックを使わない場合は書き込み時点の配列の値を、使う場合は `Add` 時点の値を書き込んでいた不具合を修正。常に `Add` 時点の値を書き込みます。
+- 要求した点数より応答データが短い応答（ヘッダの長さとは一致するもの）で、`Read<T>` が `IndexOutOfRangeException` をスローし、`BatchRead` が 0 で埋めた値を返す不具合を修正。読み出しのコマンドで応答データの長さを要求した点数と照合し、`ReceivePacketException` をスローします。
 
 ### Removed
 - **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。
