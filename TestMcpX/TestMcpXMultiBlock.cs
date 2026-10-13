@@ -114,6 +114,22 @@ public sealed class TestMcpXMultiBlock
     }
 
     [TestMethod]
+    public void TestBlockWriteSplitsSeveralRanges()
+    {
+        var transport = new FakePlcTransport(stateful: true);
+        using var mcpx = new McpX(transport);
+
+        // 2つの範囲が、それぞれ 956点ごとの3ブロック以上に分かれても、各ブロックに正しい位置の値を書き込む
+        var d = Values(2000, 1);
+        var w = Values(2500, 10000);
+        mcpx.BlockWrite(b => b.Add(Prefix.D, "0", d).Add(Prefix.W, "0", w));
+
+        Assert.IsTrue(transport.Requests.Count >= 5);
+        CollectionAssert.AreEqual(d, mcpx.BatchRead<short>(Prefix.D, "0", d.Length));
+        CollectionAssert.AreEqual(w, mcpx.BatchRead<short>(Prefix.W, "0", w.Length));
+    }
+
+    [TestMethod]
     public void TestBlockBuilderArguments()
     {
         using var mcpx = new McpX(new FakeMultiBlockTransport());

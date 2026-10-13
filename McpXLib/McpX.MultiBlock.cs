@@ -141,7 +141,8 @@ public partial class McpX
 
     // 範囲を maxPoints 点ごとのブロックに分け、上限に収まるようにリクエストへ詰める。
     // ビットデバイスは1点=16デバイス分のため、分割時の先頭アドレスを16倍進める。
-    private List<List<BlockChunk>> PackBlocks(IReadOnlyList<(Prefix prefix, string address, int points)> ranges, Func<int, int, ushort[]?> getWords, int blockCost)
+    // getWords は（範囲の番号, 範囲内の位置, 点数）から書き込むワードを返す（読み込みは null）。
+    private List<List<BlockChunk>> PackBlocks(IReadOnlyList<(Prefix prefix, string address, int points)> ranges, Func<int, int, int, ushort[]?> getWords, int blockCost)
     {
         int maxBlockCount = MultiBlockReadCommand.GetMaxBlockCount(ProcessorSeries);
         int maxPoints = MultiBlockReadCommand.MAX_POINTS - blockCost;
@@ -169,7 +170,7 @@ public partial class McpX
                     prefix,
                     DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                     (ushort)length,
-                    getWords(i, offset)?.Take(length).ToArray());
+                    getWords(i, offset, length));
 
                 current.Add(new BlockChunk(block, i, offset));
                 currentPoints += length;
@@ -185,12 +186,12 @@ public partial class McpX
     }
 
     private List<List<BlockChunk>> PackReadBlocks(IReadOnlyList<BlockReadEntry> entries)
-        => PackBlocks(entries.Select(e => (e.Prefix, e.Address, e.Points)).ToList(), (_, _) => null, 0);
+        => PackBlocks(entries.Select(e => (e.Prefix, e.Address, e.Points)).ToList(), (_, _, _) => null, 0);
 
     private List<List<BlockChunk>> PackWriteBlocks(IReadOnlyList<BlockWriteEntry> entries)
         => PackBlocks(
             entries.Select(e => (e.Prefix, e.Address, e.Words.Length)).ToList(),
-            (i, offset) => entries[i].Words.Skip(offset).ToArray(),
+            (i, offset, length) => Slice(entries[i].Words, offset, length),
             MultiBlockWriteCommand.GetBlockCost(ProcessorSeries));
 
     private void ExecuteBlockRead(IReadOnlyList<BlockReadEntry> entries)
