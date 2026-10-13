@@ -7,45 +7,43 @@ internal class RoutePacketBuilder : IPacketBuilder
 {
     private readonly byte networkNumber;
     private readonly byte pcNumber;
-    private readonly byte unitNumber;
-    private readonly byte ioNumber;
-    private readonly byte stationNumber;
+    // 要求先ユニットI/O番号（2バイト。バイナリは下位→上位、ASCII は上位→下位の順）
+    private readonly ushort moduleIoNumber;
+    private readonly byte moduleStationNumber;
 
     internal RoutePacketBuilder(
         byte networkNumber = 0x00,
         byte pcNumber = 0xFF,
-        byte unitNumber = 0xFF,
-        byte ioNumber = 0x03,
-        byte stationNumber = 0x00) 
+        ushort moduleIoNumber = 0x03FF,
+        byte moduleStationNumber = 0x00)
     {
         this.networkNumber = networkNumber;
         this.pcNumber = pcNumber;
-        this.unitNumber = unitNumber;
-        this.ioNumber = ioNumber;
-        this.stationNumber = stationNumber;
+        this.moduleIoNumber = moduleIoNumber;
+        this.moduleStationNumber = moduleStationNumber;
     }
-    
+
+    internal RoutePacketBuilder(McpXRoute route)
+        : this(route.NetworkNo, route.PcNo, route.ModuleIoNo, route.ModuleStationNo)
+    {
+    }
+
     public byte[] ToBinaryBytes()
     {
         return
         [
             networkNumber,
             pcNumber,
-            unitNumber,
-            ioNumber,
-            stationNumber
+            (byte)(moduleIoNumber & 0xFF),
+            (byte)(moduleIoNumber >> 8),
+            moduleStationNumber
         ];
     }
 
     public byte[] ToAsciiBytes()
     {
-        var packets = new List<byte>();
-        packets.AddRange(Encoding.ASCII.GetBytes(networkNumber.ToString("X2")));
-        packets.AddRange(Encoding.ASCII.GetBytes(pcNumber.ToString("X2")));
-        packets.AddRange(Encoding.ASCII.GetBytes(ioNumber.ToString("X2")));
-        packets.AddRange(Encoding.ASCII.GetBytes(unitNumber.ToString("X2")));
-        packets.AddRange(Encoding.ASCII.GetBytes(stationNumber.ToString("X2")));
-        
-        return packets.ToArray();
+        return Encoding.ASCII.GetBytes(
+            networkNumber.ToString("X2") + pcNumber.ToString("X2") + moduleIoNumber.ToString("X4") + moduleStationNumber.ToString("X2")
+        );
     }
 }

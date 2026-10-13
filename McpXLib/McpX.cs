@@ -56,7 +56,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
 
         int timeout = options.Validate();
         var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
-        var mcpx = new McpX(factory.Create(), factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password)
+        var mcpx = new McpX(factory.Create(), factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password, options.Route)
         {
             UseMultiBlockAccess = options.UseMultiBlockAccess,
         };
@@ -105,7 +105,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         int timeout = options.Validate();
         var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
         var transport = await factory.CreateAsync(cancellationToken).ConfigureAwait(false);
-        var mcpx = new McpX(transport, factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password)
+        var mcpx = new McpX(transport, factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password, options.Route)
         {
             UseMultiBlockAccess = options.UseMultiBlockAccess,
         };
@@ -147,8 +147,9 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         IPlcTransport transport,
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         ushort timeoutMilliseconds = 5000,
-        string? password = null
-    ) : this(transport, null, timeoutMilliseconds, false, RequestFrame.E3, processorSeries, password)
+        string? password = null,
+        McpXRoute? route = null
+    ) : this(transport, null, timeoutMilliseconds, false, RequestFrame.E3, processorSeries, password, route)
     {
         UnlockOrRelease();
     }

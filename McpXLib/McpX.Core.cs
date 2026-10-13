@@ -23,6 +23,11 @@ public partial class McpX : IPlc
     /// </summary>
     public ProcessorSeries ProcessorSeries => processorSeries;
 
+    /// <summary>
+    /// アクセス経路（交信先のCPUユニット）です。
+    /// </summary>
+    public McpXRoute Route { get; }
+
     IPacketBuilder IPlc.Route => route;
 
     private readonly bool isAscii;
@@ -59,7 +64,7 @@ public partial class McpX : IPlc
         RequestFrame requestFrame,
         ProcessorSeries processorSeries,
         string? password,
-        IPacketBuilder? route = null
+        McpXRoute? route = null
     )
     {
         this.transportFactory = transportFactory;
@@ -68,7 +73,8 @@ public partial class McpX : IPlc
         this.isAscii = isAscii;
         this.requestFrame = requestFrame;
         this.processorSeries = processorSeries;
-        this.route = route ?? new RoutePacketBuilder();
+        Route = route ?? McpXRoute.Default;
+        this.route = new RoutePacketBuilder(Route);
         this.monitoringTimer = ToMonitoringTimer(timeout);
     }
 

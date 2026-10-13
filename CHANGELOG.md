@@ -6,6 +6,7 @@
 - `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
 - Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.
 - Added `McpXException`, the base class of `DeviceAddressException`, `McProtocolException` and `ReceivePacketException`. The exceptions now have the standard constructors, including one with an inner exception.
+- Added access to other stations and to the other CPUs of a multiple CPU system: `McpXOptions.Route` takes a `McpXRoute` (network No., PC No., request destination module I/O No. and station No.), and `McpXRoute.ForCpu(cpuNo)` targets CPU No. 1 to 4. `McpX.Route` returns the route in use.
 
 ### Changed
 - **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.

@@ -73,6 +73,14 @@ public sealed class McpXOptions
     public bool UseMultiBlockAccess { get; set; }
 
     /// <summary>
+    /// アクセス経路（交信先のCPUユニット）を指定します。（既定は、自局CPU:<see cref="McpXRoute.Default"/>です。）
+    /// </summary>
+    /// <remarks>
+    /// ネットワーク経由の他局や、マルチCPUシステムの別の号機にアクセスする場合に指定します。詳細は <see cref="McpXRoute"/> を参照してください。
+    /// </remarks>
+    public McpXRoute Route { get; set; } = McpXRoute.Default;
+
+    /// <summary>
     /// 設定を検証し、通信タイムアウト時間をミリ秒（0 は無期限）で返します。
     /// </summary>
     internal int Validate()
@@ -95,6 +103,11 @@ public sealed class McpXOptions
         if (!Enum.IsDefined(typeof(ProcessorSeries), ProcessorSeries))
         {
             throw new ArgumentOutOfRangeException(nameof(ProcessorSeries), ProcessorSeries, "Unknown processor series.");
+        }
+
+        if (Route == null)
+        {
+            throw new ArgumentNullException(nameof(Route));
         }
 
         if (Timeout == System.Threading.Timeout.InfiniteTimeSpan)

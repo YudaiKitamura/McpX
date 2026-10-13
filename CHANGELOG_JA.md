@@ -6,6 +6,7 @@
 - `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
 - `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。
 - `DeviceAddressException`、`McProtocolException`、`ReceivePacketException` の基底クラス `McpXException` を追加。各例外に、原因となった例外を指定するものを含む標準のコンストラクタを追加。
+- 他局と、マルチCPUシステムの別の号機へのアクセスを追加。`McpXOptions.Route` に `McpXRoute`（ネットワーク番号、PC番号、要求先ユニットI/O番号、要求先ユニット局番号）を指定します。`McpXRoute.ForCpu(cpuNo)` で号機（1〜4）を指定できます。使用中の経路は `McpX.Route` で取得できます。
 
 ### Changed
 - **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
