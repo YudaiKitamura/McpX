@@ -48,10 +48,9 @@ window.addEventListener('DOMContentLoaded', () => {
   })
   .type("using McpXLib;\n")
   .type("using McpXLib.Enums;\n\n")
-  .type('using (var mcpx = new McpX("192.168.12.88", 10000)){\n')
-  .type('   mcpx.Write<short>(Prefix.D, "0", 1234);\n')
-  .type('   var value = mcpx.Read<short>(Prefix.D, "0");\n')
-  .type('}')
+  .type('using var mcpx = McpX.Connect("192.168.12.88", 10000);\n\n')
+  .type('mcpx.Write<short>(Prefix.D, "0", 1234);\n')
+  .type('var value = mcpx.Read<short>(Prefix.D, "0");')
   .go();
 });
 </script>
@@ -62,12 +61,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <div style="max-width: 800px; margin: 0 auto; text-align: center;">
   <div style="margin: 2em auto 1em auto;">
-    <img alt="Version" src="https://img.shields.io/badge/version-0.5.3-blue" />
+    <img alt="Version" src="https://img.shields.io/badge/version-0.13.0-blue" />
     <img alt=".NET 7.0+" src="https://img.shields.io/badge/.NET-7.0+-blueviolet" />
     <img alt=".NET 8.0+" src="https://img.shields.io/badge/.NET-8.0+-purple" />
     <img alt=".NET 9.0+" src="https://img.shields.io/badge/.NET-9.0+-indigo" />
-    <img alt=".NET Core 2.0+" src="https://img.shields.io/badge/.NET_Core-2.0+-darkgreen" />
-    <img alt=".NET Framework 4.6.1+" src="https://img.shields.io/badge/.NET_Framework-4.6.1+-teal?logo=windows" />
+    <img alt=".NET 10.0+" src="https://img.shields.io/badge/.NET-10.0+-darkviolet" />
+    <img alt=".NET Standard 2.0" src="https://img.shields.io/badge/.NET_Standard-2.0-darkgreen" />
+    <img alt=".NET Framework 4.6.2+" src="https://img.shields.io/badge/.NET_Framework-4.6.2+-teal?logo=windows" />
     <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" />
   </div>
   <div style="text-align: left;">
