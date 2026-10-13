@@ -38,25 +38,7 @@ public sealed class RandomReadBuilder
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public RandomReadBuilder Add<T>(Prefix prefix, string address, Action<T> onRead) where T : unmanaged
     {
-        if (onRead == null)
-        {
-            throw new ArgumentNullException(nameof(onRead));
-        }
-
-        switch (RandomAccessKindResolver.Resolve<T>())
-        {
-            case RandomAccessKind.Bit:
-                // ビットデバイスはワードで読み、先頭ビット(bit0)を抽出する。
-                wordEntries.Add((prefix, address, raw => onRead((T)(object)((raw & 0x0001) != 0))));
-                break;
-            case RandomAccessKind.Word:
-                wordEntries.Add((prefix, address, raw => onRead(DeviceConverter.ConvertValueArray<T>(BitConverter.GetBytes(raw))[0])));
-                break;
-            default:
-                doubleWordEntries.Add((prefix, address, raw => onRead(DeviceConverter.ConvertValueArray<T>(BitConverter.GetBytes(raw))[0])));
-                break;
-        }
-
+        RandomAccessKindResolver.AddReadEntry(wordEntries, doubleWordEntries, prefix, address, onRead);
         return this;
     }
 }
