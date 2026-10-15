@@ -16,6 +16,8 @@
   <a href="README_JA.md">日本語</a> | <a href="README.md">English</a>
 </p>
 
+**Website & documentation: [mcpx.yktmr.jp](https://mcpx.yktmr.jp/)** — overview, [API reference](https://mcpx.yktmr.jp/docs), and an [MC protocol guide](https://mcpx.yktmr.jp/en/learn).
+
 **McpX is a library for communicating with Mitsubishi Electric PLCs using the MC protocol.**  
 It features a simple and easy-to-use API, allowing you to communicate without worrying about MC protocol details.  
 It runs on various platforms, including Linux, Windows, and macOS.
