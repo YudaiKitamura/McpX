@@ -114,7 +114,7 @@ session.Read();   // repeat as needed
 
 | Change | What to do |
 |---|---|
-| `BatchWrite` / `BatchWriteAsync` return nothing | Use the array you passed instead of the return value |
+| `BatchWrite` / `BatchWriteAsync` return nothing (0.x returned a copy of the array you passed) | Use the array you passed instead of the return value ([example](#batchwrite-return-value)) |
 | Lengths are `int` (`BatchRead`, `ReadString`, `ReadBuilder.Add`, `BlockReadBuilder.Add`) | No change for literals. Remove `(ushort)` casts if you like |
 | `ReadString(prefix, address, length)` parameter renamed to `wordLength` | Rename named arguments |
 | `RemoteReset(int reconnectTimeoutMilliseconds)` takes `TimeSpan? reconnectTimeout` | `RemoteReset(TimeSpan.FromSeconds(30))`, `TimeSpan.Zero` not to reconnect |
@@ -128,3 +128,21 @@ session.Read();   // repeat as needed
 | `bool` on a word device throws `ArgumentException` before sending (was `McProtocolException` C05C, or bit 0 of the word for random read / monitor) | Use a word type such as `short`, or a bit device. To read a bit of a word, read `ushort` and test the bit |
 | Q/L addresses above FFFFFF throw `DeviceAddressException` | Use `ProcessorSeries.iQR` for such addresses |
 | .NET Framework 4.6.2 or later is required for the netstandard2.0 build | Update from 4.6.1 |
+
+### `BatchWrite` return value
+
+In 0.x the return value was a copy of the array you passed, not values read back from the PLC. Use the array you passed.
+
+```csharp
+var values = new short[] { 1, 2, 3 };
+
+// 0.x
+var written = mcpx.BatchWrite(Prefix.D, "0", values);
+Console.WriteLine(written[0]);
+
+// 1.0
+mcpx.BatchWrite(Prefix.D, "0", values);
+Console.WriteLine(values[0]);
+```
+
+To check the values on the PLC, read them back with `BatchRead`.

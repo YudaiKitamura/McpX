@@ -114,7 +114,7 @@ session.Read();   // 必要なだけ繰り返す
 
 | 変更 | 対応 |
 |---|---|
-| `BatchWrite` / `BatchWriteAsync` が値を返さない | 戻り値の代わりに、渡した配列を使用してください |
+| `BatchWrite` / `BatchWriteAsync` が値を返さない（0.x では、渡した配列のコピーを返していました） | 戻り値の代わりに、渡した配列を使用してください（[例](#batchwrite-の戻り値)） |
 | 点数が `int`（`BatchRead`、`ReadString`、`ReadBuilder.Add`、`BlockReadBuilder.Add`） | リテラルの場合は変更不要です。`(ushort)` のキャストは外せます |
 | `ReadString(prefix, address, length)` の引数名を `wordLength` に変更 | 名前付き引数を変更してください |
 | `RemoteReset(int reconnectTimeoutMilliseconds)` が `TimeSpan? reconnectTimeout` を受け取る | `RemoteReset(TimeSpan.FromSeconds(30))`。再接続しない場合は `TimeSpan.Zero` |
@@ -128,3 +128,21 @@ session.Read();   // 必要なだけ繰り返す
 | ワードデバイスへの `bool` が、送信前に `ArgumentException` をスローする（PLC の C05C による `McProtocolException`、ランダム読み出し・モニタではワードの bit0 でした） | `short` などのワードの型を使うか、ビットデバイスを指定してください。ワードの特定のビットを読む場合は、`ushort` で読んでビットを取り出してください |
 | Q/L で FFFFFF を超えるアドレスが `DeviceAddressException` をスローする | そのアドレスには `ProcessorSeries.iQR` を使用してください |
 | netstandard2.0 版は .NET Framework 4.6.2 以降が必要 | 4.6.1 から更新してください |
+
+### `BatchWrite` の戻り値
+
+0.x の戻り値は、渡した配列のコピーでした（PLC から読み直した値ではありません）。渡した配列をそのまま使用してください。
+
+```csharp
+var values = new short[] { 1, 2, 3 };
+
+// 0.x
+var written = mcpx.BatchWrite(Prefix.D, "0", values);
+Console.WriteLine(written[0]);
+
+// 1.0
+mcpx.BatchWrite(Prefix.D, "0", values);
+Console.WriteLine(values[0]);
+```
+
+PLC 上の値を確かめる場合は、`BatchRead` で読み直してください。
