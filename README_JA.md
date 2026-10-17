@@ -17,7 +17,9 @@
   <a href="README_JA.md">日本語</a> | <a href="README.md">English</a>
 </p>
 
-**McpXは、三菱電機製PLCとMCプロトコルで通信するためのライブラリです。**  
+**公式サイト・ドキュメント: [mcpx.yktmr.jp](https://mcpx.yktmr.jp/)** — 概要、[API リファレンス](https://mcpx.yktmr.jp/docs)、[MCプロトコル入門](https://mcpx.yktmr.jp/learn)
+
+McpXは、三菱電機製PLCと通信するためのMCプロトコル対応ライブラリです。<br>
 シンプルなAPIで扱いやすく、MCプロトコルを意識することなく利用でき、Linux、Windows、macOS など、さまざまなプラットフォームで動作します。
 
 > 0.x から移行する場合は、[移行ガイド](MIGRATION_JA.md)を参照してください。
