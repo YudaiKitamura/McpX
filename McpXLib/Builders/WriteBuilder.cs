@@ -45,7 +45,7 @@ public sealed class WriteBuilder
     /// </summary>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>

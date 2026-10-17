@@ -202,7 +202,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
@@ -229,10 +229,10 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
-    /// <param name="address">読み込み対象の先頭アドレス</param>
+    /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
@@ -252,11 +252,11 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 連続デバイス読み込み
     /// </summary>
     /// <remarks>
-    /// 指定したデバイス範囲の値をPLCから読み込みます。<br/>
+    /// 指定したデバイス範囲の値をPLCから読み込みます。
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
@@ -291,11 +291,11 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 連続デバイス読み込み（非同期）
     /// </summary>
     /// <remarks>
-    /// 指定したデバイス範囲の値を非同期でPLCから読み込みます。<br/>
+    /// 指定したデバイス範囲の値を非同期でPLCから読み込みます。
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
@@ -336,7 +336,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
@@ -363,7 +363,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
@@ -391,7 +391,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
@@ -423,7 +423,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
@@ -1039,7 +1039,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <remarks>
     /// 連続デバイスと非連続デバイスに、1つのビルダーでまとめて非同期で書き込みます。<br/>
     /// 配列を指定したデバイスは連続アクセス、単一の値を指定したデバイスはランダムアクセスで書き込まれます。
-    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
