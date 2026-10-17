@@ -206,6 +206,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -232,6 +234,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレス</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -262,6 +266,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -300,6 +306,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -333,6 +341,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -359,6 +369,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -385,6 +397,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
     /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -416,6 +430,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <param name="values">書き込みする値を配列で指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -673,6 +689,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// アクセス単位・点数上限・パケット分割は内部で自動処理されます。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -719,6 +736,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -765,6 +783,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// ワード／ダブルワードとビットはMCプロトコル上サブコマンドが異なるため、別パケットで送信されます。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -801,6 +820,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -839,6 +859,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// ワード＋ダブルワードの合計で 192点（Q/L）／96点（iQ-R）です。超過時は例外をスローします。
     /// </remarks>
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
@@ -871,6 +892,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
@@ -906,6 +928,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -942,6 +966,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -980,6 +1006,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -1015,6 +1043,8 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>

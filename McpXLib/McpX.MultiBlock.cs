@@ -30,6 +30,7 @@ public partial class McpX
     /// ユニバーサルモデルQCPU・LCPUでは、CPUユニットの"サービス処理設定"によってデータが泣き別れることがあります。
     /// </remarks>
     /// <param name="build">読み込むデバイス範囲とコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで読み込めない指定（ワードデバイスへの <c>bool</c>）の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
@@ -53,6 +54,7 @@ public partial class McpX
     /// </remarks>
     /// <param name="build">読み込むデバイス範囲とコールバックを登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで読み込めない指定（ワードデバイスへの <c>bool</c>）の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
@@ -78,6 +80,7 @@ public partial class McpX
     /// ユニバーサルモデルQCPU・LCPUでは、CPUユニットの"サービス処理設定"によってデータが泣き別れることがあります。
     /// </remarks>
     /// <param name="build">書き込むデバイス範囲と値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで書き込めない指定の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
@@ -101,6 +104,7 @@ public partial class McpX
     /// </remarks>
     /// <param name="build">書き込むデバイス範囲と値を登録するビルダー操作を指定します。</param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで書き込めない指定の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>

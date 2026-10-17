@@ -32,6 +32,7 @@ public sealed class WriteBuilder
     /// <param name="address">書き込み対象のアドレスを指定します。</param>
     /// <param name="value">書き込む値を指定します。</param>
     /// <exception cref="NotSupportedException">ランダムアクセス非対応の型（<c>long</c>,<c>double</c> など）を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
@@ -50,6 +51,7 @@ public sealed class WriteBuilder
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込む値を配列で指定します。値はこのメソッドの呼び出し時点で取り込むため、呼び出し後に配列を変更しても書き込む値は変わりません。</param>
     /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {

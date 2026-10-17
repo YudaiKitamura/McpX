@@ -55,6 +55,7 @@ public sealed class ReadBuilder
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T[]</c>を受け取るコールバックを指定します。</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合にスローします。</exception>
     /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public ReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
