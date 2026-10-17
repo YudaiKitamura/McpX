@@ -189,6 +189,10 @@ public sealed class TestMcpXBatchAccess
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => mcpx.BatchRead<short>(Prefix.D, "0", -1));
         await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => mcpx.BatchReadAsync<short>(Prefix.D, "0", -1));
+        var ex = Assert.ThrowsException<ArgumentOutOfRangeException>(() => mcpx.ReadString(Prefix.D, "0", -1));
+        Assert.AreEqual("wordLength", ex.ParamName);
+        ex = await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => mcpx.ReadStringAsync(Prefix.D, "0", -1));
+        Assert.AreEqual("wordLength", ex.ParamName);
         Assert.ThrowsException<ArgumentNullException>(() => mcpx.BatchWrite<short>(Prefix.D, "0", null!));
         await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => mcpx.BatchWriteAsync<short>(Prefix.D, "0", null!));
 

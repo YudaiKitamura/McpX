@@ -271,7 +271,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T[] BatchRead<T>(Prefix prefix, string address, int length) where T : unmanaged
     {
-        ThrowIfNegative(length);
+        ThrowIfNegative(length, nameof(length));
         var values = new T[length];
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
@@ -309,7 +309,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, int length, CancellationToken cancellationToken = default) where T : unmanaged
     {
-        ThrowIfNegative(length);
+        ThrowIfNegative(length, nameof(length));
         var values = new T[length];
         foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
@@ -471,11 +471,11 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
         return chunks;
     }
 
-    private static void ThrowIfNegative(int length)
+    private static void ThrowIfNegative(int length, string paramName)
     {
         if (length < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(length), length, "Length must not be negative.");
+            throw new ArgumentOutOfRangeException(paramName, length, "Length must not be negative.");
         }
     }
 
@@ -1052,6 +1052,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 読み込むワード数（デバイス点数）を指定します。1ワードに2バイト（半角2文字、全角1文字）が入ります。<br/>
     /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
     /// </param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordLength"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -1061,6 +1062,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public string ReadString(Prefix prefix, string address, int wordLength)
     {
+        ThrowIfNegative(wordLength, nameof(wordLength));
         return DeviceConverter.ConvertString(
             BatchRead<ushort>(prefix, address, wordLength).SelectMany(BitConverter.GetBytes).ToArray()
         );
@@ -1079,6 +1081,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
     /// </param>
     /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordLength"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
@@ -1088,6 +1091,7 @@ public sealed partial class McpX : IDisposable, IAsyncDisposable
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
     public async Task<string> ReadStringAsync(Prefix prefix, string address, int wordLength, CancellationToken cancellationToken = default)
     {
+        ThrowIfNegative(wordLength, nameof(wordLength));
         return DeviceConverter.ConvertString(
             (await BatchReadAsync<ushort>(prefix, address, wordLength, cancellationToken).ConfigureAwait(false)).SelectMany(BitConverter.GetBytes).ToArray()
         );
