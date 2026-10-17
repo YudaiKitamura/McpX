@@ -2,7 +2,7 @@
 
   <!-- McpXLib・McpXInterop（ネイティブライブラリ）で共通のバージョン -->
   <PropertyGroup>
-    <Version>0.13.0</Version>
+    <Version>1.0.0-rc.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">

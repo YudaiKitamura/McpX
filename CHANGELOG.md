@@ -1,4 +1,4 @@
-## [Unreleased]
+## [1.0.0-rc.1] - 2026-10-17
 ### Added
 - Added a `CancellationToken` parameter to every async method (including `MonitorSession.ReadAsync`). Cancelling a request in progress closes the TCP connection, as a timeout does.
 - UDP connections now accept a host name as well as an IP address, and IPv6 addresses. A host name uses its IPv4 address if it has one.
