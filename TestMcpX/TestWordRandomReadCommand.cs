@@ -17,8 +17,7 @@ public sealed class TestWordRandomReadCommand
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.Object.Route = new RoutePacketBuilder();
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
     }
 
     [TestMethod]
@@ -26,7 +25,7 @@ public sealed class TestWordRandomReadCommand
     {
         var command = new WordRandomReadCommand<short, int>([(Prefix.D, "0"),(Prefix.D, "1")],[(Prefix.D, "2"),(Prefix.D, "4")]);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x18, 0x00,                     // Content Length
             0x00, 0x00,                     // Monitoring Timer
             0x03, 0x04, 0x00, 0x00,         // Command
@@ -42,7 +41,7 @@ public sealed class TestWordRandomReadCommand
             0xA8,                           // Device Prefix4
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToBinaryBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
     }
 
     [TestMethod]
@@ -94,21 +93,21 @@ public sealed class TestWordRandomReadCommand
             0x04, 0x00, 0x00, 0x00,         // Value4
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
         short[] wordDeviceExpected = [
             1,
             2,
         ];
 
-        CollectionAssert.AreEqual(wordDeviceExpected, (await command.ExecuteAsync(plcMock.Object)).wordValues);
+        CollectionAssert.AreEqual(wordDeviceExpected, (await command.ExecuteAsync(plcMock.Object, CancellationToken.None)).wordValues);
 
         int[] doubleDeviceExpected = [
             3,
             4,
         ];
 
-        CollectionAssert.AreEqual(doubleDeviceExpected, (await command.ExecuteAsync(plcMock.Object)).doubleValues);
+        CollectionAssert.AreEqual(doubleDeviceExpected, (await command.ExecuteAsync(plcMock.Object, CancellationToken.None)).doubleValues);
     }
 
     [TestMethod]

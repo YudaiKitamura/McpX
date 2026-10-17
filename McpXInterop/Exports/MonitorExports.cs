@@ -33,7 +33,7 @@ internal static unsafe class MonitorExports
             }
 
             var scratch = new byte[parsed.Length * SessionEntry.SlotSize];
-            var session = entry.Client.MonitorRegist(builder =>
+            var session = entry.Client.MonitorRegister(builder =>
             {
                 for (int i = 0; i < parsed.Length; i++)
                 {

@@ -1,3 +1,56 @@
+## [1.0.0-rc.1] - 2026-10-17
+### Added
+- すべての非同期メソッド（`MonitorSession.ReadAsync` を含む）に `CancellationToken` 引数を追加。通信中にキャンセルした場合は、タイムアウトと同じく TCP の接続を閉じます。
+- UDP 交信で、IP アドレスに加えてホスト名と IPv6 のアドレスを指定できるように変更。ホスト名は IPv4 のアドレスがあればそちらを使います。
+- `McpXOptions` と、ファクトリ `McpX.Connect` / `McpX.ConnectAsync` を追加（既定の設定で接続する `Connect(host, port)` も追加）。`ConnectAsync` は、接続とリモートパスワードの解除をスレッドを止めずに行います。
+- `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
+- `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。
+- `DeviceAddressException`、`McProtocolException`、`ReceivePacketException` の基底クラス `McpXException` を追加。各例外に、原因となった例外を指定するものを含む標準のコンストラクタを追加。
+- 他局と、マルチCPUシステムの別の号機へのアクセスを追加。`McpXOptions.Route` に `McpXRoute`（ネットワーク番号、PC番号、要求先ユニットI/O番号、要求先ユニット局番号）を指定します。`McpXRoute.ForCpu(cpuNo)` で号機（1〜4）を指定できます。使用中の経路は `McpX.Route` で取得できます。
+- 対象フレームワークに `net10.0` を追加。
+- NuGet パッケージにシンボルパッケージ（`.snupkg`）、Source Link、アイコンを追加。
+- リリースに、win-x64・linux-x64・linux-arm64・osx-arm64 のネイティブライブラリを添付するように変更（従来は win-x64 と linux-x64 のみ）。NuGet への公開も CI から行います。
+
+### Changed
+- **破壊的変更：** `MonitorRegist` / `MonitorRegistAsync` を `MonitorRegister` / `MonitorRegisterAsync` に名前変更。
+- **破壊的変更：** `RecivePacketException` を `ReceivePacketException` に名前変更。
+- **破壊的変更：** 名前空間 `McpXLib.Abstructs` を `McpXLib.Abstracts` に名前変更。
+- **破壊的変更：** `McpX` の `IsAscii`、`RequestFrame`、`ProcessorSeries` を読み取り専用に変更。インスタンスの生成時に決まります。
+- **破壊的変更：** ビルダークラス（`ReadBuilder`、`RandomReadBuilder`、`MonitorBuilder` など）を直接生成できないように変更。`McpX` のメソッドに渡されるものを使用してください。
+- **破壊的変更：** `McpX` を `new` で生成できないように変更。`McpX.Connect(new McpXOptions { ... })` または `McpX.ConnectAsync` を使用してください。タイムアウトは `TimeSpan`（`McpXOptions.Timeout`、既定 5秒、無期限は `Timeout.InfiniteTimeSpan`）で指定し、65,535ms の上限をなくしました。
+- **破壊的変更：** `McpXSimulator` を静的クラスに変更。`McpXSimulator.Connect(systemNo, cpuNo, host)` / `ConnectAsync`、または他の設定を変える場合は `McpXSimulator.CreateOptions` を使用してください。`SystemNo` / `CpuNo` プロパティは削除しました。
+- **破壊的変更：** `McpX` を sealed に変更。
+- **破壊的変更：** `RemoteReset` / `RemoteResetAsync` の再接続の待ち時間を `TimeSpan?`（既定 30秒、`TimeSpan.Zero` で再接続しない）で指定するように変更。`RemoteResetAsync` は、スレッドを止めずに再接続します。
+- `Dispose` の後に通信するメソッドを呼び出すと `ObjectDisposedException` をスローするように変更（TCP では `IOException` でした）。
+- **破壊的変更：** `BatchWrite` / `BatchWriteAsync` が書き込んだ値（引数のコピー）を返さないように変更。
+- **破壊的変更：** `BatchRead`、`ReadString`、`ReadBuilder.Add`、`BlockReadBuilder.Add` の点数を `ushort` から `int` に変更。負の値は `ArgumentOutOfRangeException` をスローします。`ReadString` の点数の引数名は `wordLength` に変更。
+- ネイティブライブラリ（C ABI）を .NET 10 でビルドするように変更。C ABI に変更はありません。
+- **破壊的変更：** netstandard2.0 版は、追加した依存パッケージのため .NET Framework 4.6.2 以降が必要です（従来は 4.6.1）。
+- 0.x からの移行方法は [MIGRATION_JA.md](MIGRATION_JA.md) を参照してください。
+- PLC のデータと値の変換で、要素ごとのボックス化とメモリ確保をしないように変更。点数の多い一括読み書きで確保するメモリが約 1/4 になります。
+
+### Fixed
+- UDP 交信で、PLC 以外から届いたデータグラムを応答として受け取る不具合を修正。
+- UDP 交信で、ヘッダの応答データ長と長さが一致しない応答を受け取る不具合を修正。`ReceivePacketException` をスローします。
+- 壊れた応答（短い応答、ASCII 交信で16進以外の文字を含む応答）で、ドキュメントにない `ArgumentException` / `FormatException` / `IndexOutOfRangeException` がスローされる不具合を修正。元の例外を原因として持つ `ReceivePacketException` をスローします。
+- netstandard2.0 版を使う .NET Core / .NET のアプリで、Shift_JIS が登録されず `ReadString` / `WriteString` が失敗する不具合を修正。netstandard2.0 版で `System.Text.Encoding.CodePages` を参照します。
+- ASCII コード交信のビット単位の一括読出し・書込みを 7168点ごとに分割しており、Ethernet ユニットの ASCII コードの上限（3584点）を超える不具合を修正。
+- `ProcessorSeries.Q` で FFFFFF を超えるアドレスが、デバイスコードで上書きされて壊れる不具合を修正。`DeviceAddressException` をスローします。ASCII のデバイス番号が6桁（`ProcessorSeries.iQR` は8桁）を超える場合も同じです。
+- **破壊的変更：** ワードデバイスへの `bool` は、送信前に `ArgumentException` をスローするように変更。
+- ビルダーを使うメソッドと `Add` で、ビルダーの処理・コールバック・値の配列が null の場合に `ArgumentNullException` を、アドレスが null の場合に `DeviceAddressException` をスローするように変更。
+- 複数のスレッドから要求した場合に、4E フレームのシリアル番号の採番がアトミックでない不具合を修正。
+- `WriteBuilder.Add(T[])` で、複数ブロックを使わない場合は書き込み時点の配列の値を、使う場合は `Add` 時点の値を書き込んでいた不具合を修正。常に `Add` 時点の値を書き込みます。
+- 要求した点数より応答データが短い応答（ヘッダの長さとは一致するもの）で、`Read<T>` が `IndexOutOfRangeException` をスローし、`BatchRead` が 0 で埋めた値を返す不具合を修正。読み出しのコマンドで応答データの長さを要求した点数と照合し、`ReceivePacketException` をスローします。
+- UDP 交信で、タイムアウト以外（受信エラー、不正な応答、キャンセル）で失敗した要求のソケットを作り直さず、遅れて届いた応答を次の要求が受け取る可能性があった不具合を修正。失敗した要求の後は、常にソケットを作り直します。
+
+### Removed
+- **破壊的変更：** 型ごとのラッパーメソッド（`ReadInt16`、`BatchReadSingleAsync`、`WriteDouble`、`RandomReadInt16Int32` など）を削除。`Read<short>`、`BatchRead<float>`、`Write<double>` などのジェネリックメソッドと、ランダムアクセスのビルダー版を使用してください。
+- **破壊的変更：** 非推奨のランダムアクセスメソッド `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` とその非同期版を削除。`RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)` を使用してください。
+- **破壊的変更：** タプル形式のモニタメソッド `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` とその非同期版を削除。`MonitorRegister(Action<MonitorBuilder>)` と、戻り値の `MonitorSession` を使用してください。
+- **破壊的変更：** 使用されていない `PlcDuplicationException` を削除。
+- **破壊的変更：** 公開基底クラス `Mcp` と `BasePlc` を削除（`McpX` に統合）。生パケットを送る `Request` / `RequestAsync` と `Route` プロパティも削除。
+- **破壊的変更：** `McpXLib.Interfaces` のインターフェース（`IPlc`、`IPlcCommand<T>`、`IPlcTransport` など）を internal に変更。
+
 ## [0.13.0] - 2026-10-10
 ### Added
 - 安定した C ABI を持つ新しいネイティブライブラリを追加（`mcpx.dll` / `mcpx.so` / `mcpx.dylib`、ヘッダは `McpXInterop/include/mcpx.h`）。`mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`、全ての値の型に対応した `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write`、統合・ランダムアクセス（`mcpx_read_items` / `mcpx_write_items`）、複数ブロック一括読み書き（`mcpx_block_read` / `mcpx_block_write`）、Shift_JIS の文字列（`mcpx_read_string` / `mcpx_write_string`）、モニタ（`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`）、リモート操作（`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`）、ライブラリ情報の取得を提供。各関数は状態コードを返し、詳細（メッセージ、PLCの終了コード、ソケットのエラー）を `mcpx_error` に書き込む。

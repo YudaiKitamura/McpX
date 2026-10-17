@@ -113,9 +113,11 @@ internal sealed class FakePlcCore
         }
         else if (command == 0x1401)
         {
+            // ビットデバイスをワード単位で書き込む場合は、1ワード = 16点
+            uint step = bitDevices.Contains(code) ? 16u : 1u;
             for (int i = 0; i < points; i++)
             {
-                SetWord(code, number + (uint)i, BitConverter.ToUInt16(packet, 21 + i * 2));
+                SetWord(code, number + (uint)i * step, BitConverter.ToUInt16(packet, 21 + i * 2));
             }
         }
         else if (command == 0x1402 && bitUnit)
@@ -265,9 +267,11 @@ internal sealed class FakePlcCore
         }
         else if (command == 0x0401)
         {
+            // ビットデバイスをワード単位で読み込む場合は、1ワード = 16点（Stateful のときのみ。従来の応答を変えない）
+            uint step = Stateful && bitDevices.Contains(deviceCode) ? 16u : 1u;
             for (uint i = 0; i < points; i++)
             {
-                content.AddRange(BitConverter.GetBytes(GetWord(deviceCode, deviceNumber + i)));
+                content.AddRange(BitConverter.GetBytes(GetWord(deviceCode, deviceNumber + i * step)));
             }
         }
 

@@ -1,49 +1,57 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- ネイティブライブラリ（McpXInterop）の Native AOT ビルドでは、McpXInterop と同じ TFM だけをビルドする -->
   <PropertyGroup Condition="'$(PublishAot)' == 'true'">
-    <ConditionalFrameworks>net9.0</ConditionalFrameworks>
+    <ConditionalFrameworks>net10.0</ConditionalFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishAot)' != 'true'">
-    <ConditionalFrameworks>net7.0;net8.0;net9.0;netstandard2.0</ConditionalFrameworks>
+    <ConditionalFrameworks>net7.0;net8.0;net9.0;net10.0;netstandard2.0</ConditionalFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
     <TargetFrameworks>$(ConditionalFrameworks)</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
-    <DefineConstants>$(DefineConstants);AOT</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- トリミング・Native AOT で警告が出ないことを、対応する TFM で確認する -->
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>McpX</PackageId>
-    <Version>0.13.0</Version>
     <Authors>Yudai Kitamura</Authors>
-    <Company></Company>
+    <Copyright>Copyright (c) 2025-2026 Yudai Kitamura</Copyright>
     <Description>MC protocol communication library for Mitsubishi PLC(三菱PLC用MCプロトコル通信ライブラリ)</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://mcpx.yktmr.jp/</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/YudaiKitamura/McpX/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/YudaiKitamura/McpX</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>MCProtocol;MC Protocol;Melsec;Mitsubishi;MCプロトコル;メルセック;三菱;PLC</PackageTags>
+
+    <!-- シンボルパッケージ（.snupkg）と SourceLink（SDK 組み込み）で、利用者がソースまでデバッグできるようにする -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- TFM 間で公開 API が食い違わないことを検証する（1.0.0 リリース後は PackageValidationBaselineVersion で互換性も検証する） -->
+    <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <!-- netstandard2.0 には IAsyncDisposable と Shift_JIS（コードページ）のエンコーディングがないため -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

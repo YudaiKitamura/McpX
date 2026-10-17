@@ -1,6 +1,7 @@
 using McpXLib;
 using McpXLib.Enums;
 using McpXLib.Exceptions;
+using McpXLib.Interfaces;
 
 namespace TestMcpX;
 
@@ -64,7 +65,7 @@ public sealed class TestMcpXLifecycle
         Assert.AreEqual(1, transport.Requests.Count(r => r.Command == REMOTE_LOCK));
     }
 
-    private const ushort MONITOR_REGIST = 0x0801;
+    private const ushort MONITOR_REGISTER = 0x0801;
     private const ushort MONITOR = 0x0802;
 
     [TestMethod]
@@ -74,12 +75,12 @@ public sealed class TestMcpXLifecycle
         using var mcpx = new McpX(transport);
 
         short a = -1, b = -1;
-        var s1 = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", v => a = v));
+        var s1 = mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "100", v => a = v));
         s1.Read();
         s1.Read();  // 登録が変わらなければ繰り返し読めること
         Assert.AreEqual((short)0, a);
 
-        var s2 = await mcpx.MonitorRegistAsync(x => x.Add<short>(Prefix.D, "200", v => b = v));
+        var s2 = await mcpx.MonitorRegisterAsync(x => x.Add<short>(Prefix.D, "200", v => b = v));
 
         // 登録が置き換わった後の古いセッションは例外になり、通信もしないこと
         int monitors = transport.Requests.Count(r => r.Command == MONITOR);
@@ -93,42 +94,30 @@ public sealed class TestMcpXLifecycle
     }
 
     [TestMethod]
-    public void TestLegacyMonitorRegistInvalidatesSession()
+    public void TestFailedMonitorRegisterInvalidatesSession()
     {
         var transport = new FakePlcTransport();
         using var mcpx = new McpX(transport);
 
-        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
-        mcpx.MonitorRegist([(Prefix.D, "0"), (Prefix.D, "1")], []);
-
-        Assert.ThrowsException<InvalidOperationException>(() => session.Read());
-    }
-
-    [TestMethod]
-    public void TestFailedMonitorRegistInvalidatesSession()
-    {
-        var transport = new FakePlcTransport();
-        using var mcpx = new McpX(transport);
-
-        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+        var session = mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "100", _ => { }));
 
         // 送信後に失敗した登録でも、PLC の登録が置き換わった可能性があるため古いセッションは無効にする
-        transport.EndCodes[MONITOR_REGIST] = 0xC059;
-        Assert.ThrowsException<McProtocolException>(() => mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "200", _ => { })));
+        transport.EndCodes[MONITOR_REGISTER] = 0xC059;
+        Assert.ThrowsException<McProtocolException>(() => mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "200", _ => { })));
 
         Assert.ThrowsException<InvalidOperationException>(() => session.Read());
     }
 
     [TestMethod]
-    public void TestInvalidMonitorRegistKeepsSession()
+    public void TestInvalidMonitorRegisterKeepsSession()
     {
         var transport = new FakePlcTransport();
         using var mcpx = new McpX(transport);
 
-        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+        var session = mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "100", _ => { }));
 
         // 点数0など送信前の検証エラーでは PLC の登録は変わらないため、既存のセッションは使えること
-        Assert.ThrowsException<ArgumentException>(() => mcpx.MonitorRegist(_ => { }));
+        Assert.ThrowsException<ArgumentException>(() => mcpx.MonitorRegister(_ => { }));
 
         session.Read();
     }
@@ -138,7 +127,7 @@ public sealed class TestMcpXLifecycle
     {
         using var mcpx = new McpX(() => new FakePlcTransport());
 
-        var session = mcpx.MonitorRegist(x => x.Add<short>(Prefix.D, "100", _ => { }));
+        var session = mcpx.MonitorRegister(x => x.Add<short>(Prefix.D, "100", _ => { }));
 
         // 接続し直すと PLC のモニタ登録は引き継がれないため、既存のセッションは無効になること
         mcpx.Reconnect();
@@ -163,5 +152,63 @@ public sealed class TestMcpXLifecycle
         Assert.ThrowsException<ObjectDisposedException>(() => mcpx.Reconnect());
         Assert.AreEqual(2, created.Count);
         Assert.IsTrue(created.All(t => t.Disposed));
+    }
+
+    [TestMethod]
+    public async Task TestRemoteResetAsyncInvalidatesMonitorSession()
+    {
+        using var mcpx = new McpX(() => new FakePlcTransport());
+        var session = await mcpx.MonitorRegisterAsync(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        await mcpx.RemoteResetAsync(TimeSpan.FromSeconds(5));
+
+        // 再接続した接続には PLC のモニタ登録が引き継がれないため、古いセッションは無効
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => session.ReadAsync());
+    }
+
+    [TestMethod]
+    public async Task TestRemoteResetAsyncWaitsForMonitorRead()
+    {
+        // 1本目の接続は、モニタ（0802）の応答を release まで保留する
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var first = new HoldMonitorTransport(release.Task);
+        int created = 0;
+        using var mcpx = new McpX(() => created++ == 0 ? first : new FakePlcTransport());
+        var session = await mcpx.MonitorRegisterAsync(x => x.Add<short>(Prefix.D, "100", _ => { }));
+
+        // モニタ読み出しの途中で RemoteResetAsync を実行する
+        var read = session.ReadAsync();
+        var reset = mcpx.RemoteResetAsync(TimeSpan.FromSeconds(10));
+
+        // 再接続（約1秒後）はモニタ読み出しが終わるのを待つ
+        await Task.Delay(1500);
+        Assert.IsFalse(reset.IsCompleted);
+
+        // 読み出しが終われば、RemoteResetAsync も完了し、古いセッションは無効になる
+        release.SetResult(true);
+        await read;
+        await reset.WaitAsync(TimeSpan.FromSeconds(5));
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => session.ReadAsync());
+    }
+
+    // モニタ（0802）の応答だけを、指定したタスクの完了まで保留するトランスポート
+    private sealed class HoldMonitorTransport(Task hold) : IPlcTransport
+    {
+        private readonly FakePlcTransport inner = new();
+
+        public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => inner.Request(packet, receiveLengthParser);
+
+        public async Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken)
+        {
+            if (BitConverter.ToUInt16(packet, 11) == 0x0802)
+            {
+                await hold;
+            }
+            return inner.Request(packet, receiveLengthParser);
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }

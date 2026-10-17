@@ -1,6 +1,5 @@
 using McpXLib.Builders;
 using McpXLib.Enums;
-using McpXLib.Interfaces;
 using McpXLib.Utils;
 
 namespace McpXLib.Commands;
@@ -11,13 +10,11 @@ namespace McpXLib.Commands;
 /// <remarks>
 /// いずれもサブコマンド 0000、応答データなし。
 /// </remarks>
-internal sealed class RemoteOperationCommand : IPlcCommand<bool>
+internal sealed class RemoteOperationCommand : PlcCommandBase<bool>
 {
     // モード: 他の外部機器からリモートSTOP/PAUSE中の場合に、強制実行しない / 強制実行する
     private const uint MODE_NOT_FORCE = 0x0001;
     private const uint MODE_FORCE = 0x0003;
-
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     private RemoteOperationCommand(byte command, NumberPayloadBuilder payloadBuilder, ushort monitoringTimer)
     {
@@ -49,43 +46,6 @@ internal sealed class RemoteOperationCommand : IPlcCommand<bool>
     internal static RemoteOperationCommand Reset(ushort monitoringTimer = 0)
         => new(0x06, new NumberPayloadBuilder((0x0001, 2)), monitoringTimer);
 
-    public async Task<bool> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-
-        responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public bool Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber()
-        );
-
-        responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
-    }
+    protected override bool Parse(byte[] responseContent)
+        => true;
 }

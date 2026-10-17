@@ -50,7 +50,7 @@ public abstract class PlcIntegrationTestBase
         EnsureEnabled(enableVar);
 
         var ip = Environment.GetEnvironmentVariable(ipVar) ?? defaultIp;
-        return new McpX(ip, GetEnvironmentInt(portVar, defaultPort));
+        return McpX.Connect(ip, GetEnvironmentInt(portVar, defaultPort));
     }
 
     private static T[] RandomValues<T>(int length, Func<T> next) => Enumerable.Range(0, length).Select(_ => next()).ToArray();
@@ -255,7 +255,7 @@ public abstract class PlcIntegrationTestBase
         using var mcpx = Connect();
 
         short ms = 0; int mi = 0; bool mbit = false;
-        var session = mcpx.MonitorRegist(b => b
+        var session = mcpx.MonitorRegister(b => b
             .Add<short>(Prefix.D, "180", v => ms = v)
             .Add<int>(Prefix.D, "182", v => mi = v)
             .Add<bool>(Prefix.M, "160", v => mbit = v));

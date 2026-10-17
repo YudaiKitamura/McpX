@@ -1,0 +1,138 @@
+name: Release
+
+# v1.2.3 / v1.2.3-rc.1 のタグで、テスト → パッケージ・ネイティブライブラリの作成 → GitHub リリース → NuGet 公開 を行う
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Check the version
+        run: |
+          version="$(dotnet msbuild McpXLib/McpXLib.csproj -getProperty:Version)"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "Directory.Build.props の Version (${version}) がタグ (${GITHUB_REF_NAME}) と一致しません。" >&2
+            exit 1
+          fi
+
+      - name: Run Test
+        run: dotnet test TestMcpX --configuration Release
+
+      - name: Run Interop Test
+        run: dotnet test TestMcpXInterop --configuration Release
+
+  pack:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Pack
+        run: dotnet pack McpXLib/McpXLib.csproj --configuration Release --output artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: artifacts/*
+
+  aot:
+    needs: test
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            lib: mcpx.dll
+          - os: ubuntu-22.04
+            rid: linux-x64
+            lib: mcpx.so
+          - os: ubuntu-22.04-arm
+            rid: linux-arm64
+            lib: mcpx.so
+          - os: macos-14
+            rid: osx-arm64
+            lib: mcpx.dylib
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish AOT
+        run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -r ${{ matrix.rid }} -p:PublishAot=true
+
+      - name: Rename native library
+        run: |
+          mkdir -p native
+          lib="${{ matrix.lib }}"
+          cp "McpXInterop/bin/Release/net10.0/${{ matrix.rid }}/publish/${lib}" "native/mcpx-${GITHUB_REF_NAME}-${{ matrix.rid }}.${lib##*.}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.rid }}
+          path: native/*
+
+  release:
+    needs: [pack, aot]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Add the C header
+        run: cp McpXInterop/include/mcpx.h "dist/mcpx-${GITHUB_REF_NAME}.h"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
+          files: dist/*
+
+  # NuGet への公開。リポジトリのシークレット NUGET_API_KEY が必要
+  publish-nuget:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget
+          path: artifacts
+
+      - name: Push to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate

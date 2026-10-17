@@ -11,12 +11,15 @@ namespace McpXLib;
 /// </remarks>
 public sealed class WriteBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal WriteBuilder() { }
+
     // 単一指定（ランダムアクセス）のエントリ。
     internal readonly RandomWriteBuilder random = new();
 
     // 範囲指定（連続アクセス）のエントリ。登録順に実行する。
     // block は複数ブロック一括書込み（1406）でまとめる場合の情報（まとめられない指定は null）。
-    internal readonly List<(Action<McpX> write, Func<McpX, Task> writeAsync, BlockWriteEntry? block)> batchEntries = new();
+    internal readonly List<(Action<McpX> write, Func<McpX, CancellationToken, Task> writeAsync, BlockWriteEntry? block)> batchEntries = new();
 
     /// <summary>
     /// ランダムアクセスで書き込むデバイスと値を追加します。
@@ -29,6 +32,7 @@ public sealed class WriteBuilder
     /// <param name="address">書き込み対象のアドレスを指定します。</param>
     /// <param name="value">書き込む値を指定します。</param>
     /// <exception cref="NotSupportedException">ランダムアクセス非対応の型（<c>long</c>,<c>double</c> など）を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
@@ -41,18 +45,27 @@ public sealed class WriteBuilder
     /// </summary>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
-    /// <param name="values">書き込む値を配列で指定します。</param>
+    /// <param name="values">書き込む値を配列で指定します。値はこのメソッドの呼び出し時点で取り込むため、呼び出し後に配列を変更しても書き込む値は変わりません。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public WriteBuilder Add<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
+        if (values == null)
+        {
+            throw new ArgumentNullException(nameof(values));
+        }
+
+        // 連続アクセスと複数ブロック（Add の時点で変換する）で、書き込む値をそろえるためにコピーする
+        var snapshot = (T[])values.Clone();
         batchEntries.Add((
-            m => m.BatchWrite(prefix, address, values),
-            m => m.BatchWriteAsync(prefix, address, values),
-            BlockWriteEntry.TryCreate(prefix, address, values)
+            m => m.BatchWrite(prefix, address, snapshot),
+            (m, cancellationToken) => m.BatchWriteAsync(prefix, address, snapshot, cancellationToken),
+            BlockWriteEntry.TryCreate(prefix, address, snapshot)
         ));
         return this;
     }

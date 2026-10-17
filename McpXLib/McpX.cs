@@ -4,82 +4,141 @@ using McpXLib.Utils;
 using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 
-// 新しいビルダーAPIは、後方互換のため残している旧ランダムAPI([Obsolete])を内部的に利用するため、
-// このファイル内での CS0618(古い形式のメンバー使用) 警告は抑制する。外部利用者には引き続き警告が出る。
-#pragma warning disable CS0618
-
 namespace McpXLib;
 
 /// <summary>
-/// MCプロトコル拡張クラス
+/// MCプロトコル交信クラス
 /// </summary>
 /// <remarks>
-/// Mcpクラス（MCプロトコル）を拡張して、デバイスアクセス点数などの機能制限を補うクラスです。<br/>
-/// 各メソッドは、通信が指定したタイムアウト時間内に完了しない場合に <see cref="TimeoutException"/> をスローします。
-/// TCP 交信でタイムアウト・通信エラーが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（インスタンスを作り直してください）。
+/// MCプロトコルでPLCと交信するクラスです。<see cref="Connect(McpXOptions)"/> / <see cref="ConnectAsync(McpXOptions, CancellationToken)"/> で接続します。
+/// デバイスアクセス点数の上限を超える要求は、自動的に分割して送信します。<br/>
+/// <br/>
+/// <b>型引数</b><br/>
+/// 読み書きの型 <c>T</c> には、<c>bool</c>、<c>short</c>、<c>ushort</c>、<c>int</c>、<c>uint</c>、<c>float</c>、<c>long</c>、<c>ulong</c>、<c>double</c>、<c>byte</c>、<c>sbyte</c> を指定できます
+/// （<c>byte</c> / <c>sbyte</c> は1ワードに1つ）。ランダムアクセス・モニタ（点数を指定しないビルダーの登録）で指定できるのは、
+/// <c>bool</c>、<c>short</c>、<c>ushort</c>、<c>int</c>、<c>uint</c>、<c>float</c> です。それ以外の型は <see cref="NotSupportedException"/> をスローします。<br/>
+/// <br/>
+/// <b>例外</b><br/>
+/// 通信が指定したタイムアウト時間内に完了しない場合は <see cref="TimeoutException"/>、PLCがエラーコードを返した場合は <see cref="Exceptions.McProtocolException"/>、
+/// 応答が不正な場合は <see cref="Exceptions.ReceivePacketException"/> をスローします（独自の例外は <see cref="Exceptions.McpXException"/> の派生クラスです）。
+/// TCP 交信でタイムアウト・通信エラー・キャンセルが発生すると接続を閉じ、以降の呼び出しは <see cref="System.IO.IOException"/> になります（接続し直してください）。<br/>
+/// <br/>
+/// <b>スレッドセーフ</b><br/>
+/// 同じインスタンスへの要求は、複数のスレッド・タスクから同時に呼び出せます（1つずつ順に送信します）。
+/// ただし、複数の要求に分かれる操作（点数の多い連続アクセスなど）の途中に、他の要求が割り込むことがあります。
 /// </remarks> 
-public partial class McpX : Mcp
+public sealed partial class McpX : IDisposable, IAsyncDisposable
 {
-    private readonly string? password;
-    private bool disposed;
+    // 0: 未破棄、1: 破棄済み（Dispose / DisposeAsync を一度だけ実行する）
+    private int disposed;
 
     /// <summary>
-    /// インスタンス初期化
+    /// 接続
     /// </summary>
     /// <remarks>
-    /// PLCのパラメータ設定に合わせたPLCの接続情報を指定します。<br/>
-    /// 必要に応じて、リモートロックの解除を行います。
+    /// 指定した設定でPLCに接続します。リモートパスワードを指定した場合は、接続後にリモートパスワードを解除します。<br/>
+    /// 使用後は <see cref="Dispose"/> または <see cref="DisposeAsync"/> で接続を閉じてください。
     /// </remarks>
-    /// <param name="ip">PLCのIPアドレスを指定します。</param>
-    /// <param name="port">PLCのポートを指定します。</param>
-    /// <param name="password">PLCのリモートパスワードを指定します。（リモートパスワードを設定している場合に指定してください。）</param>
-    /// <param name="isAscii">ASCIIコードによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、バイナリ交信:<c>false</c>です。）</param>
-    /// <param name="isUdp">UDPによる交信を行う場合に<c>true</c>を指定します。（デフォルトは、TCP交信:<c>false</c>です。）</param>
-    /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
-    /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
-    /// <param name="processorSeries">PLCのシリーズを指定します。MELSEC iQ-Rシリーズへ拡張デバイス指定で交信する場合に<c>ProcessorSeries.iQR</c>を指定します。（デフォルトは、MELSEC-Q/Lシリーズ:<c>ProcessorSeries.Q</c>です。）</param>
-    /// <param name="useMultiBlockAccess">
-    /// 統合アクセス（<see cref="Read(Action{ReadBuilder})"/> / <see cref="Write(Action{WriteBuilder})"/>）で、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。
-    /// 接続先が対応している場合のみ指定してください。（デフォルトは、<c>false</c>です。詳細は <see cref="UseMultiBlockAccess"/> を参照してください。）
-    /// </param>
-    /// <exception cref="TimeoutException">指定したタイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <param name="options">接続設定を指定します。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">接続設定が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
     /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public McpX(
-        string ip,
-        int port,
-        string? password = null,
-        bool isAscii = false,
-        bool isUdp = false,
-        RequestFrame requestFrame = RequestFrame.E3,
-        ushort timeoutMilliseconds = 5000,
-        ProcessorSeries processorSeries = ProcessorSeries.Q,
-        bool useMultiBlockAccess = false
-    ) : base (
-        ip: ip,
-        port: port,
-        isAscii: isAscii,
-        isUdp: isUdp,
-        requestFrame: requestFrame,
-        processorSeries: processorSeries,
-        timeout: timeoutMilliseconds
-    )
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートパスワードの解除に失敗した場合など）に例外をスローします。</exception>
+    public static McpX Connect(McpXOptions options)
     {
-        this.password = password;
-        UseMultiBlockAccess = useMultiBlockAccess;
-        UnlockOrRelease();
+        if (options == null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        int timeout = options.Validate();
+        var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
+        var mcpx = new McpX(factory.Create(), factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password, options.Route)
+        {
+            UseMultiBlockAccess = options.UseMultiBlockAccess,
+        };
+        mcpx.UnlockOrRelease();
+        return mcpx;
     }
+
+    /// <summary>
+    /// 接続
+    /// </summary>
+    /// <remarks>
+    /// 指定したIPアドレス（またはホスト名）とポート番号のPLCに、既定の設定（TCP・バイナリコード・3Eフレーム・MELSEC-Q/Lシリーズ）で接続します。
+    /// 設定を変える場合は <see cref="Connect(McpXOptions)"/> を使用してください。
+    /// </remarks>
+    /// <param name="host">PLCのIPアドレスまたはホスト名を指定します。</param>
+    /// <param name="port">PLCのポート番号を指定します。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentException">接続先が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    public static McpX Connect(string host, int port)
+        => Connect(new McpXOptions { Host = host, Port = port });
+
+    /// <summary>
+    /// 接続（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Connect(McpXOptions)"/> を参照してください。
+    /// </remarks>
+    /// <param name="options">接続設定を指定します。</param>
+    /// <param name="cancellationToken">接続をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">接続設定が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートパスワードの解除に失敗した場合など）に例外をスローします。</exception>
+    public static async Task<McpX> ConnectAsync(McpXOptions options, CancellationToken cancellationToken = default)
+    {
+        if (options == null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        int timeout = options.Validate();
+        var factory = Transports.TransportFactory.For(options.Host, options.Port, timeout, options.IsUdp);
+        var transport = await factory.CreateAsync(cancellationToken).ConfigureAwait(false);
+        var mcpx = new McpX(transport, factory, timeout, options.IsAscii, options.RequestFrame, options.ProcessorSeries, options.Password, options.Route)
+        {
+            UseMultiBlockAccess = options.UseMultiBlockAccess,
+        };
+        await mcpx.UnlockOrReleaseAsync(cancellationToken).ConfigureAwait(false);
+        return mcpx;
+    }
+
+    /// <summary>
+    /// 接続（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Connect(string, int)"/> を参照してください。
+    /// </remarks>
+    /// <param name="host">PLCのIPアドレスまたはホスト名を指定します。</param>
+    /// <param name="port">PLCのポート番号を指定します。</param>
+    /// <param name="cancellationToken">接続をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。</param>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    /// <exception cref="ArgumentException">接続先が不正な場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    public static Task<McpX> ConnectAsync(string host, int port, CancellationToken cancellationToken = default)
+        => ConnectAsync(new McpXOptions { Host = host, Port = port }, cancellationToken);
 
     // テスト用：再接続できるよう、トランスポートの生成処理を指定して生成する。
     internal McpX(
         Func<IPlcTransport> transportFactory,
         ProcessorSeries processorSeries = ProcessorSeries.Q
-    ) : base (
-        transportFactory: transportFactory,
-        timeout: 5000,
-        processorSeries: processorSeries
-    )
+    ) : this(Transports.TransportFactory.From(transportFactory), processorSeries)
+    {
+    }
+
+    private McpX(Transports.TransportFactory factory, ProcessorSeries processorSeries)
+        : this(factory.Create(), factory, 5000, false, RequestFrame.E3, processorSeries, null)
     {
     }
 
@@ -88,14 +147,11 @@ public partial class McpX : Mcp
         IPlcTransport transport,
         ProcessorSeries processorSeries = ProcessorSeries.Q,
         ushort timeoutMilliseconds = 5000,
-        string? password = null
-    ) : base (
-        transport: transport,
-        timeout: timeoutMilliseconds,
-        processorSeries: processorSeries
-    )
+        string? password = null,
+        McpXRoute? route = null,
+        bool isAscii = false
+    ) : this(transport, null, timeoutMilliseconds, isAscii, RequestFrame.E3, processorSeries, password, route)
     {
-        this.password = password;
         UnlockOrRelease();
     }
 
@@ -114,7 +170,25 @@ public partial class McpX : Mcp
         catch
         {
             // this.Dispose() はリモートロックを送るため、トランスポートだけを閉じる
-            base.Dispose();
+            DisposeTransport();
+            throw;
+        }
+    }
+
+    private async Task UnlockOrReleaseAsync(CancellationToken cancellationToken)
+    {
+        if (password == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await RemoteUnlockAsync(password, cancellationToken).ConfigureAwait(false);
+        }
+        catch
+        {
+            DisposeTransport();
             throw;
         }
     }
@@ -128,32 +202,22 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
     public T Read<T>(Prefix prefix, string address) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
-        {
-            return (T)(object)BitBatchRead(
-                prefix: prefix,
-                address: address,
-                bitLength: 1
-            ).First();
-        }
-        else
-        {    
-            return WordBatchRead<T>(
-                prefix: prefix,
-                address: address,
-                wordLength: 1
-            ).First();
-        }
+        return ReadChunk<T>(prefix, address, 1)[0];
     }
 
     /// <summary>
@@ -165,47 +229,34 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
-    /// <param name="address">読み込み対象の先頭アドレス</param>
+    /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
-    public async Task<T> ReadAsync<T>(Prefix prefix, string address) where T : unmanaged
+    public async Task<T> ReadAsync<T>(Prefix prefix, string address, CancellationToken cancellationToken = default) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
-        {
-            var bitValues = await BitBatchReadAsync(
-                prefix: prefix,
-                address: address,
-                bitLength: 1
-            );
-
-            return (T)(object)bitValues.First();
-        }
-        else
-        {    
-            var wordValues = await WordBatchReadAsync<T>(
-                prefix: prefix,
-                address: address,
-                wordLength: 1
-            );
-
-            return (T)(object)wordValues.First();
-        }
+        return (await ReadChunkAsync<T>(prefix, address, 1, cancellationToken).ConfigureAwait(false))[0];
     }
 
     /// <summary>
     /// 連続デバイス読み込み
     /// </summary>
     /// <remarks>
-    /// 指定したデバイス範囲の値をPLCから読み込みます。<br/>
+    /// 指定したデバイス範囲の値をPLCから読み込みます。
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
@@ -214,73 +265,37 @@ public partial class McpX : Mcp
     /// 指定された型<c>T</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。<br/>
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
-    public T[] BatchRead<T>(Prefix prefix, string address, ushort length) where T : unmanaged
+    public T[] BatchRead<T>(Prefix prefix, string address, int length) where T : unmanaged
     {
-        var values = new List<T>();
-
-        if (typeof(T) == typeof(bool))
+        ThrowIfNegative(length, nameof(length));
+        var values = new T[length];
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
-            ushort maxLengh = BitBatchReadCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int bitLength = Math.Min(maxLengh, length - offset);
-
-                if (bitLength == 0) break;
-
-                values.AddRange(
-                    (T[])(object)BitBatchRead(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        bitLength: (ushort)bitLength
-                    )
-                );
-            }
-
-            return values.ToArray();
-
+            ReadChunk<T>(prefix, chunkAddress, count).CopyTo(values, offset);
         }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * length;
-            ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int readLength = Math.Min(maxLengh, wordLength - offset);
-
-                if (readLength == 0) break;
-
-                values.AddRange(
-                    WordBatchRead<T>(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                        wordLength: (ushort)(readLength / wordSize)
-                    )
-                );
-            }
-
-            return values.ToArray();
-        }
+        return values;
     }
 
     /// <summary>
     /// 連続デバイス読み込み（非同期）
     /// </summary>
     /// <remarks>
-    /// 指定したデバイス範囲の値を非同期でPLCから読み込みます。<br/>
+    /// 指定したデバイス範囲の値を非同期でPLCから読み込みます。
     /// </remarks>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
@@ -289,62 +304,27 @@ public partial class McpX : Mcp
     /// 指定された型<c>T</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。<br/>
     /// そのため、この引数には「最終的に取得する配列の要素数（<c>T</c>型の要素数）」を指定してください。
     /// </param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値を指定された型<c>T</c>に変換して返します。</returns>
-    public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, ushort length) where T : unmanaged
+    public async Task<T[]> BatchReadAsync<T>(Prefix prefix, string address, int length, CancellationToken cancellationToken = default) where T : unmanaged
     {
-        var values = new List<T>();
-
-        if (typeof(T) == typeof(bool))
+        ThrowIfNegative(length, nameof(length));
+        var values = new T[length];
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, length))
         {
-            ushort maxLengh = BitBatchReadCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int bitLength = Math.Min(maxLengh, length - offset);
-
-                if (bitLength == 0) break;
-
-                values.AddRange(
-                    (T[])(object) await BitBatchReadAsync(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                        bitLength: (ushort)bitLength
-                    )
-                );
-            }
-
-            return values.ToArray();
-
+            (await ReadChunkAsync<T>(prefix, chunkAddress, count, cancellationToken).ConfigureAwait(false)).CopyTo(values, offset);
         }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * length;
-            ushort maxLengh = WordBatchReadCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int readLength = Math.Min(maxLengh, wordLength - offset);
-
-                if (readLength == 0) break;
-
-                values.AddRange(
-                    await WordBatchReadAsync<T>(
-                        prefix: prefix,
-                        address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                        wordLength: (ushort)(readLength / wordSize)
-                    )
-                );
-            }
-
-            return values.ToArray();
-        }
+        return values;
     }
 
     /// <summary>
@@ -356,33 +336,22 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Write<T>(Prefix prefix, string address, T value) where T : unmanaged
     {
-        T[] values = [value];
-        if (typeof(T) == typeof(bool))
-        {
-            BitBatchWrite(
-                prefix: prefix,
-                address: address,
-                values: (bool[])(object)values
-            );
-        }
-        else
-        {
-            WordBatchWrite<T>(
-                prefix: prefix,
-                address: address,
-                values: values
-            );
-        }
+        WriteChunk(prefix, address, new[] { value });
     }
     
     /// <summary>
@@ -394,33 +363,23 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする値を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task WriteAsync<T>(Prefix prefix, string address, T value) where T : unmanaged
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task WriteAsync<T>(Prefix prefix, string address, T value, CancellationToken cancellationToken = default) where T : unmanaged
     {
-        T[] values = [value];
-        if (typeof(T) == typeof(bool))
-        {
-            await BitBatchWriteAsync(
-                prefix: prefix,
-                address: address,
-                values: (bool[])(object)values
-            );
-        }
-        else
-        {
-            await WordBatchWriteAsync<T>(
-                prefix: prefix,
-                address: address,
-                values: values
-            );
-        }
+        await WriteChunkAsync(prefix, address, new[] { value }, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -432,59 +391,26 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns><c>values</c>の値をそのまま返します。</returns>
-    public T[] BatchWrite<T>(Prefix prefix, string address, T[]values) where T : unmanaged
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public void BatchWrite<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
-        if (typeof(T) == typeof(bool))
+        ThrowIfNull(values);
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
         {
-            ushort maxLengh = BitBatchWriteCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= values.Length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, values.Length - offset);
-                
-                if (length == 0) break;
-
-                BitBatchWrite(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                    values: (bool[])(object)values.Skip(offset).Take(length).ToArray()
-                );
-            }
-
-            return values.ToArray();
-        }
-        else
-        {
-            int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * values.Length;
-            ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
-            // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
-
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, wordLength - offset);
-
-                if (length == 0) break;
-
-                WordBatchWrite<T>(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                    values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
-                );
-            }
-
-            return values.ToArray();
+            WriteChunk(prefix, chunkAddress, Slice(values, offset, count));
         }
     }
 
@@ -497,509 +423,259 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <typeparam name="T">
     /// 書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="values">書き込みする値を配列で指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns><c>values</c>の値をそのまま返します。</returns>
-    public async Task<T[]> BatchWriteAsync<T>(Prefix prefix, string address, T[]values) where T : unmanaged
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task BatchWriteAsync<T>(Prefix prefix, string address, T[] values, CancellationToken cancellationToken = default) where T : unmanaged
     {
+        ThrowIfNull(values);
+        foreach (var (chunkAddress, offset, count) in SplitBatch<T>(prefix, address, values.Length))
+        {
+            await WriteChunkAsync(prefix, chunkAddress, Slice(values, offset, count), cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // 連続アクセスの分割送信
+    // ---------------------------------------------------------------
+
+    /// <summary>
+    /// 連続アクセスを、1回の要求に収まる範囲に分割します。
+    /// </summary>
+    /// <returns>各要求の先頭アドレスと、<typeparamref name="T"/> 型の要素単位の位置・個数。</returns>
+    private List<(string address, int offset, int count)> SplitBatch<T>(Prefix prefix, string address, int length) where T : unmanaged
+    {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+
+        int maxCount;
+        int pointsPerElement;
         if (typeof(T) == typeof(bool))
         {
-            ushort maxLengh = BitBatchWriteCommand.MAX_BIT_LENGTH;
-            for (int i = 0; i <= values.Length / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, values.Length - offset);
-                
-                if (length == 0) break;
-
-                await BitBatchWriteAsync(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset),
-                    values: (bool[])(object)values.Skip(offset).Take(length).ToArray()
-                );
-            }
-
-            return values.ToArray();
+            maxCount = IsAscii ? BitBatchReadCommand.MAX_ASCII_BIT_LENGTH : BitBatchReadCommand.MAX_BIT_LENGTH;
+            pointsPerElement = 1;
         }
         else
         {
             int wordSize = DeviceConverter.GetWordLength<T>();
-            int wordLength = wordSize * values.Length;
-            ushort maxLengh = WordBatchWriteCommand<T>.MAX_WORD_LENGTH;
+            maxCount = WordBatchReadCommand<T>.MAX_WORD_LENGTH / wordSize;
             // ビットデバイスをワード単位でアクセスする場合、1ワード=16点のため先頭アドレスを16倍進める。
-            int addressStep = DeviceConverter.IsBitDevice(prefix) ? 16 : 1;
+            pointsPerElement = wordSize * (DeviceConverter.IsBitDevice(prefix) ? 16 : 1);
+        }
 
-            for (int i = 0; i <= wordLength / maxLengh; i++) 
-            {
-                int offset = i * maxLengh;
-                int length = Math.Min(maxLengh, wordLength - offset);
+        var chunks = new List<(string, int, int)>();
+        for (int offset = 0; offset < length; offset += maxCount)
+        {
+            chunks.Add((
+                DeviceConverter.GetOffsetAddress(prefix, address, offset * pointsPerElement),
+                offset,
+                Math.Min(maxCount, length - offset)
+            ));
+        }
 
-                if (length == 0) break;
+        return chunks;
+    }
 
-                await WordBatchWriteAsync<T>(
-                    prefix: prefix,
-                    address: DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
-                    values: values.Skip(offset / wordSize).Take(length / wordSize).ToArray()
-                );
-            }
-
-            return values.ToArray();
+    private static void ThrowIfNegative(int length, string paramName)
+    {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(paramName, length, "Length must not be negative.");
         }
     }
 
-    /// <summary>
-    /// ランダムデバイス読み込み
-    /// </summary>
-    /// <remarks>
-    /// 指定したデバイスの値をPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位で読み込むデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位で読み込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    [Obsolete("Use the RandomRead(Action<RandomReadBuilder>) builder overload instead.")]
-    public (T1[] wordValues, T2[] doubleValues) RandomRead<T1, T2>((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private static void ThrowIfNull<T>(T[] values)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
+        if (values == null)
         {
-            T1[] wv = typeof(T1) == typeof(bool)
-                ? (T1[])(object)RandomReadBit(wordAddresses)
-                : RandomRead<T1, ushort>(wordAddresses, Array.Empty<(Prefix, string)>()).wordValues;
-            T2[] dv = typeof(T2) == typeof(bool)
-                ? (T2[])(object)RandomReadBit(doubleWordAddresses)
-                : RandomRead<ushort, T2>(Array.Empty<(Prefix, string)>(), doubleWordAddresses).doubleValues;
-            return (wv, dv);
+            throw new ArgumentNullException(nameof(values));
         }
+    }
 
-        List<T1> allWordValues = new List<T1>();
-        List<T2> allDoubleValues = new List<T2>();
+    private static T[] Slice<T>(T[] values, int offset, int count)
+    {
+        var slice = new T[count];
+        Array.Copy(values, offset, slice, 0, count);
+        return slice;
+    }
 
-        int maxWordLength = WordRandomReadCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
+    // 1回の要求（ビット単位またはワード単位の一括読出し）で読み込む。
+    private T[] ReadChunk<T>(Prefix prefix, string address, int count) where T : unmanaged
+    {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+        return typeof(T) == typeof(bool)
+            ? (T[])(object)BitBatchRead(prefix, address, (ushort)count)
+            : WordBatchRead<T>(prefix, address, (ushort)count);
+    }
+
+    private async Task<T[]> ReadChunkAsync<T>(Prefix prefix, string address, int count, CancellationToken cancellationToken) where T : unmanaged
+    {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+        return typeof(T) == typeof(bool)
+            ? (T[])(object)await BitBatchReadAsync(prefix, address, (ushort)count, cancellationToken).ConfigureAwait(false)
+            : await WordBatchReadAsync<T>(prefix, address, (ushort)count, cancellationToken).ConfigureAwait(false);
+    }
+
+    // 1回の要求（ビット単位またはワード単位の一括書込み）で書き込む。
+    private void WriteChunk<T>(Prefix prefix, string address, T[] values) where T : unmanaged
+    {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+        if (typeof(T) == typeof(bool))
+        {
+            BitBatchWrite(prefix, address, (bool[])(object)values);
+        }
+        else
+        {
+            WordBatchWrite(prefix, address, values);
+        }
+    }
+
+    private async Task WriteChunkAsync<T>(Prefix prefix, string address, T[] values, CancellationToken cancellationToken) where T : unmanaged
+    {
+        DeviceConverter.ThrowIfBitOnWordDevice<T>(prefix);
+        if (typeof(T) == typeof(bool))
+        {
+            await BitBatchWriteAsync(prefix, address, (bool[])(object)values, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            await WordBatchWriteAsync(prefix, address, values, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // ランダムアクセスの分割送信（ビルダーAPIの内部実装）
+    // ---------------------------------------------------------------
+
+    /// <summary>
+    /// ワード／ダブルワードのランダム読み出しを、点数上限ごとに分割して実行します。
+    /// </summary>
+    private (ushort[] words, uint[] doubleWords) RandomReadWords((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
+    {
+        var allWords = new List<ushort>();
+        var allDoubleWords = new List<uint>();
+
+        int maxWordLength = WordRandomReadCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
         int wordIndex = 0, doubleIndex = 0;
         while (wordIndex < wordAddresses.Length || doubleIndex < doubleWordAddresses.Length)
         {
             var wordBatch = wordAddresses.Skip(wordIndex).Take(maxWordLength).ToArray();
             var doubleBatch = doubleWordAddresses.Skip(doubleIndex).Take(maxWordLength - wordBatch.Length).ToArray();
 
-            if (wordBatch.Length + doubleBatch.Length == 0)
-                break;
+            var (words, doubleWords) = WordRandomRead<ushort, uint>(wordBatch, doubleBatch);
 
-            var (wordValues, doubleValues) = WordRandomRead<T1, T2>(wordBatch, doubleBatch);
-
-            allWordValues.AddRange(wordValues);
-            allDoubleValues.AddRange(doubleValues);
+            allWords.AddRange(words);
+            allDoubleWords.AddRange(doubleWords);
 
             wordIndex += wordBatch.Length;
             doubleIndex += doubleBatch.Length;
         }
 
-        return (allWordValues.ToArray(), allDoubleValues.ToArray());
+        return (allWords.ToArray(), allDoubleWords.ToArray());
     }
 
-    /// <summary>
-    /// ランダムデバイス読み込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定したデバイスの値を非同期でPLCから読み込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordAddresses">
-    /// 16ビット単位で読み込むデバイスアドレスの配列を指定します。<br />
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <param name="doubleWordAddresses">
-    /// 32ビット単位で読み込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>
-    /// PLCから読み込んだ値を指定した型<c>T1</c>、<c>T2</c>に変換して返します。<br/>
-    /// ・<c>wordValues</c>: 16ビット単位で読み込まれた <c>T1</c>型の値の配列<br/>
-    /// ・<c>doubleValues</c>: 32ビット単位で読み込まれた <c>T2</c>型の値の配列
-    /// </returns>
-    [Obsolete("Use the RandomReadAsync(Action<RandomReadBuilder>) builder overload instead.")]
-    public async Task<(T1[] wordValues, T2[] doubleValues)> RandomReadAsync<T1, T2>((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private async Task<(ushort[] words, uint[] doubleWords)> RandomReadWordsAsync((Prefix prefix, string address)[] wordAddresses, (Prefix prefix, string address)[] doubleWordAddresses, CancellationToken cancellationToken)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
-        {
-            T1[] wv = typeof(T1) == typeof(bool)
-                ? (T1[])(object)await RandomReadBitAsync(wordAddresses)
-                : (await RandomReadAsync<T1, ushort>(wordAddresses, Array.Empty<(Prefix, string)>())).wordValues;
-            T2[] dv = typeof(T2) == typeof(bool)
-                ? (T2[])(object)await RandomReadBitAsync(doubleWordAddresses)
-                : (await RandomReadAsync<ushort, T2>(Array.Empty<(Prefix, string)>(), doubleWordAddresses)).doubleValues;
-            return (wv, dv);
-        }
+        var allWords = new List<ushort>();
+        var allDoubleWords = new List<uint>();
 
-        List<T1> allWordValues = new List<T1>();
-        List<T2> allDoubleValues = new List<T2>();
-
-        int maxWordLength = WordRandomReadCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
+        int maxWordLength = WordRandomReadCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
         int wordIndex = 0, doubleIndex = 0;
         while (wordIndex < wordAddresses.Length || doubleIndex < doubleWordAddresses.Length)
         {
             var wordBatch = wordAddresses.Skip(wordIndex).Take(maxWordLength).ToArray();
             var doubleBatch = doubleWordAddresses.Skip(doubleIndex).Take(maxWordLength - wordBatch.Length).ToArray();
 
-            if (wordBatch.Length + doubleBatch.Length == 0)
-                break;
+            var (words, doubleWords) = await WordRandomReadAsync<ushort, uint>(wordBatch, doubleBatch, cancellationToken).ConfigureAwait(false);
 
-            var (wordValues, doubleValues) = await WordRandomReadAsync<T1, T2>(wordBatch, doubleBatch);
-
-            allWordValues.AddRange(wordValues);
-            allDoubleValues.AddRange(doubleValues);
+            allWords.AddRange(words);
+            allDoubleWords.AddRange(doubleWords);
 
             wordIndex += wordBatch.Length;
             doubleIndex += doubleBatch.Length;
         }
 
-        return (allWordValues.ToArray(), allDoubleValues.ToArray());
+        return (allWords.ToArray(), allDoubleWords.ToArray());
     }
 
     /// <summary>
-    /// ランダムデバイス書き込み
+    /// ワード／ダブルワードのランダム書き込みを、点数上限ごとに分割して実行します。
     /// </summary>
-    /// <remarks>
-    /// 指定したデバイスに対し、値をPLCへ書き込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordDevices">
-    /// 16ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <param name="doubleWordDevices">
-    /// 32ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use the RandomWrite(Action<RandomWriteBuilder>) builder overload instead.")]
-    public void RandomWrite<T1, T2>(
-        (Prefix prefix, string address, T1 value)[] wordDevices,
-        (Prefix prefix, string address, T2 value)[] doubleWordDevices)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private void RandomWriteWords((Prefix prefix, string address, ushort value)[] wordDevices, (Prefix prefix, string address, uint value)[] doubleWordDevices)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
+        foreach (var (wordBatch, doubleWordBatch) in SplitRandomWrite(wordDevices, doubleWordDevices))
         {
-            if (typeof(T1) == typeof(bool))
-                RandomWriteBit(wordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                RandomWrite<T1, ushort>(wordDevices, Array.Empty<(Prefix, string, ushort)>());
-
-            if (typeof(T2) == typeof(bool))
-                RandomWriteBit(doubleWordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                RandomWrite<ushort, T2>(Array.Empty<(Prefix, string, ushort)>(), doubleWordDevices);
-
-            return;
-        }
-
-        int maxSize = WordRandomWriteCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
-        int wordSize = WordRandomWriteCommand<T1, T2>.WORD_SIZE;
-        int doubleWordSize = WordRandomWriteCommand<T1, T2>.DOUBLE_WORD_SIZE;
-
-        List<(Prefix prefix, string address, T1 value)> wordList = wordDevices.ToList();
-        List<(Prefix prefix, string address, T2 value)> doubleWordList = doubleWordDevices.ToList();
-
-        while (wordList.Count > 0 || doubleWordList.Count > 0)
-        {
-            List<(Prefix prefix, string address, T1 value)> wordBatch = new();
-            List<(Prefix prefix, string address, T2 value)> doubleWordBatch = new();
-
-            int batchSize = 0;
-
-            while (wordList.Count > 0)
-            {
-                var item = wordList[0];
-                if (batchSize + wordSize > maxSize) break;
-                wordBatch.Add(item);
-                wordList.RemoveAt(0);
-                batchSize += wordSize;
-            }
-
-            while (doubleWordList.Count > 0)
-            {
-                var item = doubleWordList[0];
-                if (batchSize + doubleWordSize > maxSize) break;
-                doubleWordBatch.Add(item);
-                doubleWordList.RemoveAt(0);
-                batchSize += doubleWordSize;
-            }
-
-            if (wordBatch.Count > 0 || doubleWordBatch.Count > 0)
-            {
-                WordRandomWrite(wordBatch.ToArray(), doubleWordBatch.ToArray());
-            }
+            WordRandomWrite(wordBatch, doubleWordBatch);
         }
     }
 
-    /// <summary>
-    /// ランダムデバイス書き込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定したデバイスに対し、値を非同期でPLCへ書き込みます。<br/>
-    /// 指定された型<c>T1</c>、<c>T2</c>に応じて、内部的に読み込むデバイス点数は自動的に調整されます。
-    /// </remarks>
-    /// <typeparam name="T1">
-    /// 16ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <typeparam name="T2">
-    /// 32ビット単位で書き込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
-    /// </typeparam>
-    /// <param name="wordDevices">
-    /// 16ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <param name="doubleWordDevices">
-    /// 32ビット単位で書き込むデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。
-    /// ・<c>value</c>:書き込みする値を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use the RandomWriteAsync(Action<RandomWriteBuilder>) builder overload instead.")]
-    public async Task RandomWriteAsync<T1, T2>(
-        (Prefix prefix, string address, T1 value)[] wordDevices,
-        (Prefix prefix, string address, T2 value)[] doubleWordDevices)
-        where T1 : unmanaged
-        where T2 : unmanaged
+    private async Task RandomWriteWordsAsync((Prefix prefix, string address, ushort value)[] wordDevices, (Prefix prefix, string address, uint value)[] doubleWordDevices, CancellationToken cancellationToken)
     {
-        if (typeof(T1) == typeof(bool) || typeof(T2) == typeof(bool))
+        foreach (var (wordBatch, doubleWordBatch) in SplitRandomWrite(wordDevices, doubleWordDevices))
         {
-            if (typeof(T1) == typeof(bool))
-                await RandomWriteBitAsync(wordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                await RandomWriteAsync<T1, ushort>(wordDevices, Array.Empty<(Prefix, string, ushort)>());
-
-            if (typeof(T2) == typeof(bool))
-                await RandomWriteBitAsync(doubleWordDevices.Select(d => (d.prefix, d.address, (bool)(object)d.value)).ToArray());
-            else
-                await RandomWriteAsync<ushort, T2>(Array.Empty<(Prefix, string, ushort)>(), doubleWordDevices);
-
-            return;
-        }
-
-        int maxSize = WordRandomWriteCommand<T1, T2>.GetMaxWordLength(ProcessorSeries);
-        int wordSize = WordRandomWriteCommand<T1, T2>.WORD_SIZE;
-        int doubleWordSize = WordRandomWriteCommand<T1, T2>.DOUBLE_WORD_SIZE;
-
-        List<(Prefix prefix, string address, T1 value)> wordList = wordDevices.ToList();
-        List<(Prefix prefix, string address, T2 value)> doubleWordList = doubleWordDevices.ToList();
-
-        while (wordList.Count > 0 || doubleWordList.Count > 0)
-        {
-            List<(Prefix prefix, string address, T1 value)> wordBatch = new();
-            List<(Prefix prefix, string address, T2 value)> doubleWordBatch = new();
-
-            int batchSize = 0;
-
-            while (wordList.Count > 0)
-            {
-                var item = wordList[0];
-                if (batchSize + wordSize > maxSize) break;
-                wordBatch.Add(item);
-                wordList.RemoveAt(0);
-                batchSize += wordSize;
-            }
-
-            while (doubleWordList.Count > 0)
-            {
-                var item = doubleWordList[0];
-                if (batchSize + doubleWordSize > maxSize) break;
-                doubleWordBatch.Add(item);
-                doubleWordList.RemoveAt(0);
-                batchSize += doubleWordSize;
-            }
-
-            if (wordBatch.Count > 0 || doubleWordBatch.Count > 0)
-            {
-                await WordRandomWriteAsync(wordBatch.ToArray(), doubleWordBatch.ToArray());
-            }
+            await WordRandomWriteAsync(wordBatch, doubleWordBatch, cancellationToken).ConfigureAwait(false);
         }
     }
 
     /// <summary>
-    /// ランダムビットデバイス読み込み
+    /// ランダム書き込みの対象を、1回の要求に収まる点数ごとに分割します（ワードを先に詰め、残りにダブルワードを詰める）。
     /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスのON/OFFをPLCから読み込みます。<br/>
-    /// MCプロトコルにはビット単位のランダム読み出しコマンドが存在しないため、内部的には各ビットデバイスを
-    /// ワードアクセス（16点単位）で読み出し、先頭ビット(bit0)を抽出して返します。
-    /// </remarks>
-    /// <param name="bitAddresses">
-    /// 読み込み対象のビットデバイスアドレスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>PLCから読み込んだ各ビットデバイスのON(<c>true</c>)/OFF(<c>false</c>)を配列で返します。</returns>
-    [Obsolete("Use RandomRead(b => b.Add<bool>(prefix, address, ...)) builder overload instead.")]
-    public bool[] RandomReadBit((Prefix prefix, string address)[] bitAddresses)
+    private List<((Prefix prefix, string address, ushort value)[] words, (Prefix prefix, string address, uint value)[] doubleWords)> SplitRandomWrite(
+        (Prefix prefix, string address, ushort value)[] wordDevices,
+        (Prefix prefix, string address, uint value)[] doubleWordDevices)
     {
-        var result = new List<bool>();
+        int maxSize = WordRandomWriteCommand<ushort, uint>.GetMaxWordLength(ProcessorSeries);
+        int wordSize = WordRandomWriteCommand<ushort, uint>.WORD_SIZE;
+        int doubleWordSize = WordRandomWriteCommand<ushort, uint>.DOUBLE_WORD_SIZE;
 
-        int maxWordLength = WordRandomReadCommand<ushort, ushort>.GetMaxWordLength(ProcessorSeries);
-        for (int i = 0; i < bitAddresses.Length; i += maxWordLength)
+        var batches = new List<((Prefix, string, ushort)[], (Prefix, string, uint)[])>();
+        int wordIndex = 0, doubleIndex = 0;
+        while (wordIndex < wordDevices.Length || doubleIndex < doubleWordDevices.Length)
         {
-            var chunk = bitAddresses.Skip(i).Take(maxWordLength).ToArray();
-            var (words, _) = WordRandomRead<ushort, ushort>(chunk, Array.Empty<(Prefix, string)>());
-            result.AddRange(words.Select(w => (w & 0x0001) != 0));
+            int wordCount = Math.Min(wordDevices.Length - wordIndex, maxSize / wordSize);
+            int doubleCount = Math.Min(doubleWordDevices.Length - doubleIndex, (maxSize - wordCount * wordSize) / doubleWordSize);
+
+            batches.Add((
+                wordDevices.Skip(wordIndex).Take(wordCount).ToArray(),
+                doubleWordDevices.Skip(doubleIndex).Take(doubleCount).ToArray()
+            ));
+
+            wordIndex += wordCount;
+            doubleIndex += doubleCount;
         }
 
-        return result.ToArray();
+        return batches;
     }
 
     /// <summary>
-    /// ランダムビットデバイス読み込み（非同期）
+    /// ビット単位のランダム書き込み（コマンド:1402 / サブコマンド:0001）を、点数上限ごとに分割して実行します。
     /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスのON/OFFを非同期でPLCから読み込みます。<br/>
-    /// MCプロトコルにはビット単位のランダム読み出しコマンドが存在しないため、内部的には各ビットデバイスを
-    /// ワードアクセス（16点単位）で読み出し、先頭ビット(bit0)を抽出して返します。
-    /// </remarks>
-    /// <param name="bitAddresses">
-    /// 読み込み対象のビットデバイスアドレスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:読み込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:読み込み対象のアドレスを指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    /// <returns>PLCから読み込んだ各ビットデバイスのON(<c>true</c>)/OFF(<c>false</c>)を配列で返します。</returns>
-    [Obsolete("Use RandomReadAsync(b => b.Add<bool>(prefix, address, ...)) builder overload instead.")]
-    public async Task<bool[]> RandomReadBitAsync((Prefix prefix, string address)[] bitAddresses)
-    {
-        var result = new List<bool>();
-
-        int maxWordLength = WordRandomReadCommand<ushort, ushort>.GetMaxWordLength(ProcessorSeries);
-        for (int i = 0; i < bitAddresses.Length; i += maxWordLength)
-        {
-            var chunk = bitAddresses.Skip(i).Take(maxWordLength).ToArray();
-            var (words, _) = await WordRandomReadAsync<ushort, ushort>(chunk, Array.Empty<(Prefix, string)>());
-            result.AddRange(words.Select(w => (w & 0x0001) != 0));
-        }
-
-        return result.ToArray();
-    }
-
-    /// <summary>
-    /// ランダムビットデバイス書き込み
-    /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスに対し、ON/OFFをビット単位でPLCへ書き込みます。<br/>
-    /// MCプロトコルのビット単位ランダム書き込み（コマンド:1402 / サブコマンド:0001）を使用します。
-    /// </remarks>
-    /// <param name="bitDevices">
-    /// 書き込み対象のビットデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込むON(<c>true</c>)/OFF(<c>false</c>)を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use RandomWrite(b => b.Add<bool>(prefix, address, value)) builder overload instead.")]
-    public void RandomWriteBit((Prefix prefix, string address, bool value)[] bitDevices)
+    private void RandomWriteBits((Prefix prefix, string address, bool value)[] bitDevices)
     {
         int maxBitLength = BitRandomWriteCommand.GetMaxBitLength(ProcessorSeries);
         for (int i = 0; i < bitDevices.Length; i += maxBitLength)
         {
-            var chunk = bitDevices.Skip(i).Take(maxBitLength).ToArray();
-            BitRandomWrite(chunk);
+            BitRandomWrite(bitDevices.Skip(i).Take(maxBitLength).ToArray());
         }
     }
 
-    /// <summary>
-    /// ランダムビットデバイス書き込み（非同期）
-    /// </summary>
-    /// <remarks>
-    /// 指定した（非連続の）ビットデバイスに対し、ON/OFFをビット単位で非同期でPLCへ書き込みます。<br/>
-    /// MCプロトコルのビット単位ランダム書き込み（コマンド:1402 / サブコマンド:0001）を使用します。
-    /// </remarks>
-    /// <param name="bitDevices">
-    /// 書き込み対象のビットデバイスの配列を指定します。<br/>
-    /// ・<c>prefix</c>:書き込み対象のデバイスコードを指定します。<br/>
-    /// ・<c>address</c>:書き込み対象のアドレスを指定します。<br/>
-    /// ・<c>value</c>:書き込むON(<c>true</c>)/OFF(<c>false</c>)を指定します。
-    /// </param>
-    /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    [Obsolete("Use RandomWriteAsync(b => b.Add<bool>(prefix, address, value)) builder overload instead.")]
-    public async Task RandomWriteBitAsync((Prefix prefix, string address, bool value)[] bitDevices)
+    private async Task RandomWriteBitsAsync((Prefix prefix, string address, bool value)[] bitDevices, CancellationToken cancellationToken)
     {
         int maxBitLength = BitRandomWriteCommand.GetMaxBitLength(ProcessorSeries);
         for (int i = 0; i < bitDevices.Length; i += maxBitLength)
         {
-            var chunk = bitDevices.Skip(i).Take(maxBitLength).ToArray();
-            await BitRandomWriteAsync(chunk);
+            await BitRandomWriteAsync(bitDevices.Skip(i).Take(maxBitLength).ToArray(), cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -1013,13 +689,17 @@ public partial class McpX : Mcp
     /// アクセス単位・点数上限・パケット分割は内部で自動処理されます。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RandomRead(Action<RandomReadBuilder> build)
     {
         var builder = new RandomReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteRandomRead(builder);
     }
 
@@ -1033,7 +713,7 @@ public partial class McpX : Mcp
             return;
         }
 
-        var (rawWords, rawDoubleWords) = RandomRead<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = RandomReadWords(wordAddresses, doubleWordAddresses);
 
         for (int i = 0; i < builder.wordEntries.Count; i++)
         {
@@ -1055,17 +735,22 @@ public partial class McpX : Mcp
     /// デバイスと読み取り後のコールバックを並べます。読み取り完了後、各コールバックに変換済みの値が渡されます。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task RandomReadAsync(Action<RandomReadBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task RandomReadAsync(Action<RandomReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomReadBuilder();
-        build(builder);
-        await ExecuteRandomReadAsync(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
+        await ExecuteRandomReadAsync(builder, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task ExecuteRandomReadAsync(RandomReadBuilder builder)
+    private async Task ExecuteRandomReadAsync(RandomReadBuilder builder, CancellationToken cancellationToken)
     {
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
@@ -1075,7 +760,7 @@ public partial class McpX : Mcp
             return;
         }
 
-        var (rawWords, rawDoubleWords) = await RandomReadAsync<ushort, uint>(wordAddresses, doubleWordAddresses);
+        var (rawWords, rawDoubleWords) = await RandomReadWordsAsync(wordAddresses, doubleWordAddresses, cancellationToken).ConfigureAwait(false);
 
         for (int i = 0; i < builder.wordEntries.Count; i++)
         {
@@ -1098,13 +783,17 @@ public partial class McpX : Mcp
     /// ワード／ダブルワードとビットはMCプロトコル上サブコマンドが異なるため、別パケットで送信されます。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RandomWrite(Action<RandomWriteBuilder> build)
     {
         var builder = new RandomWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteRandomWrite(builder);
     }
 
@@ -1112,12 +801,12 @@ public partial class McpX : Mcp
     {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
-            RandomWrite<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
+            RandomWriteWords(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
         }
 
         if (builder.bitDevices.Count > 0)
         {
-            RandomWriteBit(builder.bitDevices.ToArray());
+            RandomWriteBits(builder.bitDevices.ToArray());
         }
     }
 
@@ -1130,26 +819,31 @@ public partial class McpX : Mcp
     /// デバイスと値を並べます。ワード／ダブルワードとビットは別パケットで送信されます。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task RandomWriteAsync(Action<RandomWriteBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task RandomWriteAsync(Action<RandomWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new RandomWriteBuilder();
-        build(builder);
-        await ExecuteRandomWriteAsync(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
+        await ExecuteRandomWriteAsync(builder, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task ExecuteRandomWriteAsync(RandomWriteBuilder builder)
+    private async Task ExecuteRandomWriteAsync(RandomWriteBuilder builder, CancellationToken cancellationToken)
     {
         if (builder.wordDevices.Count > 0 || builder.doubleWordDevices.Count > 0)
         {
-            await RandomWriteAsync<ushort, uint>(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray());
+            await RandomWriteWordsAsync(builder.wordDevices.ToArray(), builder.doubleWordDevices.ToArray(), cancellationToken).ConfigureAwait(false);
         }
 
         if (builder.bitDevices.Count > 0)
         {
-            await RandomWriteBitAsync(builder.bitDevices.ToArray());
+            await RandomWriteBitsAsync(builder.bitDevices.ToArray(), cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -1165,20 +859,24 @@ public partial class McpX : Mcp
     /// ワード＋ダブルワードの合計で 192点（Q/L）／96点（iQ-R）です。超過時は例外をスローします。
     /// </remarks>
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
-    public MonitorSession MonitorRegist(Action<MonitorBuilder> build)
+    public MonitorSession MonitorRegister(Action<MonitorBuilder> build)
     {
         var builder = new MonitorBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
-        // モニタ登録は分割不可。点数上限を超えると MonitorRegistCommand が例外をスローする。
+        // モニタ登録は分割不可。点数上限を超えると MonitorRegisterCommand が例外をスローする。
         int generation = RegisterMonitor(wordAddresses, doubleWordAddresses);
 
         return new MonitorSession(this, builder, generation);
@@ -1193,20 +891,25 @@ public partial class McpX : Mcp
     /// モニタ登録はパケット分割ができず、点数上限は 192点（Q/L）／96点（iQ-R）です。超過時は例外をスローします。
     /// </remarks>
     /// <param name="build">モニタ対象のデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">モニタ登録の点数上限を超過した場合に例外をスローします（分割不可）。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>登録済みデバイスを繰り返し読み出すための <see cref="MonitorSession"/>。</returns>
-    public async Task<MonitorSession> MonitorRegistAsync(Action<MonitorBuilder> build)
+    public async Task<MonitorSession> MonitorRegisterAsync(Action<MonitorBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new MonitorBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
         var wordAddresses = builder.wordEntries.Select(e => (e.prefix, e.address)).ToArray();
         var doubleWordAddresses = builder.doubleWordEntries.Select(e => (e.prefix, e.address)).ToArray();
 
-        int generation = await RegisterMonitorAsync(wordAddresses, doubleWordAddresses);
+        int generation = await RegisterMonitorAsync(wordAddresses, doubleWordAddresses, cancellationToken).ConfigureAwait(false);
 
         return new MonitorSession(this, builder, generation);
     }
@@ -1216,8 +919,8 @@ public partial class McpX : Mcp
     /// </summary>
     /// <remarks>
     /// 連続デバイスと非連続デバイスを、1つのビルダーでまとめて読み込みます。<br/>
-    /// <paramref name="build"/> 内で、点数を指定した <see cref="ReadBuilder.Add{T}(Prefix, string, ushort, Action{T[]})"/> は
-    /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, ushort)"/>）、点数を指定しない
+    /// <paramref name="build"/> 内で、点数を指定した <see cref="ReadBuilder.Add{T}(Prefix, string, int, Action{T[]})"/> は
+    /// 連続アクセス（<see cref="BatchRead{T}(Prefix, string, int)"/>）、点数を指定しない
     /// <see cref="ReadBuilder.Add{T}(Prefix, string, Action{T})"/> はランダムアクセス
     /// （<see cref="RandomRead(Action{RandomReadBuilder})"/>）で読み込まれます。<br/>
     /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括読出し（コマンド: 0406）でまとめて読み込みます。<br/>
@@ -1225,20 +928,23 @@ public partial class McpX : Mcp
     /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Read(Action<ReadBuilder> build)
     {
         var builder = new ReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            ExecuteBlockRead(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            ExecuteBlockRead(blocks);
         }
 
         foreach (var entry in remaining)
@@ -1259,28 +965,32 @@ public partial class McpX : Mcp
     /// 複数のリクエストに分かれるため、全デバイスを同一スキャンで取得することは保証されません。
     /// </remarks>
     /// <param name="build">読み込むデバイスとコールバックを登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task ReadAsync(Action<ReadBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task ReadAsync(Action<ReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new ReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            await ExecuteBlockReadAsync(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            await ExecuteBlockReadAsync(blocks, cancellationToken).ConfigureAwait(false);
         }
 
         foreach (var entry in remaining)
         {
-            await entry.readAsync(this);
+            await entry.readAsync(this, cancellationToken).ConfigureAwait(false);
         }
 
-        await ExecuteRandomReadAsync(builder.random);
+        await ExecuteRandomReadAsync(builder.random, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -1296,20 +1006,23 @@ public partial class McpX : Mcp
     /// 連続アクセスを登録順に実行した後、ランダムアクセスをまとめて実行します。
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void Write(Action<WriteBuilder> build)
     {
         var builder = new WriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            ExecuteBlockWrite(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            ExecuteBlockWrite(blocks);
         }
 
         foreach (var entry in remaining)
@@ -1326,31 +1039,35 @@ public partial class McpX : Mcp
     /// <remarks>
     /// 連続デバイスと非連続デバイスに、1つのビルダーでまとめて非同期で書き込みます。<br/>
     /// 配列を指定したデバイスは連続アクセス、単一の値を指定したデバイスはランダムアクセスで書き込まれます。
-    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）<br/>
+    /// <see cref="UseMultiBlockAccess"/> が <c>true</c> で連続アクセスの範囲が2つ以上ある場合は、複数ブロック一括書込み（コマンド: 1406）でまとめて書き込みます。（ビットデバイスへの <c>bool</c> で要素数が16の倍数でない範囲は、範囲ごとに書き込みます）
     /// </remarks>
     /// <param name="build">書き込むデバイスと値を登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
+    /// <exception cref="ArgumentException">連続アクセスでワードデバイスに <c>bool</c> を指定した場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task WriteAsync(Action<WriteBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task WriteAsync(Action<WriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new WriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
 
-        var remaining = builder.batchEntries;
-        var blocks = builder.batchEntries.Where(e => e.block != null).ToList();
-        if (CanUseMultiBlock(blocks.Count))
+        var (blocks, remaining) = SplitForMultiBlock(builder.batchEntries, e => e.block);
+        if (blocks.Count > 0)
         {
-            await ExecuteBlockWriteAsync(blocks.Select(e => e.block!).ToList());
-            remaining = builder.batchEntries.Where(e => e.block == null).ToList();
+            await ExecuteBlockWriteAsync(blocks, cancellationToken).ConfigureAwait(false);
         }
 
         foreach (var entry in remaining)
         {
-            await entry.writeAsync(this);
+            await entry.writeAsync(this, cancellationToken).ConfigureAwait(false);
         }
 
-        await ExecuteRandomWriteAsync(builder.random);
+        await ExecuteRandomWriteAsync(builder.random, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -1361,15 +1078,23 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
-    /// <param name="length">読み込みデバイス点数を指定します。</param>
+    /// <param name="wordLength">
+    /// 読み込むワード数（デバイス点数）を指定します。1ワードに2バイト（半角2文字、全角1文字）が入ります。<br/>
+    /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
+    /// </param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordLength"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
-    public string ReadString(Prefix prefix, string address, ushort length)
+    public string ReadString(Prefix prefix, string address, int wordLength)
     {
+        ThrowIfNegative(wordLength, nameof(wordLength));
         return DeviceConverter.ConvertString(
-            BatchRead<ushort>(prefix, address, length).SelectMany(BitConverter.GetBytes).ToArray()
+            BatchRead<ushort>(prefix, address, wordLength).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 
@@ -1381,15 +1106,24 @@ public partial class McpX : Mcp
     /// </remarks>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
-    /// <param name="length">読み込みデバイス点数を指定します。</param>
+    /// <param name="wordLength">
+    /// 読み込むワード数（デバイス点数）を指定します。1ワードに2バイト（半角2文字、全角1文字）が入ります。<br/>
+    /// 読み込んだ範囲に 0x00 がある場合は、その手前までを文字列として返します。
+    /// </param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordLength"/> が負の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     /// <returns>PLCから読み込んだ値（Shift_JIS）を文字列に変換して返します。</returns>
-    public async Task<string> ReadStringAsync(Prefix prefix, string address, ushort length)
+    public async Task<string> ReadStringAsync(Prefix prefix, string address, int wordLength, CancellationToken cancellationToken = default)
     {
+        ThrowIfNegative(wordLength, nameof(wordLength));
         return DeviceConverter.ConvertString(
-            (await BatchReadAsync<ushort>(prefix, address, length)).SelectMany(BitConverter.GetBytes).ToArray()
+            (await BatchReadAsync<ushort>(prefix, address, wordLength, cancellationToken).ConfigureAwait(false)).SelectMany(BitConverter.GetBytes).ToArray()
         );
     }
 
@@ -1402,12 +1136,20 @@ public partial class McpX : Mcp
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
+    /// <param name="includeNullTerminator">
+    /// 文字列の後に終端の 0x00 を書き込む場合は<c>true</c>を指定します。（デフォルトは、<c>true</c>です。）<br/>
+    /// 終端は、文字列のバイト数が偶数の場合は次のワード（1ワード分）、奇数の場合は最後のワードの上位バイトに書き込みます。
+    /// <c>false</c>の場合、奇数バイトの最後のワードの上位バイトは 0x00 になります。
+    /// </param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public void WriteString(Prefix prefix, string address, string value)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public void WriteString(Prefix prefix, string address, string value, bool includeNullTerminator = true)
     {
-        BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
+        BatchWrite<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator));
     }
 
     /// <summary>
@@ -1419,32 +1161,41 @@ public partial class McpX : Mcp
     /// <param name="prefix">書き込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">書き込み対象の先頭アドレスを指定します。</param>
     /// <param name="value">書き込みする文字列を指定します。</param>
+    /// <param name="includeNullTerminator">
+    /// 文字列の後に終端の 0x00 を書き込む場合は<c>true</c>を指定します。（デフォルトは、<c>true</c>です。）<br/>
+    /// 終端は、文字列のバイト数が偶数の場合は次のワード（1ワード分）、奇数の場合は最後のワードの上位バイトに書き込みます。
+    /// <c>false</c>の場合、奇数バイトの最後のワードの上位バイトは 0x00 になります。
+    /// </param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task WriteStringAsync(Prefix prefix, string address, string value)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task WriteStringAsync(Prefix prefix, string address, string value, bool includeNullTerminator = true, CancellationToken cancellationToken = default)
     {
-        await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value));
+        await BatchWriteAsync<ushort>(prefix, address, DeviceConverter.ConvertStringToUshorts(value, includeNullTerminator), cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
     /// インスタンス破棄
     /// </summary>
     /// <remarks>
-    /// 使用済みのリソースを解放し、必要に応じてPLCのリモートロックを実行します。<br/>
-    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず解放します。2回目以降の呼び出しは何もしません。
+    /// 接続を閉じます。リモートパスワードを指定している場合は、閉じる前にPLCのリモートロックを実行します。<br/>
+    /// 通信エラーなどでリモートロックに失敗しても例外はスローせず、接続は必ず閉じます。2回目以降の呼び出しは何もしません。<br/>
+    /// 破棄した後に通信するメソッドを呼び出すと <see cref="ObjectDisposedException"/> をスローします。
     /// </remarks>
-    public override void Dispose()
+    public void Dispose()
     {
-        if (disposed)
+        if (Interlocked.Exchange(ref disposed, 1) != 0)
         {
             return;
         }
-        disposed = true;
 
         try
         {
-            if (password != null) 
+            if (password != null)
             {
                 RemoteLock(password);
             }
@@ -1455,7 +1206,37 @@ public partial class McpX : Mcp
         }
         finally
         {
-            base.Dispose();
+            DisposeTransport();
+        }
+    }
+
+    /// <summary>
+    /// インスタンス破棄（非同期）
+    /// </summary>
+    /// <remarks>
+    /// 詳細は <see cref="Dispose"/> を参照してください。リモートロックを非同期で送信します。
+    /// </remarks>
+    public async ValueTask DisposeAsync()
+    {
+        if (Interlocked.Exchange(ref disposed, 1) != 0)
+        {
+            return;
+        }
+
+        try
+        {
+            if (password != null)
+            {
+                await RemoteLockAsync(password, CancellationToken.None).ConfigureAwait(false);
+            }
+        }
+        catch
+        {
+            // Dispose と同じく、ロックに失敗しても例外はスローしない。
+        }
+        finally
+        {
+            DisposeTransport();
         }
     }
 }

@@ -14,6 +14,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class MonitorBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal MonitorBuilder() { }
+
     // ワードアクセス（1点=1ワード）で読み出すエントリ。ビットデバイスもワードとして読み、bit0 を抽出する。
     internal readonly List<(Prefix prefix, string address, Action<ushort> apply)> wordEntries = new();
 
@@ -31,23 +34,12 @@ public sealed class MonitorBuilder
     /// <param name="address">モニタ対象のアドレスを指定します。</param>
     /// <param name="onRead">モニタ実行後に、変換済みの値<c>T</c>を受け取るコールバックを指定します。</param>
     /// <exception cref="NotSupportedException">ランダムアクセス非対応の型（<c>long</c>,<c>double</c> など）を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public MonitorBuilder Add<T>(Prefix prefix, string address, Action<T> onRead) where T : unmanaged
     {
-        switch (RandomAccessKindResolver.Resolve<T>())
-        {
-            case RandomAccessKind.Bit:
-                // ビットデバイスはワードで読み、先頭ビット(bit0)を抽出する。
-                wordEntries.Add((prefix, address, raw => onRead((T)(object)((raw & 0x0001) != 0))));
-                break;
-            case RandomAccessKind.Word:
-                wordEntries.Add((prefix, address, raw => onRead(DeviceConverter.ConvertValueArray<T>(BitConverter.GetBytes(raw))[0])));
-                break;
-            default:
-                doubleWordEntries.Add((prefix, address, raw => onRead(DeviceConverter.ConvertValueArray<T>(BitConverter.GetBytes(raw))[0])));
-                break;
-        }
-
+        RandomAccessKindResolver.AddReadEntry(wordEntries, doubleWordEntries, prefix, address, onRead);
         return this;
     }
 }

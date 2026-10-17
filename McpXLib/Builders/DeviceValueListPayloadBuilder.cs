@@ -11,60 +11,20 @@ internal class DeviceValueListPayloadBuilder<T1, T2>((Prefix prefix, string addr
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
-        if (isAscii)
+        var writer = new PacketWriter(packets, isAscii, series);
+        writer.Byte((byte)wordDevices.Length);
+        writer.Byte((byte)doubleWordDevices.Length);
+
+        foreach (var (prefix, address, value) in wordDevices)
         {
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: new[] { (byte)wordDevices.Length },
-                isReverse: false
-            ));
-
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: new[] { (byte)doubleWordDevices.Length },
-                isReverse: false
-            ));
-
-            foreach (var wordDevice in wordDevices)
-            { 
-                packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(wordDevice.prefix, wordDevice.address, series)
-                ));
-
-                packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                    binaryBytes: DeviceConverter.ReverseByTwoBytes(
-                        DeviceConverter.StructToBytes(wordDevice.value)
-                    ),
-                    isReverse: false
-                ));
-            }
-
-            foreach (var doubleWordDevice in doubleWordDevices)
-            { 
-                packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(doubleWordDevice.prefix, doubleWordDevice.address, series)
-                ));
-
-                packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                    DeviceConverter.StructToBytes(doubleWordDevice.value),
-                    isReverse: true
-                ));
-            }
+            writer.Device(prefix, address);
+            writer.Words(DeviceConverter.StructToBytes(value));
         }
-        else
+
+        foreach (var (prefix, address, value) in doubleWordDevices)
         {
-            packets.Add(BitConverter.GetBytes((ushort)wordDevices.Length).First());
-            packets.Add(BitConverter.GetBytes((ushort)doubleWordDevices.Length).First());
-
-            foreach (var wordDevice in wordDevices)
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(wordDevice.prefix, wordDevice.address, series));
-                packets.AddRange(DeviceConverter.StructToBytes(wordDevice.value));
-            }
-
-            foreach (var doubleWordDevice in doubleWordDevices)
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(doubleWordDevice.prefix, doubleWordDevice.address, series));
-                packets.AddRange(DeviceConverter.StructToBytes(doubleWordDevice.value));
-            }
+            writer.Device(prefix, address);
+            writer.Value(DeviceConverter.StructToBytes(value));
         }
     }
 }

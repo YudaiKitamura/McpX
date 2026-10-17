@@ -1,6 +1,6 @@
 namespace McpXLib.Interfaces;
 
-public interface IReceiveLengthParser
+internal interface IReceiveLengthParser
 {
     ushort GetHeaderLength();
     ushort ParseContentLength(byte[] bytes);

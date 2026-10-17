@@ -1,13 +1,11 @@
-using System.Text;
-using McpXLib.Abstructs;
+using McpXLib.Abstracts;
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 
 namespace McpXLib.Parsers;
 
 internal class BitContentPacketParser : BaseContentPacketParser
 {
-    internal BitContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    internal BitContentPacketParser(BasePacketParser prevPacketParser, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser
     )
@@ -26,30 +24,29 @@ internal class BitContentPacketParser : BaseContentPacketParser
 
         if (bytes.Length != length) 
         {
-            throw new RecivePacketException("Received packet had an invalid content.");
+            throw new ReceivePacketException("Received packet had an invalid content.");
         }
     }
 
-    internal override byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    internal override byte[] ConvertAsciiBytesToBinaryBytes(byte[] bytes)
     {
-        var asciiHex = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
-        
-        List<byte> contentList = new List<byte>();
-        for (int i = 0; i < asciiHex.Length; i++)
+        // ASCII は1点1文字（'0' / '1'）。バイナリと同じく、2点を1バイト（上位4ビット・下位4ビット）にまとめる。
+        int length = bytes.Length;
+        while (length > 0 && bytes[length - 1] == 0)
         {
-            if (i % 2 == 0) 
+            length--;
+        }
+
+        var content = new byte[(length + 1) / 2];
+        for (int i = 0; i < length; i++)
+        {
+            if (bytes[i] == '1')
             {
-                contentList.Add(asciiHex.Substring(i, 1) == "1" ? (byte)0x10 : (byte)0x00);
-            }
-            else
-            {
-                int lastIndex = contentList.Count - 1;
-                byte flag = asciiHex.Substring(i, 1) == "1" ? (byte)0x01 : (byte)0x00;
-                contentList[lastIndex] = (byte)(contentList.Last() | flag);
+                content[i / 2] |= (byte)(i % 2 == 0 ? 0x10 : 0x01);
             }
         }
 
-        return contentList.ToArray();
+        return content;
     }
 
     public override byte[] ParsePacket(byte[] bytes)

@@ -11,6 +11,9 @@ namespace McpXLib;
 /// </remarks>
 public sealed class BlockWriteBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal BlockWriteBuilder() { }
+
     internal readonly List<BlockWriteEntry> entries = new();
 
     /// <summary>
@@ -25,9 +28,15 @@ public sealed class BlockWriteBuilder
     /// <param name="values">書き込む値を配列で指定します。<c>bool</c> の場合は16の倍数の要素数を指定してください。</param>
     /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合、または <c>bool</c> の要素数が16の倍数でない場合にスローします。</exception>
     /// <exception cref="NotSupportedException">非対応の型を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> が <c>null</c> の場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public BlockWriteBuilder Add<T>(Prefix prefix, string address, T[] values) where T : unmanaged
     {
+        if (values == null)
+        {
+            throw new ArgumentNullException(nameof(values));
+        }
+
         entries.Add(BlockWriteEntry.TryCreate(prefix, address, values)
             ?? throw new ArgumentException($"{typeof(T)}[{values.Length}] cannot be written to {prefix} with multiple block access. (bool is only for bit devices, in multiples of 16)", nameof(values)));
         return this;

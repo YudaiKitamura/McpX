@@ -1,3 +1,56 @@
+## [1.0.0-rc.1] - 2026-10-17
+### Added
+- Added a `CancellationToken` parameter to every async method (including `MonitorSession.ReadAsync`). Cancelling a request in progress closes the TCP connection, as a timeout does.
+- UDP connections now accept a host name as well as an IP address, and IPv6 addresses. A host name uses its IPv4 address if it has one.
+- Added `McpXOptions` and the `McpX.Connect` / `McpX.ConnectAsync` factories (also `Connect(host, port)` for the default settings). `ConnectAsync` connects and unlocks the remote password without blocking a thread.
+- `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
+- Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.
+- Added `McpXException`, the base class of `DeviceAddressException`, `McProtocolException` and `ReceivePacketException`. The exceptions now have the standard constructors, including one with an inner exception.
+- Added access to other stations and to the other CPUs of a multiple CPU system: `McpXOptions.Route` takes a `McpXRoute` (network No., PC No., request destination module I/O No. and station No.), and `McpXRoute.ForCpu(cpuNo)` targets CPU No. 1 to 4. `McpX.Route` returns the route in use.
+- Added the `net10.0` target framework.
+- The NuGet package now has a symbol package (`.snupkg`), Source Link and an icon.
+- Each release now attaches the native library for win-x64, linux-x64, linux-arm64 and osx-arm64 (previously win-x64 and linux-x64 only), and is published to NuGet from CI.
+
+### Changed
+- **Breaking:** Renamed `MonitorRegist` / `MonitorRegistAsync` to `MonitorRegister` / `MonitorRegisterAsync`.
+- **Breaking:** Renamed `RecivePacketException` to `ReceivePacketException`.
+- **Breaking:** Renamed the namespace `McpXLib.Abstructs` to `McpXLib.Abstracts`.
+- **Breaking:** `IsAscii`, `RequestFrame` and `ProcessorSeries` on `McpX` are now read-only. They are fixed when the instance is created.
+- **Breaking:** The builder classes (`ReadBuilder`, `RandomReadBuilder`, `MonitorBuilder`, etc.) can no longer be created directly; they are passed to the `McpX` methods.
+- **Breaking:** `McpX` can no longer be created with `new`. Use `McpX.Connect(new McpXOptions { ... })` or `McpX.ConnectAsync`. The timeout is now a `TimeSpan` (`McpXOptions.Timeout`, default 5 s, `Timeout.InfiniteTimeSpan` for no timeout) and is no longer limited to 65,535 ms.
+- **Breaking:** `McpXSimulator` is now a static class. Use `McpXSimulator.Connect(systemNo, cpuNo, host)` / `ConnectAsync`, or `McpXSimulator.CreateOptions` to change other settings. The `SystemNo` / `CpuNo` properties were removed.
+- **Breaking:** `McpX` is now sealed.
+- **Breaking:** `RemoteReset` / `RemoteResetAsync` take the reconnection timeout as a `TimeSpan?` (default 30 s, `TimeSpan.Zero` to skip reconnecting). `RemoteResetAsync` now reconnects without blocking a thread.
+- Calling a communication method after `Dispose` now throws `ObjectDisposedException` (previously `IOException` over TCP).
+- **Breaking:** `BatchWrite` / `BatchWriteAsync` no longer return the written values (they returned a copy of the argument).
+- **Breaking:** The lengths of `BatchRead`, `ReadString`, `ReadBuilder.Add` and `BlockReadBuilder.Add` are now `int` instead of `ushort`. A negative length throws `ArgumentOutOfRangeException`. The length parameter of `ReadString` is renamed to `wordLength`.
+- The native library (C ABI) is now built with .NET 10. The C ABI is unchanged.
+- **Breaking:** The netstandard2.0 build requires .NET Framework 4.6.2 or later (previously 4.6.1), because of its new dependencies.
+- See [MIGRATION.md](MIGRATION.md) for how to migrate from 0.x.
+- Converting values to and from the PLC data no longer boxes or allocates per element, which reduces the memory allocated by a large batch read / write to about a quarter.
+
+### Fixed
+- Fixed UDP requests accepting a datagram from a host other than the PLC as the response.
+- Fixed UDP requests accepting a response whose length does not match the response data length in its header. It now throws `ReceivePacketException`.
+- Fixed malformed responses (too short, or non-hexadecimal characters in ASCII mode) throwing undocumented `ArgumentException` / `FormatException` / `IndexOutOfRangeException`. They now throw `ReceivePacketException` with the original exception as the inner exception.
+- Fixed `ReadString` / `WriteString` failing on .NET Core / .NET apps that use the netstandard2.0 build, because Shift_JIS was not registered. The netstandard2.0 build now references `System.Text.Encoding.CodePages`.
+- Fixed bit batch read / write in ASCII mode being split into requests of 7168 points, which exceeds the limit of 3584 points for Ethernet modules in ASCII mode.
+- Fixed addresses above FFFFFF for `ProcessorSeries.Q` being silently corrupted by the device code. They now throw `DeviceAddressException`, as do ASCII device numbers longer than 6 digits (8 for `ProcessorSeries.iQR`).
+- **Breaking:** `bool` on a word device now throws `ArgumentException` before sending.
+- The builder methods and `Add` now throw `ArgumentNullException` for a null builder action, callback or value array, and a null address throws `DeviceAddressException`.
+- Fixed the 4E frame serial number not being assigned atomically when requests are sent from several threads.
+- Fixed `WriteBuilder.Add(T[])` writing the values at the time of the write without multiple block access, but at the time of `Add` with it. It now always takes the values at `Add`.
+- Fixed a response with less data than requested (but a consistent header) making `Read<T>` throw `IndexOutOfRangeException` and `BatchRead` return zero-filled values. The read commands now check the data length against the requested points and throw `ReceivePacketException`.
+- Fixed a UDP request that failed other than by a timeout (a receive error, an invalid response or cancellation) keeping its socket, so the late reply to it could be returned to the next request. The socket is now recreated after every failed request.
+
+### Removed
+- **Breaking:** Removed the typed wrapper methods (`ReadInt16`, `BatchReadSingleAsync`, `WriteDouble`, `RandomReadInt16Int32`, etc.). Use the generic methods such as `Read<short>`, `BatchRead<float>` and `Write<double>`, and the builder overloads for random access.
+- **Breaking:** Removed the obsolete random access methods `RandomRead<T1, T2>` / `RandomWrite<T1, T2>` / `RandomReadBit` / `RandomWriteBit` and their async versions. Use `RandomRead(Action<RandomReadBuilder>)` / `RandomWrite(Action<RandomWriteBuilder>)`.
+- **Breaking:** Removed the tuple-based monitor methods `MonitorRegist((Prefix, string)[], (Prefix, string)[])` / `Monitor<T1, T2>` and their async versions. Use `MonitorRegister(Action<MonitorBuilder>)` and the returned `MonitorSession`.
+- **Breaking:** Removed the unused `PlcDuplicationException`.
+- **Breaking:** Removed the public base classes `Mcp` and `BasePlc` (merged into `McpX`), including the raw packet methods `Request` / `RequestAsync` and the `Route` property.
+- **Breaking:** The interfaces in `McpXLib.Interfaces` (`IPlc`, `IPlcCommand<T>`, `IPlcTransport`, etc.) are now internal.
+
 ## [0.13.0] - 2026-10-10
 ### Added
 - Added a new native library with a stable C ABI (`mcpx.dll` / `mcpx.so` / `mcpx.dylib`, header `McpXInterop/include/mcpx.h`): `mcpx_connect` / `mcpx_connect_simulator` / `mcpx_close`, `mcpx_read` / `mcpx_write` / `mcpx_batch_read` / `mcpx_batch_write` for all value types, combined / random access (`mcpx_read_items` / `mcpx_write_items`), multiple block access (`mcpx_block_read` / `mcpx_block_write`), Shift_JIS strings (`mcpx_read_string` / `mcpx_write_string`), monitor sessions (`mcpx_monitor_register` / `mcpx_monitor_read` / `mcpx_session_free`), remote operations (`mcpx_remote_run` / `stop` / `pause` / `latch_clear` / `reset`) and library information. Every function returns a status code and reports details (message, PLC end code, socket error) through `mcpx_error`.

@@ -29,12 +29,18 @@ internal static class DeviceConverter
 
     private static Encoding CreateShiftJis()
     {
-#if !NETSTANDARD2_0
+        // .NET Core 以降・netstandard2.0（System.Text.Encoding.CodePages）とも、Shift_JIS はプロバイダの登録が必要
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
         return Encoding.GetEncoding("shift_jis");
     }
 
+    /// <summary>
+    /// 応答データ（リトルエンディアン）を <typeparamref name="T"/> の配列に変換します。
+    /// </summary>
+    /// <remarks>
+    /// <c>bool</c> は1点1バイト（解析済みの値）、<c>byte</c> / <c>sbyte</c> は1要素1ワード（下位バイトが値）、
+    /// それ以外の数値型はワード数分のバイトをそのまま並べたものとして、要素ごとのボックス化をせずにまとめてコピーする。
+    /// </remarks>
     internal static T[] ConvertValueArray<T>(byte[] bytes) where T : unmanaged
     {
         int byteLength = typeof(T) != typeof(bool) ? GetWordLength<T>() * 2 : 1;
@@ -43,58 +49,39 @@ internal static class DeviceConverter
             throw new ArgumentException("Byte array is not the correct length.");
         }
 
-        var length = bytes.Length / byteLength;
-        var values = new T[length];
+        int length = bytes.Length / byteLength;
 
-        for (int i = 0; i < length; i++) 
+        if (typeof(T) == typeof(bool))
         {
-            if (typeof(T) == typeof(bool)) 
+            var bits = new bool[length];
+            for (int i = 0; i < length; i++)
             {
-                values[i] = (T)(object)BitConverter.ToBoolean(bytes.Skip(i).Take(1).ToArray(), 0);
+                bits[i] = bytes[i] != 0;
             }
-            else if (typeof(T) == typeof(short)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt16(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(ushort)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt16(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(int)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt32(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(uint)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt32(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(float)) 
-            {
-                values[i] = (T)(object)BitConverter.ToSingle(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(double)) 
-            {
-                values[i] = (T)(object)BitConverter.ToDouble(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(long)) 
-            {
-                values[i] = (T)(object)BitConverter.ToInt64(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(ulong)) 
-            {
-                values[i] = (T)(object)BitConverter.ToUInt64(bytes.Skip(i * byteLength).Take(byteLength).ToArray(), 0);
-            }
-            else if (typeof(T) == typeof(byte)) 
-            {
-                // 1要素=1ワード。ワードの下位バイトを値とする。
-                values[i] = (T)(object)bytes[i * byteLength];
-            }
-            else if (typeof(T) == typeof(sbyte)) 
-            {
-                values[i] = (T)(object)(sbyte)bytes[i * byteLength];
-            }
+            return (T[])(object)bits;
         }
 
+        if (typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
+        {
+            // 1要素=1ワード。ワードの下位バイトを値とする（byte[] と sbyte[] は同じ表現のため、byte[] で作って変換する）
+            var lowBytes = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                lowBytes[i] = bytes[i * 2];
+            }
+            return typeof(T) == typeof(byte) ? (T[])(object)lowBytes : (T[])(object)ToSBytes(lowBytes);
+        }
+
+        // short / ushort / int / uint / float / long / ulong / double：バイト列をそのまま値の配列にコピーする
+        var values = new T[length];
+        Buffer.BlockCopy(bytes, 0, values, 0, bytes.Length);
+        return values;
+    }
+
+    private static sbyte[] ToSBytes(byte[] bytes)
+    {
+        var values = new sbyte[bytes.Length];
+        Buffer.BlockCopy(bytes, 0, values, 0, bytes.Length);
         return values;
     }
 
@@ -128,15 +115,53 @@ internal static class DeviceConverter
         throw new NotSupportedException($"Type {typeof(T)} is not supported.");
     }
 
+    /// <summary>
+    /// <typeparamref name="T"/> の配列を、書き込みデータ（リトルエンディアン）に変換します。
+    /// </summary>
+    /// <remarks>
+    /// <see cref="ConvertValueArray{T}(byte[])"/> の逆変換。<c>byte</c> は下位バイトに値・上位バイトに 0、
+    /// <c>sbyte</c> は16ビットに符号拡張した1ワードとする。
+    /// </remarks>
     internal static byte[] ConvertByteValueArray<T>(T[] values) where T : unmanaged
     {
-        var bytes = new List<byte>();
-        foreach (var value in values) 
+        if (typeof(T) == typeof(bool))
         {
-            bytes.AddRange(StructToBytes(value));
+            var bits = (bool[])(object)values;
+            var bitBytes = new byte[bits.Length];
+            for (int i = 0; i < bits.Length; i++)
+            {
+                bitBytes[i] = bits[i] ? (byte)0x01 : (byte)0x00;
+            }
+            return bitBytes;
         }
 
-        return bytes.ToArray();
+        if (typeof(T) == typeof(byte))
+        {
+            var source = (byte[])(object)values;
+            var words = new byte[source.Length * 2];
+            for (int i = 0; i < source.Length; i++)
+            {
+                words[i * 2] = source[i];
+            }
+            return words;
+        }
+
+        if (typeof(T) == typeof(sbyte))
+        {
+            var source = (sbyte[])(object)values;
+            var words = new byte[source.Length * 2];
+            for (int i = 0; i < source.Length; i++)
+            {
+                words[i * 2] = (byte)source[i];
+                words[i * 2 + 1] = source[i] < 0 ? (byte)0xFF : (byte)0x00;
+            }
+            return words;
+        }
+
+        // short / ushort / int / uint / float / long / ulong / double：値の配列をそのままバイト列にコピーする
+        var bytes = new byte[values.Length * GetWordLength<T>() * 2];
+        Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+        return bytes;
     }
 
     internal static ushort[] ConvertStringToUshorts(string value, bool includeNullTerminator = true)
@@ -179,6 +204,10 @@ internal static class DeviceConverter
         }
 
         // Q/L デバイス指定: [アドレス3バイト][デバイスコード1バイト]
+        if (decAddress > 0xFFFFFF)
+        {
+            throw new DeviceAddressException($"{prefix}{address} is out of range for MELSEC-Q/L device specification (up to FFFFFF). Use ProcessorSeries.iQR to access it.");
+        }
         bytes[3] = (byte)prefix;
         return bytes;
     }
@@ -189,6 +218,14 @@ internal static class DeviceConverter
         {
             throw new DeviceAddressException($"{prefix}{address} is invalid.");
         }
+
+        // 先頭の 0 を除いた桁数で、ASCII のデバイス番号の桁数（Q/L: 6桁、iQ-R: 8桁）に収まるかを確認する
+        int digits = Math.Max(1, address.TrimStart('0').Length);
+        if (digits > (series == ProcessorSeries.iQR ? 8 : 6))
+        {
+            throw new DeviceAddressException($"{prefix}{address} is out of range for {(series == ProcessorSeries.iQR ? "MELSEC iQ-R" : "MELSEC-Q/L")} device specification.");
+        }
+        address = address.TrimStart('0').PadLeft(1, '0');
 
         if (series == ProcessorSeries.iQR)
         {
@@ -229,7 +266,7 @@ internal static class DeviceConverter
         {
             if (uint.Parse(address) + offset < 0) 
             {
-                throw new OverflowException($"Prefix:{prefix} Address:{address} Offet:{offset}");
+                throw new OverflowException($"Prefix:{prefix} Address:{address} Offset:{offset}");
             }
             nextDeviceDecAddress = (uint)(uint.Parse(address) + offset);
             return nextDeviceDecAddress.ToString();
@@ -239,7 +276,7 @@ internal static class DeviceConverter
             uint decAddress = Convert.ToUInt32(address, 16);
             if (decAddress + offset < 0) 
             {
-                throw new OverflowException($"Prefix:{prefix} Address:{address} DecAddress:{decAddress} Offet:{offset}");
+                throw new OverflowException($"Prefix:{prefix} Address:{address} DecAddress:{decAddress} Offset:{offset}");
             }
             nextDeviceDecAddress = (uint)(decAddress + offset);
             return nextDeviceDecAddress.ToString("X"); 
@@ -314,6 +351,11 @@ internal static class DeviceConverter
 
     private static bool ValidateAddress(Prefix prefix, string address) 
     {
+        if (address == null)
+        {
+            return false;
+        }
+
         if (!IsHexDevice(prefix))
         {
             return uint.TryParse(address, out _);
@@ -321,6 +363,17 @@ internal static class DeviceConverter
         else
         {
             return Regex.IsMatch(address, @"^[0-9A-Fa-f]+$");
+        }
+    }
+
+    /// <summary>
+    /// <c>bool</c>（ビット単位のアクセス）をワードデバイスに指定した場合に例外をスローします（PLC はエラーコード C05C を返すため、送信前に検出する）。
+    /// </summary>
+    internal static void ThrowIfBitOnWordDevice<T>(Prefix prefix)
+    {
+        if (typeof(T) == typeof(bool) && !IsBitDevice(prefix))
+        {
+            throw new ArgumentException($"bool cannot be used with the word device {prefix}. Use a word type such as short, or a bit device.", nameof(prefix));
         }
     }
 

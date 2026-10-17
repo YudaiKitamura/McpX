@@ -1,20 +1,19 @@
 using McpXLib.Enums;
-using McpXLib.Exceptions;
 
 namespace McpXLib;
 
 /// <summary>
-/// GX Simulator3 接続クラス
+/// GX Simulator3 接続
 /// </summary>
 /// <remarks>
-/// GX Simulator3（GX Works3 のシミュレーション機能）に、外部機器との通信（SLMP）で接続するクラスです。<br/>
+/// GX Simulator3（GX Works3 のシミュレーション機能）に、外部機器との通信（SLMP）で接続します。<br/>
 /// 接続先のポート番号は、システムNo.と号機No.から <c>5500 + システムNo. × 10 + 号機No.</c> で決まります。（例: システム1・号機1 = 5511、システム2・号機1 = 5521）<br/>
 /// システムNo.はシミュレーション（プロジェクト）ごとの番号、号機No.はマルチCPUシステムのCPU No.（1〜4）です。<br/>
-/// 1インスタンスが1つのシミュレータ（CPU）への接続です。複数のシミュレータに接続する場合は、それぞれインスタンスを生成してください。<br/>
+/// 1つの接続が1つのシミュレータ（CPU）への接続です。複数のシミュレータに接続する場合は、それぞれ接続してください。<br/>
 /// GX Simulator3 は 127.0.0.1 でのみ待ち受けるため、別のPCから接続する場合は、シミュレータ側のPCでポートフォワーディング（<c>netsh interface portproxy</c> など）を設定してください。<br/>
-/// 交信はTCP・バイナリコードで行います。（GX Simulator3 はASCIIコードの交信に応答しません）
+/// GX Simulator3 はTCP・バイナリコードの交信にのみ応答します。
 /// </remarks>
-public sealed class McpXSimulator : McpX
+public static class McpXSimulator
 {
     /// <summary>
     /// ポート番号の基準値
@@ -27,55 +26,59 @@ public sealed class McpXSimulator : McpX
     public const int MaxCpuNo = 4;
 
     /// <summary>
-    /// インスタンス初期化
+    /// 接続設定の作成
     /// </summary>
     /// <remarks>
-    /// システムNo.と号機No.から求めたポート番号で、GX Simulator3 に接続します。
+    /// システムNo.と号機No.から求めたポート番号と、MELSEC iQ-Rシリーズ（<see cref="ProcessorSeries.iQR"/>）を設定した接続設定を作成します。
+    /// タイムアウト時間などを変更して <see cref="McpX.Connect(McpXOptions)"/> に渡せます。
     /// </remarks>
     /// <param name="systemNo">システムNo.を指定します。（デフォルトは、<c>1</c>です。）</param>
     /// <param name="cpuNo">号機No.（1〜4）を指定します。（デフォルトは、<c>1</c>です。）</param>
-    /// <param name="ip">シミュレータが動作しているPCのIPアドレスを指定します。（デフォルトは、<c>127.0.0.1</c>です。）</param>
-    /// <param name="requestFrame">フレーム（データ交信電文）の種類を指定します。（デフォルトは、3Eフレーム:<c>RequestFrame.E3</c>です。）</param>
-    /// <param name="timeoutMilliseconds">通信タイムアウト時間（ミリ秒）を指定します。（デフォルトは、5秒です。）</param>
-    /// <param name="processorSeries">PLCのシリーズを指定します。（デフォルトは、MELSEC iQ-Rシリーズ:<c>ProcessorSeries.iQR</c>です。）</param>
-    /// <param name="useMultiBlockAccess">
-    /// 統合アクセスで、複数ブロック一括読出し・書込み（コマンド: 0406 / 1406）を使う場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。詳細は <see cref="McpX.UseMultiBlockAccess"/> を参照してください。）
-    /// </param>
+    /// <param name="host">シミュレータが動作しているPCのIPアドレスまたはホスト名を指定します。（デフォルトは、<c>127.0.0.1</c>です。）</param>
     /// <exception cref="ArgumentOutOfRangeException">システムNo.または号機No.が範囲外の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
-    /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public McpXSimulator(
-        int systemNo = 1,
-        int cpuNo = 1,
-        string ip = "127.0.0.1",
-        RequestFrame requestFrame = RequestFrame.E3,
-        ushort timeoutMilliseconds = 5000,
-        ProcessorSeries processorSeries = ProcessorSeries.iQR,
-        bool useMultiBlockAccess = false
-    ) : base (
-        ip: ip,
-        port: GetPort(systemNo, cpuNo),
-        isAscii: false,
-        isUdp: false,
-        requestFrame: requestFrame,
-        timeoutMilliseconds: timeoutMilliseconds,
-        processorSeries: processorSeries,
-        useMultiBlockAccess: useMultiBlockAccess
-    )
+    /// <returns>接続設定を返します。</returns>
+    public static McpXOptions CreateOptions(int systemNo = 1, int cpuNo = 1, string host = "127.0.0.1")
     {
-        SystemNo = systemNo;
-        CpuNo = cpuNo;
+        return new McpXOptions
+        {
+            Host = host,
+            Port = GetPort(systemNo, cpuNo),
+            ProcessorSeries = ProcessorSeries.iQR,
+        };
     }
 
     /// <summary>
-    /// 接続先のシステムNo.
+    /// 接続
     /// </summary>
-    public int SystemNo { get; }
+    /// <remarks>
+    /// システムNo.と号機No.から求めたポート番号で、GX Simulator3 に接続します（<see cref="CreateOptions"/> の設定で接続します）。
+    /// </remarks>
+    /// <param name="systemNo">システムNo.を指定します。（デフォルトは、<c>1</c>です。）</param>
+    /// <param name="cpuNo">号機No.（1〜4）を指定します。（デフォルトは、<c>1</c>です。）</param>
+    /// <param name="host">シミュレータが動作しているPCのIPアドレスまたはホスト名を指定します。（デフォルトは、<c>127.0.0.1</c>です。）</param>
+    /// <exception cref="ArgumentOutOfRangeException">システムNo.または号機No.が範囲外の場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    public static McpX Connect(int systemNo = 1, int cpuNo = 1, string host = "127.0.0.1")
+        => McpX.Connect(CreateOptions(systemNo, cpuNo, host));
 
     /// <summary>
-    /// 接続先の号機No.
+    /// 接続（非同期）
     /// </summary>
-    public int CpuNo { get; }
+    /// <remarks>
+    /// 詳細は <see cref="Connect"/> を参照してください。
+    /// </remarks>
+    /// <param name="systemNo">システムNo.を指定します。（デフォルトは、<c>1</c>です。）</param>
+    /// <param name="cpuNo">号機No.（1〜4）を指定します。（デフォルトは、<c>1</c>です。）</param>
+    /// <param name="host">シミュレータが動作しているPCのIPアドレスまたはホスト名を指定します。（デフォルトは、<c>127.0.0.1</c>です。）</param>
+    /// <param name="cancellationToken">接続をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。</param>
+    /// <exception cref="ArgumentOutOfRangeException">システムNo.または号機No.が範囲外の場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">タイムアウト時間内に接続できなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.Net.Sockets.SocketException">接続が拒否された場合など、接続に失敗した場合に例外をスローします。</exception>
+    /// <returns>接続済みのインスタンスを返します。</returns>
+    public static Task<McpX> ConnectAsync(int systemNo = 1, int cpuNo = 1, string host = "127.0.0.1", CancellationToken cancellationToken = default)
+        => McpX.ConnectAsync(CreateOptions(systemNo, cpuNo, host), cancellationToken);
 
     /// <summary>
     /// ポート番号取得

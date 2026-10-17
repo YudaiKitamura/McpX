@@ -51,17 +51,18 @@ internal static unsafe class ClientExports
                 return status;
             }
 
-            var client = new McpX(
-                ip: host,
-                port: options->Port,
-                password: password,
-                isAscii: options->IsAscii != 0,
-                isUdp: options->IsUdp != 0,
-                requestFrame: (RequestFrame)options->Frame,
-                timeoutMilliseconds: (ushort)options->TimeoutMs,
-                processorSeries: (ProcessorSeries)options->Series,
-                useMultiBlockAccess: options->UseMultiBlock != 0
-            );
+            var client = McpX.Connect(new McpXOptions
+            {
+                Host = host,
+                Port = options->Port,
+                Password = password,
+                IsAscii = options->IsAscii != 0,
+                IsUdp = options->IsUdp != 0,
+                RequestFrame = (RequestFrame)options->Frame,
+                Timeout = ToTimeout(options->TimeoutMs),
+                ProcessorSeries = (ProcessorSeries)options->Series,
+                UseMultiBlockAccess = options->UseMultiBlock != 0,
+            });
 
             *output = HandleTable.Add(client);
             return Errors.Ok(err);
@@ -100,15 +101,12 @@ internal static unsafe class ClientExports
                 return status;
             }
 
-            var client = new McpXSimulator(
-                systemNo: options->SystemNo,
-                cpuNo: options->CpuNo,
-                ip: host,
-                requestFrame: (RequestFrame)options->Frame,
-                timeoutMilliseconds: (ushort)options->TimeoutMs,
-                processorSeries: (ProcessorSeries)options->Series,
-                useMultiBlockAccess: options->UseMultiBlock != 0
-            );
+            var simulatorOptions = McpXSimulator.CreateOptions(options->SystemNo, options->CpuNo, host);
+            simulatorOptions.RequestFrame = (RequestFrame)options->Frame;
+            simulatorOptions.Timeout = ToTimeout(options->TimeoutMs);
+            simulatorOptions.ProcessorSeries = (ProcessorSeries)options->Series;
+            simulatorOptions.UseMultiBlockAccess = options->UseMultiBlock != 0;
+            var client = McpX.Connect(simulatorOptions);
 
             *output = HandleTable.Add(client);
             return Errors.Ok(err);
@@ -167,6 +165,10 @@ internal static unsafe class ClientExports
             return Errors.FromException(err, ex, null);
         }
     }
+
+    // timeout_ms の 0 は無期限
+    private static TimeSpan ToTimeout(uint timeoutMs)
+        => timeoutMs == 0 ? Timeout.InfiniteTimeSpan : TimeSpan.FromMilliseconds(timeoutMs);
 
     private static bool TryValidateCommon(uint timeoutMs, byte frame, byte series, NativeError* err, out int status)
     {

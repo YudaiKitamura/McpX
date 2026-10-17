@@ -5,7 +5,7 @@ using McpXLib.Builders;
 
 namespace McpXLib.Commands;
 
-internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValues, T2[] doubleValues)>
+internal sealed class WordRandomReadCommand<T1, T2> : PlcCommandBase<(T1[] wordValues, T2[] doubleValues)>
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -14,7 +14,6 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
     private readonly int wordLength;
     private readonly int doubleWordLength;
     private readonly ProcessorSeries series;
-    private readonly CommandPacketBuilder commandPacketBuilder;
 
     internal static ushort GetMaxWordLength(ProcessorSeries series)
         => (ushort)(series == ProcessorSeries.iQR ? 96 : MAX_WORD_LENGTH);
@@ -25,7 +24,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
         doubleWordLength = doubleWordDevices.Length;
         this.series = series;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x03, 0x04],
@@ -35,7 +34,7 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         var maxWordLength = GetMaxWordLength(series);
         var totalLength = wordLength + doubleWordLength;
@@ -45,67 +44,11 @@ internal sealed class WordRandomReadCommand<T1, T2> : IPlcCommand<(T1[] wordValu
         }
     }
 
-    public async Task<(T1[] wordValues, T2[] doubleValues)> ExecuteAsync(IPlc plc)
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, wordLength: wordLength, doubleWordLength: doubleWordLength);
+
+    protected override (T1[] wordValues, T2[] doubleValues) Parse(byte[] responseContent)
     {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return (
-            wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent
-                .Take(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
-                .ToArray()
-            ),
-            doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent
-                .Skip(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
-                .Take(doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2)
-                .ToArray()
-            )
-        );
-    }
-
-    public (T1[] wordValues, T2[] doubleValues) Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
-        );
-
-        var responseContent = responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return (
-            wordValues: DeviceConverter.ConvertValueArray<T1>(responseContent
-                .Take(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
-                .ToArray()
-            ),
-            doubleValues: DeviceConverter.ConvertValueArray<T2>(responseContent
-                .Skip(wordLength * DeviceConverter.GetWordLength<T1>() * 2)
-                .Take(doubleWordLength * DeviceConverter.GetWordLength<T2>() * 2)
-                .ToArray()
-            )
-        );
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
+        return SplitWordAndDoubleWord<T1, T2>(responseContent, wordLength, doubleWordLength);
     }
 }

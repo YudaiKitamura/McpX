@@ -483,9 +483,6 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# DocFX build directory
-_site/
-
 # Document directory
 docs/
 # Language bindings

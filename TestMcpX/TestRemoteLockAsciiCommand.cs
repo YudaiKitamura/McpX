@@ -13,10 +13,8 @@ public sealed class TestRemoteLockAsciiCommand
     public TestRemoteLockAsciiCommand()
     {
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.SetupProperty(x => x.IsAscii);
-        plcMock.Object.Route = new RoutePacketBuilder();
-        plcMock.Object.IsAscii = true;
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plcMock.SetupGet(x => x.IsAscii).Returns(true);
     }
 
     [TestMethod]
@@ -24,7 +22,7 @@ public sealed class TestRemoteLockAsciiCommand
     {
         var command = new RemoteLockCommand("pass");
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x31, 0x34,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x31, 0x36, 0x33, 0x31,                                     // Command
@@ -33,7 +31,7 @@ public sealed class TestRemoteLockAsciiCommand
             0x70, 0x61, 0x73, 0x73,                                     // Password ASCII
         ]; 
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
@@ -65,8 +63,8 @@ public sealed class TestRemoteLockAsciiCommand
             0x30, 0x30, 0x30, 0x30                                      // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
-        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
+        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
     }
 }

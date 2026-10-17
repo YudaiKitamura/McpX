@@ -6,18 +6,21 @@ namespace McpXLib;
 /// 連続／ランダム統合デバイス読み込みのリクエストビルダー。
 /// </summary>
 /// <remarks>
-/// 点数を指定した <see cref="Add{T}(Prefix, string, ushort, Action{T[]})"/> は連続アクセス（一括読み込み）、
+/// 点数を指定した <see cref="Add{T}(Prefix, string, int, Action{T[]})"/> は連続アクセス（一括読み込み）、
 /// 点数を指定しない <see cref="Add{T}(Prefix, string, Action{T})"/> はランダムアクセスで読み込まれます。<br/>
 /// 読み取り完了後、各コールバックに変換済みの値が渡されます。
 /// </remarks>
 public sealed class ReadBuilder
 {
+    // McpX のメソッドに渡されるビルダーのため、利用者は生成しない。
+    internal ReadBuilder() { }
+
     // 単一指定（ランダムアクセス）のエントリ。
     internal readonly RandomReadBuilder random = new();
 
     // 範囲指定（連続アクセス）のエントリ。登録順に実行する。
     // block は複数ブロック一括読出し（0406）でまとめる場合の情報（まとめられない指定は null）。
-    internal readonly List<(Action<McpX> read, Func<McpX, Task> readAsync, BlockReadEntry? block)> batchEntries = new();
+    internal readonly List<(Action<McpX> read, Func<McpX, CancellationToken, Task> readAsync, BlockReadEntry? block)> batchEntries = new();
 
     /// <summary>
     /// ランダムアクセスで読み込むデバイスと、読み取り後に値を受け取るコールバックを追加します。
@@ -30,6 +33,8 @@ public sealed class ReadBuilder
     /// <param name="address">読み込み対象のアドレスを指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T</c>を受け取るコールバックを指定します。</param>
     /// <exception cref="NotSupportedException">ランダムアクセス非対応の型（<c>long</c>,<c>double</c> など）を指定した場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="ArgumentException">ワードデバイスに <c>bool</c> を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
     public ReadBuilder Add<T>(Prefix prefix, string address, Action<T> onRead) where T : unmanaged
     {
@@ -42,18 +47,31 @@ public sealed class ReadBuilder
     /// </summary>
     /// <typeparam name="T">
     /// 読み込むデータの型。bool, short, int などの値型を指定します。
-    /// `unmanaged` 制約があるため、参照型は使用できません。
+    /// <c>unmanaged</c> 制約があるため、参照型は使用できません。
     /// </typeparam>
     /// <param name="prefix">読み込み対象の先頭デバイスコードを指定します。</param>
     /// <param name="address">読み込み対象の先頭アドレスを指定します。</param>
     /// <param name="length">読み込み対象の要素数（<c>T</c>型の要素数）を指定します。</param>
     /// <param name="onRead">読み取り完了後に、変換済みの値<c>T[]</c>を受け取るコールバックを指定します。</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> が負の場合にスローします。</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="onRead"/> が <c>null</c> の場合にスローします。</exception>
+    /// <exception cref="NotSupportedException">非対応の型<c>T</c>を指定した場合にスローします。</exception>
     /// <returns>メソッドチェーン用に自身を返します。</returns>
-    public ReadBuilder Add<T>(Prefix prefix, string address, ushort length, Action<T[]> onRead) where T : unmanaged
+    public ReadBuilder Add<T>(Prefix prefix, string address, int length, Action<T[]> onRead) where T : unmanaged
     {
+        if (onRead == null)
+        {
+            throw new ArgumentNullException(nameof(onRead));
+        }
+
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Length must not be negative.");
+        }
+
         batchEntries.Add((
             m => onRead(m.BatchRead<T>(prefix, address, length)),
-            async m => onRead(await m.BatchReadAsync<T>(prefix, address, length)),
+            async (m, cancellationToken) => onRead(await m.BatchReadAsync<T>(prefix, address, length, cancellationToken).ConfigureAwait(false)),
             BlockReadEntry.TryCreate(prefix, address, length, onRead)
         ));
         return this;

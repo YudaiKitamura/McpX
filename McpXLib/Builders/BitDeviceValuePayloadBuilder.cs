@@ -9,44 +9,9 @@ internal class BitDeviceValuePayloadBuilder(Prefix prefix, string address, bool[
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
-        ushort bitLength = (ushort)values.Length;
-
-        if (isAscii)
-        {
-            packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(prefix, address, series)));
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: BitConverter.GetBytes(bitLength),
-                isReverse: true
-            ));
-
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiByte(
-                binaryBytes: DeviceConverter.ConvertByteValueArray(values),
-                isReverse: false
-            ));
-        }
-        else
-        {
-            packets.AddRange(DeviceConverter.ToByteAddress(prefix, address, series));
-            packets.AddRange(BitConverter.GetBytes(bitLength));
-
-            var valueBytes = new List<byte>();
-            int i = 0;
-            foreach (var value in DeviceConverter.ConvertByteValueArray(values)) 
-            {
-                if (valueBytes.Count == 0 || i % 2 == 0)
-                {
-                    valueBytes.Add((value & 0x01) != 0 ? (byte)0x10 : (byte)0x00);
-                }
-                else
-                {
-                    byte mask = value == 0x01 ? (byte)0x01 : (byte)0x00;
-                    valueBytes[valueBytes.Count - 1] |= mask;
-                }
-
-                i++;
-            }
-
-            packets.AddRange(valueBytes);
-        }
+        var writer = new PacketWriter(packets, isAscii, series);
+        writer.Device(prefix, address);
+        writer.Number((ushort)values.Length, 2);
+        writer.Bits(values);
     }
 }

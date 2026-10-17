@@ -8,32 +8,45 @@ on:
   pull_request:
 
 jobs:
+  # ライブラリを全 TFM でビルドし、テスト（net9.0 / net10.0、ダミー PLC を含む）とパッケージの検証を行う
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: |
+            9.0.x
+            10.0.x
 
-      - name: Restoring dependencies
-        run: dotnet restore
-
-      - name: Build Test project
-        run: dotnet build --configuration Release --no-restore
-        working-directory: TestMcpX
+      - name: Build library (all TFMs)
+        run: dotnet build McpXLib/McpXLib.csproj --configuration Release
 
       - name: Run Test
-        run: dotnet test --configuration Release --no-build --logger trx
-        working-directory: TestMcpX
+        run: dotnet test TestMcpX --configuration Release --logger trx
 
       - name: Run Interop Test
-        run: dotnet test --configuration Release --logger trx
-        working-directory: TestMcpXInterop
+        run: dotnet test TestMcpXInterop --configuration Release --logger trx
+
+      # パッケージの作成と検証（TFM 間の公開 API の一致など）
+      - name: Pack
+        if: runner.os == 'Linux'
+        run: dotnet pack McpXLib/McpXLib.csproj --configuration Release --output artifacts
+
+      - name: Build examples
+        if: runner.os == 'Linux'
+        run: |
+          for project in Example/*/*.csproj Example/*/*.vbproj; do
+            dotnet build "$project" --configuration Release
+          done
 
   # ネイティブライブラリ（C ABI）を各 OS・CPU で Native AOT ビルドし、C のヘッダ検査とスモークテストを行う
   aot-publish:
@@ -63,9 +76,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Publish AOT
         run: dotnet publish McpXInterop/McpXInterop.csproj -c Release -r ${{ matrix.rid }} -p:PublishAot=true
@@ -80,12 +93,12 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           clang -std=c11 -Wall -Wextra -Werror -IMcpXInterop/include tests/c/smoke.c -o smoke -ldl
-          ./smoke McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
+          ./smoke McpXInterop/bin/Release/net10.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
 
       - name: Upload native library
         uses: actions/upload-artifact@v4
         with:
           name: mcpx-${{ matrix.rid }}
           path: |
-            McpXInterop/bin/Release/net9.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
+            McpXInterop/bin/Release/net10.0/${{ matrix.rid }}/publish/${{ matrix.lib }}
             McpXInterop/include/mcpx.h

@@ -1,7 +1,6 @@
 using McpXLib.Exceptions;
-using McpXLib.Interfaces;
 
-namespace McpXLib.Abstructs;
+namespace McpXLib.Abstracts;
 
 internal class BaseContentPacketParser : BasePacketParser
 {
@@ -22,7 +21,7 @@ internal class BaseContentPacketParser : BasePacketParser
         }
     }
 
-    internal BaseContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
+    internal BaseContentPacketParser(BasePacketParser prevPacketParser, bool isAscii = false, bool? isReverse = null) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: isReverse
@@ -34,7 +33,7 @@ internal class BaseContentPacketParser : BasePacketParser
     {
         if (bytes.Length != (IsAscii ? Length / 2 : Length)) 
         {
-            throw new RecivePacketException("Received packet had an invalid content.");
+            throw new ReceivePacketException("Received packet had an invalid content.");
         }
     }
 }

@@ -16,7 +16,7 @@ esac
 
 dotnet publish "$root/McpXInterop/McpXInterop.csproj" -c Release -r "$rid" /p:PublishAot=true
 
-source="$root/McpXInterop/bin/Release/net9.0/$rid/publish/$lib"
+source="$root/McpXInterop/bin/Release/net10.0/$rid/publish/$lib"
 mkdir -p "$root/bindings/python/src/mcpx/_native"
 cp "$source" "$root/bindings/python/src/mcpx/_native/$lib"
 echo "copied $lib to bindings/python/src/mcpx/_native/"

@@ -4,7 +4,7 @@ namespace McpXLib.Enums;
 /// PLCのシリーズ（デバイス指定フォーマット）
 /// </summary>
 /// <remarks>
-/// MELSEC-Q/Lシリーズと、デバイス拡張指定が必要なMELSEC iQ-Rシリーズを区別します。<br/>
+/// MELSEC-Q/Lシリーズと、デバイス拡張指定が必要なMELSEC iQ-Rシリーズを区別します。
 /// </remarks>
 public enum ProcessorSeries
 {

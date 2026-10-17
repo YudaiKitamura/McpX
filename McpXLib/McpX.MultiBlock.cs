@@ -30,14 +30,18 @@ public partial class McpX
     /// ユニバーサルモデルQCPU・LCPUでは、CPUユニットの"サービス処理設定"によってデータが泣き別れることがあります。
     /// </remarks>
     /// <param name="build">読み込むデバイス範囲とコールバックを登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで読み込めない指定（ワードデバイスへの <c>bool</c>）の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void BlockRead(Action<BlockReadBuilder> build)
     {
         var builder = new BlockReadBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteBlockRead(builder.entries);
     }
 
@@ -49,15 +53,20 @@ public partial class McpX
     /// 詳細は <see cref="BlockRead(Action{BlockReadBuilder})"/> を参照してください。
     /// </remarks>
     /// <param name="build">読み込むデバイス範囲とコールバックを登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで読み込めない指定（ワードデバイスへの <c>bool</c>）の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task BlockReadAsync(Action<BlockReadBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task BlockReadAsync(Action<BlockReadBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockReadBuilder();
-        build(builder);
-        await ExecuteBlockReadAsync(builder.entries);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
+        await ExecuteBlockReadAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -71,14 +80,18 @@ public partial class McpX
     /// ユニバーサルモデルQCPU・LCPUでは、CPUユニットの"サービス処理設定"によってデータが泣き別れることがあります。
     /// </remarks>
     /// <param name="build">書き込むデバイス範囲と値を登録するビルダー操作を指定します。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで書き込めない指定の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void BlockWrite(Action<BlockWriteBuilder> build)
     {
         var builder = new BlockWriteBuilder();
-        build(builder);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
         ExecuteBlockWrite(builder.entries);
     }
 
@@ -90,15 +103,20 @@ public partial class McpX
     /// 詳細は <see cref="BlockWrite(Action{BlockWriteBuilder})"/> を参照してください。
     /// </remarks>
     /// <param name="build">書き込むデバイス範囲と値を登録するビルダー操作を指定します。</param>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="build"/> が <c>null</c> の場合に例外をスローします。</exception>
     /// <exception cref="ArgumentException">複数ブロックで書き込めない指定の場合に例外をスローします。</exception>
     /// <exception cref="DeviceAddressException">指定したアドレスが不正の場合に例外をスローします。</exception>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public async Task BlockWriteAsync(Action<BlockWriteBuilder> build)
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task BlockWriteAsync(Action<BlockWriteBuilder> build, CancellationToken cancellationToken = default)
     {
         var builder = new BlockWriteBuilder();
-        build(builder);
-        await ExecuteBlockWriteAsync(builder.entries);
+        (build ?? throw new ArgumentNullException(nameof(build)))(builder);
+        await ExecuteBlockWriteAsync(builder.entries, cancellationToken).ConfigureAwait(false);
     }
 
     // 1リクエスト分のブロック。entryIndex の範囲の、offset（点）から Block.Points 点分。
@@ -111,12 +129,24 @@ public partial class McpX
         internal int Offset { get; } = offset;
     }
 
-    // 統合アクセスで複数ブロックを使うか（まとめる範囲が2つ以上の場合のみ効果がある）
-    private bool CanUseMultiBlock(int entryCount) => UseMultiBlockAccess && entryCount >= 2;
+    // 統合アクセスの連続アクセスを、複数ブロックでまとめて送る分と、個別に送る分に分ける。
+    // 複数ブロックを使うのは、有効でまとめられる範囲が2つ以上ある場合のみ（1つでは効果がない）。
+    private (List<TBlock> blocks, List<TEntry> remaining) SplitForMultiBlock<TEntry, TBlock>(List<TEntry> entries, Func<TEntry, TBlock?> getBlock)
+        where TBlock : class
+    {
+        var blocks = entries.Select(getBlock).OfType<TBlock>().ToList();
+        if (!UseMultiBlockAccess || blocks.Count < 2)
+        {
+            return (new List<TBlock>(), entries);
+        }
+
+        return (blocks, entries.Where(e => getBlock(e) == null).ToList());
+    }
 
     // 範囲を maxPoints 点ごとのブロックに分け、上限に収まるようにリクエストへ詰める。
     // ビットデバイスは1点=16デバイス分のため、分割時の先頭アドレスを16倍進める。
-    private List<List<BlockChunk>> PackBlocks(IReadOnlyList<(Prefix prefix, string address, int points)> ranges, Func<int, int, ushort[]?> getWords, int blockCost)
+    // getWords は（範囲の番号, 範囲内の位置, 点数）から書き込むワードを返す（読み込みは null）。
+    private List<List<BlockChunk>> PackBlocks(IReadOnlyList<(Prefix prefix, string address, int points)> ranges, Func<int, int, int, ushort[]?> getWords, int blockCost)
     {
         int maxBlockCount = MultiBlockReadCommand.GetMaxBlockCount(ProcessorSeries);
         int maxPoints = MultiBlockReadCommand.MAX_POINTS - blockCost;
@@ -144,7 +174,7 @@ public partial class McpX
                     prefix,
                     DeviceConverter.GetOffsetAddress(prefix, address, offset * addressStep),
                     (ushort)length,
-                    getWords(i, offset)?.Take(length).ToArray());
+                    getWords(i, offset, length));
 
                 current.Add(new BlockChunk(block, i, offset));
                 currentPoints += length;
@@ -160,12 +190,12 @@ public partial class McpX
     }
 
     private List<List<BlockChunk>> PackReadBlocks(IReadOnlyList<BlockReadEntry> entries)
-        => PackBlocks(entries.Select(e => (e.Prefix, e.Address, e.Points)).ToList(), (_, _) => null, 0);
+        => PackBlocks(entries.Select(e => (e.Prefix, e.Address, e.Points)).ToList(), (_, _, _) => null, 0);
 
     private List<List<BlockChunk>> PackWriteBlocks(IReadOnlyList<BlockWriteEntry> entries)
         => PackBlocks(
             entries.Select(e => (e.Prefix, e.Address, e.Words.Length)).ToList(),
-            (i, offset) => entries[i].Words.Skip(offset).ToArray(),
+            (i, offset, length) => Slice(entries[i].Words, offset, length),
             MultiBlockWriteCommand.GetBlockCost(ProcessorSeries));
 
     private void ExecuteBlockRead(IReadOnlyList<BlockReadEntry> entries)
@@ -185,13 +215,13 @@ public partial class McpX
         }
     }
 
-    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries)
+    private async Task ExecuteBlockReadAsync(IReadOnlyList<BlockReadEntry> entries, CancellationToken cancellationToken)
     {
         var buffers = entries.Select(e => new ushort[e.Points]).ToArray();
 
         foreach (var request in PackReadBlocks(entries))
         {
-            var words = await MultiBlockReadAsync(request.Select(c => c.Block).ToArray());
+            var words = await MultiBlockReadAsync(request.Select(c => c.Block).ToArray(), cancellationToken).ConfigureAwait(false);
             CopyToBuffers(request, words, buffers);
         }
 
@@ -217,11 +247,11 @@ public partial class McpX
         }
     }
 
-    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries)
+    private async Task ExecuteBlockWriteAsync(IReadOnlyList<BlockWriteEntry> entries, CancellationToken cancellationToken)
     {
         foreach (var request in PackWriteBlocks(entries))
         {
-            await MultiBlockWriteAsync(request.Select(c => c.Block).ToArray());
+            await MultiBlockWriteAsync(request.Select(c => c.Block).ToArray(), cancellationToken).ConfigureAwait(false);
         }
     }
 }

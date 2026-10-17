@@ -79,21 +79,20 @@ public sealed class TestRemoteOperationCommand
     public async Task TestExecute()
     {
         var plc = new Mock<IPlc>();
-        plc.SetupProperty(x => x.Route);
-        plc.Object.Route = new RoutePacketBuilder();
+        plc.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
         byte[] response = [0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00];
         plc.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(response);
-        plc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(response);
+        plc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(response);
 
         Assert.IsTrue(RemoteOperationCommand.Stop().Execute(plc.Object));
-        Assert.IsTrue(await RemoteOperationCommand.Run(false, RemoteRunClearMode.None).ExecuteAsync(plc.Object));
+        Assert.IsTrue(await RemoteOperationCommand.Run(false, RemoteRunClearMode.None).ExecuteAsync(plc.Object, CancellationToken.None));
     }
 
     [TestMethod]
     public async Task TestResetIgnoresDisconnect()
     {
         // リセットによる切断・タイムアウトは例外にしない
-        foreach (Exception error in new Exception[] { new IOException("Connection closed unexpectedly"), new TimeoutException("Recive Timeout"), new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.TimedOut) })
+        foreach (Exception error in new Exception[] { new IOException("Connection closed unexpectedly"), new TimeoutException("Receive Timeout"), new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.TimedOut) })
         {
             using var mcpx = new McpX(new StubTransport(() => throw error));
             mcpx.RemoteReset();
@@ -168,11 +167,11 @@ public sealed class TestRemoteOperationCommand
             return new StubTransport(() => throw new IOException("Connection closed unexpectedly"));
         });
 
-        var ex = Assert.ThrowsException<TimeoutException>(() => mcpx.RemoteReset(reconnectTimeoutMilliseconds: 1500));
+        var ex = Assert.ThrowsException<TimeoutException>(() => mcpx.RemoteReset(TimeSpan.FromMilliseconds(1500)));
         Assert.IsInstanceOfType<System.Net.Sockets.SocketException>(ex.InnerException);
 
-        // 0 を指定した場合は接続し直さない
-        mcpx.RemoteReset(reconnectTimeoutMilliseconds: 0);
+        // TimeSpan.Zero を指定した場合は接続し直さない
+        mcpx.RemoteReset(TimeSpan.Zero);
     }
 
     private sealed class StubTransport(Func<byte[]> respond) : IPlcTransport
@@ -181,7 +180,7 @@ public sealed class TestRemoteOperationCommand
 
         public byte[] Request(byte[] packet, IReceiveLengthParser receiveLengthParser) => respond();
 
-        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser) => Task.FromResult(respond());
+        public Task<byte[]> RequestAsync(byte[] packet, IReceiveLengthParser receiveLengthParser, CancellationToken cancellationToken) => Task.FromResult(respond());
 
         [Obsolete]
         public byte[] Request(byte[] packet) => throw new NotSupportedException();

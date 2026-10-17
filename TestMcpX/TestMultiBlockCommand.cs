@@ -34,10 +34,8 @@ public sealed class TestMultiBlockCommand
     private static Mock<IPlc> CreatePlc(bool isAscii)
     {
         var plc = new Mock<IPlc>();
-        plc.SetupProperty(x => x.Route);
-        plc.SetupProperty(x => x.IsAscii);
-        plc.Object.Route = new RoutePacketBuilder();
-        plc.Object.IsAscii = isAscii;
+        plc.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plc.SetupGet(x => x.IsAscii).Returns(isAscii);
         return plc;
     }
 
@@ -97,9 +95,9 @@ public sealed class TestMultiBlockCommand
         ];
 
         var binaryPlc = CreatePlc(false);
-        binaryPlc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(
+        binaryPlc.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(
             [0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, .. BitConverter.GetBytes((ushort)(response.Length * 2 + 2)), 0x00, 0x00, .. response.SelectMany(BitConverter.GetBytes)]);
-        AssertBlocks(await new MultiBlockReadCommand(ManualBlocks()).ExecuteAsync(binaryPlc.Object));
+        AssertBlocks(await new MultiBlockReadCommand(ManualBlocks()).ExecuteAsync(binaryPlc.Object, CancellationToken.None));
 
         var asciiContent = string.Concat(response.Select(w => w.ToString("X4")));
         var asciiPlc = CreatePlc(true);

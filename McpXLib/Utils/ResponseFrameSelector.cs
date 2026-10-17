@@ -1,82 +1,77 @@
+using McpXLib.Abstracts;
 using McpXLib.Enums;
+using McpXLib.Exceptions;
 using McpXLib.Interfaces;
 using McpXLib.Parsers;
 
 namespace McpXLib.Utils;
 
+/// <summary>
+/// 交信の設定（フレーム、ASCII / バイナリ）とコマンドの応答データの形式から、応答電文の解析を選ぶ。
+/// </summary>
 internal class ResponseFrameSelector : IReceiveLengthParser
 {
-    private readonly IPacketParser packetParser;
+    private readonly FramePacketParser packetParser;
 
+    // 応答データがないコマンド
     internal ResponseFrameSelector(IPlc plc, ushort serialNumber)
+        : this(plc, serialNumber, createContentParser: null)
     {
-        if (plc.RequestFrame == RequestFrame.E3) 
-        {
-            packetParser = new E3FramePacketParser(
-                plc: plc
-            );
-        }
-        else
-        {
-            packetParser = new E4FramePacketParser(
-                plc: plc,
-                serialNumber: serialNumber
-            );
-        }
     }
 
+    // ワード単位・ビット単位の応答データ
     internal ResponseFrameSelector(IPlc plc, ushort serialNumber, DeviceAccessMode deviceAccessMode)
+        : this(plc, serialNumber, (prev, isAscii) => deviceAccessMode == DeviceAccessMode.Bit
+            ? new BitContentPacketParser(prevPacketParser: prev, isAscii: isAscii)
+            : new WordContentPacketParser(prevPacketParser: prev, isAscii: isAscii))
     {
-        if (plc.RequestFrame == RequestFrame.E3) 
-        {
-            packetParser = new E3FramePacketParser(
-                plc: plc,
-                deviceAccessMode: deviceAccessMode
-            );
-        }
-        else
-        {
-            packetParser = new E4FramePacketParser(
-                plc: plc,
-                serialNumber: serialNumber,
-                deviceAccessMode
-            );
-        }
     }
 
+    // ワードとダブルワードを並べた応答データ（ランダム読出し・モニタ）
     internal ResponseFrameSelector(IPlc plc, ushort serialNumber, int wordLength, int doubleWordLength)
+        : this(plc, serialNumber, (prev, isAscii) => new RandomContentPacketParser(
+            prevPacketParser: prev,
+            wordLength: wordLength,
+            doubleWordLength: doubleWordLength,
+            isAscii: isAscii))
     {
-        if (plc.RequestFrame == RequestFrame.E3) 
-        {
-            packetParser = new E3FramePacketParser(
-                plc: plc,
-                wordLength: wordLength,
-                doubleWordLength: doubleWordLength
-            );
-        }
-        else
-        {
-            packetParser = new E4FramePacketParser(
-                plc: plc,
-                serialNumber: serialNumber,
-                wordLength: wordLength,
-                doubleWordLength: doubleWordLength
-            );
-        }
+    }
+
+    private ResponseFrameSelector(IPlc plc, ushort serialNumber, Func<BasePacketParser, bool, BaseContentPacketParser>? createContentParser)
+    {
+        packetParser = new FramePacketParser(
+            plc,
+            plc.RequestFrame == RequestFrame.E4 ? serialNumber : null,
+            createContentParser);
     }
 
     public ushort ParseContentLength(byte[] bytes)
     {
-        return ((IReceiveLengthParser)packetParser).ParseContentLength(bytes);
+        return WrapInvalidPacket(() => packetParser.ParseContentLength(bytes));
     }
 
     public ushort GetHeaderLength()
     {
-        return ((IReceiveLengthParser)packetParser).GetHeaderLength();
+        return packetParser.GetHeaderLength();
     }
 
     internal byte[] ParsePacket(byte[] bytes)
     {
-        return packetParser.ParsePacket(bytes);
+        return WrapInvalidPacket(() => packetParser.ParsePacket(bytes));
+    }
+
+    /// <summary>
+    /// 壊れた応答（短い応答、ASCII の16進以外の文字など）の解析で発生した例外を、<see cref="ReceivePacketException"/> に変換します。
+    /// </summary>
+    internal static T WrapInvalidPacket<T>(Func<T> parse)
+    {
+        try
+        {
+            return parse();
+        }
+        catch (Exception ex) when (ex is ArgumentException or FormatException or IndexOutOfRangeException or OverflowException)
+        {
+            throw new ReceivePacketException("Received packet had an invalid content.", ex);
+        }
     }
 }

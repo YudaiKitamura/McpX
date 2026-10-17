@@ -9,46 +9,13 @@ internal class DeviceListPayloadBuilder((Prefix prefix, string address)[] wordDe
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
-        if (isAscii)
+        var writer = new PacketWriter(packets, isAscii, series);
+        writer.Byte((byte)wordDevices.Length);
+        writer.Byte((byte)doubleWordDevices.Length);
+
+        foreach (var (prefix, address) in wordDevices.Concat(doubleWordDevices))
         {
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: new[] { (byte)wordDevices.Length },
-                isReverse: false
-            ));
-
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(
-                binaryBytes: new[] { (byte)doubleWordDevices.Length },
-                isReverse: false
-            ));
-
-            foreach (var wordDevice in wordDevices)
-            {
-                packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(wordDevice.prefix, wordDevice.address, series)
-                ));
-            }
-
-            foreach (var doubleWordDevice in doubleWordDevices)
-            {
-                packets.AddRange(Encoding.ASCII.GetBytes(
-                    DeviceConverter.ToASCIIAddress(doubleWordDevice.prefix, doubleWordDevice.address, series)
-                ));
-            }
-        }
-        else
-        {
-            packets.Add(BitConverter.GetBytes((ushort)wordDevices.Length).First());
-            packets.Add(BitConverter.GetBytes((ushort)doubleWordDevices.Length).First());
-
-            foreach (var wordDevice in wordDevices)
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(wordDevice.prefix, wordDevice.address, series));
-            }
-
-            foreach (var doubleWordDevice in doubleWordDevices)
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(doubleWordDevice.prefix, doubleWordDevice.address, series));
-            }
+            writer.Device(prefix, address);
         }
     }
 }

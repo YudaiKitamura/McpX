@@ -1,11 +1,10 @@
-using McpXLib.Abstructs;
-using McpXLib.Interfaces;
+using McpXLib.Abstracts;
 
 namespace McpXLib.Parsers;
 
 internal class WordContentPacketParser : BaseContentPacketParser
 {
-    internal WordContentPacketParser(IPacketParser prevPacketParser, bool isAscii = false) : base (
+    internal WordContentPacketParser(BasePacketParser prevPacketParser, bool isAscii = false) : base (
         isAscii: isAscii,
         prevPacketParser: prevPacketParser,
         isReverse: true

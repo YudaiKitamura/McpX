@@ -1,18 +1,17 @@
 using System.Text;
-using McpXLib.Interfaces;
 using McpXLib.Utils;
 
-namespace McpXLib.Abstructs;
+namespace McpXLib.Abstracts;
 
-internal abstract class BasePacketParser : IPacketParser
+internal abstract class BasePacketParser
 {
     internal bool IsAscii;
-    internal IPacketParser? PrevPacketParser;
+    internal BasePacketParser? PrevPacketParser;
     internal bool? IsReverse;
     internal abstract int BinaryLength { get; }
     internal abstract int AsciiLength { get; }
 
-    internal BasePacketParser(bool isAscii = false, IPacketParser? prevPacketParser = null, bool? isReverse = null)
+    internal BasePacketParser(bool isAscii = false, BasePacketParser? prevPacketParser = null, bool? isReverse = null)
     {
         IsAscii = isAscii;
         PrevPacketParser = prevPacketParser;
@@ -24,7 +23,7 @@ internal abstract class BasePacketParser : IPacketParser
         byte[] parseBytes = GetBinaryBytes(bytes);
         if (IsAscii)
         {
-            parseBytes = ConvertAsciiBytesToBinalyBytes(parseBytes);
+            parseBytes = ConvertAsciiBytesToBinaryBytes(parseBytes);
         }
 
         Validation(parseBytes);
@@ -53,25 +52,37 @@ internal abstract class BasePacketParser : IPacketParser
 
     internal virtual byte[] GetBinaryBytes(byte[] bytes)
     {
-        return bytes.Skip(GetIndex()).Take(GetLength()).ToArray();
+        // 応答が短い場合は、ある分だけを返す（長さの検証は各解析で行う）
+        int index = GetIndex();
+        int length = Math.Max(0, Math.Min(GetLength(), bytes.Length - index));
+        var result = new byte[length];
+        Array.Copy(bytes, index, result, 0, length);
+        return result;
     }
 
-    internal virtual byte[] ConvertAsciiBytesToBinalyBytes(byte[] bytes)
+    internal virtual byte[] ConvertAsciiBytesToBinaryBytes(byte[] bytes)
     {
-        var asciiHex = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
-        
-        if (IsReverse != null && IsReverse == true) 
+        // 末尾の NUL は除く
+        int length = bytes.Length;
+        while (length > 0 && bytes[length - 1] == 0)
         {
-            return DeviceConverter.ReverseByTwoBytes(Enumerable.Range(0, asciiHex.Length / 2)
-                .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
-                .ToArray()
-            );
+            length--;
         }
-        else 
+
+        var result = new byte[length / 2];
+        for (int i = 0; i < result.Length; i++)
         {
-            return Enumerable.Range(0, asciiHex.Length / 2)
-                .Select(i => Convert.ToByte(asciiHex.Substring(i * 2, 2), 16))
-                .ToArray();
+            result[i] = (byte)(ParseHexDigit(bytes[i * 2]) << 4 | ParseHexDigit(bytes[i * 2 + 1]));
         }
+
+        return IsReverse == true ? DeviceConverter.ReverseByTwoBytes(result) : result;
+    }
+
+    protected static int ParseHexDigit(byte c)
+    {
+        if (c >= '0' && c <= '9') return c - '0';
+        if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+        if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+        throw new FormatException($"'{(char)c}' is not a hexadecimal digit.");
     }
 }

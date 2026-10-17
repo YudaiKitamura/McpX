@@ -21,7 +21,7 @@ internal static class SimulatorConnection
 
     internal static string Ip => Environment.GetEnvironmentVariable("MCPX_SIM_IP") ?? "192.168.12.90";
 
-    internal static McpXSimulator Connect(
+    internal static McpX Connect(
         RequestFrame requestFrame = RequestFrame.E3,
         ProcessorSeries processorSeries = ProcessorSeries.iQR,
         string systemNoVar = "MCPX_SIM_SYSTEM_NO", int defaultSystemNo = 1,
@@ -29,12 +29,13 @@ internal static class SimulatorConnection
     {
         PlcIntegrationTestBase.EnsureEnabled(EnableVar);
 
-        return new McpXSimulator(
+        var options = McpXSimulator.CreateOptions(
             systemNo: PlcIntegrationTestBase.GetEnvironmentInt(systemNoVar, defaultSystemNo),
             cpuNo: PlcIntegrationTestBase.GetEnvironmentInt(cpuNoVar, defaultCpuNo),
-            ip: Ip,
-            requestFrame: requestFrame,
-            processorSeries: processorSeries);
+            host: Ip);
+        options.RequestFrame = requestFrame;
+        options.ProcessorSeries = processorSeries;
+        return McpX.Connect(options);
     }
 }
 

@@ -19,11 +19,8 @@ public sealed class TestFrameSelector
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.RequestFrame);
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.SetupProperty(x => x.IsAscii);
-        plcMock.Object.Route = new RoutePacketBuilder();
-        plcMock.Object.IsAscii = false;
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plcMock.SetupGet(x => x.IsAscii).Returns(false);
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: faker.Random.Bytes(2),
@@ -34,11 +31,11 @@ public sealed class TestFrameSelector
 
     private void ResetSerialNumber()
     {
-        // MEMO:
-        //  PrivateなuniqSerialNumberをリフレクションを使用してリセットする
+        // private の nextSerialNumber をリフレクションでリセットする（次に採番されるシリアル番号が 0 になる）
         var type = typeof(RequestFrameSelector);
-        var field = type.GetField("uniqSerialNumber", BindingFlags.Static | BindingFlags.NonPublic);
-        field?.SetValue(null, 0);
+        var field = type.GetField("nextSerialNumber", BindingFlags.Static | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("nextSerialNumber was not found.");
+        field.SetValue(null, -1);
     }
 
     [TestMethod]
@@ -48,7 +45,7 @@ public sealed class TestFrameSelector
 
         for (int i = 0; i <= ushort.MaxValue; i++) 
         {
-            plcMock.Object.RequestFrame = faker.PickRandom<RequestFrame>();
+            plcMock.SetupGet(x => x.RequestFrame).Returns(faker.PickRandom<RequestFrame>());
             var frameSelector1 = new RequestFrameSelector(
                 plc: plcMock.Object,
                 commandPacketBuilder: commandPacketBuilder
@@ -57,7 +54,7 @@ public sealed class TestFrameSelector
             Assert.AreEqual(i, frameSelector1.GetSerialNumber());
         }
 
-        plcMock.Object.RequestFrame = faker.PickRandom<RequestFrame>();
+        plcMock.SetupGet(x => x.RequestFrame).Returns(faker.PickRandom<RequestFrame>());
         var frameSelector2 = new RequestFrameSelector(
             plc: plcMock.Object,
             commandPacketBuilder: commandPacketBuilder
@@ -71,8 +68,8 @@ public sealed class TestFrameSelector
     {
         ResetSerialNumber();
 
-        plcMock.Object.IsAscii = false;
-        plcMock.Object.RequestFrame = RequestFrame.E3;
+        plcMock.SetupGet(x => x.IsAscii).Returns(false);
+        plcMock.SetupGet(x => x.RequestFrame).Returns(RequestFrame.E3);
         var e3FrameSelector = new RequestFrameSelector(
             plc: plcMock.Object,
             commandPacketBuilder: commandPacketBuilder
@@ -80,7 +77,7 @@ public sealed class TestFrameSelector
 
         CollectionAssert.AreEqual(new byte[] { 0x50, 0x00 }, e3FrameSelector.GetRequestPacket().Take(2).ToArray());
 
-        plcMock.Object.RequestFrame = RequestFrame.E4;
+        plcMock.SetupGet(x => x.RequestFrame).Returns(RequestFrame.E4);
         var e4FrameSelector = new RequestFrameSelector(
             plc: plcMock.Object,
             commandPacketBuilder: commandPacketBuilder
@@ -88,7 +85,7 @@ public sealed class TestFrameSelector
 
         CollectionAssert.AreEqual(new byte[] { 0x54, 0x00, 0x01, 0x00, 0x00, 0x00 }, e4FrameSelector.GetRequestPacket().Take(6).ToArray());
 
-        plcMock.Object.RequestFrame = RequestFrame.E4;
+        plcMock.SetupGet(x => x.RequestFrame).Returns(RequestFrame.E4);
         var e4FrameSelector2 = new RequestFrameSelector(
             plc: plcMock.Object,
             commandPacketBuilder: commandPacketBuilder

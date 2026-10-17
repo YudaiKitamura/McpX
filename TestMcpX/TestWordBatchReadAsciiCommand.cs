@@ -17,10 +17,8 @@ public sealed class TestWordBatchReadAsciiCommand
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.SetupProperty(x => x.IsAscii);
-        plcMock.Object.Route = new RoutePacketBuilder();
-        plcMock.Object.IsAscii = true;
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plcMock.SetupGet(x => x.IsAscii).Returns(true);
     }
 
     [TestMethod]
@@ -28,7 +26,7 @@ public sealed class TestWordBatchReadAsciiCommand
     {
         var command = new WordBatchReadCommand<short>(Prefix.D, "0", 6);
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x31, 0x38,                                     // Content Length
             0x30, 0x30, 0x30, 0x30,                                     // Monitoring Timer
             0x30, 0x34, 0x30, 0x31,                                     // Command
@@ -38,7 +36,7 @@ public sealed class TestWordBatchReadAsciiCommand
             0x30, 0x30, 0x30, 0x36                                      // Device Length
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     [TestMethod]
@@ -91,7 +89,7 @@ public sealed class TestWordBatchReadAsciiCommand
             0x30, 0x30, 0x30, 0x36,                                     // Value6
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
         short[] deviceExpected = [
             1,
@@ -102,7 +100,7 @@ public sealed class TestWordBatchReadAsciiCommand
             6
         ];
 
-        CollectionAssert.AreEqual(deviceExpected, await command.ExecuteAsync(plcMock.Object));
+        CollectionAssert.AreEqual(deviceExpected, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
     }
 
     [TestMethod]

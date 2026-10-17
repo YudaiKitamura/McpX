@@ -4,17 +4,40 @@ namespace McpXLib.Exceptions;
 /// MCプロトコルの交信例外
 /// </summary>
 /// <remarks>
-/// PLCとの更新時にエラーコードが返ってきた場合に例外をスローします。
+/// PLCから異常の終了コード（エラーコード）を受信した場合に例外をスローします。
 /// </remarks>
-/// <param name="message">詳細の内容</param>
-public class McProtocolException(string message) : Exception(message)
+public class McProtocolException : McpXException
 {
+    /// <summary>
+    /// 例外の初期化
+    /// </summary>
+    public McProtocolException()
+    {
+    }
+
+    /// <summary>
+    /// 例外の初期化（メッセージ指定）
+    /// </summary>
+    /// <param name="message">詳細の内容</param>
+    public McProtocolException(string message) : base(message)
+    {
+    }
+
+    /// <summary>
+    /// 例外の初期化（メッセージ・原因となった例外の指定）
+    /// </summary>
+    /// <param name="message">詳細の内容</param>
+    /// <param name="innerException">原因となった例外</param>
+    public McProtocolException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
     /// <summary>
     /// 例外の初期化（エラーコード指定）
     /// </summary>
     /// <param name="message">詳細の内容</param>
     /// <param name="errorCode">PLCから受信したエラーコード（終了コード）</param>
-    public McProtocolException(string message, ushort errorCode) : this(message)
+    public McProtocolException(string message, ushort errorCode) : base(message)
     {
         ErrorCode = errorCode;
     }

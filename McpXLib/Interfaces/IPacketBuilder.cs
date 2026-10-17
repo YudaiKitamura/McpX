@@ -1,6 +1,6 @@
 namespace McpXLib.Interfaces;
 
-public interface IPacketBuilder
+internal interface IPacketBuilder
 {
     byte[] ToBinaryBytes();
     byte[] ToAsciiBytes();

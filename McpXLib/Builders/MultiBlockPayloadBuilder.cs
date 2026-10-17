@@ -17,43 +17,22 @@ internal class MultiBlockPayloadBuilder(DeviceBlock[] wordBlocks, DeviceBlock[] 
 {
     public void AppendPayload(List<byte> packets, bool isAscii)
     {
-        AppendByte(packets, isAscii, (byte)wordBlocks.Length);
-        AppendByte(packets, isAscii, (byte)bitBlocks.Length);
+        var writer = new PacketWriter(packets, isAscii, series);
+        writer.Byte((byte)wordBlocks.Length);
+        writer.Byte((byte)bitBlocks.Length);
 
         foreach (var block in wordBlocks.Concat(bitBlocks))
         {
-            if (isAscii)
-            {
-                packets.AddRange(Encoding.ASCII.GetBytes(DeviceConverter.ToASCIIAddress(block.Prefix, block.Address, series)));
-                packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes(BitConverter.GetBytes(block.Points), isReverse: true));
-            }
-            else
-            {
-                packets.AddRange(DeviceConverter.ToByteAddress(block.Prefix, block.Address, series));
-                packets.AddRange(BitConverter.GetBytes(block.Points));
-            }
+            writer.Device(block.Prefix, block.Address);
+            writer.Number(block.Points, 2);
 
             if (block.Words != null)
             {
                 foreach (var word in block.Words)
                 {
-                    packets.AddRange(isAscii
-                        ? CommandPacketBuilder.BinaryBytesToAsciiBytes(BitConverter.GetBytes(word), isReverse: true)
-                        : BitConverter.GetBytes(word));
+                    writer.Number(word, 2);
                 }
             }
-        }
-    }
-
-    private static void AppendByte(List<byte> packets, bool isAscii, byte value)
-    {
-        if (isAscii)
-        {
-            packets.AddRange(CommandPacketBuilder.BinaryBytesToAsciiBytes([value], isReverse: false));
-        }
-        else
-        {
-            packets.Add(value);
         }
     }
 }

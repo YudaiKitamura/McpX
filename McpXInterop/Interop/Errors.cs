@@ -53,7 +53,7 @@ internal static unsafe class Errors
         return ex switch
         {
             McProtocolException pe => (McpxStatus.Protocol, pe.ErrorCode, 0),
-            RecivePacketException => (McpxStatus.ReceivePacket, 0, 0),
+            ReceivePacketException => (McpxStatus.ReceivePacket, 0, 0),
             DeviceAddressException or OverflowException => (McpxStatus.InvalidDeviceAddress, 0, 0),
             TimeoutException te => (McpxStatus.Timeout, 0, te.InnerException is SocketException inner ? (int)inner.SocketErrorCode : 0),
             SocketException { SocketErrorCode: SocketError.ConnectionRefused } se => (McpxStatus.ConnectionRefused, 0, (int)se.SocketErrorCode),

@@ -8,7 +8,7 @@ namespace McpXLib;
 public partial class McpX
 {
     // リセット後の再接続の最大待ち時間（ミリ秒）と、試行の間隔（ミリ秒）
-    private const int DEFAULT_RECONNECT_TIMEOUT = 30000;
+    private static readonly TimeSpan DefaultReconnectTimeout = TimeSpan.FromSeconds(30);
     private const int RECONNECT_INTERVAL = 1000;
 
     /// <summary>
@@ -21,8 +21,11 @@ public partial class McpX
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
     /// <param name="clearMode">RUN時にクリアするデバイスメモリの範囲を指定します。（デフォルトは、クリアしない:<c>RemoteRunClearMode.None</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RemoteRun(bool force = false, RemoteRunClearMode clearMode = RemoteRunClearMode.None)
         => RemoteOperation(timer => RemoteOperationCommand.Run(force, clearMode, timer));
 
@@ -34,10 +37,14 @@ public partial class McpX
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
     /// <param name="clearMode">RUN時にクリアするデバイスメモリの範囲を指定します。（デフォルトは、クリアしない:<c>RemoteRunClearMode.None</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public Task RemoteRunAsync(bool force = false, RemoteRunClearMode clearMode = RemoteRunClearMode.None)
-        => RemoteOperationAsync(timer => RemoteOperationCommand.Run(force, clearMode, timer));
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public Task RemoteRunAsync(bool force = false, RemoteRunClearMode clearMode = RemoteRunClearMode.None, CancellationToken cancellationToken = default)
+        => RemoteOperationAsync(timer => RemoteOperationCommand.Run(force, clearMode, timer), cancellationToken);
 
     /// <summary>
     /// リモートSTOP
@@ -45,8 +52,11 @@ public partial class McpX
     /// <remarks>
     /// 接続先のCPUユニットをSTOP状態にします（コマンド: 1002）。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RemoteStop()
         => RemoteOperation(timer => RemoteOperationCommand.Stop(timer));
 
@@ -56,10 +66,14 @@ public partial class McpX
     /// <remarks>
     /// 接続先のCPUユニットをSTOP状態にします（コマンド: 1002）。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public Task RemoteStopAsync()
-        => RemoteOperationAsync(timer => RemoteOperationCommand.Stop(timer));
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public Task RemoteStopAsync(CancellationToken cancellationToken = default)
+        => RemoteOperationAsync(timer => RemoteOperationCommand.Stop(timer), cancellationToken);
 
     /// <summary>
     /// リモートPAUSE
@@ -69,8 +83,11 @@ public partial class McpX
     /// CPUユニットのスイッチがRUNの場合に実行できます。スイッチがSTOPの場合、コマンドは正常完了しますがPAUSE状態になりません。
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RemotePause(bool force = false)
         => RemoteOperation(timer => RemoteOperationCommand.Pause(force, timer));
 
@@ -81,10 +98,14 @@ public partial class McpX
     /// 詳細は <see cref="RemotePause(bool)"/> を参照してください。
     /// </remarks>
     /// <param name="force">他の外部機器からリモートSTOP/PAUSE中でも実行する場合に<c>true</c>を指定します。（デフォルトは、<c>false</c>です。）</param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public Task RemotePauseAsync(bool force = false)
-        => RemoteOperationAsync(timer => RemoteOperationCommand.Pause(force, timer));
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public Task RemotePauseAsync(bool force = false, CancellationToken cancellationToken = default)
+        => RemoteOperationAsync(timer => RemoteOperationCommand.Pause(force, timer), cancellationToken);
 
     /// <summary>
     /// リモートラッチクリア
@@ -93,8 +114,11 @@ public partial class McpX
     /// 接続先のCPUユニットに対してラッチクリアを実行します（コマンド: 1005）。ラッチ範囲のデバイスもクリアされます。<br/>
     /// CPUユニットをSTOP状態にしてから実行してください。他の外部機器からリモートSTOP/PAUSE中の場合は、エラーになります。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
     public void RemoteLatchClear()
         => RemoteOperation(timer => RemoteOperationCommand.LatchClear(timer));
 
@@ -104,10 +128,14 @@ public partial class McpX
     /// <remarks>
     /// 詳細は <see cref="RemoteLatchClear()"/> を参照してください。
     /// </remarks>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合に例外をスローします。</exception>
-    public Task RemoteLatchClearAsync()
-        => RemoteOperationAsync(timer => RemoteOperationCommand.LatchClear(timer));
+    /// <exception cref="TimeoutException">通信がタイムアウト時間内に完了しなかった場合に例外をスローします。</exception>
+    /// <exception cref="System.IO.IOException">接続が切断された場合、または以前のエラーで接続が閉じられている場合に例外をスローします。</exception>
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public Task RemoteLatchClearAsync(CancellationToken cancellationToken = default)
+        => RemoteOperationAsync(timer => RemoteOperationCommand.LatchClear(timer), cancellationToken);
 
     /// <summary>
     /// リモートRESET
@@ -120,13 +148,14 @@ public partial class McpX
     /// リセット後は、接続し直して SM400（常時ON）を読み出せるようになるまで待機します（リモートパスワードを指定している場合は、アンロックもやり直します）。
     /// そのため、同じインスタンスで続けて通信できます。
     /// </remarks>
-    /// <param name="reconnectTimeoutMilliseconds">
-    /// リセット後に接続し直すまでの最大待ち時間（ミリ秒）を指定します。<c>0</c>を指定した場合は、接続し直しません。（デフォルトは、30秒です。）
+    /// <param name="reconnectTimeout">
+    /// リセット後に接続し直すまでの最大待ち時間を指定します。<see cref="TimeSpan.Zero"/> を指定した場合は、接続し直しません。（省略した場合は、30秒です。）
     /// </param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートRESETが許可されていない場合など）に例外をスローします。</exception>
     /// <exception cref="TimeoutException">待ち時間内に接続し直せなかった場合に例外をスローします。</exception>
-    public void RemoteReset(int reconnectTimeoutMilliseconds = DEFAULT_RECONNECT_TIMEOUT)
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public void RemoteReset(TimeSpan? reconnectTimeout = null)
     {
         try
         {
@@ -136,12 +165,13 @@ public partial class McpX
         {
         }
 
-        if (reconnectTimeoutMilliseconds <= 0 || !CanReconnect)
+        var timeout = reconnectTimeout ?? DefaultReconnectTimeout;
+        if (timeout <= TimeSpan.Zero || !CanReconnect)
         {
             return;
         }
 
-        var deadline = DateTime.UtcNow.AddMilliseconds(reconnectTimeoutMilliseconds);
+        var deadline = DateTime.UtcNow + timeout;
         Exception? lastError = null;
         do
         {
@@ -166,38 +196,41 @@ public partial class McpX
     /// リモートRESET（非同期）
     /// </summary>
     /// <remarks>
-    /// 詳細は <see cref="RemoteReset(int)"/> を参照してください。
+    /// 詳細は <see cref="RemoteReset(TimeSpan?)"/> を参照してください。
     /// </remarks>
-    /// <param name="reconnectTimeoutMilliseconds">
-    /// リセット後に接続し直すまでの最大待ち時間（ミリ秒）を指定します。<c>0</c>を指定した場合は、接続し直しません。（デフォルトは、30秒です。）
+    /// <param name="reconnectTimeout">
+    /// リセット後に接続し直すまでの最大待ち時間を指定します。<see cref="TimeSpan.Zero"/> を指定した場合は、接続し直しません。（省略した場合は、30秒です。）
     /// </param>
-    /// <exception cref="RecivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
+    /// <param name="cancellationToken">要求をキャンセルするトークンを指定します。キャンセルされると <see cref="OperationCanceledException"/> をスローします。通信中にキャンセルした場合、TCP 交信では接続を閉じます（以降の呼び出しは <see cref="System.IO.IOException"/> になります）。</param>
+    /// <exception cref="ReceivePacketException">受信したパケットの内容が不正な値の場合に例外をスローします。</exception>
     /// <exception cref="McProtocolException">PLCからエラーコードを受信した場合（リモートRESETが許可されていない場合など）に例外をスローします。</exception>
     /// <exception cref="TimeoutException">待ち時間内に接続し直せなかった場合に例外をスローします。</exception>
-    public async Task RemoteResetAsync(int reconnectTimeoutMilliseconds = DEFAULT_RECONNECT_TIMEOUT)
+    /// <exception cref="ObjectDisposedException">インスタンスを破棄した後に呼び出した場合に例外をスローします。</exception>
+    public async Task RemoteResetAsync(TimeSpan? reconnectTimeout = null, CancellationToken cancellationToken = default)
     {
         try
         {
-            await RemoteOperationAsync(timer => RemoteOperationCommand.Reset(timer));
+            await RemoteOperationAsync(timer => RemoteOperationCommand.Reset(timer), cancellationToken).ConfigureAwait(false);
         }
         catch (Exception ex) when (IsDisconnectedByReset(ex))
         {
         }
 
-        if (reconnectTimeoutMilliseconds <= 0 || !CanReconnect)
+        var timeout = reconnectTimeout ?? DefaultReconnectTimeout;
+        if (timeout <= TimeSpan.Zero || !CanReconnect)
         {
             return;
         }
 
-        var deadline = DateTime.UtcNow.AddMilliseconds(reconnectTimeoutMilliseconds);
+        var deadline = DateTime.UtcNow + timeout;
         Exception? lastError = null;
         do
         {
-            await Task.Delay(RECONNECT_INTERVAL);
+            await Task.Delay(RECONNECT_INTERVAL, cancellationToken).ConfigureAwait(false);
             try
             {
-                Reconnect();
-                await ProbeAfterReconnectAsync();
+                await ReconnectAsync(cancellationToken).ConfigureAwait(false);
+                await ProbeAfterReconnectAsync(cancellationToken).ConfigureAwait(false);
                 return;
             }
             catch (Exception ex) when (IsReconnectRetryable(ex))
@@ -229,13 +262,13 @@ public partial class McpX
         Read<bool>(Prefix.SM, "400");
     }
 
-    private async Task ProbeAfterReconnectAsync()
+    private async Task ProbeAfterReconnectAsync(CancellationToken cancellationToken)
     {
         if (password != null)
         {
-            await RemoteUnlockAsync(password);
+            await RemoteUnlockAsync(password, cancellationToken).ConfigureAwait(false);
         }
 
-        await ReadAsync<bool>(Prefix.SM, "400");
+        await ReadAsync<bool>(Prefix.SM, "400", cancellationToken).ConfigureAwait(false);
     }
 }

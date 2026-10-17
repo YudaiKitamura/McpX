@@ -5,7 +5,7 @@ using McpXLib.Utils;
 
 namespace McpXLib.Commands;
 
-internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
+internal sealed class WordRandomWriteCommand<T1, T2> : PlcCommandBase<bool>
     where T1 : unmanaged
     where T2 : unmanaged
 {
@@ -16,8 +16,7 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
     private readonly int wordLength;
     private readonly int doubleWordLength;
     private readonly ProcessorSeries series;
-        private readonly CommandPacketBuilder commandPacketBuilder;
-
+    
     internal static int GetMaxWordLength(ProcessorSeries series)
         => series == ProcessorSeries.iQR ? 960 : MAX_WORD_LENGTH;
 
@@ -27,7 +26,7 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
         doubleWordLength = doubleWordDevices.Length * DOUBLE_WORD_SIZE;
         this.series = series;
 
-        ValidatePramater();
+        ValidateParameters();
 
         commandPacketBuilder = new CommandPacketBuilder(
             command: [0x02, 0x14],
@@ -37,7 +36,7 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
         );
     }
 
-    internal void ValidatePramater()
+    internal void ValidateParameters()
     {
         var maxWordLength = GetMaxWordLength(series);
         var totalLength = wordLength + doubleWordLength;
@@ -47,47 +46,9 @@ internal sealed class WordRandomWriteCommand<T1, T2> : IPlcCommand<bool>
         }
     }
 
-    public async Task<bool> ExecuteAsync(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
-        );
+    protected override ResponseFrameSelector CreateResponseSelector(IPlc plc, ushort serialNumber)
+        => new(plc, serialNumber, wordLength: wordLength, doubleWordLength: doubleWordLength);
 
-        responseFrameSelector.ParsePacket(
-            await plc.RequestAsync(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public bool Execute(IPlc plc)
-    {
-        var requestFrameSelector = new RequestFrameSelector(plc, commandPacketBuilder);
-        var responseFrameSelector = new ResponseFrameSelector(
-            plc,
-            requestFrameSelector.GetSerialNumber(),
-            wordLength: wordLength,
-            doubleWordLength: doubleWordLength
-        );
-
-        responseFrameSelector.ParsePacket(
-            plc.Request(requestFrameSelector.GetRequestPacket(), responseFrameSelector)
-        );
-
-        return true;
-    }
-
-    public byte[] ToBinaryBytes()
-    {
-        return commandPacketBuilder.ToBinaryBytes();
-    }
-
-    public byte[] ToAsciiBytes()
-    {
-        return commandPacketBuilder.ToAsciiBytes();
-    }
+    protected override bool Parse(byte[] responseContent)
+        => true;
 }

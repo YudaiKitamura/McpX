@@ -17,10 +17,8 @@ public sealed class TestBitRandomWriteAsciiCommand
     {
         faker = new Faker();
         plcMock = new Mock<IPlc>();
-        plcMock.SetupProperty(x => x.Route);
-        plcMock.SetupProperty(x => x.IsAscii);
-        plcMock.Object.Route = new RoutePacketBuilder();
-        plcMock.Object.IsAscii = true;
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+        plcMock.SetupGet(x => x.IsAscii).Returns(true);
     }
 
     [TestMethod]
@@ -33,7 +31,7 @@ public sealed class TestBitRandomWriteAsciiCommand
             ]
         );
 
-        byte[] repuestPacketExpected = [
+        byte[] requestPacketExpected = [
             0x30, 0x30, 0x32, 0x32,                         // Content Length "0022"
             0x30, 0x30, 0x30, 0x30,                         // Monitoring Timer "0000"
             0x31, 0x34, 0x30, 0x32,                         // Command "1402"
@@ -45,7 +43,7 @@ public sealed class TestBitRandomWriteAsciiCommand
             0x30, 0x31,                                     // Set/Reset2 "01" (ON)
         ];
 
-        CollectionAssert.AreEqual(repuestPacketExpected, command.ToAsciiBytes());
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToAsciiBytes());
     }
 
     // Regression: bit access points >= 16 must be encoded as exactly 2 hex chars ("10"), not "010".
@@ -107,8 +105,8 @@ public sealed class TestBitRandomWriteAsciiCommand
             0x30, 0x30, 0x30, 0x30,                                     // Error Code
         ];
 
-        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).ReturnsAsync(recivePackets);
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
 
-        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object));
+        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
     }
 }

@@ -1,0 +1,149 @@
+﻿using McpXLib.Commands;
+using McpXLib.Enums;
+using McpXLib.Interfaces;
+using Moq;
+using Bogus;
+using McpXLib.Builders;
+
+namespace TestMcpX;
+
+[TestClass]
+public sealed class TestMonitorRegisterCommand
+{
+    private readonly Faker faker;
+    private Mock<IPlc> plcMock;
+
+    public TestMonitorRegisterCommand()
+    {
+        faker = new Faker();
+        plcMock = new Mock<IPlc>();
+        plcMock.SetupGet(x => x.Route).Returns(new RoutePacketBuilder());
+    }
+
+    [TestMethod]
+    public void TestToBytes()
+    {
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+
+        byte[] requestPacketExpected = [
+            0x18, 0x00,                     // Content Length
+            0x00, 0x00,                     // Monitoring Timer
+            0x01, 0x08, 0x00, 0x00,         // Command
+            0x02,                           // Word Device Length
+            0x02,                           // Double Device Length
+            0x00, 0x00, 0x00,               // Device Address1
+            0xA8,                           // Device Prefix1
+            0x01, 0x00, 0x00,               // Device Address2
+            0xA8,                           // Device Prefix2
+            0x02, 0x00, 0x00,               // Device Address3
+            0xA8,                           // Device Prefix3
+            0x04, 0x00, 0x00,               // Device Address4
+            0xA8,                           // Device Prefix4
+        ];
+
+        CollectionAssert.AreEqual(requestPacketExpected, command.ToBinaryBytes());
+    }
+
+    [TestMethod]
+    public void TestExecute()
+    {
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+
+        byte[] recivePackets = [
+            0xD0, 0x00,                     // Sub Header
+            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
+            0x02, 0x00,                     // Content Length
+            0x00, 0x00,                     // Error Code
+        ];
+
+        plcMock.Setup(x => x.Request(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>())).Returns(recivePackets);
+
+        Assert.AreEqual(true, command.Execute(plcMock.Object));
+    }
+
+    [TestMethod]
+    public async Task TestExecuteAsync()
+    {
+        var command = new MonitorRegisterCommand([(Prefix.D, "0"),(Prefix.D, "1")], [(Prefix.D, "2"),(Prefix.D, "4")]);
+
+        byte[] recivePackets = [
+            0xD0, 0x00,                     // Sub Header
+            0x00, 0xFF, 0xFF, 0x03, 0x00,   // Route
+            0x02, 0x00,                     // Content Length
+            0x00, 0x00,                     // Error Code
+        ];
+
+        plcMock.Setup(x => x.RequestAsync(It.IsAny<byte[]>(), It.IsAny<IReceiveLengthParser>(), It.IsAny<CancellationToken>())).ReturnsAsync(recivePackets);
+
+        Assert.AreEqual(true, await command.ExecuteAsync(plcMock.Object, CancellationToken.None));
+    }
+
+    [TestMethod]
+    public void TestException()
+    {
+        var ex = Assert.ThrowsException<ArgumentException>(() => {
+            _ = new MonitorRegisterCommand([], []);
+        });
+        
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new MonitorRegisterCommand(wordAddresses, []);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        ex = Assert.ThrowsException<ArgumentException>(() => {
+            var doubleWordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new MonitorRegisterCommand([], doubleWordAddresses);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH / 2)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            var doubleWordAddresses = Enumerable.Range(0, MonitorRegisterCommand.MAX_WORD_LENGTH / 2 + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new MonitorRegisterCommand(wordAddresses, doubleWordAddresses);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+    }
+
+    [TestMethod]
+    public void TestExceptionIqr()
+    {
+        int iqrMax = MonitorRegisterCommand.GetMaxWordLength(ProcessorSeries.iQR);
+        Assert.AreEqual(96, iqrMax);
+
+        // iQ-R: total over 96 points throws (no packet split for monitor register).
+        var ex = Assert.ThrowsException<ArgumentException>(() => {
+            var wordAddresses = Enumerable.Range(0, iqrMax + 1)
+                .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+                .ToArray();
+
+            _ = new MonitorRegisterCommand(wordAddresses, [], 0, ProcessorSeries.iQR);
+        });
+
+        Assert.IsInstanceOfType<ArgumentException>(ex);
+
+        // iQ-R: exactly 96 points is allowed.
+        var okAddresses = Enumerable.Range(0, iqrMax)
+            .Select(_ => (faker.PickRandom<Prefix>(), faker.Random.UShort().ToString()))
+            .ToArray();
+
+        _ = new MonitorRegisterCommand(okAddresses, [], 0, ProcessorSeries.iQR);
+    }
+}
