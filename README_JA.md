@@ -1,4 +1,4 @@
-<img src="docfx/images/mcpx_ogp.png" alt="logo" />
+<img src="assets/mcpx_ogp.png" alt="logo" />
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
@@ -158,6 +158,21 @@ GX Simulator3 は 127.0.0.1 でのみ待ち受けます。別のPCから接続�
 | フレーム | 3Eフレーム、4Eフレーム |
 | 交信データコード | バイナリコード、ASCIIコード |
 | シミュレータ | GX Simulator3 |
+
+## PLCのパラメータ設定
+内蔵Ethernetを使用する場合は、GX Works3 で次のように設定します。
+
+<img src="assets/plc_parameter_1.png" width="500" />
+<img src="assets/plc_parameter_2.png" width="500" />
+
+| 設定項目 | 説明 | McpX の接続設定（`McpXOptions`） |
+|:-|:-|:-|
+| IPアドレス | PLCのIPアドレスを指定します。 | `Host` にPLCのIPアドレスを指定します。 |
+| 交信データコード | `バイナリコード交信`、`ASCIIコード交信`を指定します。 | `ASCIIコード交信`の場合は `IsAscii` に `true` を指定します。 |
+| RUN中書込を許可する | デバイスに書込みを行う場合に有効にします。 | - |
+| プロトコル | `TCP`、`UDP`を指定します。 | `UDP`の場合は `IsUdp` に `true` を指定します。 |
+| オープン方式 | `MCプロトコル`を指定します。 | - |
+| 自局ポート番号 | 通信を行うポート番号（1025～4999、5010～65534の範囲）を指定します。 | `Port` にPLCのポート番号を指定します。 |
 
 ## バージョニング
 1.0.0 以降は [セマンティック バージョニング](https://semver.org/lang/ja/) に従います。公開APIの互換性がなくなる変更は、メジャーバージョンでのみ行います。

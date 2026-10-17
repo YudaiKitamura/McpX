@@ -483,9 +483,6 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# DocFX build directory
-_site/
-
 # Document directory
 docs/
 # Language bindings
@@ -495,7 +492,3 @@ bindings/python/**/*.egg-info/
 bindings/python/build/
 bindings/python/dist/
 .pytest_cache/
-
-# docfx の生成物（API リファレンスはビルド時に生成する）
-docfx/api/
-docfx/_site/

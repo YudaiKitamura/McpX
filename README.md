@@ -1,4 +1,4 @@
-<img src="docfx/images/mcpx_ogp.png" alt="logo" />
+<img src="assets/mcpx_ogp.png" alt="logo" />
 <br>
 <p>
   <img alt="Downloads" src="https://img.shields.io/nuget/dt/McpX" />
@@ -159,6 +159,21 @@ Every async method also takes an optional `CancellationToken`.
 | Frame | 3E frame, 4E frame |
 | Code | Binary code, ASCII code |
 | Simulator | GX Simulator3 |
+
+## PLC Parameter Settings
+When using the built-in Ethernet port, set the parameters in GX Works3 as follows.
+
+<img src="assets/plc_parameter_1.png" width="500" />
+<img src="assets/plc_parameter_2.png" width="500" />
+
+| Setting | Description | McpX connection setting (`McpXOptions`) |
+|:-|:-|:-|
+| IP Address | The IP address of the PLC. | Set `Host` to the IP address of the PLC. |
+| Communication Data Code | `Binary` or `ASCII`. | For `ASCII`, set `IsAscii` to `true`. |
+| Enable online change (write during RUN) | Enable it to write to devices. | - |
+| Protocol | `TCP` or `UDP`. | For `UDP`, set `IsUdp` to `true`. |
+| Open System | `MC Protocol`. | - |
+| Host Station Port No. | The port number to communicate on (1025 to 4999 or 5010 to 65534). | Set `Port` to the port number of the PLC. |
 
 ## Versioning
 McpX follows [Semantic Versioning](https://semver.org/) from 1.0.0. Breaking changes to the public API are made only in a major version.
