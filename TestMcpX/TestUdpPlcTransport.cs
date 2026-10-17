@@ -12,9 +12,9 @@ public class TestUdpPlcTransport
 {
     private Faker faker = new Faker();
 
-    private (int Port, CancellationTokenSource Cts) StartEchoServer()
+    private (int Port, CancellationTokenSource Cts) StartEchoServer(AddressFamily family = AddressFamily.InterNetwork)
     {
-        var udpClient = new UdpClient(0);
+        var udpClient = family == AddressFamily.InterNetworkV6 ? new UdpClient(new IPEndPoint(IPAddress.IPv6Loopback, 0)) : new UdpClient(0);
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
         var cts = new CancellationTokenSource();
 
@@ -142,6 +142,25 @@ public class TestUdpPlcTransport
 
         byte[] sendData = headerBytes.Concat(lengthBytes).Concat(contentBytes).ToArray();
         CollectionAssert.AreEqual(sendData, plc.Request(sendData, new DummyReceiveLengthParser((ushort)(headerBytes.Length + lengthBytes.Length), contentLength)));
+
+        cts.Cancel();
+    }
+
+    [TestMethod]
+    public async Task TestRequestIPv6()
+    {
+        if (!Socket.OSSupportsIPv6)
+        {
+            Assert.Inconclusive("IPv6 is not supported.");
+        }
+
+        var (port, cts) = StartEchoServer(AddressFamily.InterNetworkV6);
+        using var plc = UdpPlcTransport.Create("::1", port, 5000);
+
+        byte[] sendData = { 0xD0, 0x00, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00 };
+        var parser = new DummyReceiveLengthParser(9, 2);
+        CollectionAssert.AreEqual(sendData, plc.Request(sendData, parser));
+        CollectionAssert.AreEqual(sendData, await plc.RequestAsync(sendData, parser, CancellationToken.None));
 
         cts.Cancel();
     }

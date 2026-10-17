@@ -1,7 +1,7 @@
 ## [Unreleased]
 ### Added
 - Added a `CancellationToken` parameter to every async method (including `MonitorSession.ReadAsync`). Cancelling a request in progress closes the TCP connection, as a timeout does.
-- UDP connections now accept a host name as well as an IP address.
+- UDP connections now accept a host name as well as an IP address, and IPv6 addresses. A host name uses its IPv4 address if it has one.
 - Added `McpXOptions` and the `McpX.Connect` / `McpX.ConnectAsync` factories (also `Connect(host, port)` for the default settings). `ConnectAsync` connects and unlocks the remote password without blocking a thread.
 - `McpX` now implements `IAsyncDisposable`. `DisposeAsync` sends the remote lock asynchronously.
 - Added the `includeNullTerminator` parameter to `WriteString` / `WriteStringAsync` (default `true`, as before). Pass `false` not to write the terminating 0x00 word after a string of even byte length.

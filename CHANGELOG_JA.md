@@ -1,7 +1,7 @@
 ## [Unreleased]
 ### Added
 - すべての非同期メソッド（`MonitorSession.ReadAsync` を含む）に `CancellationToken` 引数を追加。通信中にキャンセルした場合は、タイムアウトと同じく TCP の接続を閉じます。
-- UDP 交信で、IP アドレスに加えてホスト名を指定できるように変更。
+- UDP 交信で、IP アドレスに加えてホスト名と IPv6 のアドレスを指定できるように変更。ホスト名は IPv4 のアドレスがあればそちらを使います。
 - `McpXOptions` と、ファクトリ `McpX.Connect` / `McpX.ConnectAsync` を追加（既定の設定で接続する `Connect(host, port)` も追加）。`ConnectAsync` は、接続とリモートパスワードの解除をスレッドを止めずに行います。
 - `McpX` が `IAsyncDisposable` を実装。`DisposeAsync` はリモートロックを非同期で送信します。
 - `WriteString` / `WriteStringAsync` に `includeNullTerminator` 引数を追加（既定は `true` で従来どおり）。`false` を指定すると、偶数バイトの文字列の後に終端の 0x00 のワードを書き込みません。

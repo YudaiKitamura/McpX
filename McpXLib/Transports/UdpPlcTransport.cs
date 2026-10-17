@@ -42,18 +42,20 @@ internal class UdpPlcTransport : IPlcTransport
         return new UdpPlcTransport(new IPEndPoint(address, port), timeout);
     }
 
-    // UdpClient() は IPv4 のソケットのため、IPv4 のアドレスを使う。
+    // ホスト名は IPv4 のアドレスを優先し、なければ IPv6 のアドレスを使う。
     private static IPAddress SelectAddress(IPAddress[] addresses, string host)
     {
         return addresses.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork)
+            ?? addresses.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetworkV6)
             ?? throw new SocketException((int)SocketError.HostNotFound);
     }
 
     private const string TimeoutMessage = "The request timed out.";
 
+    // 接続先のアドレスファミリー（IPv4 / IPv6）でソケットを作る。
     private UdpClient CreateClient()
     {
-        return new UdpClient();
+        return new UdpClient(remoteEndPoint.AddressFamily);
     }
 
     // 失敗した要求の応答が遅れて届いても次の要求が受け取らないよう、ソケットを作り直す（新しい送信元ポートになる）。
