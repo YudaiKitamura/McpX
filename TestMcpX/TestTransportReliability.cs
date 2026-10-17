@@ -132,7 +132,7 @@ public sealed class TestTransportReliability
     public async Task TestUdpConcurrentRequestsAreSerialized()
     {
         // 受信した順とは異なる順で応答を返す UDP エコーサーバー
-        var server = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        var server = UdpTestServer.Create(new IPEndPoint(IPAddress.Loopback, 0));
         int port = ((IPEndPoint)server.Client.LocalEndPoint!).Port;
         using var cts = new CancellationTokenSource();
         var random = new Random();
@@ -301,7 +301,7 @@ public sealed class TestTransportReliability
     public void TestUdpSyncTimeoutDoesNotReturnLateResponse()
     {
         // 最初の要求だけ応答を 800ms 遅らせる UDP エコーサーバー
-        var server = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        var server = UdpTestServer.Create(new IPEndPoint(IPAddress.Loopback, 0));
         int port = ((IPEndPoint)server.Client.LocalEndPoint!).Port;
         using var cts = new CancellationTokenSource();
         _ = Task.Run(async () =>
@@ -375,7 +375,7 @@ public sealed class TestTransportReliability
     public async Task TestUdpZeroTimeoutMeansInfinite()
     {
         // 応答を 300ms 遅らせる UDP エコーサーバー
-        var server = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        var server = UdpTestServer.Create(new IPEndPoint(IPAddress.Loopback, 0));
         int port = ((IPEndPoint)server.Client.LocalEndPoint!).Port;
         using var cts = new CancellationTokenSource();
         _ = Task.Run(async () =>

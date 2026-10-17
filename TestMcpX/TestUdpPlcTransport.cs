@@ -14,7 +14,7 @@ public class TestUdpPlcTransport
 
     private (int Port, CancellationTokenSource Cts) StartEchoServer(AddressFamily family = AddressFamily.InterNetwork)
     {
-        var udpClient = family == AddressFamily.InterNetworkV6 ? new UdpClient(new IPEndPoint(IPAddress.IPv6Loopback, 0)) : new UdpClient(0);
+        var udpClient = family == AddressFamily.InterNetworkV6 ? UdpTestServer.Create(new IPEndPoint(IPAddress.IPv6Loopback, 0)) : UdpTestServer.Create();
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
         var cts = new CancellationTokenSource();
 
@@ -43,7 +43,7 @@ public class TestUdpPlcTransport
 
     private (int Port, CancellationTokenSource Cts) StartReceiveTimeoutEchoServer()
     {
-        var udpClient = new UdpClient(0);
+        var udpClient = UdpTestServer.Create();
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
         var cts = new CancellationTokenSource();
 
@@ -73,7 +73,7 @@ public class TestUdpPlcTransport
 
     private (int Port, CancellationTokenSource Cts) StartSkipFirstEchoServer()
     {
-        var udpClient = new UdpClient(0);
+        var udpClient = UdpTestServer.Create();
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
         var cts = new CancellationTokenSource();
 
@@ -298,7 +298,7 @@ public class TestUdpPlcTransport
     // 1回目の要求には「長さの不正な応答」をすぐに返し、少し遅れて「正しい長さの応答（0xEE）」を返す。2回目以降はエコーする。
     private (int Port, CancellationTokenSource Cts) StartLateReplyServer()
     {
-        var udpClient = new UdpClient(0);
+        var udpClient = UdpTestServer.Create();
         int port = ((IPEndPoint)udpClient.Client.LocalEndPoint!).Port;
         var cts = new CancellationTokenSource();
 
